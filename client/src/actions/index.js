@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER } from './types'
+import { FETCH_USER, ALL_PRODUCTS } from './types'
 
 // This is an action creator
 export const fetchUser = () => async dispatch => {
@@ -27,4 +27,12 @@ export const handleToken = (token) => async dispatch => {
   const res = await axios.post('/api/stripe', token)
 
   dispatch({ type: FETCH_USER, payload: res.data })
+}
+
+// Handle payment token
+export const allProducts = () => async dispatch => {
+  const res = await axios.get('/api/products/all/instock')
+  console.log(res.data)
+
+  dispatch({ type: ALL_PRODUCTS, payload: res.data })
 }
