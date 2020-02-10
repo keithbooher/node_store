@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { BrowserRouter , Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
+import '../stylesheets/all.css.scss'
 
 import Header from './Header'
-import Landing from './Landing'
+import Home from './Pages/Home'
+import Product from './Pages/Product'
 const Dashboard = () => <h2>Dashboard</h2>
 const SurveyNew = () => <h2>SurveyNew</h2>
 
@@ -16,13 +18,14 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="">
         <BrowserRouter>
           <div>
             <Header />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/surveys" component={Dashboard} />
-            <Route path="/surveys/new" component={SurveyNew} />
+            <div id="body_content_container">
+              <Route exact path="/" component={Home} />
+              <Route exact path="/product/:id" component={Product} />
+            </div>
           </div>
         </BrowserRouter>
       </div>

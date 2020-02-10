@@ -7,7 +7,6 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-
 // THE ABOVE TRANSLATES TO THIS
 // export const fetchUser = () => {
 //   // when redux thunk sees a function returned instead of an action, it will
@@ -25,14 +24,11 @@ export const fetchUser = () => async dispatch => {
 // Handle payment token
 export const handleToken = (token) => async dispatch => {
   const res = await axios.post('/api/stripe', token)
-
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
 // Handle payment token
 export const allProducts = () => async dispatch => {
   const res = await axios.get('/api/products/all/instock')
-  console.log(res.data)
-
   dispatch({ type: ALL_PRODUCTS, payload: res.data })
 }
