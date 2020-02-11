@@ -7,8 +7,7 @@ import '../stylesheets/all.css.scss'
 import Header from './Header'
 import Home from './Pages/Home'
 import Product from './Pages/Product'
-const Dashboard = () => <h2>Dashboard</h2>
-const SurveyNew = () => <h2>SurveyNew</h2>
+import Category from './Pages/Category'
 
 
 class App extends Component {
@@ -24,7 +23,8 @@ class App extends Component {
             <Header />
             <div id="body_content_container">
               <Route exact path="/" component={Home} />
-              <Route exact path="/product/:id" component={Product} />
+              <Route exact path="/shop/:category" component={Category} />
+              <Route exact path="/shop/:category/:product" component={Product} />
             </div>
           </div>
         </BrowserRouter>

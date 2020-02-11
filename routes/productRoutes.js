@@ -4,11 +4,15 @@ const mongoose = require('mongoose')
 const Product = mongoose.model('products')
 
 module.exports = app => {
+  app.get('/api/product/:path_name', (req, res) => {    
+    Product.findOne({ path_name: req.params.path_name })
+    .then(dbModel => res.json(dbModel))
+  })
   app.get('/api/products/all/instock', requireLogin, adminRequired, async (req, res) => {    
     const products = await Product.find({ inventory_count: {$gte: 1}})
     res.send(products)
   })
-  app.get('/api/product/create', requireLogin, adminRequired, async (req, res) => {    
+  app.post('/api/product/create', requireLogin, adminRequired, async (req, res) => {    
     const product = new Product({
       name: 'test product',
       description: 'test product description',

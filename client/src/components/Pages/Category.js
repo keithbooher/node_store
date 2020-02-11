@@ -10,7 +10,7 @@ class Product extends Component  {
   }
   componentWillMount() {
     // There is an API file that exports a module with functions that contain API calls for use
-    API.getProductInfo('test_product').then((res) => {
+    API.getCategoryProducts('test_category').then((res) => {
       console.log(res.data)
     })
   }
@@ -19,7 +19,7 @@ class Product extends Component  {
     return (
       <div>
         <h1>
-          Product Page
+          Category Page
         </h1>
       </div>
     )

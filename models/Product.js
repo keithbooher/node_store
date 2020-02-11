@@ -3,6 +3,8 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 
 const productSchema = new Schema({
   name: String,
+  // NEVER EVER EVER EVER CHANGE PATH NAME
+  path_name: String,
   description: {
     type: String,
     default: ""
@@ -14,7 +16,10 @@ const productSchema = new Schema({
     type: Object,
     default: {}
   },
-  _category_id: { type: Schema.Types.ObjectId, ref: 'Category' },
+  category: {
+    _category_id: { type: Schema.Types.ObjectId, ref: 'Category' },
+    category_path_name: String
+  },
   image: String
 })
 

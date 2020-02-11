@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { allProducts } from '../../actions'
 import { Link } from 'react-router-dom'
-import API from "../../utils/API";
 import '../../stylesheets/homepage.css.scss'
+import API from "../../utils/API";
 
 class Home extends Component  {
   constructor({ subject, recipients }, content) {
@@ -14,10 +14,13 @@ class Home extends Component  {
   }
   componentWillMount() {
     this.props.allProducts()
-    // There is an API file that exports a module with functions that contain API calls for use
-    // API.getSomeThing(argument).then((res) => {
-    //   console.log(res.data)
-    // })
+  }
+
+  get_category_path_name(id) {
+    return API.getCategoryPathName(id).then(res => {
+      console.log('res.data', res.data.path_name)
+      return res.data.path_name
+    })
   }
 
   render_products() {
@@ -30,7 +33,7 @@ class Home extends Component  {
               <p>{product.description}</p>
             </div>
             <div class="card-action">
-              <Link to={`/product/${product._id}`} className="">Go to this product</Link>
+              <Link to={`/shop/${product.category.category_path_name}/${product.path_name}`} className="">Go to this product</Link>
             </div>
           </div>
           

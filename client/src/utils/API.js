@@ -1,7 +1,12 @@
 import axios from "axios";
 
 export default {
-  getSomeThing: function (argument) {
-    return axios.get('/api/some/route');
+  getProductInfo: function (path_name) {
+    console.log(path_name)
+    return axios.get('/api/product/' + path_name);
+  },
+  getCategoryProducts: function (path_name) {
+    console.log(path_name)
+    return axios.get('/api/category/products/' + path_name);
   }
 }
