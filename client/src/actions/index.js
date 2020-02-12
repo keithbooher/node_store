@@ -27,7 +27,7 @@ export const handleToken = (token) => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-export const allProducts = () => async dispatch => {
+export const allInstockProducts = () => async dispatch => {
   const res = await axios.get('/api/products/all/instock')
   dispatch({ type: ALL_PRODUCTS, payload: res.data })
 }

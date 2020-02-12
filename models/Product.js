@@ -18,7 +18,8 @@ const productSchema = new Schema({
   },
   category: {
     _category_id: { type: Schema.Types.ObjectId, ref: 'Category' },
-    category_path_name: String
+    category_path_name: String,
+    category_name: String
   },
   image: String
 })

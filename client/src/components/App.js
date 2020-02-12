@@ -4,17 +4,17 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 import '../stylesheets/all.css.scss'
 
-import Header from './Header'
-import Home from './Pages/Home'
-import Product from './Pages/Product'
-import Category from './Pages/Category'
+import Header from './PageComponents/front_end/Header'
+import Home from './Pages/front_end/Home'
+import Product from './Pages/front_end/Product'
+import Category from './Pages/front_end/Category'
 
 
 class App extends Component {
   // Changed from didMount to willMount... harmful?
   componentWillMount() {
     this.props.fetchUser()
-    this.props.allProducts()
+    this.props.allInstockProducts()
   }
 
   render() {

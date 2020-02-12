@@ -22,12 +22,11 @@ module.exports = app => {
   app.get('/api/category/:path_name', (req, res) => {    
     Category.findOne({ path_name: req.params.path_name })
     .then(dbModel => res.json(dbModel))
+    .catch(err => res.status(422).json(err));
   })
   app.get('/api/category/products/:category_path_name', (req, res) => {  
-    console.log(req.params.category_path_name)
     Product.find({ "category.category_path_name": req.params.category_path_name} )
     .then(dbModel => {
-      console.log(dbModel)
       res.json(dbModel)
     })
     .catch(err => res.status(422).json(err));

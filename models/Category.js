@@ -3,6 +3,7 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 
 const categorySchema = new Schema({
   name: String,
+  // NEVER EVER EVER EVER CHANGE PATH NAME
   path_name: String,
 })
 
