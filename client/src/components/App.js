@@ -11,8 +11,10 @@ import Category from './Pages/Category'
 
 
 class App extends Component {
-  componentDidMount() {
+  // Changed from didMount to willMount... harmful?
+  componentWillMount() {
     this.props.fetchUser()
+    this.props.allProducts()
   }
 
   render() {

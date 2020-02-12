@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { allProducts } from '../../actions'
 import API from "../../utils/API";
 
 class Product extends Component  {
-  constructor({ subject, recipients }, content) {
+  constructor(props) {
     super()
     this.state = {}
   }
   componentWillMount() {
-    // There is an API file that exports a module with functions that contain API calls for use
     API.getProductInfo('test_product').then((res) => {
       console.log(res.data)
     })
   }
   
   render() {
+    console.log(this.props)
     return (
       <div>
         <h1>
@@ -31,4 +30,4 @@ function mapStateToProps({ products }) {
   return { products }
 }
 
-export default connect(mapStateToProps, {allProducts})(Product)
+export default connect(mapStateToProps, null)(Product)

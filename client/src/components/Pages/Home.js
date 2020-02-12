@@ -6,14 +6,11 @@ import '../../stylesheets/homepage.css.scss'
 import API from "../../utils/API";
 
 class Home extends Component  {
-  constructor({ subject, recipients }, content) {
+  constructor(props) {
     super()
     this.state = {
       products: []
     }
-  }
-  componentWillMount() {
-    this.props.allProducts()
   }
 
   get_category_path_name(id) {
@@ -27,12 +24,12 @@ class Home extends Component  {
     return this.props.products.reverse().map(product => {
       return (
         <div>
-          <div class="card blue-grey darken-1">
-            <div class="card-content white-text">
-              <span class="card-title">{product.name}</span>
+          <div className="card blue-grey darken-1">
+            <div className="card-content white-text">
+              <span className="card-title">{product.name}</span>
               <p>{product.description}</p>
             </div>
-            <div class="card-action">
+            <div className="card-action">
               <Link to={`/shop/${product.category.category_path_name}/${product.path_name}`} className="">Go to this product</Link>
             </div>
           </div>
@@ -62,4 +59,4 @@ function mapStateToProps({ products }) {
   return { products }
 }
 
-export default connect(mapStateToProps, {allProducts})(Home)
+export default connect(mapStateToProps, null)(Home)
