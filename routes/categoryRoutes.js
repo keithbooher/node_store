@@ -5,11 +5,12 @@ const Category = mongoose.model('categorys')
 const Product = mongoose.model('products')
 
 module.exports = app => {
-  app.post('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
+  app.get('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
     console.log(req.user) 
     console.log('----- made it -----') 
     const category = new Category({
-      name: 'test category'
+      name: 'test category three',
+      path_name: 'test_category_three'
     })
 
     try {
@@ -24,6 +25,7 @@ module.exports = app => {
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
   })
+  // REFACTOR AFTER I CHANGE PRODUCT CATEGORY COLUMN TO AN ARRAY OF CATEGORIES
   app.get('/api/category/products/:category_path_name', (req, res) => {  
     Product.find({ "category.category_path_name": req.params.category_path_name} )
     .then(dbModel => {

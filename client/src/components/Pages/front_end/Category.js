@@ -6,13 +6,15 @@ import ProductCard from '../../PageComponents/front_end/ProductCard'
 class Category extends Component  {
   constructor(props) {
     super()
+    this.routeParam = props.match.params.category
     this.state = {products: [], category_data: {}}
   }
   componentWillMount() {
-    API.getCategoryData('test_category').then((res) => {
+    console.log(this.routeParam)
+    API.getCategoryData(this.routeParam).then((res) => {
       this.setState({category_data: res.data})
     })
-    API.getCategoryProducts('test_category').then((res) => {
+    API.getCategoryProducts(this.routeParam).then((res) => {
       this.setState({products: res.data})
     })
 
@@ -24,7 +26,7 @@ class Category extends Component  {
 
   renderProductCards() {
     return this.state.products.reverse().map(product => {
-      return <ProductCard product={product} />
+      return <ProductCard product={product} category_path_name={this.routeParam}/>
     })
   }
   

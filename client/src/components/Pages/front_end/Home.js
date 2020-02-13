@@ -13,7 +13,7 @@ class Home extends Component  {
 
   renderProducts() {
     return this.props.products.reverse().map(product => {
-      return <ProductCard product={product} />
+      return <ProductCard product={product} category_path_name={product.category[0].category_path_name} />
     })
   }
 

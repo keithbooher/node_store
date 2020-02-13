@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
+const CategorySchema = require('./Category')
 
 const productSchema = new Schema({
   name: String,
@@ -10,18 +11,22 @@ const productSchema = new Schema({
     default: ""
   },
   created_at: Date,
+  deleted_at: {
+    type: Date,
+    default: null
+  },
   inventory_count: Number,
   price: Number,
   dimensions: {
     type: Object,
     default: {}
   },
-  category: {
-    _category_id: { type: Schema.Types.ObjectId, ref: 'Category' },
-    category_path_name: String,
-    category_name: String
-  },
-  image: String
+  category: [CategorySchema],
+  image: String,
+  display: {
+    type: Boolean,
+    default: true
+  }
 })
 
 mongoose.model('products', productSchema)

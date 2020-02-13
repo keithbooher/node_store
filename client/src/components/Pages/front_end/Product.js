@@ -7,16 +7,16 @@ import hf from '../../../utils/HelperFunctions'
 class Product extends Component  {
   constructor(props) {
     super()
+    this.routeParamCategory = props.match.params.category
+    this.routeParamProduct = props.match.params.product
     this.state = {
-        product: {category: {
-          category_path_name: "",
-          category_name:""
-        }}
-      }
+        product: {}
+    }
   }
   componentWillMount() {
     // OR WOULD IT BE FASTER TO FILTER THROUGH THE 'IN STOCK PRODUCTS' THAT RESIDE IN THE STORE STATE?
-    API.getProductInfo('test_product').then((res) => {
+    API.getProductInfo(this.routeParamProduct).then((res) => {
+      console.log(res.data)
       this.setState({ product: res.data })
     })
   }
@@ -25,7 +25,7 @@ class Product extends Component  {
     let category = this.state.product.category
     return (
       <div>
-        <div>Back to <Link to={`/shop/${category.category_path_name}`}>{hf.capitalizeFirsts(category.category_name)}</Link></div>
+        <div>Back to <Link to={`/shop/${this.routeParamCategory}`}>{hf.capitalizeFirsts(category[0].category_name)}</Link></div>
         <h1>
           Product Page
         </h1>
@@ -36,7 +36,7 @@ class Product extends Component  {
   render() {
     return (
       <div>
-        {this.render_content()}
+        {Object.keys(this.state.product).length > 0 ? this.render_content() : ""}
       </div>
     )
   }
