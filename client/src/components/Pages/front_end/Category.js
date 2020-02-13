@@ -2,26 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import API from "../../../utils/API";
 import ProductCard from '../../PageComponents/front_end/ProductCard'
+import hf from '../../../utils/HelperFunctions'
 
 class Category extends Component  {
   constructor(props) {
     super()
-    this.routeParam = props.match.params.category
-    this.state = {products: [], category_data: {}}
+    this.routeParamCategory = props.match.params.category
+    this.state = {products: [], category_data: null}
   }
-  componentWillMount() {
-    console.log(this.routeParam)
-    API.getCategoryData(this.routeParam).then((res) => {
-      this.setState({category_data: res.data})
-    })
-    API.getCategoryProducts(this.routeParam).then((res) => {
-      this.setState({products: res.data})
-    })
-
-    // How can I resolve the promise by the time we set state?
-    // let category_data = API.getCategoryData('test_category').then(res => res.data)
-    // let category_products = API.getCategoryProducts('test_category').then(res => res.data)
-    // this.setState({ products: category_products, category_data: category_data })
+  async componentDidMount() {
+    let category_data = await API.getCategoryData(this.routeParamCategory).then(res => res.data)
+    let category_products = await API.getCategoryProducts(this.routeParamCategory).then(res => res.data)
+    this.setState({ products: category_products, category_data: category_data })
   }
 
   renderProductCards() {
@@ -30,16 +22,24 @@ class Category extends Component  {
     })
   }
   
-  render() {
-    console.log(this.state)
+  renderAll() {
     return (
       <div>
         <h1>
-          {this.state.category_data.name}
+          {hf.capitalizeFirsts(this.state.category_data.name)}
         </h1>
         <div style={{display: 'flex'}}>
           {this.renderProductCards()}
         </div>
+      </div>
+    )
+  }
+  
+  render() {
+    console.log(this.state)
+    return (
+      <div>
+        {this.state.category_data ? this.renderAll() : ""}
       </div>
     )
   }

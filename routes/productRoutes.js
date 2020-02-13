@@ -34,9 +34,9 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/product/:path_name', (req, res) => {    
-    Product.findOne({ path_name: req.params.path_name })
-    .then(dbModel => res.json(dbModel))
+  app.get('/api/product/:path_name', async (req, res) => {    
+    const product = await Product.findOne({ path_name: req.params.path_name })
+    res.send(product)
   })
 
   app.get('/api/products/all/instock', requireLogin, adminRequired, async (req, res) => {    

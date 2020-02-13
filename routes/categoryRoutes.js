@@ -25,12 +25,8 @@ module.exports = app => {
     .then(dbModel => res.json(dbModel))
     .catch(err => res.status(422).json(err));
   })
-  // REFACTOR AFTER I CHANGE PRODUCT CATEGORY COLUMN TO AN ARRAY OF CATEGORIES
-  app.get('/api/category/products/:category_path_name', (req, res) => {  
-    Product.find({ "category.category_path_name": req.params.category_path_name} )
-    .then(dbModel => {
-      res.json(dbModel)
-    })
-    .catch(err => res.status(422).json(err));
+  app.get('/api/category/products/:category_path_name', async (req, res) => {  
+    products = await Product.find({ "category": { $elemMatch: { category_path_name: req.params.category_path_name }}})
+    res.send(products)
   })
 }
