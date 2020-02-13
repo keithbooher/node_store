@@ -18,7 +18,7 @@ class Category extends Component  {
 
   renderProductCards() {
     return this.state.products.reverse().map(product => {
-      return <ProductCard product={product} category_path_name={this.routeParam}/>
+      return <ProductCard product={product} category_path_name={this.routeParamCategory}/>
     })
   }
   

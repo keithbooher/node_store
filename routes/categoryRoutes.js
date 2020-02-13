@@ -20,10 +20,9 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
-  app.get('/api/category/:path_name', (req, res) => {    
-    Category.findOne({ path_name: req.params.path_name })
-    .then(dbModel => res.json(dbModel))
-    .catch(err => res.status(422).json(err));
+  app.get('/api/category/:path_name', async (req, res) => {    
+    category = await Category.findOne({ path_name: req.params.path_name })
+    res.send(category)
   })
   app.get('/api/category/products/:category_path_name', async (req, res) => {  
     products = await Product.find({ "category": { $elemMatch: { category_path_name: req.params.category_path_name }}})
