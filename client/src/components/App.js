@@ -11,13 +11,19 @@ import Category from './Pages/front_end/Category'
 
 
 class App extends Component {
-  // Changed from didMount to willMount... harmful?
-  componentWillMount() {
-    this.props.fetchUser()
+  componentDidMount() {
+    // Check to see if user is logged in
+    this.props.fetchUser().then(() => {
+      if (this.props.auth) {
+        // If logged in, check for cart.
+        this.props.usersCart(this.props.auth._id)
+      }
+    })
     this.props.allInstockProducts()
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="">
         <BrowserRouter>
@@ -35,4 +41,9 @@ class App extends Component {
   }
 }
 
-export default connect(null, actions)(App)
+function mapStateToProps({ auth, cart }) {
+  return { auth, cart }
+}
+
+
+export default connect(mapStateToProps, actions)(App)

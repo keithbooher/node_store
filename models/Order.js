@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
-const LineItemSchema = require('./Recipient')
+const LineItemSchema = require('./LineItem')
 
 const orderSchema = new Schema({
   total: {

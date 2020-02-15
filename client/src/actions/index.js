@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER, ALL_PRODUCTS } from './types'
+import { FETCH_USER, FETCH_USER_CART, ALL_PRODUCTS, ADD_TO_CART } from './types'
 
 // This is an action creator
 export const fetchUser = () => async dispatch => {
@@ -7,19 +7,14 @@ export const fetchUser = () => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-// THE ABOVE TRANSLATES TO THIS
-// export const fetchUser = () => {
-//   // when redux thunk sees a function returned instead of an action, it will
-//   // automatically call this function and pass in the dispatch function
-
-//   // useful because we can make the axios/ajax request. After the request has been 
-//   // successfully completed THEN we dispatch the action.
-
-//   return function(dispatch) {
-//     axios.get('/api/current_user')
-//       .then(res => dispatch({ type: FETCH_USER, payload: res }))
-//   }
-// }
+// Find the current user's cart
+export const usersCart = (user_id) => async dispatch => {
+  const res = await axios.get(`/api/cart/${user_id}`)
+  if (res.data === "") {
+    res.data = null
+  }
+  dispatch({ type: FETCH_USER_CART, payload: res.data })
+}
 
 // Handle payment token
 export const handleToken = (token) => async dispatch => {
@@ -30,4 +25,16 @@ export const handleToken = (token) => async dispatch => {
 export const allInstockProducts = () => async dispatch => {
   const res = await axios.get('/api/products/all/instock')
   dispatch({ type: ALL_PRODUCTS, payload: res.data })
+}
+
+export const addToCart = (user_id, cart, product, quantity) => async dispatch => {
+  let data = {user_id, cart, product, quantity}
+  let res
+  if (cart === null) {
+    res = await axios.post('/api/cart/create/' + user_id, data) 
+    dispatch({ type: ADD_TO_CART, payload: res.data })
+  } else {
+    res = await axios.put('/api/cart/' + user_id, data)
+    dispatch({ type: ADD_TO_CART, payload: res.data })
+  }
 }

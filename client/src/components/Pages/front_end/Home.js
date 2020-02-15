@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../../../stylesheets/homepage.css.scss'
 import ProductCard from '../../PageComponents/front_end/ProductCard'
+// pull from actions. create action to make request for adding product-data to the cart
 
 class Home extends Component  {
   constructor(props) {
@@ -13,7 +14,7 @@ class Home extends Component  {
 
   renderProducts() {
     return this.props.products.reverse().map(product => {
-      return <ProductCard product={product} category_path_name={product.category[0].category_path_name} />
+      return <ProductCard user_id={this.props.auth._id} product={product} cart={this.props.cart} category_path_name={product.category[0].category_path_name} />
     })
   }
 
@@ -33,8 +34,8 @@ class Home extends Component  {
 }
 
 
-function mapStateToProps({ products }) {
-  return { products }
+function mapStateToProps({ auth, products, cart }) {
+  return { auth, products, cart }
 }
 
 export default connect(mapStateToProps, null)(Home)
