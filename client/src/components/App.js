@@ -19,7 +19,7 @@ class App extends Component {
         this.props.usersCart(this.props.auth._id)
       }
     })
-    this.props.allInstockProducts()
+    this.props.allInStockProducts()
   }
 
   render() {

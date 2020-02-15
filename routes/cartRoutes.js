@@ -41,4 +41,29 @@ module.exports = app => {
   })
 
   // ROUTE TO ADD TO ALREADY CREATED CART
+  app.put("/api/cart/:cart_id", async (req, res) => {
+    const product = req.body.product
+    const quantity = req.body.quantity
+    const user_id = req.body.user_id
+    let cart = req.body.cart
+    let sub_total = 0
+    const line_item = {
+        product_name: product.name,
+        image: product.image,
+        _product_id: product._id,
+        quantity: quantity,
+        product_price: product.price
+      }
+
+    cart.line_items.push(line_item)
+    cart.line_items.forEach((line_item) => {
+      sub_total = sub_total + (line_item.product_price * line_item.quantity)
+    })
+    cart.total = sub_total * .08
+
+    let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
+    console.log('--------------updated cart----------------')
+    console.log(updated_cart)
+    res.send(updated_cart)
+  });
 }

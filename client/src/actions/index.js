@@ -22,7 +22,7 @@ export const handleToken = (token) => async dispatch => {
   dispatch({ type: FETCH_USER, payload: res.data })
 }
 
-export const allInstockProducts = () => async dispatch => {
+export const allInStockProducts = () => async dispatch => {
   const res = await axios.get('/api/products/all/instock')
   dispatch({ type: ALL_PRODUCTS, payload: res.data })
 }
@@ -34,7 +34,8 @@ export const addToCart = (user_id, cart, product, quantity) => async dispatch =>
     res = await axios.post('/api/cart/create/' + user_id, data) 
     dispatch({ type: ADD_TO_CART, payload: res.data })
   } else {
-    res = await axios.put('/api/cart/' + user_id, data)
+    res = await axios.put('/api/cart/' + cart._id, data)
+    console.log(res.data)
     dispatch({ type: ADD_TO_CART, payload: res.data })
   }
 }

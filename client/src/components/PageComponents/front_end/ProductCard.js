@@ -13,6 +13,7 @@ class ProductCard extends Component {
   }
 
   addToCart() {
+    console.log('productcard', this.props.cart)
     const product = this.props.product
     const cart = this.props.cart
     const quantity = this.state.quantity
