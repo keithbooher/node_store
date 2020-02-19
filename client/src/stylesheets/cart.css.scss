@@ -1,0 +1,24 @@
+.line_item_name {
+  color: white;
+  display: block;
+}
+
+.expandedCart {
+  background: black;
+  position: absolute;
+  top: 64px;
+  right: 0px;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.line_item {
+  display: flex;
+}
+
+.cart_plus_minus {
+  font-size: 12px;
+  margin: 0px 5px;
+}

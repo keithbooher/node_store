@@ -20,9 +20,17 @@ class App extends Component {
       }
     })
     this.props.allInStockProducts()
+
+    // This is here purely as a development mechanic, nodemon was restarting server too fast or something (504 gateway timeouts on fetchuser() and others, otherwise)
+    // setTimeout(() => {
+    //   if(process.env.NODE_ENV === 'development' && !this.props.auth) {
+    //     window.location.reload()
+    //   }
+    // }, 800);
   }
 
   render() {
+    
     console.log(this.props)
     return (
       <div className="">

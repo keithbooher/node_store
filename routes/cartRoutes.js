@@ -5,9 +5,7 @@ const Cart = mongoose.model('carts')
 
 module.exports = app => {
   app.get('/api/cart/:user_id', async (req, res) => {    
-    console.log(req.params.user_id)
     const cart = await Cart.findOne({ _user_id: `${req.params.user_id}` })
-    console.log('CART', cart)
     res.send(cart)
   })
   // Change to post route
@@ -32,8 +30,6 @@ module.exports = app => {
     })
     try {
       await cart.save()
-      const new_cart = cart
-      console.log(cart)
       res.send(cart)
     } catch (err) {
       res.status(422).send(err)
@@ -62,8 +58,6 @@ module.exports = app => {
     cart.total = sub_total * .08
 
     let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
-    console.log('--------------updated cart----------------')
-    console.log(updated_cart)
     res.send(updated_cart)
   });
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Payments from './Payments'
+import Cart from './Cart'
 
 class Header extends Component {
   renderContent() {
@@ -17,7 +18,7 @@ class Header extends Component {
             Credits: {this.props.auth.credits}
           </li>,
           <li key="2"><a href="/api/logout">Logout</a></li>,
-          <li>{this.props.cart ? this.props.cart.line_items.length : 0}</li>
+          <li><Cart /></li>
         ]
     }
   }
@@ -36,8 +37,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth, cart }) {
-  return { auth, cart }
+function mapStateToProps({ auth }) {
+  return { auth }
 }
 
 export default connect(mapStateToProps)(Header)
