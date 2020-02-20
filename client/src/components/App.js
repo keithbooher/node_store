@@ -49,8 +49,8 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ auth, cart }) {
-  return { auth, cart }
+function mapStateToProps({ auth, cart, products }) {
+  return { auth, cart, products }
 }
 
 

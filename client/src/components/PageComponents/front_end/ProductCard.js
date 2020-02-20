@@ -11,7 +11,8 @@ class ProductCard extends Component {
   }
 
   addToCart() {
-    const product = this.props.product
+    let product = this.props.product
+    console.log(product)
     const cart = this.props.cart
     const quantity = this.state.quantity
     const user_id = this.props.user_id

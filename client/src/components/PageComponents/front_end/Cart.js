@@ -21,9 +21,15 @@ class Cart extends Component {
   }
 
   renderCartLength() {
+    let calculated_cart_length = null
+    if(this.props.cart) {
+      this.props.cart.line_items.forEach(line_item => {
+        calculated_cart_length = calculated_cart_length + line_item.quantity
+      });
+    }
     return (
       <div style={{ display: 'flex', backgroundColor: 'darkred', padding: '0px 10px' }} onClick={this.expandCart.bind((this))}>
-        {this.props.cart ? this.props.cart.line_items.length : 0}
+        {calculated_cart_length}
         <i className="fas fa-shopping-cart"></i>
       </div>
     )
