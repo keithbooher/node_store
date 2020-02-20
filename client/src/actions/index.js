@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER, FETCH_USER_CART, ALL_PRODUCTS, ADD_TO_CART } from './types'
+import { FETCH_USER, FETCH_USER_CART, ALL_PRODUCTS, UPDATE_CART } from './types'
 
 // This is an action creator
 export const fetchUser = () => async dispatch => {
@@ -32,10 +32,16 @@ export const addToCart = (user_id, cart, product, quantity) => async dispatch =>
   let res
   if (cart === null) {
     res = await axios.post('/api/cart/create/' + user_id, data) 
-    dispatch({ type: ADD_TO_CART, payload: res.data })
+    dispatch({ type: UPDATE_CART, payload: res.data })
   } else {
     res = await axios.put('/api/cart/' + cart._id, data)
     console.log(res.data)
-    dispatch({ type: ADD_TO_CART, payload: res.data })
+    dispatch({ type: UPDATE_CART, payload: res.data })
   }
+}
+
+export const incrementLineItemQuantity = (operator, cart, line_item) => async dispatch => {
+  let data = {operator, cart, line_item}
+  let res = await axios.put('/api/cart/line_item/update/quantity/' + cart._id, data) 
+  dispatch({ type: UPDATE_CART, payload: res.data })
 }

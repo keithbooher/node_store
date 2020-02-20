@@ -16,7 +16,7 @@ class Cart extends Component {
 
   renderExpandedCart() {
     return this.props.cart.line_items.map(line_item => {
-      return <LineItem line_item={line_item} />
+      return <LineItem line_item={line_item} cart={this.props.cart} />
     });
   }
 

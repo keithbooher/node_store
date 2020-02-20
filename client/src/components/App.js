@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter , Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as actions from '../actions'
+import { fetchUser, usersCart, allInStockProducts } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Header from './PageComponents/front_end/Header'
@@ -53,5 +53,6 @@ function mapStateToProps({ auth, cart, products }) {
   return { auth, cart, products }
 }
 
+const actions = { fetchUser, usersCart, allInStockProducts }
 
 export default connect(mapStateToProps, actions)(App)

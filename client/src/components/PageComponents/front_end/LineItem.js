@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import '../../../stylesheets/line_item.css.scss'
-
+import { connect } from 'react-redux'
+import { incrementLineItemQuantity } from '../../../actions'
 
 class LineItem extends Component {
   constructor(props) {
@@ -9,11 +10,15 @@ class LineItem extends Component {
   }
 
   add() {
-
+    let line_item = this.props.line_item
+    const cart = this.props.cart
+    this.props.incrementLineItemQuantity('addition', cart, line_item)
   }
 
   subtract() {
-
+    let line_item = this.props.line_item
+    const cart = this.props.cart
+    this.props.incrementLineItemQuantity('subtraction', cart, line_item)
   }
 
   render() {
@@ -30,4 +35,4 @@ class LineItem extends Component {
 }
 
 
-export default LineItem
+export default connect(null, {incrementLineItemQuantity})(LineItem)

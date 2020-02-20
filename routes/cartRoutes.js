@@ -36,7 +36,7 @@ module.exports = app => {
     }
   })
 
-  // ROUTE TO ADD TO ALREADY CREATED CART
+  // ROUTE TO ADD TO ALREADY CREATED CART FROM "ADD TO CART" BUTTON
   app.put("/api/cart/:cart_id", async (req, res) => {
     const product = req.body.product
     const quantity = req.body.quantity
@@ -78,6 +78,33 @@ module.exports = app => {
     cart.total = sub_total * .08
 
     // cart.line_items = []
+
+    let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
+    res.send(updated_cart)
+  });
+
+  app.put("/api/cart/line_item/update/quantity/:cart_id", async (req, res) => {
+    const updated_line_item = req.body.line_item
+    let cart = req.body.cart
+    let operator = req.body.operator
+    let sub_total = 0
+    console.log(operator)
+
+    cart.line_items.forEach((line_item) => {
+      if(updated_line_item._product_id === line_item._product_id && operator === 'addition') {
+        line_item.quantity += 1
+      } else if (updated_line_item._product_id === line_item._product_id && operator === 'subtraction') {
+        line_item.quantity += -1
+      }
+    })
+
+    cart.line_items.filter((line_item) => line_item.quantity > 0 )
+
+    cart.line_items.forEach((line_item) => {
+      sub_total = sub_total + (line_item.product_price * line_item.quantity)
+    })
+
+    cart.total = sub_total * .08
 
     let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
     res.send(updated_cart)
