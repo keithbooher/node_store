@@ -98,8 +98,9 @@ module.exports = app => {
       }
     })
 
-    cart.line_items.filter((line_item) => line_item.quantity > 0 )
-
+    let removed_zero_qunatity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
+    cart.line_items = removed_zero_qunatity_items
+    
     cart.line_items.forEach((line_item) => {
       sub_total = sub_total + (line_item.product_price * line_item.quantity)
     })
@@ -107,6 +108,28 @@ module.exports = app => {
     cart.total = sub_total * .08
 
     let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
+    res.send(updated_cart)
+  });
+
+  app.put("/api/cart/line_item/remove/:cart_id", async (req, res) => {
+    const incomingLineItem = req.body.line_item
+    const cart = req.body.cart
+    const current_cart_line_items = cart.line_items
+    let cart_id = req.params.cart_id
+    let sub_total = 0    
+
+    let updated_line_items = current_cart_line_items.filter((line_item) => {
+      return incomingLineItem._id !== line_item._id
+    })
+    cart.line_items = updated_line_items
+
+    cart.line_items.forEach((line_item) => {
+      sub_total = sub_total + (line_item.product_price * line_item.quantity)
+    })
+
+    cart.total = sub_total * .08
+
+    let updated_cart = await Cart.findOneAndUpdate({ _id: cart_id }, cart, {new: true})
     res.send(updated_cart)
   });
 }

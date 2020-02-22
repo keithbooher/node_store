@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import Payments from './Payments'
-import Cart from './Cart'
+import Payments from '../Payments/Payments'
+import Cart from '../Cart'
 
 class Header extends Component {
   renderContent() {
@@ -18,6 +18,7 @@ class Header extends Component {
             Credits: {this.props.auth.credits}
           </li>,
           <li key="2"><a href="/api/logout">Logout</a></li>,
+          <li key="4"><Link to="/checkout">Checkout</Link></li>,
           <li><Cart /></li>
         ]
     }

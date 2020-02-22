@@ -1,0 +1,27 @@
+.line_item {
+  width: 200px;
+}
+
+.line_item_quantity{
+  color: green;
+}
+
+.line_item_sub_container {
+  width: 200px;
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+}
+
+.remove_line_item_button {
+  position: absolute;
+  height: 10px;
+  bottom: 35px;
+  left: 44px;
+  color: red;
+  cursor: pointer;
+}
+
+.cart_plus_minus {
+  cursor: pointer;
+}

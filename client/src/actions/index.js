@@ -45,3 +45,11 @@ export const incrementLineItemQuantity = (operator, cart, line_item) => async di
   let res = await axios.put('/api/cart/line_item/update/quantity/' + cart._id, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
+
+export const removeLineItem = (cart, line_item) => async dispatch => {
+  console.log(cart)
+  console.log(line_item)
+  let data = {cart, line_item}
+  let res = await axios.put('/api/cart/line_item/remove/' + cart._id, data) 
+  dispatch({ type: UPDATE_CART, payload: res.data })
+}

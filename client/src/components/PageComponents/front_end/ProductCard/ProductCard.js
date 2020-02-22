@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { addToCart } from '../../../actions'
-import '../../../stylesheets/productCard.css.scss'
+import { addToCart } from '../../../../actions'
+import './productCard.css.scss'
 
 class ProductCard extends Component {
   constructor(props) {

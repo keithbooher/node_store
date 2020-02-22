@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import API from "../../../utils/API";
+import API from "../../../../utils/API";
 import { Link } from 'react-router-dom'
-import hf from '../../../utils/HelperFunctions'
+import hf from '../../../../utils/HelperFunctions'
 
 class Product extends Component  {
   constructor(props) {

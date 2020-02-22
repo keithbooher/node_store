@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import API from "../../../utils/API";
-import ProductCard from '../../PageComponents/front_end/ProductCard'
-import hf from '../../../utils/HelperFunctions'
+import API from "../../../../utils/API";
+import ProductCard from '../../../PageComponents/front_end/ProductCard'
+import hf from '../../../../utils/HelperFunctions'
 
 class Category extends Component  {
   constructor(props) {

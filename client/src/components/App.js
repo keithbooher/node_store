@@ -8,6 +8,7 @@ import Header from './PageComponents/front_end/Header'
 import Home from './Pages/front_end/Home'
 import Product from './Pages/front_end/Product'
 import Category from './Pages/front_end/Category'
+import Checkout from './Pages/front_end/Checkout'
 
 
 class App extends Component {
@@ -41,6 +42,7 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path="/shop/:category" component={Category} />
               <Route exact path="/shop/:category/:product" component={Product} />
+              <Route exact path="/checkout" component={Checkout} />
             </div>
           </div>
         </BrowserRouter>

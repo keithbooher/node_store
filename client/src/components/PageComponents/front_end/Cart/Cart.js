@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import LineItem from './LineItem'
-import '../../../stylesheets/cart.css.scss'
+import LineItem from '../LineItem'
+import './cart.css.scss'
 
 
 class Cart extends Component {

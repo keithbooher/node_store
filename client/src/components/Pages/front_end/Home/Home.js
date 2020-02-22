@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import '../../../stylesheets/homepage.css.scss'
-import ProductCard from '../../PageComponents/front_end/ProductCard'
+import './home.css.scss'
+import ProductCard from '../../../PageComponents/front_end/ProductCard'
 // pull from actions. create action to make request for adding product-data to the cart
 
 class Home extends Component  {
