@@ -5,10 +5,10 @@ import { fetchUser, usersCart, allInStockProducts } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Header from './PageComponents/front_end/Header'
-import Home from './Pages/front_end/Home'
-import Product from './Pages/front_end/Product'
-import Category from './Pages/front_end/Category'
-import Checkout from './Pages/front_end/Checkout'
+import Home from './pages/front_end/Home'
+import Product from './pages/front_end/Product'
+import Category from './pages/front_end/Category'
+import Checkout from './pages/front_end/Checkout'
 
 
 class App extends Component {
@@ -21,13 +21,6 @@ class App extends Component {
       }
     })
     this.props.allInStockProducts()
-
-    // This is here purely as a development mechanic, nodemon was restarting server too fast or something (504 gateway timeouts on fetchuser() and others, otherwise)
-    // setTimeout(() => {
-    //   if(process.env.NODE_ENV === 'development' && !this.props.auth) {
-    //     window.location.reload()
-    //   }
-    // }, 800);
   }
 
   render() {

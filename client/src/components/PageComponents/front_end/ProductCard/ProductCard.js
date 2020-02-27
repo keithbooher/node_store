@@ -22,7 +22,7 @@ class ProductCard extends Component {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
     return (
-      <div key={product._id}>
+      <div>
         <div className="card blue-grey darken-1">
           <div className="card-content white-text">
             <span className="card-title">{product.name}</span>

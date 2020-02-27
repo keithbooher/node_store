@@ -13,10 +13,11 @@ class Header extends Component {
         return <li><a href="/auth/google">Sign in with Google</a></li>
       default:
         return [
-          <li key="1"><Payments /></li>,
-          <li key="3" style={{ margin: '0px 10px' }}>
-            Credits: {this.props.auth.credits}
-          </li>,
+          // <li key="1"><Payments /></li>,
+          // <li key="3" style={{ margin: '0px 10px' }}>
+          //   Credits: {this.props.auth.credits}
+          // </li>,
+          <li key="5">{this.props.auth.email}</li>,
           <li key="2"><a href="/api/logout">Logout</a></li>,
           <li key="4"><Link to="/checkout">Checkout</Link></li>,
           <li><Cart /></li>

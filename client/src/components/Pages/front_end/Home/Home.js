@@ -14,7 +14,7 @@ class Home extends Component  {
 
   renderProducts() {
     return this.props.products.map(product => {
-      return <ProductCard user_id={this.props.auth._id} product={product} cart={this.props.cart} category_path_name={product.category[0].category_path_name} />
+      return <div key={product._id}><ProductCard user_id={this.props.auth._id} product={product} cart={this.props.cart} category_path_name={product.category[0].category_path_name} /></div>
     })
   }
 
