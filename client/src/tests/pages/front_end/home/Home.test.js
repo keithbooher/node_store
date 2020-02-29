@@ -9,6 +9,7 @@ import { BrowserRouter , Route } from 'react-router-dom'
 import Home from '../../../../components/pages/front_end/Home'
 import '@testing-library/jest-dom/extend-expect'
 
+// found here https://github.com/testing-library/testing-library-docs/blob/master/docs/example-react-redux.md
 // this is a handy function that I normally make available for all my tests
 // that deal with connected components.
 // you can provide initialState for the entire store that the ui is rendered with
@@ -24,7 +25,7 @@ function renderWithRedux(ui, { initialState, store = createStore(reducers, initi
 
 afterEach(cleanup)
 
-describe('This will test MyComponent', () => {
+describe('This will test Home page component', () => {
   test('renders message', () => {
     const { getByText }= renderWithRedux(<BrowserRouter>
                                             <Home />

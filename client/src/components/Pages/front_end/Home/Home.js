@@ -20,7 +20,7 @@ class Home extends Component  {
 
   
   render() {
-    console.log('home',this.props)
+    // console.log('home',this.props)
     return (
       <div>
         <h1>
