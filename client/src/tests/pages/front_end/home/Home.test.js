@@ -23,15 +23,15 @@ function renderWithRedux(ui, { initialState, store = createStore(reducers, initi
   }
 }
 
-afterEach(cleanup)
+const { getByText } = renderWithRedux(<BrowserRouter>
+  <Home />
+</BrowserRouter>, { initialState });
 
 describe('This will test Home page component', () => {
+afterEach(cleanup)
   test('renders message', () => {
-    const { getByText }= renderWithRedux(<BrowserRouter>
-                                            <Home />
-                                          </BrowserRouter>, {initialState})
-
+    const txt = getByText('Node Store');
      // as suggested by Giorgio Polvara a more idiomatic way:
-     expect(getByText('Node Store')).toBeInTheDocument()
+     expect(txt).toBeInTheDocument()
   })
 })
