@@ -18,6 +18,7 @@ class Checkout extends Component  {
       <div>
         <h1>
           Node Store Checkout
+          {/* <CheckoutContainer /> */}
         </h1>
       </div>
     )

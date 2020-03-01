@@ -23,9 +23,10 @@ function renderWithRedux(ui, { initialState, store = createStore(reducers, initi
   }
 }
 
-const { getByText } = renderWithRedux(<BrowserRouter>
-  <Home />
-</BrowserRouter>, { initialState });
+const { getByText } = renderWithRedux(
+  <BrowserRouter>
+    <Home />
+  </BrowserRouter>, { initialState });
 
 describe('This will test Home page component', () => {
 afterEach(cleanup)

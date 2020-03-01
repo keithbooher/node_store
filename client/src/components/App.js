@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { fetchUser, usersCart, allInStockProducts } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import Header from './PageComponents/front_end/Header'
+import Header from './page_components/front_end/Header'
 import Home from './pages/front_end/Home'
 import Product from './pages/front_end/Product'
 import Category from './pages/front_end/Category'
