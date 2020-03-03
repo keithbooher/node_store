@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './checkout.css.scss'
+import CheckoutContainer from '../../../page_components/front_end/Checkout/CheckoutContainer'
 // pull from actions. create action to make request for adding product-data to the cart
 
 class Checkout extends Component  {
@@ -13,13 +14,13 @@ class Checkout extends Component  {
 
   
   render() {
-    console.log('checkout',this.props)
     return (
       <div>
-        <h1>
+        <h1 style={{ textAlign: 'center' }}>
           Node Store Checkout
-          {/* <CheckoutContainer /> */}
         </h1>
+        <CheckoutContainer />
+
       </div>
     )
   }
