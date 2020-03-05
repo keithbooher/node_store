@@ -1,12 +1,19 @@
 import React from "react"
 import { useField } from "react-form"
 
-export default PhoneField = () => {
+function validatePhoneNumber(value) {
+  if (!value) {
+    return "A street is required";
+  }
+  return false;
+}
+
+const PhoneField = () => {
   const {
     meta: { error, isTouched, isValidating },
     getInputProps
   } = useField("address.phone", {
-    validate: validateAddressStreet
+    validate: validatePhoneNumber
   });
 
   return (
@@ -20,3 +27,5 @@ export default PhoneField = () => {
     </div>
   );
 }
+
+export default PhoneField

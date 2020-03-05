@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TopTabs from './TopTabs'
-import FormContainer from './FormContainer'
+import Panel from './Panel'
 
 // Create a method of passing in the components that you want to the panel series
 
@@ -24,7 +24,7 @@ class MultiStepPanel extends Component  {
     return (
       <div id="">
         <TopTabs chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.props.sections} />
-        <FormContainer sections={this.props.sections} chosenTab={this.state.chosen_tab} />
+        <Panel sections={this.props.sections} chosenTab={this.state.chosen_tab} />
       </div>
     )
   }

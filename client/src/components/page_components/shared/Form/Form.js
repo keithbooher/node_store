@@ -2,7 +2,9 @@ import React from "react"
 import { useForm } from "react-form"
 import PhoneField from "../../shared/Form/form_fields/PhoneField"
 
-export default MyForm = () => {
+// FOR NOW MAKE THE FORM HOW IT NEEDS TO BE
+// THEN COME BACK AND REFACTOR SO THAT WE CAN FEED IN THE NEEDED FIELDS
+const MyForm = () => {
   // Use the useForm hook to create a form instance
   // Straight from documentation
   const {
@@ -37,3 +39,4 @@ export default MyForm = () => {
     </Form>
   );
 }
+export default MyForm
