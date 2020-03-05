@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
-import CheckoutPanel from './CheckoutPanel/MultiStepPanel'
+import TopTabs from './CheckoutPanel/TopTabs'
+import Panel from './CheckoutPanel/Panel'
 import './checkout.css.scss'
 
 class CheckoutContainer extends Component  {
   constructor(props) {
     super()
     this.state = {
-      checkout_steps: ['Address', 'Payment', 'Review']
+      checkout_steps: ['Address', 'Payment', 'Review'],
+      chosen_tab: 'Address'
     }
+  }
+
+  chooseTab(tab_of_choice) {
+    console.log(tab_of_choice)
+    this.setState({ chosen_tab: tab_of_choice })
   }
   
   render() {
@@ -26,7 +33,8 @@ class CheckoutContainer extends Component  {
     }
     return (
       <div>
-        <CheckoutPanel sections={this.state.checkout_steps} />
+        <TopTabs chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.state.checkout_steps} />
+        <Panel sections={this.state.checkout_steps} chosenTab={this.state.chosen_tab} />
       </div>
     )
   }
