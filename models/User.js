@@ -1,25 +1,10 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
+const AddressSchema = require('./Address')
 
 const userSchema = new Schema({
   googleId: String,
-  credits: {
-    type: Number,
-    default: 0
-  },
-  admin: {
-    type: Boolean,
-    default: false
-  },
-  billing_address: {
-    type: Object,
-    default: null
-  },
-  shipping_address: {
-    type: Object,
-    default: null
-  },
-  joined_on: Date,
+  email: String,
   first_name: {
     type: String,
     default: null
@@ -28,6 +13,18 @@ const userSchema = new Schema({
     type: String,
     default: null
   },
+  photo: String,
+  credits: {
+    type: Number,
+    default: 0
+  },
+  admin: {
+    type: Boolean,
+    default: false
+  },
+  billing_address: [AddressSchema],
+  shipping_address: [AddressSchema],
+  joined_on: Date,
 })
 
 mongoose.model('users', userSchema)

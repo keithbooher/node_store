@@ -39,7 +39,7 @@ module.exports = app => {
     res.send(product)
   })
 
-  app.get('/api/products/all/instock', requireLogin, adminRequired, async (req, res) => {    
+  app.get('/api/products/all/instock', async (req, res) => {    
     const products = await Product.find({ inventory_count: {$gte: 1}, display: true})
     res.send(products)
   })

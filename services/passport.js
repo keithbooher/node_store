@@ -29,8 +29,12 @@ passport.use(
       // Already have a record with given profile id
       return done(null, existingUser)
     } 
+    let first_name = profile.name.givenName ? profile.name.givenName : null
+    let last_name = profile.name.familyName ? profile.name.familyName : null
+    let email = profile.emails[0] ? profile.emails[0].value : null
+    let photo = profile.photos[0] ? profile.photos[0].value : null
     // doesn't get run if there is an existing user because of the above return in the if statement 
-    const user = await new User({ googleId: profile.id }).save()
+    const user = await new User({ googleId: profile.id, first_name, last_name, email, photo }).save()
     done(null, user)
   }
  )

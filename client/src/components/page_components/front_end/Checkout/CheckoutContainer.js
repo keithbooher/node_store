@@ -8,7 +8,8 @@ class CheckoutContainer extends Component  {
     super()
     this.state = {
       checkout_steps: ['Address', 'Payment', 'Review'],
-      chosen_tab: 'Address'
+      chosen_tab: 'Address',
+      cart_checkout_status: 'Address',
     }
   }
 
@@ -18,23 +19,10 @@ class CheckoutContainer extends Component  {
   }
   
   render() {
-    let sections = {
-      address: {
-        name: "Adress",
-        form_attributes: ['street_address', 'city', 'state', 'zip_code']
-      },
-      payment: {
-        name: "Payment",
-        form_attributes: [] // Stripe will take care of form (I just need to find out how to style their form)
-      },
-      review: {
-        name: "Review"
-      },
-    }
     return (
       <div>
-        <TopTabs chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.state.checkout_steps} />
-        <Panel sections={this.state.checkout_steps} chosenTab={this.state.chosen_tab} />
+        <TopTabs cart={this.props.cart} chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.state.checkout_steps} />
+        <Panel cart={this.props.cart} sections={this.state.checkout_steps} chosenTab={this.state.chosen_tab} />
       </div>
     )
   }

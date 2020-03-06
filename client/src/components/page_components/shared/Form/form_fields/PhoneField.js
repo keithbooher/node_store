@@ -3,7 +3,7 @@ import { useField } from "react-form"
 
 function validatePhoneNumber(value) {
   if (!value) {
-    return "A street is required";
+    return "A phone number is required";
   }
   return false;
 }
