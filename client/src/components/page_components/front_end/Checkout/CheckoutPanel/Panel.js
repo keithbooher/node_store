@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import AddressPanel from './panels/AddressPanel'
+import AddressPanel from './panels/AddressPanel/AddressPanel'
 import PaymentPanels from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
 
 
-class FormContainer extends Component  {
+class Panel extends Component  {
   constructor(props) {
     super()
     this.state = {
@@ -35,4 +35,4 @@ class FormContainer extends Component  {
   }
 }
 
-export default FormContainer
+export default Panel

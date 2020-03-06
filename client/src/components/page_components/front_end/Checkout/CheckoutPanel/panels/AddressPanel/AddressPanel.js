@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Form from '../../../../shared/Form/Form'
+import Form from '../../../../../shared/Form/Form'
+import formFields from './formFields'
 
 class AddressPanel extends Component  {
   constructor(props) {
@@ -9,11 +10,15 @@ class AddressPanel extends Component  {
     }
   }
 
+  handleSubmit() {
+    console.log('thing')
+  }
+
 
   render() {
     return (
       <div id="">
-        <Form />
+        <Form handleSubmit={this.handleSubmit} formFields={formFields} />
       </div>
     )
   }
