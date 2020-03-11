@@ -7,3 +7,15 @@
 .nav-wrapper {
   position: relative;
 }
+
+.loadingGif {
+  height: 200px;
+  width: auto;
+}
+
+.loadingGifCenterScreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}

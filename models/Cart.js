@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
 const LineItemSchema = require('./LineItem')
+const AddressSchema = require('./Address')
 
 const cartSchema = new Schema({
   checkout_state: {
@@ -10,7 +11,9 @@ const cartSchema = new Schema({
   line_items: [LineItemSchema],
   _user_id: String,
   sub_total: Number,
-  total: Number
+  total: Number,
+  billing_address: AddressSchema,
+  shipping_address: AddressSchema,
 })
 
 mongoose.model('carts', cartSchema)

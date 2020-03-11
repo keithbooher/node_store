@@ -134,6 +134,9 @@ module.exports = app => {
   });
 
   app.put("/api/cart/update_checkout_state/:id", async (req, res) => {
-
+    let cart = req.body.cart
+    console.log(cart)
+    let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
+    res.send(updated_cart)
   })
 }

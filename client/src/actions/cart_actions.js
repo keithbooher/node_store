@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER, FETCH_USER_CART, ALL_PRODUCTS, UPDATE_CART } from './types'
+import { FETCH_USER_CART, UPDATE_CART } from './types'
 
 // Find the current user's cart
 export const usersCart = (user_id) => async dispatch => {
@@ -37,7 +37,9 @@ export const removeLineItem = (cart, line_item) => async dispatch => {
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
 
-export const updateCheckoutState = (checkout_state, cart_id) => async dispatch => {
-  let res = await axios.put('/api/cart/line_item/remove/' + cart_id, checkout_state) 
+export const updateCheckoutState = (cart) => async dispatch => {
+  const data = { cart }
+  let res = await axios.put('/api/cart/update_checkout_state/' + cart.id, data) 
+  console.log(res.data)
   dispatch({ type: UPDATE_CART, payload: res.data })
 }

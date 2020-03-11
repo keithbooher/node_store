@@ -36,7 +36,6 @@ class Cart extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
     <div>
       {this.renderCartLength()}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AddressPanel from './panels/AddressPanel/AddressPanel'
-import PaymentPanels from './panels/PaymentPanel'
+import PaymentPanel from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
 
 
@@ -13,12 +13,13 @@ class Panel extends Component  {
   }
 
   renderChosenPanel() {
+    console.log(this.props)
     switch(this.props.chosenTab) {
-      case "Address":
-        return <AddressPanel sections={this.props.sections} />
-      case "Payment":
-        return <PaymentPanels sections={this.props.sections} />
-      case "Review":
+      case "address":
+        return <AddressPanel updateCheckoutState={this.props.updateCheckoutState} chooseTab={this.props.chooseTab} address_form_state={this.props.address_form_state} cart={this.props.cart} sections={this.props.sections} />
+      case "payment":
+        return <PaymentPanel sections={this.props.sections} />
+      case "review":
         return <ReviewPanel sections={this.props.sections} />
       default:
         return <AddressPanel sections={this.props.sections} />
@@ -27,9 +28,11 @@ class Panel extends Component  {
   
   render() {
     // do stuff with form attributes from sections props
+    console.log(this.props)
     return (
       <div id="checkout_tabs_container">
-        {this.renderChosenPanel()}
+        {!this.props.cart ? "" :
+        this.renderChosenPanel()}
       </div>
     )
   }

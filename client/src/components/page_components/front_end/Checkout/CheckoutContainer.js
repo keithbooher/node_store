@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import TopTabs from './CheckoutPanel/TopTabs'
 import Panel from './CheckoutPanel/Panel'
+import loadingGif from '../../../../images/pizzaLoading.gif'
 import './checkout.css.scss'
 
 class CheckoutContainer extends Component  {
   constructor(props) {
     super()
+    let checkout_state = props.cart.checkout_state
     this.state = {
-      checkout_steps: ['Address', 'Payment', 'Review'],
-      chosen_tab: 'Address',
-      cart_checkout_status: 'Address',
+      checkout_steps: ['address', 'payment', 'review'],
+      chosen_tab: checkout_state === 'shopping' ? 'address' : checkout_state,
+      cart_checkout_status: checkout_state,
     }
   }
 
@@ -21,8 +23,12 @@ class CheckoutContainer extends Component  {
   render() {
     return (
       <div>
-        <TopTabs cart={this.props.cart} chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.state.checkout_steps} />
-        <Panel cart={this.props.cart} sections={this.state.checkout_steps} chosenTab={this.state.chosen_tab} />
+        {!this.props.cart ? <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> :
+        <div>
+          <TopTabs cart={this.props.cart} chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.state.checkout_steps} />
+          <Panel updateCheckoutState={this.props.updateCheckoutState} address_form_state={this.props.address_form_state} chooseTab={this.chooseTab.bind(this)} cart={this.props.cart} sections={this.state.checkout_steps} chosenTab={this.state.chosen_tab} />
+        </div>
+        }
       </div>
     )
   }
