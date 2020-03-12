@@ -9,5 +9,9 @@ export default {
   },
   getCategoryData: (path_name) => {
     return axios.get('/api/category/' + path_name);
+  },
+  createOrder: (order) => {
+    const data = { order }
+    return axios.post('/api/order/create', data)
   }
 }

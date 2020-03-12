@@ -37,9 +37,9 @@ export const removeLineItem = (cart, line_item) => async dispatch => {
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
 
-export const updateCheckoutState = (cart) => async dispatch => {
+export const updateCart = (cart) => async dispatch => {
   const data = { cart }
-  let res = await axios.put('/api/cart/update_checkout_state/' + cart.id, data) 
+  let res = await axios.put('/api/cart/update/' + cart.id, data) 
   console.log(res.data)
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
