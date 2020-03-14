@@ -59,7 +59,6 @@ class AddressPanel extends Component  {
     )
     return (
       <div>
-        {this.props.chosen_tab === 'address' ? 
           <div className="address_form_container">
             <div className="billing_address_form_container address_form">
               <h5 className="address_form_title">Billing</h5>
@@ -85,8 +84,6 @@ class AddressPanel extends Component  {
               />
             </div>
           </div>
-        : ""}
-
       </div>
     )
   }

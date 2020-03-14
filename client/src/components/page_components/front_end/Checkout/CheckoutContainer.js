@@ -35,31 +35,37 @@ class CheckoutContainer extends Component  {
         <div>
 
           <h4 onClick={() => this.chooseTab('address')}>Billing & Shipping</h4>
-          <AddressPanel 
-            chosen_tab={this.state.chosen_tab} 
-            updateCart={this.props.updateCart} 
-            address_form_state={this.props.address_form_state} 
-            cart={this.props.cart} />
+          {this.state.chosen_tab === 'address' ? 
+            <AddressPanel 
+              chosen_tab={this.state.chosen_tab} 
+              updateCart={this.props.updateCart} 
+              address_form_state={this.props.address_form_state} 
+              cart={this.props.cart} />
+          : ""}
 
           <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
-          <PaymentPanel 
-            makeNewOrderAvailable={this.makeNewOrderAvailable} 
-            clearCheckoutForm={this.props.clearCheckoutForm} 
-            chooseTab={this.chooseTab} 
-            chosen_tab={this.state.chosen_tab} 
-            updateCart={this.props.updateCart} 
-            convertCart={this.props.convertCart} 
-            cart={this.props.cart} />
+          {this.state.chosen_tab === "payment" ? 
+            <PaymentPanel 
+              makeNewOrderAvailable={this.makeNewOrderAvailable} 
+              clearCheckoutForm={this.props.clearCheckoutForm} 
+              chooseTab={this.chooseTab} 
+              chosen_tab={this.state.schosen_tab} 
+              updateCart={this.props.updateCart} 
+              convertCart={this.props.convertCart} 
+              cart={this.props.cart} />
+            : ""}
 
           <h4>Review</h4>
-          <ReviewPanel 
-            convertCart={this.props.convertCart} 
-            new_order={this.state.new_order} 
-            chooseTab={this.chooseTab} 
-            chosen_tab={this.state.chosen_tab} 
-            updateCart={this.props.updateCart} 
-            address_form_state={this.props.address_form_state} 
-            cart={this.props.cart} />
+          {this.props.new_order !== {} ? this.props.cart.checkout_state === 'complete' ?
+            <ReviewPanel 
+              convertCart={this.props.convertCart} 
+              new_order={this.state.new_order} 
+              chooseTab={this.chooseTab} 
+              chosen_tab={this.state.chosen_tab} 
+              updateCart={this.props.updateCart} 
+              address_form_state={this.props.address_form_state} 
+              cart={this.props.cart} />
+            : "" : ""}
 
         </div>
       </div>

@@ -9,22 +9,16 @@ class MultiStepPanel extends Component  {
   constructor(props) {
     super()
     let sections = props.sections
-    this.state = {
-      chosen_tab: sections[0]
-    }
-  }
-
-  chooseTab(tab_of_choice) {
-    console.log(tab_of_choice)
-    this.setState({ chosen_tab: tab_of_choice })
+    this.state = {}
   }
 
   
   render() {
     return (
       <div id="">
-        <TopTabs chooseTab={this.chooseTab.bind(this)} chosenTab={this.state.chosen_tab} sections={this.props.sections} />
-        <Panel sections={this.props.sections} chosenTab={this.state.chosen_tab} />
+        <TopTabs chosenTab={this.props.chosen_tab} chooseTab={this.props.chooseTab} sections={this.props.sections} />
+        {/* Throw in your own components and component logic */}
+        {this.props.children}
       </div>
     )
   }

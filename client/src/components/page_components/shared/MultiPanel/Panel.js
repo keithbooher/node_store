@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-class FormContainer extends Component  {
+class Panel extends Component  {
   constructor(props) {
     super()
     this.state = {
@@ -20,4 +20,4 @@ class FormContainer extends Component  {
   }
 }
 
-export default FormContainer
+export default Panel

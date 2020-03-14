@@ -32,13 +32,22 @@ class Checkout extends Component  {
   convertCart(cart) {
     this.props.convertCart(cart)
   }
+
+  alternativeViews() {
+    if (this.props.cart === {} || this.props.cart === null) {
+      return <div>You have an empty cart right now, my dude</div>
+    } else {
+      return <img className="loadingGif loadingGifCenterScreen" src={loadingGif} />
+    }
+  }
   
   render() {
     // Need to render a side container showing the contents of the cart 
     return (
       <div>
         <h1 style={{ textAlign: 'center' }}>Node Store Checkout</h1>
-        {!this.props.cart ? <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> :
+        {!this.props.cart ? 
+          this.alternativeViews() :
           <CheckoutContainer clearCheckoutForm={clearCheckoutForm} convertCart={this.props.convertCart} updateCart={this.props.updateCart} address_form_state={this.props.form} cart={this.props.cart} /> }
       </div>
     )

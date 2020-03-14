@@ -9,6 +9,7 @@ import Home from './pages/front_end/Home'
 import Product from './pages/front_end/Product'
 import Category from './pages/front_end/Category'
 import Checkout from './pages/front_end/Checkout'
+import Account from './pages/front_end/Account'
 
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
               <Route exact path="/shop/:category" component={Category} />
               <Route exact path="/shop/:category/:product" component={Product} />
               <Route exact path="/checkout" component={Checkout} />
+              <Route exact path="/account" component={Account} />
             </div>
           </div>
         </BrowserRouter>
