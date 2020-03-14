@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import CheckoutContainer from '../../../page_components/front_end/Checkout/CheckoutContainer'
-import { updateCart, clearCheckoutForm } from '../../../../actions'
+import { updateCart, convertCart, clearCheckoutForm } from '../../../../actions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import './checkout.css.scss'
 // pull from actions. create action to make request for adding product-data to the cart
@@ -25,7 +25,12 @@ class Checkout extends Component  {
   }
 
   updateCart(cart) {
+    console.log('here?')
     this.props.updateCart(cart)
+  }
+
+  convertCart(cart) {
+    this.props.convertCart(cart)
   }
   
   render() {
@@ -34,7 +39,7 @@ class Checkout extends Component  {
       <div>
         <h1 style={{ textAlign: 'center' }}>Node Store Checkout</h1>
         {!this.props.cart ? <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> :
-          <CheckoutContainer clearCheckoutForm={clearCheckoutForm} updateCart={this.props.updateCart} address_form_state={this.props.form} cart={this.props.cart} /> }
+          <CheckoutContainer clearCheckoutForm={clearCheckoutForm} convertCart={this.props.convertCart} updateCart={this.props.updateCart} address_form_state={this.props.form} cart={this.props.cart} /> }
       </div>
     )
   }
@@ -45,6 +50,6 @@ function mapStateToProps({ auth, cart, form }) {
   return { auth, cart, form }
 }
 
-const actions = { updateCart, clearCheckoutForm }
+const actions = { updateCart, convertCart, clearCheckoutForm }
 
 export default connect(mapStateToProps, actions)(Checkout)

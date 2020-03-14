@@ -15,7 +15,10 @@ const cartSchema = new Schema({
   billing_address: AddressSchema,
   shipping_address: AddressSchema,
   created_at: Date,
-  deleted_at: Date,
+  deleted_at: {
+    type: Date,
+    default: null
+  },
 })
 
 mongoose.model('carts', cartSchema)

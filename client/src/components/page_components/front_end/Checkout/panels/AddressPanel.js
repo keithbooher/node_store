@@ -52,7 +52,6 @@ class AddressPanel extends Component  {
 
 
   render() {
-    console.log(this.props)
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>

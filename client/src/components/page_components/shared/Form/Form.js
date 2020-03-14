@@ -13,7 +13,6 @@ class Form extends Component {
   
   renderFields() {
     return _.map(this.props.formFields, ({ label, name, value }) => {
-      console.log(value)
       return <Field component={FormField} type="text" label={label} name={name} />
     })
   }

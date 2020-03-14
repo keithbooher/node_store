@@ -19,8 +19,10 @@ class Payments extends Component {
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
     cart.deleted_at = date
     cart.converted = true
-    this.props.updateCart(cart)
+    await this.props.updateCart(cart)
 
+    // Have to remove _id before we add billing and shipping to an order 
+    // (mongoDB creates the _id so it throws a fit that there is already an _id)
     delete cart.billing_address._id
     delete cart.shipping_address._id
     cart.line_items = _.map(cart.line_items, (line_item) => {
@@ -38,12 +40,12 @@ class Payments extends Component {
       _user_id: cart._user_id,
     }
 
-    console.log(order)
+    const new_order = await API.createOrder(order)
+    this.props.makeNewOrderAvailable(new_order.data)
 
-    await API.createOrder(order)
-    console.log('made itt?????')
-    this.props.clearCheckoutForm()
     this.props.chooseTab("review")
+    this.props.convertCart({checkout_state: 'complete', line_items: []})
+    this.props.clearCheckoutForm()
   }
 
   render() {
