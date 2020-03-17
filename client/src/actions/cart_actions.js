@@ -10,30 +10,14 @@ export const usersCart = (user_id) => async dispatch => {
   dispatch({ type: FETCH_USER_CART, payload: res.data })
 }
 
-export const addToCart = (user_id, cart, product, quantity) => async dispatch => {
-  let data = {user_id, cart, product, quantity}
+export const addToCart = (create_boolean, cart, user_id) => async dispatch => {
+  let data = { cart }
   let res
-  if (cart === null) {
+  if (create_boolean === true) {
     res = await axios.post('/api/cart/create/' + user_id, data) 
-    dispatch({ type: UPDATE_CART, payload: res.data })
   } else {
-    res = await axios.put('/api/cart/' + cart._id, data)
-    console.log(res.data)
-    dispatch({ type: UPDATE_CART, payload: res.data })
+    res = await axios.put('/api/cart/update/' + cart._id, data)
   }
-}
-
-export const incrementLineItemQuantity = (operator, cart, line_item) => async dispatch => {
-  let data = {operator, cart, line_item}
-  let res = await axios.put('/api/cart/line_item/update/quantity/' + cart._id, data) 
-  dispatch({ type: UPDATE_CART, payload: res.data })
-}
-
-export const removeLineItem = (cart, line_item) => async dispatch => {
-  console.log(cart)
-  console.log(line_item)
-  let data = {cart, line_item}
-  let res = await axios.put('/api/cart/line_item/remove/' + cart._id, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
 

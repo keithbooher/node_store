@@ -9,6 +9,13 @@ export default {
     // Directly return the joined string
     return splitStr.join(' '); 
   },
+  calculateSubtotal: (cart) => {
+    let sub_total = 0
+    cart.line_items.forEach((line_item) => {
+      sub_total = sub_total + (line_item.product_price * line_item.quantity)
+    })
+    return sub_total
+  }
   // other: (string) => {
   //   return //some string stuff
   // },

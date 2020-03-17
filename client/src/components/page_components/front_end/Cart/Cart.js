@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LineItem from '../LineItem'
+import { updateCart } from '../../../../actions'
 import './cart.css.scss'
 
 
@@ -16,7 +17,7 @@ class Cart extends Component {
 
   renderExpandedCart() {
     return this.props.cart.line_items.map(line_item => {
-      return <LineItem line_item={line_item} cart={this.props.cart} />
+      return <LineItem updateCart={this.props.updateCart} line_item={line_item} cart={this.props.cart} />
     });
   }
 
@@ -50,4 +51,4 @@ function mapStateToProps({ auth, cart, products }) {
   return { auth, cart, products }
 }
 
-export default connect(mapStateToProps)(Cart)
+export default connect(mapStateToProps, {updateCart})(Cart)

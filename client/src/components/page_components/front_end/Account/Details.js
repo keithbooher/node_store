@@ -35,6 +35,7 @@ class Details extends Component {
     )
     return (
       <div>
+        <h4 style={{ color: 'darkblue' }}>Email: {this.props.auth.email}</h4>
         <Form 
           onSubmit={this.handleSubmit} 
           submitButtonText={"Next"}

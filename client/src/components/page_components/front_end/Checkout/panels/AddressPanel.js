@@ -52,6 +52,7 @@ class AddressPanel extends Component  {
 
 
   render() {
+    // Fill out fields if they already exist (if they navigate away from the site. If not redux will keep the values filled out)
     let billing_initial_values = {}
     let shipping_initial_values = {}
     if (this.props.cart.billing_address) {
@@ -64,6 +65,7 @@ class AddressPanel extends Component  {
         shipping_initial_values[field.name] = this.props.cart.shipping_address[field.name]
       })
     }
+    
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
