@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import loadingGif from '../../../../images/pizzaLoading.gif'
 import Form from '../../shared/Form/Form'
 import AddressPanel from './panels/AddressPanel'
 import PaymentPanel from './panels/PaymentPanel'

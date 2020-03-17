@@ -17,7 +17,6 @@ class Checkout extends Component  {
 
   async componentDidMount() {
     if(this.checkout_state === "shopping" ) {
-      console.log('did mount')
       let cart_instance = this.props.cart
       cart_instance.checkout_state = 'address'
       await this.props.updateCart(cart_instance)
@@ -25,7 +24,6 @@ class Checkout extends Component  {
   }
 
   updateCart(cart) {
-    console.log('here?')
     this.props.updateCart(cart)
   }
 
@@ -42,6 +40,7 @@ class Checkout extends Component  {
   }
   
   render() {
+    console.log(this.props)
     // Need to render a side container showing the contents of the cart 
     return (
       <div>

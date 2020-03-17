@@ -52,6 +52,18 @@ class AddressPanel extends Component  {
 
 
   render() {
+    let billing_initial_values = {}
+    let shipping_initial_values = {}
+    if (this.props.cart.billing_address) {
+      formFields.forEach((field) => {
+        billing_initial_values[field.name] = this.props.cart.billing_address[field.name]
+      })
+    }
+    if (this.props.cart.shipping_address) {
+      formFields.forEach((field) => {
+        shipping_initial_values[field.name] = this.props.cart.shipping_address[field.name]
+      })
+    }
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
@@ -70,6 +82,7 @@ class AddressPanel extends Component  {
                 submitButton={""}
                 formId={"billing_form"}
                 form={"billing_checkout_form"}
+                initialValues={billing_initial_values}
               />
             </div>
             <div className="shipping_address_form_container address_form">
@@ -81,6 +94,7 @@ class AddressPanel extends Component  {
                 form={"shipping_checkout_form"}
                 replaceSubmitButton={true}
                 submitButton={replacementSubmitButton}
+                initialValues={shipping_initial_values}
               />
             </div>
           </div>

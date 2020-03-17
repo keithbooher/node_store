@@ -13,7 +13,7 @@ class Form extends Component {
   
   renderFields() {
     return _.map(this.props.formFields, ({ label, name, value }) => {
-      return <Field component={FormField} type="text" label={label} name={name} />
+      return <Field component={FormField} initialValues={value} type="text" label={label} name={name} />
     })
   }
 
@@ -49,4 +49,5 @@ function validate(values, props) {
 export default reduxForm({
   validate,
   destroyOnUnmount: false,
+  enableReinitialize : true
 })(Form)
