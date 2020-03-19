@@ -41,6 +41,14 @@ class Payments extends Component {
     }
 
     const new_order = await API.createOrder(order)
+    
+    // Make a request to update the user model addresses
+    let user = this.props.auth
+    user.billing_address = cart.billing_address
+    user.shipping_address = cart.shipping_address
+    this.props.updateUser(user)
+
+    //make available to the checkout page, ultimately Review panel.
     this.props.makeNewOrderAvailable(new_order.data)
 
     this.props.chooseTab("review")
@@ -65,4 +73,8 @@ class Payments extends Component {
   }
 }
 
-export default connect(null, actions)(Payments)
+function mapStateToProps({ auth }) {
+  return { auth }
+}
+
+export default connect(mapStateToProps, actions)(Payments)

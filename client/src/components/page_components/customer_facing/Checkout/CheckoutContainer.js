@@ -48,10 +48,12 @@ class CheckoutContainer extends Component  {
               makeNewOrderAvailable={this.makeNewOrderAvailable} 
               clearCheckoutForm={this.props.clearCheckoutForm} 
               chooseTab={this.chooseTab} 
-              chosen_tab={this.state.schosen_tab} 
+              chosen_tab={this.state.chosen_tab} 
               updateCart={this.props.updateCart} 
               convertCart={this.props.convertCart} 
-              cart={this.props.cart} />
+              cart={this.props.cart}
+              updateUser={this.props.updateUser}
+              />
             : ""}
 
           <h4>Review</h4>

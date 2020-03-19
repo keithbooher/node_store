@@ -7,14 +7,14 @@ import hf from "../../../../../utils/helperFunctions"
 class AddressPanel extends Component  {
   constructor(props) {
     super()
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
     console.log(props)
     this.state = {
 
     }
   }
 
-  async handleSubmit() {
+  async handleFormSubmit() {
     let cart_instance = this.props.cart
     cart_instance.checkout_state = 'payment'
     const ship_addy = this.props.address_form_state.shipping_checkout_form.values
@@ -66,7 +66,7 @@ class AddressPanel extends Component  {
     }
     
     const replacementSubmitButton = (
-      <button onClick={(e) => this.handleSubmit(e)} className="teal btn-flat right white-text">
+      <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
       </button>
     )
@@ -76,7 +76,7 @@ class AddressPanel extends Component  {
             <div className="billing_address_form_container address_form">
               <h5 className="address_form_title">Billing</h5>
               <Form 
-                onSubmit={this.handleSubmit} 
+                onSubmit={this.handleFormSubmit} 
                 submitButtonText={"Next"}
                 formFields={formFields} 
                 replaceSubmitButton={true}
@@ -89,7 +89,7 @@ class AddressPanel extends Component  {
             <div className="shipping_address_form_container address_form">
               <h5 className="address_form_title">Shipping</h5>
               <Form 
-                onSubmit={this.handleSubmit} 
+                onSubmit={this.handleFormSubmit} 
                 formFields={formFields}
                 formId={"shipping_form"}
                 form={"shipping_checkout_form"}
