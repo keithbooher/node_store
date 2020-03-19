@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { fetchUser, usersCart, allInStockProducts } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import Header from './page_components/front_end/Header'
-import Home from './pages/front_end/Home'
-import Product from './pages/front_end/Product'
-import Category from './pages/front_end/Category'
-import Checkout from './pages/front_end/Checkout'
-import Account from './pages/front_end/Account'
+import Header from './page_components/customer_facing/Header'
+import Home from './pages/customer_facing/Home'
+import Product from './pages/customer_facing/Product'
+import Category from './pages/customer_facing/Category'
+import Checkout from './pages/customer_facing/Checkout'
+import Account from './pages/customer_facing/Account'
 
 
 class App extends Component {
@@ -21,7 +21,6 @@ class App extends Component {
         this.props.usersCart(this.props.auth._id)
       }
     })
-    this.props.allInStockProducts()
   }
 
   render() {
@@ -50,6 +49,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { fetchUser, usersCart, allInStockProducts }
+const actions = { fetchUser, usersCart }
 
 export default connect(mapStateToProps, actions)(App)

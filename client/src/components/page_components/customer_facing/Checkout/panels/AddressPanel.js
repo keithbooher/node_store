@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import _ from "lodash"
 import Form from '../../../shared/Form/Form'
 import formFields from '../formFields'
+import hf from "../../../../../utils/helperFunctions"
 
 class AddressPanel extends Component  {
   constructor(props) {
@@ -52,18 +53,16 @@ class AddressPanel extends Component  {
 
 
   render() {
-    // Fill out fields if they already exist (if they navigate away from the site. If not redux will keep the values filled out)
-    let billing_initial_values = {}
-    let shipping_initial_values = {}
+    console.log(this.props)
+    // This will grab the reducer form data if its present, if its not we will provide a blank object. 
+    // THEN we check to make sure the cart doesn't already have a submitted address, if it does then we want to use them as the initial form values
+    let billing_initial_values = this.props.address_form_state.billing_checkout_form ? this.props.address_form_state.billing_checkout_form.values : {} 
+    let shipping_initial_values = this.props.address_form_state.shipping_checkout_form ? this.props.address_form_state.shipping_checkout_form.values : {}
     if (this.props.cart.billing_address) {
-      formFields.forEach((field) => {
-        billing_initial_values[field.name] = this.props.cart.billing_address[field.name]
-      })
+      billing_initial_values = hf.updatedFormFields(formFields, this.props.cart.billing_address)
     }
     if (this.props.cart.shipping_address) {
-      formFields.forEach((field) => {
-        shipping_initial_values[field.name] = this.props.cart.shipping_address[field.name]
-      })
+      shipping_initial_values = hf.updatedFormFields(formFields, this.props.cart.shipping_address)
     }
     
     const replacementSubmitButton = (

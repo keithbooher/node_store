@@ -6,7 +6,7 @@ import reducers from '../../../../reducers'
 import reduxThunk from 'redux-thunk'
 import initialState from '../../../mock_props/initial_state'
 import { BrowserRouter , Route } from 'react-router-dom'
-import Home from '../../../../components/pages/front_end/Home'
+import Home from '../../../../components/pages/customer_facing/Home'
 import '@testing-library/jest-dom/extend-expect'
 
 // found here https://github.com/testing-library/testing-library-docs/blob/master/docs/example-react-redux.md

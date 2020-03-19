@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MultiPanel from '../../../page_components/shared/MultiPanel/MultiPanel'
-import Details from '../../../page_components/front_end/Account/Details'
-import Addresses from '../../../page_components/front_end/Account/Addresses'
-import Orders from '../../../page_components/front_end/Account/Orders'
-import Reviews from '../../../page_components/front_end/Account/Reviews'
+import Details from '../../../page_components/customer_facing/Account/Details'
+import Addresses from '../../../page_components/customer_facing/Account/Addresses'
+import Orders from '../../../page_components/customer_facing/Account/Orders'
+import Reviews from '../../../page_components/customer_facing/Account/Reviews'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 
 class Account extends Component  {

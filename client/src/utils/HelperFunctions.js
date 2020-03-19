@@ -15,6 +15,13 @@ export default {
       sub_total = sub_total + (line_item.product_price * line_item.quantity)
     })
     return sub_total
+  },
+  updatedFormFields: (fields, objectToPullDataFrom) => {
+    let details_initial_values = {}
+    fields.forEach((field) => {
+      details_initial_values[field.name] = objectToPullDataFrom[field.name]
+    })
+    return details_initial_values
   }
   // other: (string) => {
   //   return //some string stuff

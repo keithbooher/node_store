@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import hf from '../../../../utils/helperFunctions'
+import loadingGif from '../../../../images/pizzaLoading.gif'
 import './productCard.css.scss'
 
 class ProductCard extends Component {
@@ -14,7 +15,7 @@ class ProductCard extends Component {
     let product = this.props.product
     let cart = this.props.cart
     const quantity = this.state.quantity
-    const user_id = this.props.user_id
+    const user_id = this.props.user._id
     let sub_total, create_boolean
 
     if (this.props.cart == null) {
@@ -69,7 +70,7 @@ class ProductCard extends Component {
       cart.total = sub_total * .08
 
     }
-    this.props.addToCart(create_boolean, cart, this.props.user_id)
+    this.props.addToCart(create_boolean, cart, user_id)
   }
 
   render() {
@@ -77,17 +78,19 @@ class ProductCard extends Component {
     let category_path_name = this.props.category_path_name
     return (
       <div>
-        <div className="card blue-grey darken-1">
-          <div className="card-content white-text">
-            <span className="card-title">{product.name}</span>
-            <p>{product.description}</p>
+        {this.props.auth !== null ? 
+            <div className="card blue-grey darken-1">
+              <div className="card-content white-text">
+                <span className="card-title">{product.name}</span>
+                <p>{product.description}</p>
+              </div>
+              <div className="card-action">
+                <Link to={`/shop/${category_path_name}/${product.path_name}`} className="">Go to this product</Link>
+              </div>
+              <div className="add_to_cart" onClick={this.addToCart.bind(this)}>Add To Cart</div>
+              {/* add quantity buttons */}
           </div>
-          <div className="card-action">
-            <Link to={`/shop/${category_path_name}/${product.path_name}`} className="">Go to this product</Link>
-          </div>
-          <div className="add_to_cart" onClick={this.addToCart.bind(this)}>Add To Cart</div>
-          {/* add quantity buttons */}
-        </div>
+        : <img className="loadingGif" src={loadingGif} /> }
     </div>
     )
   }

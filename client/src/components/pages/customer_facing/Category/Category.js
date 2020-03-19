@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import API from "../../../../utils/API";
-import ProductCard from '../../../page_components/front_end/ProductCard'
+import ProductCard from '../../../page_components/customer_facing/ProductCard'
 import hf from '../../../../utils/helperFunctions'
 
 class Category extends Component  {
@@ -45,9 +45,4 @@ class Category extends Component  {
   }
 }
 
-
-function mapStateToProps({ products }) {
-  return { products }
-}
-
-export default connect(mapStateToProps, null)(Category)
+export default Category

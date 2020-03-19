@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import CheckoutContainer from '../../../page_components/front_end/Checkout/CheckoutContainer'
+import CheckoutContainer from '../../../page_components/customer_facing/Checkout/CheckoutContainer'
 import { updateCart, convertCart, clearCheckoutForm } from '../../../../actions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import './checkout.css.scss'

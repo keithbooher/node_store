@@ -4,6 +4,9 @@ export default {
   getProductInfo: (path_name) => {
     return axios.get('/api/product/' + path_name)
   },
+  allInStockProducts: () => {
+    return axios.get('/api/products/all/instock')
+  },
   getCategoryProducts: (path_name) => {
     return axios.get('/api/category/products/' + path_name)
   },
