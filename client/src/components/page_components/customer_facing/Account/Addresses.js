@@ -13,7 +13,16 @@ class Addresses extends Component {
   render() {
     return (
     <div>
-      Addresses Panel
+      {/* <Form 
+        onSubmit={this.handleSubmit} 
+        submitButtonText={"Next"}
+        formFields={detailsFields} 
+        replaceSubmitButton={true}
+        submitButton={replacementSubmitButton}
+        formId={"user_details_form"}
+        form={"user_details_form"}
+        initialValues={details_initial_values}
+      /> */}
     </div>
     )
   }

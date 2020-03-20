@@ -14,41 +14,56 @@ class AddressPanel extends Component  {
     }
   }
 
-  async handleFormSubmit() {
+
+
+  handleFormSubmit() {
+    // NEED TO PREVENT SUBMISSION IF NEITHER A PRE-EXISTING ADDY CARD 
+    // HAS BEEN SELECTED OR THE FORM HAS BEEN FILLED OUT
     let cart_instance = this.props.cart
     cart_instance.checkout_state = 'payment'
-    const ship_addy = this.props.address_form_state.shipping_checkout_form.values
-    const bill_addy = this.props.address_form_state.billing_checkout_form.values
-    const shipping_address = {
-      first_name: ship_addy.first_name,
-      last_name: ship_addy.last_name,
-      company: ship_addy.company,
-      street_address_1: ship_addy.street_address_1,
-      street_address_2: ship_addy.street_address_2,
-      city: ship_addy.city,
-      state: ship_addy.state,
-      zip_code: ship_addy.zip_code,
-      phone_number: ship_addy.phone_number,
-      bill_or_ship: 'shipping',
-      _user_id: cart_instance._user_id
+
+    if (this.props.preExistingShipping !== null) {
+      const ship_addy = this.props.address_form_state.shipping_checkout_form.values
+      const shipping_address = {
+        first_name: ship_addy.first_name,
+        last_name: ship_addy.last_name,
+        company: ship_addy.company,
+        street_address_1: ship_addy.street_address_1,
+        street_address_2: ship_addy.street_address_2,
+        city: ship_addy.city,
+        state: ship_addy.state,
+        zip_code: ship_addy.zip_code,
+        phone_number: ship_addy.phone_number,
+        bill_or_ship: 'shipping',
+        _user_id: cart_instance._user_id
+      }
+    } else {
+      const shipping_address = this.props.preExistingShipping
     }
-    const billing_address = {
-      first_name: bill_addy.first_name,
-      last_name: bill_addy.last_name,
-      company: bill_addy.company,
-      street_address_1: bill_addy.street_address_1,
-      street_address_2: bill_addy.street_address_2,
-      city: bill_addy.city,
-      state: bill_addy.state,
-      zip_code: bill_addy.zip_code,
-      phone_number: bill_addy.phone_number,
-      bill_or_ship: 'billing',
-      _user_id: cart_instance._user_id
+
+    if (this.props.preExistingBilling !== null) {
+      const bill_addy = this.props.address_form_state.billing_checkout_form.values
+      const billing_address = {
+        first_name: bill_addy.first_name,
+        last_name: bill_addy.last_name,
+        company: bill_addy.company,
+        street_address_1: bill_addy.street_address_1,
+        street_address_2: bill_addy.street_address_2,
+        city: bill_addy.city,
+        state: bill_addy.state,
+        zip_code: bill_addy.zip_code,
+        phone_number: bill_addy.phone_number,
+        bill_or_ship: 'billing',
+        _user_id: cart_instance._user_id
+      }
+    } else {
+      const billing_address = this.props.preExistingBilling
     }
+
     cart_instance.shipping_address = shipping_address
     cart_instance.billing_address = billing_address
 
-    await this.props.updateCart(cart_instance)
+    this.props.updateCart(cart_instance)
   }
 
 
@@ -75,6 +90,7 @@ class AddressPanel extends Component  {
           <div className="address_form_container">
             <div className="billing_address_form_container address_form">
               <h5 className="address_form_title">Billing</h5>
+              {/* addy cards */}
               <Form 
                 onSubmit={this.handleFormSubmit} 
                 submitButtonText={"Next"}
@@ -88,6 +104,7 @@ class AddressPanel extends Component  {
             </div>
             <div className="shipping_address_form_container address_form">
               <h5 className="address_form_title">Shipping</h5>
+              {/* addy cards */}
               <Form 
                 onSubmit={this.handleFormSubmit} 
                 formFields={formFields}

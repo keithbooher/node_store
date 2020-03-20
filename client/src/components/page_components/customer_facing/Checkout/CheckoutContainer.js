@@ -10,12 +10,15 @@ class CheckoutContainer extends Component  {
     super()
     this.chooseTab = this.chooseTab.bind(this)
     this.makeNewOrderAvailable = this.makeNewOrderAvailable.bind(this)
+    this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
 
     let checkout_state = props.cart.checkout_state
     this.state = {
       chosen_tab: checkout_state === 'shopping' ? 'address' : checkout_state,
       cart_checkout_status: checkout_state,
-      new_order: {}
+      new_order: {},
+      preExistingShipping: null,
+      preExistingBilling: null,
     }
   }
 
@@ -25,6 +28,18 @@ class CheckoutContainer extends Component  {
 
   makeNewOrderAvailable(order) {
     this.setState({ new_order: order })
+  }
+
+  choosePreExistingAddress(ship_or_bill, object) {
+    switch (ship_or_bill) {
+      case 'shipping':
+        this.setState({ preExistingShipping: object })
+      case 'billing':
+        this.setState({ preExistingShipping: object })
+      default:
+        break;
+    }
+    this.setState({ preExistingAddressChosen: boolean })
   }
 
   
@@ -39,7 +54,12 @@ class CheckoutContainer extends Component  {
               chosen_tab={this.state.chosen_tab} 
               updateCart={this.props.updateCart} 
               address_form_state={this.props.address_form_state} 
-              cart={this.props.cart} />
+              cart={this.props.cart} 
+              // pass this to the preAddy cards
+              choosePreExistingAddress={this.choosePreExistingAddress}
+              preExistingShipping={this.state.preExistingShipping}
+              preExistingBilling={this.state.preExistingBilling}
+              />
           : ""}
 
           <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
