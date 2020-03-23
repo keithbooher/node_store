@@ -1,30 +1,39 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { updateCart } from '../../../../../actions'
 import _ from "lodash"
 import Form from '../../../shared/Form/Form'
 import formFields from '../formFields'
 import hf from "../../../../../utils/helperFunctions"
 
+
 class AddressPanel extends Component  {
   constructor(props) {
     super()
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
-    console.log(props)
     this.state = {
 
     }
   }
 
+  async componentDidMount() {    
 
+  }
+  
 
   handleFormSubmit() {
+    console.log("formSubmit")
     // NEED TO PREVENT SUBMISSION IF NEITHER A PRE-EXISTING ADDY CARD 
     // HAS BEEN SELECTED OR THE FORM HAS BEEN FILLED OUT
     let cart_instance = this.props.cart
-    cart_instance.checkout_state = 'payment'
+    cart_instance.checkout_state = 'shipping'
+    let shipping_address = {}
+    let billing_address = {}
 
-    if (this.props.preExistingShipping !== null) {
-      const ship_addy = this.props.address_form_state.shipping_checkout_form.values
-      const shipping_address = {
+
+    if (this.props.preExistingShipping === null) {
+      const ship_addy = this.props.form.shipping_checkout_form.values
+      shipping_address = {
         first_name: ship_addy.first_name,
         last_name: ship_addy.last_name,
         company: ship_addy.company,
@@ -38,12 +47,12 @@ class AddressPanel extends Component  {
         _user_id: cart_instance._user_id
       }
     } else {
-      const shipping_address = this.props.preExistingShipping
+      shipping_address = this.props.preExistingShipping
     }
 
-    if (this.props.preExistingBilling !== null) {
-      const bill_addy = this.props.address_form_state.billing_checkout_form.values
-      const billing_address = {
+    if (this.props.preExistingBilling === null) {
+      const bill_addy = this.props.form.billing_checkout_form.values
+      billing_address = {
         first_name: bill_addy.first_name,
         last_name: bill_addy.last_name,
         company: bill_addy.company,
@@ -57,7 +66,7 @@ class AddressPanel extends Component  {
         _user_id: cart_instance._user_id
       }
     } else {
-      const billing_address = this.props.preExistingBilling
+      billing_address = this.props.preExistingBilling
     }
 
     cart_instance.shipping_address = shipping_address
@@ -66,19 +75,24 @@ class AddressPanel extends Component  {
     this.props.updateCart(cart_instance)
   }
 
-
-  render() {
-    console.log(this.props)
-    // This will grab the reducer form data if its present, if its not we will provide a blank object. 
-    // THEN we check to make sure the cart doesn't already have a submitted address, if it does then we want to use them as the initial form values
-    let billing_initial_values = this.props.address_form_state.billing_checkout_form ? this.props.address_form_state.billing_checkout_form.values : {} 
-    let shipping_initial_values = this.props.address_form_state.shipping_checkout_form ? this.props.address_form_state.shipping_checkout_form.values : {}
+  billing_initial_values() {
+    let billing_initial_values = this.props.form.billing_checkout_form ? this.props.form.billing_checkout_form.values : {} 
     if (this.props.cart.billing_address) {
       billing_initial_values = hf.updatedFormFields(formFields, this.props.cart.billing_address)
     }
+    return billing_initial_values
+  }
+
+  shipping_initial_values() {
+    let shipping_initial_values = this.props.form.shipping_checkout_form ? this.props.form.shipping_checkout_form.values : {}
     if (this.props.cart.shipping_address) {
       shipping_initial_values = hf.updatedFormFields(formFields, this.props.cart.shipping_address)
     }
+    return shipping_initial_values
+  }
+
+  render() {
+    console.log(this.props)
     
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
@@ -86,8 +100,9 @@ class AddressPanel extends Component  {
       </button>
     )
     return (
-      <div>
-          <div className="address_form_container">
+      <div className="address_form_container">
+        { this.props.cart ?
+          <>
             <div className="billing_address_form_container address_form">
               <h5 className="address_form_title">Billing</h5>
               {/* addy cards */}
@@ -99,7 +114,7 @@ class AddressPanel extends Component  {
                 submitButton={""}
                 formId={"billing_form"}
                 form={"billing_checkout_form"}
-                initialValues={billing_initial_values}
+                initialValues={this.billing_initial_values()}
               />
             </div>
             <div className="shipping_address_form_container address_form">
@@ -112,13 +127,20 @@ class AddressPanel extends Component  {
                 form={"shipping_checkout_form"}
                 replaceSubmitButton={true}
                 submitButton={replacementSubmitButton}
-                initialValues={shipping_initial_values}
+                initialValues={this.shipping_initial_values()}
               />
             </div>
-          </div>
+          </>
+        : ""}
       </div>
     )
   }
 }
 
-export default AddressPanel
+function mapStateToProps({ form, cart }) {
+  return { form, cart }
+}
+
+const actions = { updateCart }
+
+export default connect(mapStateToProps, actions)(AddressPanel)

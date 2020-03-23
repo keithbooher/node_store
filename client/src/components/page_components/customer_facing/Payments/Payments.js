@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
-import * as actions from '../../../../actions'
+import { clearCheckoutForm, updateCart, convertCart, updateUser, handleToken } from '../../../../actions'
 import API from '../../../../utils/API'
 import _ from "lodash"
 
@@ -11,6 +11,7 @@ class Payments extends Component {
     this.someFunction = this.someFunction.bind(this)
   }
   async someFunction(token) {
+    console.log(token)
     await this.props.handleToken(token)
     let cart = this.props.cart
     cart.checkout_state = 'complete'
@@ -20,7 +21,7 @@ class Payments extends Component {
     cart.deleted_at = date
     cart.converted = true
     await this.props.updateCart(cart)
-
+        
     // Have to remove _id before we add billing and shipping to an order 
     // (mongoDB creates the _id so it throws a fit that there is already an _id)
     delete cart.billing_address._id
@@ -29,6 +30,14 @@ class Payments extends Component {
       delete line_item._id
       return line_item
     })
+
+    if (this.props.preExistingShipping === null || this.props.preExistingBilling === null) {
+      // Make a request to update the user model addresses
+      let user = this.props.auth
+      user.billing_address = cart.billing_address
+      user.shipping_address = cart.shipping_address
+      this.props.updateUser(user)
+    }
 
     let order = {
       sub_total: cart.sub_total,
@@ -41,14 +50,6 @@ class Payments extends Component {
     }
 
     const new_order = await API.createOrder(order)
-    
-    if (this.props.choosePreExistingAddress === false) {
-      // Make a request to update the user model addresses
-      let user = this.props.auth
-      user.billing_address = cart.billing_address
-      user.shipping_address = cart.shipping_address
-      this.props.updateUser(user)
-    }
 
     //make available to the checkout page, ultimately Review panel.
     this.props.makeNewOrderAvailable(new_order.data)
@@ -59,7 +60,7 @@ class Payments extends Component {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     return (
         <StripeCheckout
           name="Node Store"
@@ -75,8 +76,10 @@ class Payments extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, cart }) {
+  return { auth, cart }
 }
+
+const actions = { clearCheckoutForm, updateCart, convertCart, updateUser, handleToken }
 
 export default connect(mapStateToProps, actions)(Payments)

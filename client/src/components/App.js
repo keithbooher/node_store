@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { BrowserRouter , Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchUser, usersCart, allInStockProducts } from '../actions'
+import { fetchUser } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Header from './page_components/customer_facing/Header'
@@ -15,12 +15,7 @@ import Account from './pages/customer_facing/Account'
 class App extends Component {
   componentDidMount() {
     // Check to see if user is logged in
-    this.props.fetchUser().then(() => {
-      if (this.props.auth) {
-        // If logged in, check for cart.
-        this.props.usersCart(this.props.auth._id)
-      }
-    })
+    this.props.fetchUser()
   }
 
   render() {
@@ -45,10 +40,7 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
-}
 
-const actions = { fetchUser, usersCart }
+const actions = { fetchUser }
 
-export default connect(mapStateToProps, actions)(App)
+export default connect(null, actions)(App)

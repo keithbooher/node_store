@@ -16,5 +16,11 @@ export default {
   createOrder: (order) => {
     const data = { order }
     return axios.post('/api/order/create', data)
-  }
+  },
+  getCurrentCart: (user) => {
+    return axios.get('/api/cart/' + user._id)
+  },
+  getCurrentUser: () => {
+    return axios.get('/api/current_user')
+  },
 }

@@ -6,7 +6,7 @@ import Addresses from '../../../page_components/customer_facing/Account/Addresse
 import Orders from '../../../page_components/customer_facing/Account/Orders'
 import Reviews from '../../../page_components/customer_facing/Account/Reviews'
 import loadingGif from '../../../../images/pizzaLoading.gif'
-
+import './account.scss'
 class Account extends Component  {
   constructor(props) {
     super()
@@ -31,7 +31,7 @@ class Account extends Component  {
           <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
             <div>
               {this.state.chosen_tab === 'details' ? <Details auth={this.props.auth} /> : ""}
-              {this.state.chosen_tab === 'addresses' ? <Addresses /> : ""}
+              {this.state.chosen_tab === 'addresses' ? <Addresses auth={this.props.auth} /> : ""}
               {this.state.chosen_tab === 'orders' ? <Orders /> : ""}
               {this.state.chosen_tab === 'reviews' ? <Reviews /> : ""}
             </div>

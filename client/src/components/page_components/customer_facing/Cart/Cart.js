@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import LineItem from '../LineItem'
-import { updateCart } from '../../../../actions'
+import { updateCart, usersCart } from '../../../../actions'
 import './cart.css.scss'
 
 
@@ -9,6 +9,12 @@ class Cart extends Component {
   constructor(props) {
     super()
     this.state = {showCart: false}
+  }
+  componentDidMount() {
+    console.log(this.props)
+    if (this.props.auth) {
+      this.props.usersCart(this.props.auth._id)
+    }
   }
   expandCart() {
     let boolean = this.state.showCart
@@ -51,4 +57,7 @@ function mapStateToProps({ auth, cart, products }) {
   return { auth, cart, products }
 }
 
-export default connect(mapStateToProps, {updateCart})(Cart)
+const actions = { usersCart, updateCart }
+
+
+export default connect(mapStateToProps, actions)(Cart)

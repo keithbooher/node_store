@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Payment from '../../Payments'
 
-
 class PaymentPanel extends Component  {
   constructor(props) {
     super()
@@ -12,15 +11,20 @@ class PaymentPanel extends Component  {
 
   
   render() {
+    console.log(this.props)
     // Make sure to fire off the chooseTab() function to get the user to the review screen once they have paid
     return (
-      <div id="">
-          
-            <Payment makeNewOrderAvailable={this.props.makeNewOrderAvailable} clearCheckoutForm={this.props.clearCheckoutForm} cart={this.props.cart} chooseTab={this.props.chooseTab} updateCart={this.props.updateCart}  convertCart={this.props.convertCart} />
-
-      </div>
+      <>
+        <Payment 
+          preExistingShipping={this.props.preExistingShipping} 
+          preExistingBilling={this.props.preExistingBilling} 
+          makeNewOrderAvailable={this.props.makeNewOrderAvailable} 
+          chooseTab={this.props.chooseTab} 
+          />
+      </>
     )
   }
 }
+
 
 export default PaymentPanel

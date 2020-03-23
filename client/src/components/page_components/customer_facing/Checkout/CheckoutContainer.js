@@ -3,7 +3,15 @@ import Form from '../../shared/Form/Form'
 import AddressPanel from './panels/AddressPanel'
 import PaymentPanel from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
+import ShippingPanel from './panels/ShippingPanel'
+import API from '../../../../utils/API'
+import loadingGif from '../../../../images/pizzaLoading.gif'
+
 import './checkout.css.scss'
+
+//manage chosen tab here
+
+
 
 class CheckoutContainer extends Component  {
   constructor(props) {
@@ -11,15 +19,26 @@ class CheckoutContainer extends Component  {
     this.chooseTab = this.chooseTab.bind(this)
     this.makeNewOrderAvailable = this.makeNewOrderAvailable.bind(this)
     this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
-
-    let checkout_state = props.cart.checkout_state
+    
     this.state = {
-      chosen_tab: checkout_state === 'shopping' ? 'address' : checkout_state,
-      cart_checkout_status: checkout_state,
-      new_order: {},
+      chosen_tab: 'address',
+      new_order: null,
       preExistingShipping: null,
       preExistingBilling: null,
     }
+  }
+
+  async componentDidMount() {
+    const current_cart = await API.getCurrentCart(this.props.current_user)
+    console.log(current_cart)
+    if (current_cart.data.checkout_state === "shopping") {
+      current_cart.data.checkout_state = "address"
+    }
+    this.setState({ chosen_tab: current_cart.data.checkout_state })
+
+    // MAKE REQUEST TO UPDATE CART STATUS TO ADDRESS (if checkout_state is shopping), 
+    // JUST NOT THROUGH REDUX SO WE DONT CAUSE A RERENDER
+
   }
 
   chooseTab(chosen_tab) {
@@ -39,57 +58,56 @@ class CheckoutContainer extends Component  {
       default:
         break;
     }
-    this.setState({ preExistingAddressChosen: boolean })
+    // this.setState({ preExistingAddressChosen: boolean })
   }
 
   
   render() {
+    console.log(this.state)
     return (
-      <div>
-        <div>
+      <>
+        <h4 onClick={() => this.chooseTab('address')}>Address</h4>
+        {this.state.chosen_tab === 'address' ? 
+          <AddressPanel 
+            chosen_tab={this.state.chosen_tab} 
+            // pass this to the preAddy cards
+            choosePreExistingAddress={this.choosePreExistingAddress}
+            preExistingShipping={this.state.preExistingShipping}
+            preExistingBilling={this.state.preExistingBilling}
+            />
+        : ""}
 
-          <h4 onClick={() => this.chooseTab('address')}>Billing & Shipping</h4>
-          {this.state.chosen_tab === 'address' ? 
-            <AddressPanel 
-              chosen_tab={this.state.chosen_tab} 
-              updateCart={this.props.updateCart} 
-              address_form_state={this.props.address_form_state} 
-              cart={this.props.cart} 
-              // pass this to the preAddy cards
-              choosePreExistingAddress={this.choosePreExistingAddress}
-              preExistingShipping={this.state.preExistingShipping}
-              preExistingBilling={this.state.preExistingBilling}
-              />
+        <h4 onClick={() => this.chooseTab('shipping')}>Shipping</h4>
+        {this.state.chosen_tab === 'shipping' ? 
+          <ShippingPanel 
+            chooseTab={this.chooseTab}
+            preExistingShipping={this.state.preExistingShipping}
+            preExistingBilling={this.state.preExistingBilling}
+            />
+        : ""}
+
+        <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
+        {this.state.chosen_tab === "payment" ? 
+          <PaymentPanel 
+            makeNewOrderAvailable={this.makeNewOrderAvailable} 
+            clearCheckoutForm={this.props.clearCheckoutForm} 
+            chooseTab={this.chooseTab} 
+            chosen_tab={this.state.chosen_tab} 
+            preExistingShipping={this.state.preExistingShipping}
+            preExistingBilling={this.state.preExistingBilling}
+            />
           : ""}
 
-          <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
-          {this.state.chosen_tab === "payment" ? 
-            <PaymentPanel 
-              makeNewOrderAvailable={this.makeNewOrderAvailable} 
-              clearCheckoutForm={this.props.clearCheckoutForm} 
-              chooseTab={this.chooseTab} 
-              chosen_tab={this.state.chosen_tab} 
-              updateCart={this.props.updateCart} 
-              convertCart={this.props.convertCart} 
-              cart={this.props.cart}
-              updateUser={this.props.updateUser}
-              />
-            : ""}
-
-          <h4>Review</h4>
-          {this.props.new_order !== {} ? this.props.cart.checkout_state === 'complete' ?
-            <ReviewPanel 
-              convertCart={this.props.convertCart} 
-              new_order={this.state.new_order} 
-              chooseTab={this.chooseTab} 
-              chosen_tab={this.state.chosen_tab} 
-              updateCart={this.props.updateCart} 
-              address_form_state={this.props.address_form_state} 
-              cart={this.props.cart} />
-            : "" : ""}
-
-        </div>
-      </div>
+        <h4>Review</h4>
+        {this.state.new_order !== null ? this.state.chosen_tab === "review" ?
+          <ReviewPanel 
+            convertCart={this.props.convertCart} 
+            new_order={this.state.new_order} 
+            chooseTab={this.chooseTab} 
+            chosen_tab={this.state.chosen_tab} 
+            />
+          : "": ""}
+      </>
     )
   }
 }
