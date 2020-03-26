@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Form from '../../shared/Form/Form'
+import Form from '../../../../shared/Form/Form'
 import { detailsFields } from './formFields'
-import hf from "../../../../utils/helperFunctions"
+import hf from "../../../../../utils/helperFunctions"
 
 class Details extends Component {
   constructor(props) {

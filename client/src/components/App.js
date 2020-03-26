@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import { fetchUser } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import Header from './page_components/customer_facing/Header'
-import Home from './pages/customer_facing/Home'
-import Product from './pages/customer_facing/Product'
-import Category from './pages/customer_facing/Category'
-import Checkout from './pages/customer_facing/Checkout'
-import Account from './pages/customer_facing/Account'
+import Header from './customer_facing/components/Header'
+import Home from './customer_facing/pages/Home'
+import Product from './customer_facing/pages/Product'
+import Category from './customer_facing/pages/Category'
+import Checkout from './customer_facing/pages/Checkout'
+import Account from './customer_facing/pages/Account'
 
 
 class App extends Component {

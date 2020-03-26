@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from '../../../../../actions'
+import { updateCart } from '../../../../../../actions'
 import _ from "lodash"
 
 class AddressPanel extends Component  {

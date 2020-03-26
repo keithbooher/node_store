@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
-import validateEmails from '../../../../utils/validateEmails'
+import validateEmails from '../../../utils/validateEmails'
 
 
 class Form extends Component {

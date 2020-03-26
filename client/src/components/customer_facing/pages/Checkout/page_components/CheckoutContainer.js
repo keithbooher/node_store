@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import Form from '../../shared/Form/Form'
 import AddressPanel from './panels/AddressPanel'
 import PaymentPanel from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
 import ShippingPanel from './panels/ShippingPanel'
-import API from '../../../../utils/API'
-import loadingGif from '../../../../images/pizzaLoading.gif'
+import API from '../../../../../utils/API'
+
 
 import './checkout.css.scss'
 

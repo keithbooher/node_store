@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import ProductCard from '../../../page_components/customer_facing/ProductCard'
+import ProductCard from '../../components/ProductCard'
 import { addToCart } from '../../../../actions'
 import API from '../../../../utils/API'
 import './home.css.scss'

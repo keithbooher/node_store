@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import CheckoutContainer from '../../../page_components/customer_facing/Checkout/CheckoutContainer'
+import CheckoutContainer from './page_components/CheckoutContainer'
 import API from '../../../../utils/API'
 import './checkout.css.scss'
 // pull from actions. create action to make request for adding product-data to the cart

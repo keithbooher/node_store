@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from '../../../../../actions'
+import { updateCart } from '../../../../../../actions'
 import _ from "lodash"
-import Form from '../../../shared/Form/Form'
+import Form from '../../../../../shared/Form/Form'
 import formFields from '../formFields'
-import hf from "../../../../../utils/helperFunctions"
+import hf from "../../../../../../utils/helperFunctions"
 
 
 class AddressPanel extends Component  {

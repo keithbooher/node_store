@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import API from "../../../../utils/API";
-import ProductCard from '../../../page_components/customer_facing/ProductCard'
+import ProductCard from '../../components/ProductCard'
 import hf from '../../../../utils/helperFunctions'
 
 class Category extends Component  {

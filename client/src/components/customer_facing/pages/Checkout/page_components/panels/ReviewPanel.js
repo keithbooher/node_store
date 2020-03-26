@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { convertCart } from '../../../../../actions'
+import { convertCart } from '../../../../../../actions'
 
 
 class ReviewPanel extends Component  {

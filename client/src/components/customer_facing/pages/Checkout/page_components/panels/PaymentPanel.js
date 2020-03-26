@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Payment from '../../Payments'
+import Payment from '../../../../components/Payments'
 
 class PaymentPanel extends Component  {
   constructor(props) {
