@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import MultiPanel from '../../../shared/MultiPanel/MultiPanel'
 import Details from './page_components/Details'
 import Addresses from './page_components/Addresses'
 import Orders from './page_components/Orders'
 import Reviews from './page_components/Reviews'
-import loadingGif from '../../../../images/pizzaLoading.gif'
 import './account.scss'
 class Account extends Component  {
   constructor(props) {
@@ -27,27 +25,17 @@ class Account extends Component  {
     return (
       <div>
         <h1 style={{ textAlign: 'center' }}>Account</h1>
-        {this.props.auth ? 
-          <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
-            <div>
-              {this.state.chosen_tab === 'details' ? <Details auth={this.props.auth} /> : ""}
-              {this.state.chosen_tab === 'addresses' ? <Addresses auth={this.props.auth} /> : ""}
-              {this.state.chosen_tab === 'orders' ? <Orders /> : ""}
-              {this.state.chosen_tab === 'reviews' ? <Reviews /> : ""}
-            </div>
-          </MultiPanel>
-        : 
-          <img className="loadingGif loadingGifCenterScreen" src={loadingGif} />
-        }
-
+        <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
+          <div>
+            {this.state.chosen_tab === 'details' ? <Details /> : ""}
+            {this.state.chosen_tab === 'addresses' ? <Addresses /> : ""}
+            {this.state.chosen_tab === 'orders' ? <Orders /> : ""}
+            {this.state.chosen_tab === 'reviews' ? <Reviews /> : ""}
+          </div>
+        </MultiPanel>
       </div>
     )
   }
 }
 
-
-function mapStateToProps({ auth }) {
-  return { auth }
-}
-
-export default connect(mapStateToProps, null)(Account)
+export default Account

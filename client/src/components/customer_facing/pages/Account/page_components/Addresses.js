@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Form from '../../../../shared/Form'
 import { addressFields } from './formFields'
+import AddressCard from '../../../components/AddressCard'
 
 class Addresses extends Component {
   constructor(props) {
@@ -13,15 +14,14 @@ class Addresses extends Component {
   }
 
   renderAddressCards(bill_or_ship) {
-    console.log(this.props.auth)
     const auth = this.props.auth
     return auth[bill_or_ship].map((address) => {
       return <div className="address_card_container">
               <div>first name: {address.first_name ? address.first_name : "" }</div>
               <div>last name: {address.last_name ? address.first_name : "" }</div>
               <div>company: {address.company ? address.company : "" }</div>
-              <div>street address 1: {address.first_name ? address.first_name : "" }</div>
-              <div>street address 2: {address.first_name ? address.first_name : "" }</div>
+              <div>street address 1: {address.street_address_1 ? address.street_address_1 : "" }</div>
+              <div>street address 2: {address.street_address_2 ? address.street_address_2 : "" }</div>
               <div>city: {address.city ? address.city : "" }</div>
               <div>state: {address.state ? address.state : "" }</div>
               <div>zip code: {address.zip_code ? address.zip_code : "" }</div>
@@ -32,7 +32,6 @@ class Addresses extends Component {
 
 
   render() {
-    console.log(this.props.auth)
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Submit</i>
@@ -43,11 +42,15 @@ class Addresses extends Component {
       <div>
         <div className="billing_cards">
           <h5>Billing Cards</h5>
-          {this.renderAddressCards('billing_address')}       
+          <div className="card_container">
+            <AddressCard bill_or_ship="billing_address" />    
+          </div>
         </div>
         <div className="shipping_cards">
           <h5>Shipping Cards</h5>
-          {this.renderAddressCards('shipping_address')}
+          <div className="card_container">
+            <AddressCard bill_or_ship="shipping_address" />    
+          </div>
         </div>
       </div>
       <div className="new_user_address_forms_container">
@@ -78,7 +81,6 @@ class Addresses extends Component {
           />
         </div>
       </div>
-
     </div>
     )
   }

@@ -5,6 +5,7 @@ import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
 import formFields from '../formFields'
 import hf from "../../../../../../utils/helperFunctions"
+import AddressCard from '../../../../components/AddressCard';
 
 
 class AddressPanel extends Component  {
@@ -92,43 +93,52 @@ class AddressPanel extends Component  {
   }
 
   render() {
-    console.log(this.props)
-    
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
       </button>
     )
     return (
-      <div className="address_form_container">
+      <div>
         { this.props.cart ?
           <>
-            <div className="billing_address_form_container address_form">
-              <h5 className="address_form_title">Billing</h5>
-              {/* addy cards */}
-              <Form 
-                onSubmit={this.handleFormSubmit} 
-                submitButtonText={"Next"}
-                formFields={formFields} 
-                replaceSubmitButton={true}
-                submitButton={""}
-                formId={"billing_form"}
-                form={"billing_checkout_form"}
-                initialValues={this.billing_initial_values()}
-              />
+            <h5>Past Billing Addresses</h5>
+            <div style={{ display: 'flex' }}>
+              <AddressCard actionBox={ this.props.choosePreExistingAddress } bill_or_ship="billing_address" />    
             </div>
-            <div className="shipping_address_form_container address_form">
-              <h5 className="address_form_title">Shipping</h5>
-              {/* addy cards */}
-              <Form 
-                onSubmit={this.handleFormSubmit} 
-                formFields={formFields}
-                formId={"shipping_form"}
-                form={"shipping_checkout_form"}
-                replaceSubmitButton={true}
-                submitButton={replacementSubmitButton}
-                initialValues={this.shipping_initial_values()}
-              />
+            <h5>Past Shipping Addresses</h5>
+            <div style={{ display: 'flex' }}>
+              <AddressCard actionBox={ this.props.choosePreExistingAddress } bill_or_ship="shipping_address" />    
+            </div>
+
+            <div className="address_form_container">
+              <div className="billing_address_form_container address_form">
+                <h5 className="address_form_title">Billing</h5>
+                {/* addy cards */}
+                <Form 
+                  onSubmit={this.handleFormSubmit} 
+                  submitButtonText={"Next"}
+                  formFields={formFields} 
+                  replaceSubmitButton={true}
+                  submitButton={""}
+                  formId={"billing_form"}
+                  form={"billing_checkout_form"}
+                  initialValues={this.billing_initial_values()}
+                />
+              </div>
+              <div className="shipping_address_form_container address_form">
+                <h5 className="address_form_title">Shipping</h5>
+                {/* addy cards */}
+                <Form 
+                  onSubmit={this.handleFormSubmit} 
+                  formFields={formFields}
+                  formId={"shipping_form"}
+                  form={"shipping_checkout_form"}
+                  replaceSubmitButton={true}
+                  submitButton={replacementSubmitButton}
+                  initialValues={this.shipping_initial_values()}
+                />
+              </div>
             </div>
           </>
         : ""}

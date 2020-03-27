@@ -32,10 +32,12 @@ class Payments extends Component {
     })
 
     if (this.props.preExistingShipping === null || this.props.preExistingBilling === null) {
-      // Make a request to update the user model addresses
+      // TO DO
+      // Do some amount of checking to see if the address already exists
+
       let user = this.props.auth
-      user.billing_address = cart.billing_address
-      user.shipping_address = cart.shipping_address
+      user.billing_address.push(cart.billing_address)
+      user.shipping_address.push(cart.shipping_address)
       this.props.updateUser(user)
     }
 

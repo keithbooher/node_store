@@ -48,16 +48,15 @@ class CheckoutContainer extends Component  {
     this.setState({ new_order: order })
   }
 
-  choosePreExistingAddress(ship_or_bill, object) {
-    switch (ship_or_bill) {
+  choosePreExistingAddress(address) {
+    switch (address.bill_or_ship) {
       case 'shipping':
-        this.setState({ preExistingShipping: object })
+        this.setState({ preExistingShipping: address })
       case 'billing':
-        this.setState({ preExistingShipping: object })
+        this.setState({ preExistingShipping: address })
       default:
         break;
     }
-    // this.setState({ preExistingAddressChosen: boolean })
   }
 
   
