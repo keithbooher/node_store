@@ -56,6 +56,7 @@ class CheckoutContainer extends Component  {
   }
 
   choosePreExistingAddress(address) {
+    console.log(address.bill_or_ship)
     switch (address.bill_or_ship) {
       case 'shipping':
         this.setState({ preExistingShipping: address })

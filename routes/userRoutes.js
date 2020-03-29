@@ -7,6 +7,6 @@ module.exports = app => {
     let user = req.body.user
     let updated_user = await User.findOneAndUpdate({ _id: user._id }, user, {new: true})
     console.log(updated_user)
-    res.send(user_cart)
+    res.send(updated_user)
   })
 }

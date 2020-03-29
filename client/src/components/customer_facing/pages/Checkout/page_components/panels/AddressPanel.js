@@ -102,7 +102,7 @@ class AddressPanel extends Component  {
     if (address.bill_or_ship === "billing") {
       this.setState({ billing_card_chosen: !this.state.billing_card_chosen })
     } else {
-      this.setState({ shipping_card_chosen: !this.state.billing_card_chosen })
+      this.setState({ shipping_card_chosen: !this.state.shipping_card_chosen })
     }
     this.props.choosePreExistingAddress(address)
   }
@@ -117,11 +117,6 @@ class AddressPanel extends Component  {
   }
 
   renderNewAddressForm() {
-    const replacementSubmitButton = (
-      <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
-        <i className="material-icons right">Next</i>
-      </button>
-    )
     return (
       <div className="address_form_container">
       
@@ -151,11 +146,10 @@ class AddressPanel extends Component  {
               formId={"shipping_form"}
               form={"shipping_checkout_form"}
               replaceSubmitButton={true}
-              submitButton={replacementSubmitButton}
+              submitButton={""}
               initialValues={this.shipping_initial_values()}
             />
           </div>}
-
       </div>
     )
   }
@@ -171,7 +165,12 @@ class AddressPanel extends Component  {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
+    const replacementSubmitButton = (
+      <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
+        <i className="material-icons right">Next</i>
+      </button>
+    )
     return (
       <div>
         { this.props.cart ?
@@ -187,6 +186,8 @@ class AddressPanel extends Component  {
             { this.renderAddressCards() }
 
             { this.renderNewAddressForm() }
+
+            { replacementSubmitButton }
 
           </>
         : ""}

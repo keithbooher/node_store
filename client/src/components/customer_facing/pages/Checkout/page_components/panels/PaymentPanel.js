@@ -16,6 +16,7 @@ class PaymentPanel extends Component  {
     return (
       <>
         <Payment 
+          cart={this.props.cart}
           preExistingShipping={this.props.preExistingShipping} 
           preExistingBilling={this.props.preExistingBilling} 
           makeNewOrderAvailable={this.props.makeNewOrderAvailable} 

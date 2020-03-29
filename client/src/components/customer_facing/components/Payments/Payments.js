@@ -11,7 +11,6 @@ class Payments extends Component {
     this.someFunction = this.someFunction.bind(this)
   }
   async someFunction(token) {
-    console.log(token)
     await this.props.handleToken(token)
     let cart = this.props.cart
     cart.checkout_state = 'complete'
@@ -31,26 +30,53 @@ class Payments extends Component {
       return line_item
     })
 
-
-    // TO DO
-    // Dont use the pre existing props being passed in, 
-    // if the user refreshes the page these will be lost
-    // do a manual check through each of the addressess
-    // associated to the user
     let user = this.props.auth
-    if (this.props.preExistingShipping === null) {
-      // TO DO
-      // Do some amount of checking to see if the address already exists
+    let past_billing_used = false
+    let past_shipping_used = false
+    // Check if any of the customers past billing addresses match the one thats submitted
+    // If it matches then, we set the variable to true and prevent updating the user's address records
+    for (const address of this.props.auth.billing_address) {
+      if (
+          address.first_name === cart.billing_address.first_name
+          && address.last_name === cart.billing_address.last_name
+          && address.street_address_1 === cart.billing_address.street_address_1
+          && address.street_address_2 === cart.billing_address.street_address_2
+          && address.city === cart.billing_address.city
+          && address.state === cart.billing_address.state
+          && address.zip_code === cart.billing_address.zip_code
+          && address.phone_number === cart.billing_address.phone_number
+          && address._user_id === cart.billing_address._user_id
+          ) {
+        past_billing_used = true
+      }
+    }
+    // Check if any of the customers past shipping addresses match the one thats submitted
+    // If it matches then, we set the variable to true and prevent updating the user's address records
+    for (const address of this.props.auth.shipping_address) {
+      if (
+        address.first_name === cart.shipping_address.first_name
+        && address.last_name === cart.shipping_address.last_name
+        && address.street_address_1 === cart.shipping_address.street_address_1
+        && address.street_address_2 === cart.shipping_address.street_address_2
+        && address.city === cart.shipping_address.city
+        && address.state === cart.shipping_address.state
+        && address.zip_code === cart.shipping_address.zip_code
+        && address.phone_number === cart.shipping_address.phone_number
+        && address._user_id === cart.shipping_address._user_id
+        ) {
+        past_shipping_used = true
+      }
+    }
+
+    // if this address doesn't match past addresses used, we add to the user's address records
+    if (past_shipping_used === false) {
       user.shipping_address.push(cart.shipping_address)
     }
-    if (this.props.preExistingBilling === null) {
-      // TO DO
-      // Do some amount of checking to see if the address already exists
+    if (past_billing_used === false) {
       user.billing_address.push(cart.billing_address)
     }
-
-    if (this.props.preExistingShipping === null || this.props.preExistingBilling === null) {
-      this.props.updateUser(user)    
+    if (past_billing_used === false || past_shipping_used === false) {
+      this.props.updateUser(user)
     }
 
     let order = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { clearCheckoutForm } from '../../../../actions'
+import { clearCheckoutForm, updateUser } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash} from "@fortawesome/free-solid-svg-icons"
 
@@ -12,7 +12,6 @@ class AddressCard extends Component {
   }
 
   checkBox(address) {
-    console.log(address)
     this.props.actionBox(address)
     this.props.clearCheckoutForm()
     if (this.state.checked_box === address._id) {
@@ -40,8 +39,19 @@ class AddressCard extends Component {
     }
   }
 
+  deleteAddress(address) {
+    let user = this.props.auth
+    let address_to_be_deleted = address
+    let new_bill = user.billing_address.filter(address => address_to_be_deleted._id !== address._id)
+    let new_ship = user.shipping_address.filter(address => address_to_be_deleted._id !== address._id)
+    user.billing_address = new_bill
+    user.shipping_address = new_ship
+    console.log(user)
+    this.props.updateUser(user)
+  }
+
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     return (
       <div style={{ position: 'relative' }}>
         {/* delete icon */}
@@ -59,7 +69,7 @@ class AddressCard extends Component {
                     <div>zip code: {address.zip_code ? address.zip_code : "" }</div>
                     <div>phone number: {address.phone_number ? address.phone_number : "" }</div>
                     <div>bill_or_ship: {address.bill_or_ship ? address.bill_or_ship : "" }</div>
-                    <FontAwesomeIcon icon={faTrash} />
+                    <button onClick={() => this.deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
                     { this.props.actionBox ? <button onClick={() => this.checkBox(address)}>Use this address </button> : "" }
                   </div>
           })}
@@ -74,6 +84,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { clearCheckoutForm }
+const actions = { clearCheckoutForm, updateUser }
 
 export default connect(mapStateToProps, actions)(AddressCard)
