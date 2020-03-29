@@ -40,18 +40,8 @@ class Addresses extends Component {
     return (
     <div>
       <div>
-        <div className="billing_cards">
-          <h5>Billing Cards</h5>
-          <div className="card_container">
-            <AddressCard bill_or_ship="billing_address" />    
-          </div>
-        </div>
-        <div className="shipping_cards">
-          <h5>Shipping Cards</h5>
-          <div className="card_container">
-            <AddressCard bill_or_ship="shipping_address" />    
-          </div>
-        </div>
+        <AddressCard bill_or_ship="billing_address" />    
+        <AddressCard bill_or_ship="shipping_address" />    
       </div>
       <div className="new_user_address_forms_container">
         <div className="user_billing_form">

@@ -23,4 +23,8 @@ export default {
   getCurrentUser: () => {
     return axios.get('/api/current_user')
   },
+  updateCart: (cart) => {
+    const data = { cart }
+    return axios.put('/api/cart/update/' + cart.id, data) 
+  }
 }

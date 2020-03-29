@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from '../../../../../../actions'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
 import formFields from '../formFields'
@@ -12,17 +11,20 @@ class AddressPanel extends Component  {
   constructor(props) {
     super()
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
     this.state = {
-
+      billing_card_chosen: false,
+      shipping_card_chosen: false,
     }
   }
 
   async componentDidMount() {    
-
+    console.log(this.props.auth)
   }
   
 
-  handleFormSubmit() {
+  handleFormSubmit(e) {
+    e.preventDefault()
     console.log("formSubmit")
     // NEED TO PREVENT SUBMISSION IF NEITHER A PRE-EXISTING ADDY CARD 
     // HAS BEEN SELECTED OR THE FORM HAS BEEN FILLED OUT
@@ -31,8 +33,7 @@ class AddressPanel extends Component  {
     let shipping_address = {}
     let billing_address = {}
 
-
-    if (this.props.preExistingShipping === null) {
+    if (this.props.preExistingShipping === null) { // OR if billing redux form is not empty
       const ship_addy = this.props.form.shipping_checkout_form.values
       shipping_address = {
         first_name: ship_addy.first_name,
@@ -51,7 +52,7 @@ class AddressPanel extends Component  {
       shipping_address = this.props.preExistingShipping
     }
 
-    if (this.props.preExistingBilling === null) {
+    if (this.props.preExistingBilling === null) { // OR if billing redux form is not empty
       const bill_addy = this.props.form.billing_checkout_form.values
       billing_address = {
         first_name: bill_addy.first_name,
@@ -74,6 +75,7 @@ class AddressPanel extends Component  {
     cart_instance.billing_address = billing_address
 
     this.props.updateCart(cart_instance)
+    this.props.chooseTab('shipping')
   }
 
   billing_initial_values() {
@@ -92,54 +94,100 @@ class AddressPanel extends Component  {
     return shipping_initial_values
   }
 
-  render() {
+  formOnChange(bill_or_ship) { 
+    this.props.choosePreExistingAddress({ bill_or_ship })
+  }
+
+  choosePreExistingAddress(address) {
+    if (address.bill_or_ship === "billing") {
+      this.setState({ billing_card_chosen: !this.state.billing_card_chosen })
+    } else {
+      this.setState({ shipping_card_chosen: !this.state.billing_card_chosen })
+    }
+    this.props.choosePreExistingAddress(address)
+  }
+
+  renderAddressCards() {
+    return (
+      <>
+        <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" />    
+        <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" />    
+      </>
+    )
+  }
+
+  renderNewAddressForm() {
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
       </button>
     )
     return (
+      <div className="address_form_container">
+      
+        { this.state.billing_card_chosen === true ? "" :
+          <div className="billing_address_form_container address_form">
+            <h5 className="address_form_title">Billing</h5>
+            <Form 
+              onSubmit={this.handleFormSubmit} 
+              onChange={() => this.formOnChange('billing null')}
+              submitButtonText={"Next"}
+              formFields={formFields} 
+              replaceSubmitButton={true}
+              submitButton={""}
+              formId={"billing_form"}
+              form={"billing_checkout_form"}
+              initialValues={this.billing_initial_values()}
+            />
+          </div> }
+
+        { this.state.shipping_card_chosen === true ? "" :
+          <div className="shipping_address_form_container address_form">
+            <h5 className="address_form_title">Shipping</h5>
+            <Form 
+              onSubmit={this.handleFormSubmit} 
+              onChange={() => this.formOnChange('shipping null')}
+              formFields={formFields}
+              formId={"shipping_form"}
+              form={"shipping_checkout_form"}
+              replaceSubmitButton={true}
+              submitButton={replacementSubmitButton}
+              initialValues={this.shipping_initial_values()}
+            />
+          </div>}
+
+      </div>
+    )
+  }
+
+  checkForPastAddys() {
+    if (this.props.auth !== null) {
+      if (this.props.auth.billing_address.length > 0 || this.props.auth.shipping_address.length > 0) {
+        return true
+      }
+    } else {
+      return false
+    }
+  }
+
+  render() {
+    console.log(this.props)
+    return (
       <div>
         { this.props.cart ?
           <>
-            <h5>Past Billing Addresses</h5>
-            <div style={{ display: 'flex' }}>
-              <AddressCard actionBox={ this.props.choosePreExistingAddress } bill_or_ship="billing_address" />    
-            </div>
-            <h5>Past Shipping Addresses</h5>
-            <div style={{ display: 'flex' }}>
-              <AddressCard actionBox={ this.props.choosePreExistingAddress } bill_or_ship="shipping_address" />    
-            </div>
 
-            <div className="address_form_container">
-              <div className="billing_address_form_container address_form">
-                <h5 className="address_form_title">Billing</h5>
-                {/* addy cards */}
-                <Form 
-                  onSubmit={this.handleFormSubmit} 
-                  submitButtonText={"Next"}
-                  formFields={formFields} 
-                  replaceSubmitButton={true}
-                  submitButton={""}
-                  formId={"billing_form"}
-                  form={"billing_checkout_form"}
-                  initialValues={this.billing_initial_values()}
-                />
-              </div>
-              <div className="shipping_address_form_container address_form">
-                <h5 className="address_form_title">Shipping</h5>
-                {/* addy cards */}
-                <Form 
-                  onSubmit={this.handleFormSubmit} 
-                  formFields={formFields}
-                  formId={"shipping_form"}
-                  form={"shipping_checkout_form"}
-                  replaceSubmitButton={true}
-                  submitButton={replacementSubmitButton}
-                  initialValues={this.shipping_initial_values()}
-                />
-              </div>
-            </div>
+            {/* LETS CHECK IF THEY HAVE ANY PAST ADDRESSES TO USE  */}
+            {/* IF NOT, THEN DISPLAY THE FORM FIRST, OTHERWISE DISPLAY PAST ADDRESS CARDS */}
+            {/* WE'LL PUT BACK IN THE LEGIT SUBMIT BUTTON FOR THE FORM AND USE THE CUSTOM NEXT 
+                BUTTON FOR THE ADDRESS CARDS, THIS WAY WE GET UTILIZE THE REDUX FORM VAILDATION 
+                WHEN WE DO A TRUE FORM SUBMISSION */}
+            {/* {this.checkForPastAddys() ? : } */}
+
+            { this.renderAddressCards() }
+
+            { this.renderNewAddressForm() }
+
           </>
         : ""}
       </div>
@@ -147,10 +195,8 @@ class AddressPanel extends Component  {
   }
 }
 
-function mapStateToProps({ form, cart }) {
-  return { form, cart }
+function mapStateToProps({ form, cart, auth }) {
+  return { form, cart, auth }
 }
 
-const actions = { updateCart }
-
-export default connect(mapStateToProps, actions)(AddressPanel)
+export default connect(mapStateToProps, null)(AddressPanel)

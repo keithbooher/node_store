@@ -31,14 +31,26 @@ class Payments extends Component {
       return line_item
     })
 
-    if (this.props.preExistingShipping === null || this.props.preExistingBilling === null) {
+
+    // TO DO
+    // Dont use the pre existing props being passed in, 
+    // if the user refreshes the page these will be lost
+    // do a manual check through each of the addressess
+    // associated to the user
+    let user = this.props.auth
+    if (this.props.preExistingShipping === null) {
       // TO DO
       // Do some amount of checking to see if the address already exists
-
-      let user = this.props.auth
-      user.billing_address.push(cart.billing_address)
       user.shipping_address.push(cart.shipping_address)
-      this.props.updateUser(user)
+    }
+    if (this.props.preExistingBilling === null) {
+      // TO DO
+      // Do some amount of checking to see if the address already exists
+      user.billing_address.push(cart.billing_address)
+    }
+
+    if (this.props.preExistingShipping === null || this.props.preExistingBilling === null) {
+      this.props.updateUser(user)    
     }
 
     let order = {
@@ -78,8 +90,8 @@ class Payments extends Component {
   }
 }
 
-function mapStateToProps({ auth, cart }) {
-  return { auth, cart }
+function mapStateToProps({ auth }) {
+  return { auth }
 }
 
 const actions = { clearCheckoutForm, updateCart, convertCart, updateUser, handleToken }

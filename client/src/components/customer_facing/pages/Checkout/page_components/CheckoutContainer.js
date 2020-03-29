@@ -18,12 +18,14 @@ class CheckoutContainer extends Component  {
     this.chooseTab = this.chooseTab.bind(this)
     this.makeNewOrderAvailable = this.makeNewOrderAvailable.bind(this)
     this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
+    this.updateCart = this.updateCart.bind(this)
     
     this.state = {
       chosen_tab: 'address',
       new_order: null,
       preExistingShipping: null,
       preExistingBilling: null,
+      current_cart: null
     }
   }
 
@@ -33,11 +35,16 @@ class CheckoutContainer extends Component  {
     if (current_cart.data.checkout_state === "shopping") {
       current_cart.data.checkout_state = "address"
     }
-    this.setState({ chosen_tab: current_cart.data.checkout_state })
+    this.setState({ chosen_tab: current_cart.data.checkout_state, current_cart: current_cart.data })
 
     // MAKE REQUEST TO UPDATE CART STATUS TO ADDRESS (if checkout_state is shopping), 
     // JUST NOT THROUGH REDUX SO WE DONT CAUSE A RERENDER
 
+  }
+
+  async updateCart(cart) {
+    const update_cart = await API.updateCart(cart)
+    this.setState({ current_cart: update_cart.data })
   }
 
   chooseTab(chosen_tab) {
@@ -52,8 +59,16 @@ class CheckoutContainer extends Component  {
     switch (address.bill_or_ship) {
       case 'shipping':
         this.setState({ preExistingShipping: address })
+        break
       case 'billing':
-        this.setState({ preExistingShipping: address })
+        this.setState({ preExistingBilling: address })
+        break
+      case 'shipping null':
+        this.setState({ preExistingShipping: null })
+        break
+      case 'billing null':
+        this.setState({ preExistingBilling: null })
+        break
       default:
         break;
     }
@@ -67,7 +82,9 @@ class CheckoutContainer extends Component  {
         <h4 onClick={() => this.chooseTab('address')}>Address</h4>
         {this.state.chosen_tab === 'address' ? 
           <AddressPanel 
+            chooseTab={this.chooseTab}
             chosen_tab={this.state.chosen_tab} 
+            updateCart={this.updateCart}
             // pass this to the preAddy cards
             choosePreExistingAddress={this.choosePreExistingAddress}
             preExistingShipping={this.state.preExistingShipping}
@@ -77,16 +94,17 @@ class CheckoutContainer extends Component  {
 
         <h4 onClick={() => this.chooseTab('shipping')}>Shipping</h4>
         {this.state.chosen_tab === 'shipping' ? 
-          <ShippingPanel 
+          <ShippingPanel
+            cart={this.state.current_cart}
+            updateCart={this.updateCart}
             chooseTab={this.chooseTab}
-            preExistingShipping={this.state.preExistingShipping}
-            preExistingBilling={this.state.preExistingBilling}
             />
         : ""}
 
         <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
         {this.state.chosen_tab === "payment" ? 
           <PaymentPanel 
+            cart={this.state.current_cart}
             makeNewOrderAvailable={this.makeNewOrderAvailable} 
             clearCheckoutForm={this.props.clearCheckoutForm} 
             chooseTab={this.chooseTab} 
