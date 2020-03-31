@@ -22,7 +22,7 @@ class Home extends Component  {
 
   renderProducts() {
     return this.state.products.map(product => {
-      return <div key={product._id}><ProductCard addToCart={this.props.addToCart} user={this.props.auth} product={product} cart={this.props.cart} category_path_name={product.category[0].category_path_name} /></div>
+      return <><ProductCard addToCart={this.props.addToCart} user={this.props.auth} product={product} cart={this.props.cart} category_path_name={product.category[0].category_path_name} /></>
     })
   }
 
@@ -31,10 +31,8 @@ class Home extends Component  {
     console.log('home',this.props)
     return (
       <div>
-        <h1>
-          Node Store
-        </h1>
-        <div className="product_grid">
+        <h1>Node Store</h1>
+        <div className="flex">
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>

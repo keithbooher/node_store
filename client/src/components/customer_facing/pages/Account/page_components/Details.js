@@ -13,13 +13,10 @@ class Details extends Component {
     this.state = {}
   }
 
-  async componentDidMount() {
-    // redux action to 
-  }
-
   async handleSubmit(e, key) {
+    // takes in the user attribute that was tied to the form field that submitted this request
+    // and dynamically pulls the value from that redux-form field value
     e.preventDefault()
-    // some request to update the users general info
     let user = this.props.auth
     user[key] = this.props.form[`${key}_form`].values[`${key}`]
     this.props.updateUser(user)
@@ -27,7 +24,7 @@ class Details extends Component {
 
   renderAttributeForms() {
     let user = this.props.auth
-    let do_not_use = ['billing_address', 'shipping_address', 'email', 'googleId', '__v', '_id', 'joined_on', 'admin', 'credits']
+    let do_not_use = ['billing_address', 'shipping_address', 'email', 'googleId', '__v', '_id', 'joined_on', 'admin', 'credits', 'photo']
     let self = this
 
     const replacementSubmitButton = (key) => {
@@ -37,12 +34,11 @@ class Details extends Component {
     }
 
     return Object.keys(user).filter((property) => do_not_use.includes(property) ? false : true ).map(function(key, index) {
-      console.log(user[key])
       return (
         <Form 
           onSubmit={self.handleSubmit}
           submitButtonText={"Next"}
-          formFields={[{ label: key, name: key, noValueError: 'You must provide an address', value: null }]} 
+          formFields={[{ label: hf.capitalizeFirsts(key.replace(/_/g, " ")), name: key, noValueError: `You must provide a ${key}`, value: null }]} 
           replaceSubmitButton={true}
           submitButton={(replacementSubmitButton(key))}
           formId={`${key}_form`}
@@ -55,14 +51,14 @@ class Details extends Component {
 
 
   render() {
-    console.log(this.props)
-
     return (
       <div>
         { this.props.auth ?
           <>
-            <h4 style={{ color: 'darkblue' }}>Email: {this.props.auth.email}</h4>
-            { this.renderAttributeForms() }
+            <h4>Email: {this.props.auth.email}</h4>
+            <div className="INSERT RFAMEWORK FLEX BOX NAME">
+              { this.renderAttributeForms() }
+            </div>
           </>
           : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} />
         }

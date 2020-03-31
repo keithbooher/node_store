@@ -3,7 +3,7 @@
 }
 
 .line_item_quantity{
-  color: green;
+  color: white;
 }
 
 .line_item_sub_container {
@@ -11,15 +11,15 @@
   display: flex;
   justify-content: space-around;
   position: relative;
+  padding: 25px 10px;
 }
 
 .remove_line_item_button {
   position: absolute;
-  height: 10px;
-  bottom: 35px;
-  left: 44px;
-  color: red;
-  cursor: pointer;
+  height: auto;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .cart_plus_minus {

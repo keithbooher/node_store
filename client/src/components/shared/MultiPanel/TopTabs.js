@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import hf from "../../../utils/helperFunctions"
 
 class TopTabs extends Component  {
   constructor(props) {
@@ -11,9 +12,11 @@ class TopTabs extends Component  {
   renderTabs() {
     return this.props.sections.map((section) => {
       let style = {
-        color: section === this.props.chosenTab ?  'red' : 'black'
+        color: section === this.props.chosenTab ?  '#3acaf9' : 'white',
+        flexBasis: `${100*(1/this.props.sections.length)}%`,
+        textAlign: 'center'
       }
-      return <h3 data-tab={section} style={style} onClick={() => this.props.chooseTab(section)} className="tab_section_header">{section}</h3>
+      return <h3 data-tab={section} style={style} onClick={() => this.props.chooseTab(section)} className="tab_section_header clickable">{hf.capitalizeFirsts(section)}</h3>
     })
   }
 
@@ -21,7 +24,8 @@ class TopTabs extends Component  {
   render() {
     let tabs_container_style = {
       display: 'flex',
-      justifyContent: 'space-evenly'
+      justifyContent: 'space-evenly',
+      backgroundColor: '#212121'
     }
 
     return (

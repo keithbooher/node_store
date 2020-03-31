@@ -35,7 +35,7 @@ class Cart extends Component {
       });
     }
     return (
-      <div style={{ display: 'flex', backgroundColor: 'darkred', padding: '0px 10px' }} onClick={this.expandCart.bind((this))}>
+      <div className="flex" style={{ padding: '0px 10px' }} onClick={this.expandCart.bind((this))}>
         {calculated_cart_length}
         <i className="fas fa-shopping-cart"></i>
       </div>

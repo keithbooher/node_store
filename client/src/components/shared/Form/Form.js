@@ -20,7 +20,7 @@ class Form extends Component {
   render() {
     return (
       <div>
-        <form id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.onSubmit(e)}>
+        <form style={{ marginTop: '10px' }} id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.onSubmit(e)}>
           {this.renderFields()}
           {!this.props.replaceSubmitButton ?
           <button type="submit" className="teal btn-flat right white-text">

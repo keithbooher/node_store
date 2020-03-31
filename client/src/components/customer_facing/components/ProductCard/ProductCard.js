@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import hf from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import './productCard.css.scss'
@@ -77,21 +76,21 @@ class ProductCard extends Component {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
     return (
-      <div>
+      <>
         {this.props.auth !== null ? 
-            <div className="card blue-grey darken-1">
-              <div className="card-content white-text">
-                <span className="card-title">{product.name}</span>
+            <div className="card">
+              <div className="card-content">
+                <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
                 <p>{product.description}</p>
               </div>
-              <div className="card-action">
+              <div className="product-card-link clickable">
                 <Link to={`/shop/${category_path_name}/${product.path_name}`} className="">Go to this product</Link>
               </div>
-              <div className="add_to_cart" onClick={this.addToCart.bind(this)}>Add To Cart</div>
+              <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
               {/* add quantity buttons */}
           </div>
         : <img className="loadingGif" src={loadingGif} /> }
-    </div>
+    </>
     )
   }
 }

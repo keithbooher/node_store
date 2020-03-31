@@ -60,7 +60,7 @@ class LineItem extends Component {
           <div className="line_item_name">{line_item.product_name}</div>
           <div className="line_item_quantity">x{line_item.quantity}</div>
           <i className="fas fa-minus cart_plus_minus" onClick={() => this.alterLineItemQuantity('subtraction')}></i>
-          <span className="remove_line_item_button" onClick={this.removeProduct.bind(this)}>remove</span>
+          <a className="remove_line_item_button" onClick={this.removeProduct.bind(this)}>remove</a>
         </div>
       </li>
     )

@@ -1,11 +1,47 @@
-// @import './homepage.css.scss'
 
-#body_content_container {
-  padding: 30px 50px;
+html {
+  scroll-behavior: smooth;
+  background: #1b1b1b;
+  color: white;
 }
 
-.nav-wrapper {
-  position: relative;
+a {
+  color: #3acaf9;
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+button {
+  background-color:#313131;
+  border: solid 1px #3acaf9;
+  font-size: 14px;
+  color: #3acaf9;
+  border-radius: 2px;
+  padding: 4px;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color:#3acaf9;
+  border: solid 1px #313131;
+  font-size: 14px;
+  color: #313131;
+  border-radius: 2px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.clickable {
+  padding: 10px 5px;
+  margin: 0px;
+}
+
+.clickable:hover {
+  background-color: rgba(1,1,1,0.5);
+  cursor: pointer;
 }
 
 .loadingGif {
@@ -20,6 +56,19 @@
   transform: translate(-50%, -50%)
 }
 
-html {
-  scroll-behavior: smooth;
+.flex {
+  display: flex;
 }
+
+.flex_column {
+  flex-direction: column;
+}
+
+#body_content_container {
+  padding: 30px 50px;
+}
+
+.nav-wrapper {
+  position: relative;
+}
+
