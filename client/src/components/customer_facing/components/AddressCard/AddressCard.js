@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { clearCheckoutForm, updateUser } from '../../../../actions'
+import { updateUser } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash} from "@fortawesome/free-solid-svg-icons"
+import { reset } from 'redux-form'
 
 class AddressCard extends Component {
   constructor(props) {
@@ -13,7 +14,11 @@ class AddressCard extends Component {
 
   checkBox(address) {
     this.props.actionBox(address)
-    this.props.clearCheckoutForm()
+    if (address.bill_or_ship === "billing") {
+      this.props.reset("billing_checkout_form")
+    } else {
+      this.props.reset("shipping_checkout_form")
+    }
     if (this.state.checked_box === address._id) {
       this.setState({ checked_box: null })
     } else {
@@ -84,6 +89,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { clearCheckoutForm, updateUser }
+const actions = { updateUser, reset }
 
 export default connect(mapStateToProps, actions)(AddressCard)

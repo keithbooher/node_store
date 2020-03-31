@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
-import { clearCheckoutForm, updateCart, convertCart, updateUser, handleToken } from '../../../../actions'
+import { updateCart, convertCart, updateUser, handleToken } from '../../../../actions'
 import API from '../../../../utils/API'
 import _ from "lodash"
+import { reset } from "redux-form"
 
 class Payments extends Component {
   constructor(props) {
@@ -96,7 +97,8 @@ class Payments extends Component {
 
     this.props.chooseTab("review")
     this.props.convertCart({checkout_state: 'complete', line_items: []})
-    this.props.clearCheckoutForm()
+    this.props.reset("billing_checkout_form")
+    this.props.reset("shipping_checkout_form")
   }
 
   render() {
@@ -120,6 +122,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { clearCheckoutForm, updateCart, convertCart, updateUser, handleToken }
+const actions = { reset, updateCart, convertCart, updateUser, handleToken }
 
 export default connect(mapStateToProps, actions)(Payments)

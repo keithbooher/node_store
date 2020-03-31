@@ -107,7 +107,6 @@ class CheckoutContainer extends Component  {
           <PaymentPanel 
             cart={this.state.current_cart}
             makeNewOrderAvailable={this.makeNewOrderAvailable} 
-            clearCheckoutForm={this.props.clearCheckoutForm} 
             chooseTab={this.chooseTab} 
             chosen_tab={this.state.chosen_tab} 
             preExistingShipping={this.state.preExistingShipping}

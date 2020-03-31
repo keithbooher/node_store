@@ -33,7 +33,7 @@ class AddressPanel extends Component  {
     let shipping_address = {}
     let billing_address = {}
 
-    if (this.props.preExistingShipping === null) { // OR if billing redux form is not empty
+    if (this.props.preExistingShipping === null) {
       const ship_addy = this.props.form.shipping_checkout_form.values
       shipping_address = {
         first_name: ship_addy.first_name,
@@ -52,7 +52,7 @@ class AddressPanel extends Component  {
       shipping_address = this.props.preExistingShipping
     }
 
-    if (this.props.preExistingBilling === null) { // OR if billing redux form is not empty
+    if (this.props.preExistingBilling === null) {
       const bill_addy = this.props.form.billing_checkout_form.values
       billing_address = {
         first_name: bill_addy.first_name,

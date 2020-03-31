@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const Product = mongoose.model('products')
 
 module.exports = app => {
+  // change to post route for admins
   app.get('/api/product/create', requireLogin, adminRequired, async (req, res) => {  
     let product = new Product({
       name: 'test product two',
