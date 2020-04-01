@@ -19,6 +19,7 @@ const orderSchema = new Schema({
   },
   line_items: [LineItemSchema],
   _user_id: String,
+  email: String
 
 })
 

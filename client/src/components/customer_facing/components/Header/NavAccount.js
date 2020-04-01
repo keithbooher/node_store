@@ -10,13 +10,13 @@ class AccountNav extends Component {
       case null:
         return
       case false:
-        return <li><a href="/auth/google">Sign in with Google</a></li>
+        return <a href="/auth/google">Sign in with Google</a>
       default:
         return [
-          <li className="header_list_item clickable" key="5"><Link to="/account">{this.props.auth.email}</Link></li>,
-          <li className="header_list_item clickable" key="2"><a href="/api/logout">Logout</a></li>,
-          <li className="header_list_item clickable" key="4"><Link to="/checkout">Checkout</Link></li>,
-          <li className="header_list_item clickable"><Cart /></li>
+          <Link className="header_list_item clickable" to="/account">{this.props.auth.email}</Link>,
+          <a className="header_list_item clickable" href="/api/logout">Logout</a>,
+          <Link className="header_list_item clickable" to="/checkout">Checkout</Link>,
+          <Cart />
         ]
     }
   }

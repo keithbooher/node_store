@@ -10,8 +10,13 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  background-color: rgba(1,1,1,0.5);
+}
+
 ul {
   list-style-type: none;
+  padding-left: 0px;
 }
 
 button {
@@ -68,7 +73,15 @@ button:hover {
   padding: 30px 50px;
 }
 
-.nav-wrapper {
-  position: relative;
+label {
+  display: block;
+  margin-bottom: 3px;
 }
 
+input {
+  width: 90%;
+  height: 25px;
+  padding: 3px 5px;
+  border-radius: 5px;
+  font-size: 16px;
+}

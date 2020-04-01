@@ -8,7 +8,7 @@ class Header extends Component {
     return (
     <nav>
       <div className="flex" style={{ backgroundColor: "#6f6f6f", justifyContent: 'space-between' }}>
-        <h2 className="clickable"><Link to='/' className="">Node Store</Link></h2>
+        <Link to='/' className=""><h2 className="">Node Store</h2></Link>
         <ul className="flex" style={{ margin: '0px' }}>
           <NavAccount />
         </ul>

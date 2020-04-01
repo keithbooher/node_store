@@ -88,6 +88,7 @@ class Payments extends Component {
       date_placed: date,
       line_items: cart.line_items,
       _user_id: cart._user_id,
+      email: user.email
     }
 
     const new_order = await API.createOrder(order)
