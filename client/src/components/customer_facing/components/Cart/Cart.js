@@ -11,7 +11,6 @@ class Cart extends Component {
     this.state = {showCart: false}
   }
   componentDidMount() {
-    console.log(this.props)
     if (this.props.auth) {
       this.props.usersCart(this.props.auth._id)
     }

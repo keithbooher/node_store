@@ -1,48 +1,8 @@
 @import './flex.css.scss';
 @import './margin.css.scss';
 @import './padding.css.scss';
-
-html {
-  scroll-behavior: smooth;
-  background: #1b1b1b;
-  color: white;
-}
-
-a {
-  color: #3acaf9;
-  text-decoration: none;
-  padding: 10px 5px;
-  margin: 0px;
-}
-
-a:hover {
-  background-color: rgba(1,1,1,0.5);
-}
-
-ul {
-  list-style-type: none;
-  padding-left: 0px;
-}
-
-button {
-  background-color:#313131;
-  border: solid 1px #3acaf9;
-  font-size: 14px;
-  color: #3acaf9;
-  border-radius: 2px;
-  padding: 4px;
-  font-weight: 600;
-}
-
-button:hover {
-  background-color:#3acaf9;
-  border: solid 1px #313131;
-  font-size: 14px;
-  color: #313131;
-  border-radius: 2px;
-  padding: 4px;
-  cursor: pointer;
-}
+@import './elements.css.scss';
+@import './font-size.css.scss';
 
 .clickable {
   padding: 10px 5px;
@@ -67,17 +27,4 @@ button:hover {
 
 #body_content_container {
   padding: 30px 50px;
-}
-
-label {
-  display: block;
-  margin-bottom: 3px;
-}
-
-input {
-  width: 90%;
-  height: 25px;
-  padding: 3px 5px;
-  border-radius: 5px;
-  font-size: 16px;
 }

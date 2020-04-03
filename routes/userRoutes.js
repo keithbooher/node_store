@@ -11,18 +11,20 @@ module.exports = app => {
     res.send(updated_user)
   })
 
-  app.get('/api/user/orders/:user_id', requireLogin, async (req, res) => {
+  app.get('/api/user/orders/:user_id/:last_order_id/:direction', requireLogin, async (req, res) => {
     let user_id = req.params.user_id
-    let last_order_id = req.body.last_order_id
-    console.log(last_order_id)
-    console.log(user_id)
-    if (last_order_id === undefined) {
-      const orders = await Order.find({ _user_id: user_id }).limit(10)
-      console.log(orders)
-      res.send(orders)
+    let last_order_id = req.params.last_order_id
+    let direction = req.params.direction
+    let orders
+    if (last_order_id === 'none') {
+      orders = await Order.find({ _user_id: user_id }).limit(10)
     } else {
-      const orders = await Order.find({_user_id: {$gt: last_order_id}}).limit(10)
-      res.send(orders)
+      if (direction === "next") {
+        orders = await Order.find({_id: {$gt: last_order_id}, _user_id: user_id}).limit(10)
+      } else {
+        orders = await Order.find({_id: {$lt: last_order_id}, _user_id: user_id}).limit(10)
+      }
     }
+    res.send(orders)
   })
 }

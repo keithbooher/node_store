@@ -27,9 +27,9 @@ export default {
     const data = { cart }
     return axios.put('/api/cart/update/' + cart.id, data) 
   },
-  getUsersOrders: (user_id, last_order_id) => {
+  getUsersOrders: (user_id, last_order_id, direction) => {
     console.log(last_order_id)
-    const data = { last_order_id }
-    return axios.get('/api/user/orders/' + user_id, data) 
+    console.log(direction)
+    return axios.get('/api/user/orders/' + user_id + "/" + last_order_id + "/" + direction) 
   }
 }

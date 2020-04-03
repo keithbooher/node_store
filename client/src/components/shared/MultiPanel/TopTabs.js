@@ -10,9 +10,7 @@ class TopTabs extends Component  {
   }
 
   renderTabs() {
-    console.log(this.props.chosenTab)
     return this.props.sections.map((section) => {
-      console.log(section)
       let style = {
         color: section === this.props.chosenTab ?  '#3acaf9' : 'white',
         backgroundColor: section === this.props.chosenTab ?  'rgb(45,45,45)' : 'rgb(33,33,33)',

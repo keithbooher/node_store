@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
+import FormTextArea from './FormTextArea'
 import validateEmails from '../../../utils/validateEmails'
 
 
@@ -12,9 +13,15 @@ class Form extends Component {
   }
   
   renderFields() {
-    return _.map(this.props.formFields, ({ label, name, value }) => {
-      return <Field onChange={this.props.onChange} component={FormField} initialValues={value} type="text" label={label} name={name} />
-    })
+    if (this.props.textArea) {
+      return _.map(this.props.formFields, ({ label, name, value }) => {
+        return <Field onChange={this.props.onChange} component={FormTextArea} initialValues={value} type="text" label={label} name={name} />
+      })
+    } else {
+      return _.map(this.props.formFields, ({ label, name, value }) => {
+        return <Field onChange={this.props.onChange} component={FormField} initialValues={value} type="text" label={label} name={name} />
+      })
+    }
   }
 
   render() {

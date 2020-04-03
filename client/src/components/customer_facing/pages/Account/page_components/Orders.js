@@ -2,31 +2,48 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import API from "../../../../../utils/API"
-import { privateDecrypt } from 'crypto';
+import LineItem from "./LineItem.js"
 
 class Orders extends Component {
   constructor(props) {
     super()
-    this.state = {orders: null}
+    this.state = {
+      orders: null,
+      page_number: 1,
+      chosen_order: null
+    }
   }
 
   async componentDidMount() {
-    const orders = await API.getUsersOrders(this.props.auth._id, null)
-    console.log(orders)
+    const orders = await API.getUsersOrders(this.props.auth._id, "none", "none")
     this.setState({ orders: orders.data })
   }
 
   setOrder(order) {
-    this.setState({ chosen_order: order._id })
+    this.setState({ 
+      chosen_order: order._id,
+    })
   }
 
   orderData(order) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
+        <div>{order.line_items.map((line_item) => <LineItem line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
         <div>Date Place: ${order.date_placed}</div>
       </div>
     )
+  }
+
+  async changePage(direction) {
+    let direction_reference_order_id
+    if (direction === "next") {
+      direction_reference_order_id = this.state.orders[this.state.orders.length - 1]
+    } else {
+      direction_reference_order_id = this.state.orders[0]
+    }
+    const orders = await API.getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
+    this.setState({ orders: orders.data })
   }
 
   renderOrders() {
@@ -44,6 +61,11 @@ class Orders extends Component {
     return (
       <div>
         {this.state.orders !== null ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
+        <div className="flex">
+          <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>
+          <div className="font-size-1-3">{this.state.page_number}</div>
+          <button onClick={() => this.changePage('next')} className="bare_button">Next</button>
+        </div>
       </div>
     )
   }
