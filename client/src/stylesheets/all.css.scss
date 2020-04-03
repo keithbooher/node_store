@@ -1,3 +1,6 @@
+@import './flex.css.scss';
+@import './margin.css.scss';
+@import './padding.css.scss';
 
 html {
   scroll-behavior: smooth;
@@ -8,6 +11,8 @@ html {
 a {
   color: #3acaf9;
   text-decoration: none;
+  padding: 10px 5px;
+  margin: 0px;
 }
 
 a:hover {
@@ -41,11 +46,10 @@ button:hover {
 
 .clickable {
   padding: 10px 5px;
-  margin: 0px;
 }
 
 .clickable:hover {
-  background-color: rgba(1,1,1,0.5);
+  background-color: rgba(1,1,1,0.5) !important;
   cursor: pointer;
 }
 
@@ -59,14 +63,6 @@ button:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%)
-}
-
-.flex {
-  display: flex;
-}
-
-.flex_column {
-  flex-direction: column;
 }
 
 #body_content_container {

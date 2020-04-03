@@ -83,8 +83,8 @@ class ProductCard extends Component {
                 <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
                 <p>{product.description}</p>
               </div>
-              <div className="product-card-link clickable">
-                <Link to={`/shop/${category_path_name}/${product.path_name}`} className="">Go to this product</Link>
+              <div className="margin-m-v">
+                <Link to={`/shop/${category_path_name}/${product.path_name}`} className="product-card-link">Go to this product</Link>
               </div>
               <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
               {/* add quantity buttons */}
