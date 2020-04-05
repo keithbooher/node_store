@@ -1,11 +1,11 @@
 import React from 'react'
 
-export default ({ input, label, onChange, meta: { error, touched } }) => {
-  // console.log(input)
+export default ({ input, field_class, label, onChange, meta: { error, touched } }) => {
+  console.log(field_class)
   return (
     <div>
       <label>{label}</label>
-      <input onChange={onChange} value={input.value} {...input} style={{ marginBottom: '5px' }} />
+      <input className={field_class} onChange={onChange} value={input.value} {...input} style={{ marginBottom: '5px' }} />
       <div className="red-text" style={{ marginBottom: '20px' }}>
         {touched && error}
       </div>

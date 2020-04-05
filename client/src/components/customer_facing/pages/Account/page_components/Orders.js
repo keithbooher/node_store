@@ -28,7 +28,7 @@ class Orders extends Component {
   orderData(order) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>{order.line_items.map((line_item) => <LineItem line_item={line_item} />)}</div>
+        <div>{order.line_items.map((line_item) => <LineItem auth={this.props.auth} line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
         <div>Date Place: ${order.date_placed}</div>
       </div>
@@ -37,13 +37,17 @@ class Orders extends Component {
 
   async changePage(direction) {
     let direction_reference_order_id
+    let page_increment
     if (direction === "next") {
+      page_increment = 1
       direction_reference_order_id = this.state.orders[this.state.orders.length - 1]
     } else {
+      page_increment = -1
       direction_reference_order_id = this.state.orders[0]
     }
+    
     const orders = await API.getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
-    this.setState({ orders: orders.data })
+    this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 
   renderOrders() {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from '../../../../shared/Form/Form'
-import { detailsFields } from './formFields'
 import hf from "../../../../../utils/helperFunctions"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import { updateUser } from "../../../../../actions"

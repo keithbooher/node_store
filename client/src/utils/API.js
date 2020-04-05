@@ -28,8 +28,17 @@ export default {
     return axios.put('/api/cart/update/' + cart.id, data) 
   },
   getUsersOrders: (user_id, last_order_id, direction) => {
-    console.log(last_order_id)
-    console.log(direction)
     return axios.get('/api/user/orders/' + user_id + "/" + last_order_id + "/" + direction) 
+  },
+  submitReview: (review) => {
+    const data = { review }
+    return axios.post('/api/review/create', data) 
+  },
+  updateReview: (review) => {
+    const data = { review }
+    return axios.put('/api/review/update', data) 
+  },
+  checkIfReviewExists: (line_item_id) => {
+    return axios.get(`/api/review/check_exists/${line_item_id}`) 
   }
 }

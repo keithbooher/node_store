@@ -13,15 +13,9 @@ class Form extends Component {
   }
   
   renderFields() {
-    if (this.props.textArea) {
-      return _.map(this.props.formFields, ({ label, name, value }) => {
-        return <Field onChange={this.props.onChange} component={FormTextArea} initialValues={value} type="text" label={label} name={name} />
-      })
-    } else {
-      return _.map(this.props.formFields, ({ label, name, value }) => {
-        return <Field onChange={this.props.onChange} component={FormField} initialValues={value} type="text" label={label} name={name} />
-      })
-    }
+    return _.map(this.props.formFields, ({ label, name, value, textArea, field_class }) => {
+      return <Field onChange={this.props.onChange} field_class={field_class} component={textArea ? FormTextArea : FormField} initialValues={value} type="text" label={label} name={name} />
+    })
   }
 
   render() {

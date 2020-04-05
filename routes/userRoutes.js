@@ -22,7 +22,7 @@ module.exports = app => {
       if (direction === "next") {
         orders = await Order.find({_id: {$gt: last_order_id}, _user_id: user_id}).limit(10)
       } else {
-        orders = await Order.find({_id: {$lt: last_order_id}, _user_id: user_id}).limit(10)
+        orders = await Order.find({_id: {$lt: last_order_id}, _user_id: user_id}).sort({_id:-1}).limit(10)
       }
     }
     res.send(orders)

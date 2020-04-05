@@ -9,6 +9,8 @@ require('./models/Category')
 require('./models/Product')
 require('./models/Cart')
 require('./models/Order')
+require('./models/Review')
+
 require('./services/passport')
 
 mongoose.connect(keys.mongoURI);
@@ -29,6 +31,7 @@ require('./routes/authRoutes')(app)
 require('./routes/userRoutes')(app)
 require('./routes/billingRoutes')(app)
 require('./routes/categoryRoutes')(app)
+require('./routes/reviewRoutes')(app)
 require('./routes/productRoutes')(app)
 require('./routes/orderRoutes')(app)
 require('./routes/cartRoutes')(app)
