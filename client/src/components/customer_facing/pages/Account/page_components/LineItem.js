@@ -46,7 +46,8 @@ class LineItem extends Component {
       description: form_values.description,
       line_item: line_item,
       first_name: this.props.auth.first_name,
-      _user_id: this.props.auth._id
+      _user_id: this.props.auth._id,
+      _order_id: this.props.order_id
     }
     console.log(review)
     API.submitReview(review)

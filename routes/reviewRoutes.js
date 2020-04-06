@@ -24,4 +24,10 @@ module.exports = app => {
 
     res.send(review)
   })
+  app.get('/api/review/user/:user_id', requireLogin, async (req, res) => {  
+    const user_id = req.params.user_id
+    const reviews = await Review.find({ "_user_id": user_id })
+
+    res.send(reviews)
+  })
 }

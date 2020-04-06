@@ -28,7 +28,7 @@ class Orders extends Component {
   orderData(order) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>{order.line_items.map((line_item) => <LineItem auth={this.props.auth} line_item={line_item} />)}</div>
+        <div>{order.line_items.map((line_item) => <LineItem auth={this.props.auth} order_id={order._id} line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
         <div>Date Place: ${order.date_placed}</div>
       </div>

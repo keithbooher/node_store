@@ -7,8 +7,6 @@ const Product = mongoose.model('products')
 module.exports = app => {
   // change to post route for when admins are creating categories
   app.get('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
-    console.log(req.user) 
-    console.log('----- made it -----') 
     const category = new Category({
       name: 'test category three',
       path_name: 'test_category_three'

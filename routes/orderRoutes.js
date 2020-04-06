@@ -15,4 +15,11 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+
+  app.get('/api/order/:order_id', requireLogin, async (req, res) => {  
+    const order_id = req.params.order_id
+    const order = await Order.findOne({ "_id": order_id })
+
+    res.send(order)
+  })
 }
