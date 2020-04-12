@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
 import { updateCart, convertCart, updateUser, handleToken } from '../../../../actions'
-import API from '../../../../utils/API'
+import { createOrder } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 
@@ -91,7 +91,7 @@ class Payments extends Component {
       email: user.email
     }
 
-    const new_order = await API.createOrder(order)
+    const new_order = await createOrder(order)
 
     //make available to the checkout page, ultimately Review panel.
     this.props.makeNewOrderAvailable(new_order.data)

@@ -16,7 +16,7 @@ class AccountNav extends Component {
         return [
           <Link className="header_list_item clickable" to="/account">{this.props.auth.email}</Link>,
           <a className="header_list_item clickable" href="/api/logout">Logout</a>,
-          <LogoutThatCanHide />,
+          <CheckoutThatCanHide />,
           <Cart />
         ]
     }
@@ -42,7 +42,7 @@ export default connect(mapStateToProps)(AccountNav)
 
 
 
-const Logout = (props) => {
+const Checkout = (props) => {
   const { location } = props;
   if (location.pathname.match('/admin')){
     return null;
@@ -52,4 +52,4 @@ const Logout = (props) => {
   )
 }
 
-const LogoutThatCanHide = withRouter(Logout);
+const CheckoutThatCanHide = withRouter(Checkout);

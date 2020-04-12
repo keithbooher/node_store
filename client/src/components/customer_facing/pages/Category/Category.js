@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import API from "../../../../utils/API";
+import { getCategoryData, getCategoryProducts } from "../../../../utils/API";
 import ProductCard from '../../components/ProductCard'
 import hf from '../../../../utils/helperFunctions'
 
@@ -10,8 +10,8 @@ class Category extends Component  {
     this.state = {products: [], category_data: null}
   }
   async componentDidMount() {
-    let category_data = await API.getCategoryData(this.routeParamCategory).then(res => res.data)
-    let category_products = await API.getCategoryProducts(this.routeParamCategory).then(res => res.data)
+    let category_data = await getCategoryData(this.routeParamCategory).then(res => res.data)
+    let category_products = await getCategoryProducts(this.routeParamCategory).then(res => res.data)
     this.setState({ products: category_products, category_data: category_data })
   }
 

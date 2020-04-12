@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import loadingGif from '../../../../../images/pizzaLoading.gif'
-import API from "../../../../../utils/API"
+import { getUsersOrders } from "../../../../../utils/API"
 import LineItem from "../../../../shared/LineItem"
 
 class Orders extends Component {
@@ -15,7 +15,7 @@ class Orders extends Component {
   }
 
   async componentDidMount() {
-    const orders = await API.getUsersOrders(this.props.auth._id, "none", "none")
+    const orders = await getUsersOrders(this.props.auth._id, "none", "none")
     this.setState({ orders: orders.data })
   }
 
@@ -28,7 +28,7 @@ class Orders extends Component {
   orderData(order) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>{order.line_items.map((line_item) => <LineItem auth={this.props.auth} order_id={order._id} line_item={line_item} />)}</div>
+        <div>{order.line_items.map((line_item) => <LineItem admin={false} order_id={order._id} line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
         <div>Date Place: ${order.date_placed}</div>
       </div>
@@ -46,7 +46,7 @@ class Orders extends Component {
       direction_reference_order_id = this.state.orders[0]
     }
     
-    const orders = await API.getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
+    const orders = await getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
     this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 

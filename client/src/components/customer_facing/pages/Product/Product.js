@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import API from "../../../../utils/API";
+import { getProductInfo,  } from "../../../../utils/API";
 import { Link } from 'react-router-dom'
 import hf from '../../../../utils/helperFunctions'
 
@@ -15,7 +15,7 @@ class Product extends Component  {
   }
   async componentDidMount() {
     // OR WOULD IT BE FASTER TO FILTER THROUGH THE 'IN STOCK PRODUCTS' THAT RESIDE IN THE STORE STATE?
-    let productInfo = await API.getProductInfo(this.routeParamProduct).then((res) => res.data)
+    let productInfo = await getProductInfo(this.routeParamProduct).then((res) => res.data)
     this.setState({ product: productInfo })
   }
 

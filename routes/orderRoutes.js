@@ -29,10 +29,10 @@ module.exports = app => {
     let direction = req.params.direction
     let orders
     if (last_order_id === 'none') {
-      orders = await Order.find().limit(10)
+      orders = await Order.find().sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
-        orders = await Order.find({_id: {$gt: last_order_id}}).limit(10)
+        orders = await Order.find({_id: {$gt: last_order_id}}).sort({_id:-1}).limit(10)
       } else {
         orders = await Order.find({_id: {$lt: last_order_id}}).sort({_id:-1}).limit(10)
       }

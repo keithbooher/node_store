@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "./Form"
 import hf from "../../utils/helperFunctions"
-import API from '../../utils/API';
+import { checkIfReviewExists, submitReview, updateReview } from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"
 
@@ -28,7 +28,7 @@ class LineItem extends Component {
     // if its been reviewed, set state "reviewed"
     // use this state to show an "edit review" button instead of a "leave review" button
     // if "edit review" has been selected, then show the same form but with a function for making a put request
-    let checkIfReviewed = await API.checkIfReviewExists(this.props.line_item._id)
+    let checkIfReviewed = await checkIfReviewExists(this.props.line_item._id)
     this.setState({ reviewed: checkIfReviewed.data })
   }
 
@@ -48,7 +48,7 @@ class LineItem extends Component {
       _user_id: this.props.auth._id,
       _order_id: this.props.order_id
     }
-    API.submitReview(review)
+    submitReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
 
@@ -58,7 +58,7 @@ class LineItem extends Component {
     let review = this.state.reviewed
     review.description = form_values.description
     review.rating = form_values.rating
-    API.updateReview(review)
+    updateReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
 
@@ -67,13 +67,12 @@ class LineItem extends Component {
   }
 
   render() {
-    console.log(this.props.auth)
     let item = this.props.line_item
     return (
     <div>
       <div className="flex">
         <div>{item.product_name}</div>
-        {this.props.auth.admin === true ? "" : 
+        {this.props.admin === true ? "" : 
           <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
         }
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CheckoutContainer from './page_components/CheckoutContainer'
-import API from '../../../../utils/API'
+import { getCurrentUser } from '../../../../utils/API'
 import './checkout.css.scss'
 // pull from actions. create action to make request for adding product-data to the cart
 
@@ -13,7 +13,7 @@ class Checkout extends Component  {
   }
   async componentDidMount() {
     // make api request for cart and then set the state for cart (if we need it here)
-    const current_user = await API.getCurrentUser()
+    const current_user = await getCurrentUser()
     this.setState({ current_user: current_user.data })
   }
   

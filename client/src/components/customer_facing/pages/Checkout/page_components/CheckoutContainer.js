@@ -3,14 +3,9 @@ import AddressPanel from './panels/AddressPanel'
 import PaymentPanel from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
 import ShippingPanel from './panels/ShippingPanel'
-import API from '../../../../../utils/API'
-
+import { updateCart, getCurrentCart } from '../../../../../utils/API'
 
 import './checkout.css.scss'
-
-//manage chosen tab here
-
-
 
 class CheckoutContainer extends Component  {
   constructor(props) {
@@ -30,7 +25,7 @@ class CheckoutContainer extends Component  {
   }
 
   async componentDidMount() {
-    const current_cart = await API.getCurrentCart(this.props.current_user)
+    const current_cart = await getCurrentCart(this.props.current_user)
     console.log(current_cart)
     if (current_cart.data.checkout_state === "shopping") {
       current_cart.data.checkout_state = "address"
@@ -43,7 +38,7 @@ class CheckoutContainer extends Component  {
   }
 
   async updateCart(cart) {
-    const update_cart = await API.updateCart(cart)
+    const update_cart = await updateCart(cart)
     this.setState({ current_cart: update_cart.data })
   }
 

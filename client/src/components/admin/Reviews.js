@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import API from "../../utils/API"
+import { getAllReviews, getOrder } from "../../utils/API"
 import loadingGif from '../../images/pizzaLoading.gif'
 
 class Reviews extends Component {
@@ -17,7 +17,7 @@ class Reviews extends Component {
   }
   
   async componentDidMount() {
-    const reviews = await API.getAllReviews("none", "none", "all")
+    const reviews = await getAllReviews("none", "none", "all")
     this.setState({ reviews: reviews.data })
   }
 
@@ -26,11 +26,11 @@ class Reviews extends Component {
       if (this.state.order._id === order_id && this.state.line_item_id === line_item_id) {
         this.setState({ order: null, line_item_id: null })
       } else {
-        const order = await API.getOrder(order_id)
+        const order = await getOrder(order_id)
         this.setState({ order: order.data, line_item_id: line_item_id })
       }
     } else {
-      const order = await API.getOrder(order_id)
+      const order = await getOrder(order_id)
       this.setState({ order: order.data, line_item_id: line_item_id })
     }
   }
@@ -47,7 +47,7 @@ class Reviews extends Component {
       direction_reference_review_id = this.state.reviews[0]
     }
     
-    const reviews = await API.getAllReviews(direction_reference_review_id._id, direction, "all")
+    const reviews = await getAllReviews(direction_reference_review_id._id, direction, "all")
     this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
   }
 
