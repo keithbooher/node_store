@@ -78,7 +78,7 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-            <div className="card">
+            <div className="card border">
               <div className="card-content">
                 <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
                 <p>{product.description}</p>

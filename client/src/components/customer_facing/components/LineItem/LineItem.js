@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import './line_item.css.scss'
-import { connect } from 'react-redux'
-import hf from '../../../../utils/helperFunctions'
+import hf from '../../../utils/helperFunctions'
 
 class LineItem extends Component {
   constructor(props) {

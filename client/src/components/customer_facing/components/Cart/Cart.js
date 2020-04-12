@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import LineItem from '../LineItem'
+import LineItem from '../../../shared/LineItem'
 import { updateCart, usersCart } from '../../../../actions'
 import './cart.css.scss'
 

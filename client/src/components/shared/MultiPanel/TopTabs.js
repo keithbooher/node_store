@@ -12,7 +12,7 @@ class TopTabs extends Component  {
   renderTabs() {
     return this.props.sections.map((section) => {
       let style = {
-        color: section === this.props.chosenTab ?  '#3acaf9' : 'white',
+        color: section === this.props.chosenTab ?  '#6CB2EB' : 'white',
         backgroundColor: section === this.props.chosenTab ?  'rgb(45,45,45)' : 'rgb(33,33,33)',
         flexBasis: `${100*(1/this.props.sections.length)}%`,
         textAlign: 'center'

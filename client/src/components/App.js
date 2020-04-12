@@ -1,45 +1,77 @@
 import React, { Component } from 'react'
-import { BrowserRouter , Route } from 'react-router-dom'
+import { BrowserRouter , Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchUser } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Header from './customer_facing/components/Header'
-import Home from './customer_facing/pages/Home'
-import Product from './customer_facing/pages/Product'
-import Category from './customer_facing/pages/Category'
-import Checkout from './customer_facing/pages/Checkout'
-import Account from './customer_facing/pages/Account'
+import Admin from './Admin'
+import CustomerFacing from './CustomerFacing';
 
+import PrivateRoute from './PrivateRoute'
 
 class App extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super()
+    this.state = {admin: null}
+  }
+  async componentDidMount() {
     // Check to see if user is logged in
-    this.props.fetchUser()
+    // Also using this to pass to prive route
+    let admin = await this.props.fetchUser()
+    switch (admin) {
+      case undefined:
+        admin = null      
+        break;
+      case null:
+        admin = false      
+        break;
+      case '':
+        admin = false      
+        break;
+      default:
+        admin = true
+        break;
+    }
+    this.setState({ admin: admin })
   }
 
   render() {
-    
-    console.log(this.props)
+    console.log(this.state.admin)
     return (
-      <div className="">
-        <BrowserRouter>
-          <div>
-            <Header />
-            <div id="body_content_container">
-              <Route exact path="/" component={Home} />
-              <Route exact path="/shop/:category" component={Category} />
-              <Route exact path="/shop/:category/:product" component={Product} />
-              <Route exact path="/checkout" component={Checkout} />
-              <Route exact path="/account" component={Account} />
-            </div>
-          </div>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <HideableHeader />
+        <HideableCustomerFacing />
+        <PrivateRoute admin={this.state.admin} path="/admin">
+          <Admin />
+        </PrivateRoute>
+      </BrowserRouter>
     )
   }
 }
 
+const HeaderSwitch = (props) => {
+  const { location } = props;
+  if (location.pathname.match('/admin')){
+    return null;
+  }
+  return (
+    <Header />
+  )
+}
+
+const CustomerFacingSwitch = (props) => {
+  const { location } = props;
+  if (location.pathname.match('/admin')){
+    return null;
+  }
+  return (
+    <CustomerFacing />
+  )
+}
+
+const HideableHeader = withRouter(HeaderSwitch);
+const HideableCustomerFacing = withRouter(CustomerFacingSwitch);
 
 const actions = { fetchUser }
 

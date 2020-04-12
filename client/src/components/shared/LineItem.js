@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Form from "../../../../shared/Form"
-import hf from "../../../../../utils/helperFunctions"
-import API from '../../../../../utils/API';
+import Form from "./Form"
+import hf from "../../utils/helperFunctions"
+import API from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"
 
@@ -29,7 +29,6 @@ class LineItem extends Component {
     // use this state to show an "edit review" button instead of a "leave review" button
     // if "edit review" has been selected, then show the same form but with a function for making a put request
     let checkIfReviewed = await API.checkIfReviewExists(this.props.line_item._id)
-    console.log(checkIfReviewed)
     this.setState({ reviewed: checkIfReviewed.data })
   }
 
@@ -49,7 +48,6 @@ class LineItem extends Component {
       _user_id: this.props.auth._id,
       _order_id: this.props.order_id
     }
-    console.log(review)
     API.submitReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
@@ -62,7 +60,6 @@ class LineItem extends Component {
     review.rating = form_values.rating
     API.updateReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
-    console.log('update bitch')
   }
 
   review_initial_values() {
@@ -70,12 +67,15 @@ class LineItem extends Component {
   }
 
   render() {
+    console.log(this.props.auth)
     let item = this.props.line_item
     return (
     <div>
       <div className="flex">
         <div>{item.product_name}</div>
-        <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button>
+        {this.props.auth.admin === true ? "" : 
+          <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
+        }
       </div>
       {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       {this.state.show_review ?

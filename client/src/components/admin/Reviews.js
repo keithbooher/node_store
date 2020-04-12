@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import API from "../../../../../utils/API"
-import loadingGif from '../../../../../images/pizzaLoading.gif'
+import API from "../../utils/API"
+import loadingGif from '../../images/pizzaLoading.gif'
 
 class Reviews extends Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class Reviews extends Component {
     this.getOrder = this.getOrder.bind(this)
     this.state = {
       reviews: null,
+      review: null,
       order: null,
       page_number: 1,
       line_item_id: null
@@ -16,8 +17,7 @@ class Reviews extends Component {
   }
   
   async componentDidMount() {
-    const reviews = await API.getUsersReviews(this.props.auth._id, "none", "none")
-    console.log(reviews.data)
+    const reviews = await API.getAllReviews("none", "none", "all")
     this.setState({ reviews: reviews.data })
   }
 
@@ -35,6 +35,7 @@ class Reviews extends Component {
     }
   }
 
+
   async changePage(direction) {
     let direction_reference_review_id
     let page_increment
@@ -46,7 +47,7 @@ class Reviews extends Component {
       direction_reference_review_id = this.state.reviews[0]
     }
     
-    const reviews = await API.getUsersReviews(this.props.auth._id, direction_reference_review_id._id, direction)
+    const reviews = await API.getAllReviews(direction_reference_review_id._id, direction, "all")
     this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -62,7 +63,7 @@ class Reviews extends Component {
           {this.state.order !== null ?
             this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id? 
             <div className="padding-m">
-              <div>Order Number: {this.state.order._id}</div>
+              <div>Review Number: {this.state.order._id}</div>
               <div>Date Placed: {this.state.order.date_placed}</div>
               <div>Subtotal: {this.state.order.sub_total}</div>
               <div>Total: {this.state.order.total}</div>
@@ -74,6 +75,7 @@ class Reviews extends Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <div>
         {this.state.reviews !== null ?

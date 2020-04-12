@@ -4,6 +4,9 @@
 @import './elements.css.scss';
 @import './font-size.css.scss';
 @import './border.css.scss';
+@import './text-colors.css.scss';
+@import './colors/colors.css.scss';
+@import './positioning.css.scss';
 
 .clickable {
   padding: 10px 5px;
@@ -28,4 +31,25 @@
 
 #body_content_container {
   padding: 30px 50px;
+}
+
+.store_text_color {
+  color: $blue-3;
+}
+
+#admin_container {
+  display: grid;
+  grid-template-columns: 15em auto;
+  grid-template-rows: 100vh;
+  grid-template-areas: "asc acc";
+}
+
+#admin_sidebar_container {
+  grid-area: asc;
+  overflow: scroll;
+}
+
+#admin_content_container {
+  grid-area: acc;
+  overflow: scroll;
 }

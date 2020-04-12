@@ -41,10 +41,16 @@ export default {
   checkIfReviewExists: (line_item_id) => {
     return axios.get(`/api/review/check_exists/${line_item_id}`) 
   },
-  getUsersReviews: (user_id) => {
-    return axios.get(`/api/review/user/${user_id}`) 
+  getUsersReviews: (user_id, last_review_id, direction) => {
+    return axios.get(`/api/review/user/${user_id}/${last_review_id}/${direction}`) 
+  },
+  getAllReviews: (last_review_id, direction, approval) => {
+    return axios.get('/api/reviews/' + last_review_id + "/" + direction + "/" + approval) 
   },
   getOrder: (order_id) => {
     return axios.get(`/api/order/${order_id}`) 
-  }
+  },
+  getAllOrders: (last_order_id, direction) => {
+    return axios.get('/api/orders/' + last_order_id + "/" + direction) 
+  },
 }

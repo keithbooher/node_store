@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-
 import Cart from '../Cart'
+import { withRouter } from 'react-router-dom';  
+
 
 class AccountNav extends Component {
   renderContent() {
@@ -15,7 +16,7 @@ class AccountNav extends Component {
         return [
           <Link className="header_list_item clickable" to="/account">{this.props.auth.email}</Link>,
           <a className="header_list_item clickable" href="/api/logout">Logout</a>,
-          <Link className="header_list_item clickable" to="/checkout">Checkout</Link>,
+          <LogoutThatCanHide />,
           <Cart />
         ]
     }
@@ -36,3 +37,19 @@ function mapStateToProps({ auth }) {
 
 
 export default connect(mapStateToProps)(AccountNav)
+
+
+
+
+
+const Logout = (props) => {
+  const { location } = props;
+  if (location.pathname.match('/admin')){
+    return null;
+  }
+  return (
+    <Link className="header_list_item clickable" to="/checkout">Checkout</Link>
+  )
+}
+
+const LogoutThatCanHide = withRouter(Logout);

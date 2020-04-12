@@ -1,3 +1,4 @@
+@import './colors/colors.css.scss';
 
 html {
   scroll-behavior: smooth;
@@ -5,11 +6,16 @@ html {
   color: white;
 }
 
+body {
+  margin: 0px;
+}
+
 a {
-  color: #3acaf9;
+  color: $blue-3;
   text-decoration: none;
   padding: 10px 5px;
   margin: 0px;
+  cursor: pointer;
 }
 
 a:hover {
@@ -23,16 +29,16 @@ ul {
 
 button {
   background-color:#313131;
-  border: solid 1px #3acaf9;
+  border: solid 1px $blue-3;
   font-size: 14px;
-  color: #3acaf9;
+  color: $blue-3;
   border-radius: 2px;
   padding: 4px;
   font-weight: 600;
 }
 
 button:hover {
-  background-color:#3acaf9;
+  background-color: $blue-3;
   border: solid 1px #313131;
   font-size: 14px;
   color: #313131;
@@ -71,4 +77,8 @@ textarea {
   padding: 3px 5px;
   border-radius: 5px;
   font-size: 16px;
+}
+
+li {
+  list-style-type: none;
 }

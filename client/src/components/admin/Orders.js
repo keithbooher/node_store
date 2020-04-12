@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import loadingGif from '../../../../../images/pizzaLoading.gif'
-import API from "../../../../../utils/API"
-import LineItem from "../../../../shared/LineItem"
+import API from "../../utils/API"
+import LineItem from "../shared/LineItem"
+import loadingGif from '../../images/pizzaLoading.gif'
 
 class Orders extends Component {
   constructor(props) {
@@ -13,9 +13,10 @@ class Orders extends Component {
       chosen_order: null
     }
   }
-
+  
   async componentDidMount() {
-    const orders = await API.getUsersOrders(this.props.auth._id, "none", "none")
+    const orders = await API.getAllOrders("none", "none")
+    console.log(orders)
     this.setState({ orders: orders.data })
   }
 
@@ -46,7 +47,7 @@ class Orders extends Component {
       direction_reference_order_id = this.state.orders[0]
     }
     
-    const orders = await API.getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
+    const orders = await API.getAllOrders(direction_reference_order_id._id, direction)
     this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -54,7 +55,7 @@ class Orders extends Component {
     return this.state.orders.map((order) => {
       return (
         <div>
-          <div className="clickable margin-xs-v" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} onClick={ () => this.setOrder(order) }>{order._id}</div>
+          <div className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} onClick={ () => this.setOrder(order) }>{order._id}</div>
           { this.state.chosen_order === order._id ? this.orderData(order) : ""}
         </div>
       )
