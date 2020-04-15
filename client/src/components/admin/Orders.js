@@ -55,7 +55,7 @@ class Orders extends Component {
     return this.state.orders.map((order) => {
       return (
         <div>
-          <div className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} onClick={ () => this.setOrder(order) }>{order._id}</div>
+          <div className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} onClick={ () => this.setOrder(order) }>{order._id}----{order.date_placed}</div>
           { this.state.chosen_order === order._id ? this.orderData(order) : ""}
         </div>
       )

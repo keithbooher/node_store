@@ -32,9 +32,10 @@ module.exports = app => {
       orders = await Order.find().sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
-        orders = await Order.find({_id: {$gt: last_order_id}}).sort({_id:-1}).limit(10)
-      } else {
         orders = await Order.find({_id: {$lt: last_order_id}}).sort({_id:-1}).limit(10)
+      } else {
+        orders = await Order.find({_id: {$gt: last_order_id}}).limit(10)
+        orders = orders.reverse()
       }
     }
     res.send(orders)

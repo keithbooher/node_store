@@ -10,7 +10,8 @@ const reviewSchema = new Schema({
   line_item: Object,
   first_name: String,
   _user_id: String,
-  _order_id: String
+  _order_id: String,
+  created_at: Date
 })
 
 mongoose.model('reviews', reviewSchema)

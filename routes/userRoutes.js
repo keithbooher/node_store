@@ -2,6 +2,7 @@ const requireLogin = require('../middlewares/requireLogin')
 const mongoose = require('mongoose')
 const User = mongoose.model('users')
 const Order = mongoose.model('orders')
+const Review = mongoose.model('reviews')
 
 module.exports = app => {
   app.put('/api/update/user', requireLogin, async (req, res) => {  
@@ -28,4 +29,24 @@ module.exports = app => {
     }
     res.send(orders)
   })
+
+
+  app.get('/api/review/user/:user_id/:last_review_id/:direction', requireLogin, async (req, res) => {  
+    const user_id = req.params.user_id
+    let last_review_id = req.params.last_review_id
+    let direction = req.params.direction
+    let reviews
+    if (last_review_id === 'none') {
+      reviews = await Review.find({ _user_id: user_id }).sort({_id:-1}).limit(2)
+    } else {
+      if (direction === "next") {
+        reviews = await Review.find({_id: {$lt: last_review_id}, _user_id: user_id}).sort({_id:-1}).limit(2)
+      } else {
+        reviews = await Review.find({_id: {$gt: last_review_id}, _user_id: user_id}).limit(2)
+        reviews = reviews.reverse()
+      }
+    }
+    res.send(reviews)
+  })
+
 }
