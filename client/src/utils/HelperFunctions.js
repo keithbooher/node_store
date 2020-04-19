@@ -22,8 +22,8 @@ export default {
       details_initial_values[field.name] = objectToPullDataFrom[field.name]
     })
     return details_initial_values
-  }
-  // other: (string) => {
-  //   return //some string stuff
-  // },
+  },
+  productNameToPathName: (string) => {
+    return string.toLowerCase().replace(/ /g,"_");
+  },
 }

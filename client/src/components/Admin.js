@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 import Sidebar from './admin/Sidebar'
 import AdminDashboard from './admin/AdminDashboard'
 import Categories from './admin/Categories'
@@ -10,15 +11,11 @@ import Users from './admin/Users'
 class Admin extends Component {
   constructor(props) {
     super()
-    this.chooseTab = this.chooseTab.bind(this)
     this.state = {
       chosen_tab: "Dashboard"
     }
   }
   
-  chooseTab(tab) {
-    this.setState({ chosen_tab: tab })
-  }
 
   render() {
     let chosen_tab = this.state.chosen_tab
@@ -28,12 +25,12 @@ class Admin extends Component {
           <Sidebar chooseTab={this.chooseTab} />
         </div>
         <div id="admin_content_container" className="relative padding-s color-black" style={{ backgroundColor: "#F1F5F8" }}>
-          {chosen_tab === "Dashboard" ? <AdminDashboard /> : ""}
-          {chosen_tab === "Orders" ? <Orders /> : ""}
-          {chosen_tab === "Products" ? <Products /> : ""}
-          {chosen_tab === "Categories" ? <Categories /> : ""}
-          {chosen_tab === "Users" ? <Users /> : ""}
-          {chosen_tab === "Reviews" ? <Reviews /> : ""}
+          <Route exact path="/admin" component={AdminDashboard} />
+          <Route exact path="/admin/orders" component={Orders} />
+          <Route path="/admin/products" component={Products} />
+          <Route exact path="/admin/categories" component={Categories} />
+          <Route exact path="/admin/users" component={Users} />
+          <Route exact path="/admin/reviews" component={Reviews} />
         </div>
       </div>
     )

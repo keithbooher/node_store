@@ -14,8 +14,9 @@ a {
   color: $blue-3;
   text-decoration: none;
   padding: 10px 5px;
-  margin: 0px;
+  margin: 1px 0px;
   cursor: pointer;
+  display: block;
 }
 
 a:hover {

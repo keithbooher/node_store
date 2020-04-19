@@ -51,6 +51,8 @@ class App extends Component {
 }
 
 const HeaderSwitch = (props) => {
+  console.log('location?')
+  console.log(props)
   const { location } = props;
   if (location.pathname.match('/admin')){
     return null;

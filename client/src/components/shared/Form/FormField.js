@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default ({ input, field_class, label, onChange, meta: { error, touched } }) => {
-  console.log(field_class)
   return (
     <div>
       <label>{label}</label>

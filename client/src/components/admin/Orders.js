@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { getAllOrders } from "../../utils/API"
 import LineItem from "../shared/LineItem"
 import loadingGif from '../../images/pizzaLoading.gif'
@@ -76,8 +75,5 @@ class Orders extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
-}
 
-export default connect(mapStateToProps, null)(Orders)
+export default Orders

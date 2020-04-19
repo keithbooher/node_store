@@ -11,7 +11,7 @@ class LineItem extends Component {
     super()
     this.fields = [
       { label: "rating", field_class: "line_item_rating_input", name: "rating", noValueError: ``, value: null },
-      { label: "description", field_class: "line_item_rating_text_area", textArea: true, name: "description", noValueError: ``, value: null },
+      { label: "description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: ``, value: null },
     ]
     this.leaveReview = this.leaveReview.bind(this)
     this.submitReview = this.submitReview.bind(this)

@@ -1,23 +1,21 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 
 class Sidebar extends Component {
   constructor(props) {
     super()
-    this.chooseTab = props.chooseTab
     this.state = {}
   }
-  
-
 
   render() {
     return (
       <div className="flex flex_column">
-        <a onClick={() => this.chooseTab("Dashboard")}>Dashboard</a>
-        <a onClick={() => this.chooseTab("Orders")}>Orders</a>
-        <a onClick={() => this.chooseTab("Products")}>Products</a>
-        <a onClick={() => this.chooseTab("Categories")}>Categories</a>
-        <a onClick={() => this.chooseTab("Users")}>Users</a>
-        <a onClick={() => this.chooseTab("Reviews")}>Reviews</a>
+        <NavLink activeClassName="color-white" exact to="/admin">Dashboard</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/orders">Orders</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/products">Products</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/categories">Categories</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/users">Users</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/reviews">Reviews</NavLink>
       </div>
     )
   }

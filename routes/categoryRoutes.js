@@ -27,4 +27,8 @@ module.exports = app => {
     products = await Product.find({ "category": { $elemMatch: { category_path_name: req.params.category_path_name }}})
     res.send(products)
   })
+  app.get('/api/categories', async (req, res) => {  
+    categories = await Category.find({})
+    res.send(categories)
+  })
 }

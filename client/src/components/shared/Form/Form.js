@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
+import FormDropDown from './FormDropDown'
 import validateEmails from '../../../utils/validateEmails'
 
 
@@ -13,8 +14,31 @@ class Form extends Component {
   }
   
   renderFields() {
-    return _.map(this.props.formFields, ({ label, name, value, textArea, field_class }) => {
-      return <Field onChange={this.props.onChange} field_class={field_class} component={textArea ? FormTextArea : FormField} initialValues={value} type="text" label={label} name={name} />
+    return _.map(this.props.formFields, ({ label, name, value, typeOfComponent="text", options, field_class }) => {
+      let component
+      switch (typeOfComponent) {
+        case 'check-box':
+          component = FormField
+          break;
+        case 'drop-down':
+          component = FormDropDown
+          break;
+        case 'text-area':
+          component = FormTextArea
+          break;
+        default:
+          component = FormField
+      }
+      return <Field 
+              onChange={this.props.onChange} 
+              options={options} 
+              field_class={field_class} 
+              component={component} 
+              initialValues={value} 
+              type={typeOfComponent}
+              label={label} 
+              name={name}
+              />
     })
   }
 
