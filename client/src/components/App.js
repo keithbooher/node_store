@@ -5,8 +5,8 @@ import { fetchUser } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Header from './customer_facing/components/Header'
-import Admin from './Admin'
-import CustomerFacing from './CustomerFacing';
+import Admin from './containers/Admin'
+import CustomerFacing from './containers/CustomerFacing';
 
 import PrivateRoute from './PrivateRoute'
 

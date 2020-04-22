@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createProduct, getCategories } from '../../../utils/API'
+import { createProduct, getAllCategories } from '../../../utils/API'
 import hf from '../../../utils/helperFunctions'
 import { connect } from 'react-redux'
 import {Link } from 'react-router-dom'
@@ -17,7 +17,7 @@ class CreateProduct extends Component {
   }
 
   async componentDidMount() {
-    let categories = await getCategories()
+    let categories = await getAllCategories()
     console.log(categories)
     this.setState({ categories: categories.data })
   }
@@ -31,18 +31,11 @@ class CreateProduct extends Component {
     for (let [key, value] of Object.entries(create_product_values)) {
       if (key === "depth" || key === "width" || key === "height") {
         new_product.dimensions[key] = value
-      } else if (key === "display") {
-        if (value === "true") {
-          new_product[key] = true
-        } else {
-          new_product[key] = false
-        }
       } else {
        new_product[key] = value
       }
     }
     new_product["path_name"] = hf.productNameToPathName(new_product.name)
-    console.log(new_product)
     createProduct(new_product)
   }
 

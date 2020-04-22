@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import '../stylesheets/all.css.scss'
 
-import Home from './customer_facing/pages/Home'
-import Product from './customer_facing/pages/Product'
-import Category from './customer_facing/pages/Category'
-import Checkout from './customer_facing/pages/Checkout'
-import Account from './customer_facing/pages/Account'
+import Home from '../customer_facing/pages/Home'
+import Product from '../customer_facing/pages/Product'
+import Category from '../customer_facing/pages/Category'
+import Checkout from '../customer_facing/pages/Checkout'
+import Account from '../customer_facing/pages/Account'
 
 
 class CustomerFacing extends Component {

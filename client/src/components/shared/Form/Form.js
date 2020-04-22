@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
-import FormDropDown from './FormDropDown'
+import FormMultiSelect from './FormMultiSelect'
+import FormCheckbox from './FormCheckbox'
 import validateEmails from '../../../utils/validateEmails'
 
 
@@ -18,10 +19,10 @@ class Form extends Component {
       let component
       switch (typeOfComponent) {
         case 'check-box':
-          component = FormField
+          component = FormCheckbox
           break;
-        case 'drop-down':
-          component = FormDropDown
+        case 'multi':
+          component = FormMultiSelect
           break;
         case 'text-area':
           component = FormTextArea
@@ -31,9 +32,9 @@ class Form extends Component {
       }
       return <Field 
               onChange={this.props.onChange} 
-              options={options} 
-              field_class={field_class} 
-              component={component} 
+              options={options} // first use case - to give array of multi select & drop down fields
+              field_class={field_class} // class for css manipulation
+              component={component} // component to be wrapped by field
               initialValues={value} 
               type={typeOfComponent}
               label={label} 

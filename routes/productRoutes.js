@@ -31,12 +31,12 @@ module.exports = app => {
     let direction = req.params.direction
     let products
     if (last_product_id === 'none') {
-      products = await Product.find({}).sort({_id:-1}).limit(2)
+      products = await Product.find({}).sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
-        products = await Product.find({_id: {$lt: last_product_id}}).sort({_id:-1}).limit(2)
+        products = await Product.find({_id: {$lt: last_product_id}}).sort({_id:-1}).limit(10)
       } else {
-        products = await Product.find({_id: {$gt: last_product_id}}).limit(2)
+        products = await Product.find({_id: {$gt: last_product_id}}).limit(10)
         products = products.reverse()
       }
     }

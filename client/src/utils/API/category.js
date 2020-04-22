@@ -10,7 +10,7 @@ export const getCategoryData = (path_name) => {
 }
 
 
-export const getCategories = () => {
+export const getAllCategories = () => {
     return axios.get('/api/categories')
 }
 

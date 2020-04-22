@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './cart.css.scss'
 import { usersCart } from "../../../../actions"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
 class CartLength extends Component {
   constructor(props) {
     super()
@@ -29,7 +30,7 @@ class CartLength extends Component {
     return (
       <div className="flex" onClick={this.props.expandCart} style={{ padding: '0px 10px' }} >
         {this.calculated_cart_length()}
-        <i className="fas fa-shopping-cart"></i>
+        <FontAwesomeIcon icon={faShoppingCart} />
       </div>
     )
   }
