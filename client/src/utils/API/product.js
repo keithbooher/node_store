@@ -2,7 +2,12 @@ import axios from "axios";
 
 // find product by path name
 export const getProductInfo = (path_name) => {
-  return axios.get('/api/product/' + path_name)
+  return axios.get('/api/product/by_path_name/' + path_name)
+}
+
+// find product by path name
+export const getProductbyId = (id) => {
+  return axios.get('/api/product/' + id)
 }
 
 export const allInStockProducts = () => {

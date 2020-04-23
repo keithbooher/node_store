@@ -1,23 +1,44 @@
 import React, { Component } from 'react'
-import { allProducts } from '../../../utils/API'
+import { allProducts, getProductbyId } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faPlusCircle, faEdit} from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt } from "@fortawesome/free-solid-svg-icons"
 class ProductList extends Component {
   constructor(props) {
     super()
+    this.getAllProducts = this.getAllProducts.bind(this)
     this.state = {
       products: null,
       page_number: 1,
-      chosen_product: null
+      chosen_product: null,
     }
   }
   
   async componentDidMount() {
-    const products = await allProducts("none", "none")
-    console.log(products)
-    this.setState({ products: products.data })
+    // When we land we have two scenarios
+    // 1.) we land on the page normally
+    // 2.) we land after submitting the product admin form
+    // Now if we land after submitting the form there will be an ID in the last path value
+    ////// We'll use this value to pull up the product in the future search bar
+    // If we land normally we just pull all the products and list them...
+    let products
+
+    const split_paths = window.location.pathname.split( '/' )
+    const path = split_paths[split_paths.length - 1]
+
+    let chosen_product = null
+    if (path !== "products") {
+      chosen_product = path
+      products = await getProductbyId(path)
+      products = products.data
+      products = [products]
+    } else {
+      products = await allProducts("none", "none")
+      products = products.data
+    }
+
+    this.setState({ products: products, chosen_product: chosen_product})
   }
 
   async changePage(direction) {
@@ -38,7 +59,7 @@ class ProductList extends Component {
   productData(product) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <Link to={`/admin/products/update/${product.path_name}`} > <FontAwesomeIcon icon={faEdit} />Edit</Link>
+        <Link to={`/admin/products/form/update/${product.path_name}`} > <FontAwesomeIcon icon={faEdit} />Edit</Link>
         <div>Name {product.name}</div>
         <div>Description:  {product.description}</div>
         <div>Inventory Count:  {product.inventory_count}</div>
@@ -65,10 +86,17 @@ class ProductList extends Component {
     })
   }
 
+  async getAllProducts() {
+    let products = await allProducts("none", "none")
+    this.setState({ products: products.data })
+  }
+
   render() {
+    console.log(this.state)
     return (
       <>
-        <Link to="/admin/products/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
+        <Link to="/admin/products" onClick={this.getAllProducts} ><FontAwesomeIcon icon={faSyncAlt} />Get All Products</Link>
+        <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         {this.state.products !== null ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
         <div className="flex">
           <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>

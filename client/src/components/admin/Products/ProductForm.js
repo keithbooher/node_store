@@ -9,6 +9,12 @@ import { productFields } from "./formFields"
 import Form from "../../shared/Form"
 import loadingGif from '../../../images/pizzaLoading.gif'
 
+// TO DO
+// if we are in the create form lets show a disabled input 
+// for product path name that is filled out as the user types
+// out the products desired name
+// Maybe I can make a "mirror" form field that accomplishes this for name and pathname
+
 class ProductForm extends Component {
   constructor(props) {
     super()
@@ -21,6 +27,7 @@ class ProductForm extends Component {
   }
 
   async componentDidMount() {
+    console.log('???')
     let categories = await getAllCategories()
 
     const split_paths = window.location.pathname.split( '/' )
@@ -50,7 +57,12 @@ class ProductForm extends Component {
       }
     }
     new_product["path_name"] = hf.productNameToPathName(new_product.name)
-    createProduct(new_product)
+    let create_product = await createProduct(new_product)
+    if (create_product.status === 200) {
+      this.props.history.push(`/admin/products/${create_product.data._id}`)
+    } else {
+      alert("OOps its fucked m8")
+    }
   }
 
   async handleSubmitUpdate(e) {
@@ -64,6 +76,7 @@ class ProductForm extends Component {
       if (key === "depth" || key === "width" || key === "height") {
         new_product_info.dimensions[key] = value
       } else if (key === "category") {
+        // just pushing category id's into the category array attribute in the product
         value.forEach((category) => {
           new_product_info["category"].push(category._id)
         })
@@ -71,35 +84,59 @@ class ProductForm extends Component {
        new_product_info[key] = value
       }
     }
-    new_product_info["path_name"] = hf.productNameToPathName(new_product_info.name)
+
+    // TO DO
+    // Actually lets not update the path name with the new name. 
+    // Lets offer this as a specific redirect feature
+    // new_product_info["path_name"] = hf.productNameToPathName(new_product_info.name)
     
     new_product_info["_id"] = this.state.product._id
-    console.log(new_product_info)
-    updateProduct(new_product_info)
+
+    let updated_product = await updateProduct(new_product_info)
+    if (updated_product.status === 200) {
+      this.props.history.push(`/admin/products/${new_product_info._id}`)
+    } else {
+      alert("OOps its fucked m8")
+    }
   }
 
+  // FOR INJECTING ***CATEGORY*** DATA
   injectCategoryDataIntoFormFields() {
     let pulledFields = productFields
-    console.log(pulledFields)
+    // We cycle through the fields AND IF its the category field:
+    // we'll want to add the array of categories to the options on the category field
     pulledFields.forEach((field) => {
       if (field.name === 'category') {
-        // we've cycled through the fields AND IF its the category field
-        // we want to add to the options
-        // specifically we want to add an array of the categories
         let options = []
         this.state.categories.forEach((category) => {
-          options.push({ _id: category._id, name: category.name })
+          // This is a check to see if we are updating or creating
+          // When we are in the update form we want to set the default boolean to true so it will auto fill the multi select
+          if (this.state.product !== null) {
+            // Loop through THIS products assigned categories and if its the same category
+            // as the category from the forEach we set the default boolean to true
+            // otherwise set default boolean value to false
+            for (let i = 0; i < this.state.product.category.length; i++) {
+              if(this.state.product.category[i]._id === category._id) {
+                options.push({ _id: category._id, name: category.name, default: true })
+              } else {
+                options.push({ _id: category._id, name: category.name, default: false })
+              }
+            }
+          } else {
+            // Since we've made it this far it means we are in the create form
+            // and we simply just want to throw in the categories to the options on the category form field
+            options.push({ _id: category._id, name: category.name, default: false })
+          }
         })
         field.options = options
       }
     })
-    // console.log(pulledFields)
     return pulledFields
   }
 
+  // FOR INJECTING EXISTING PRODUCT DATA INTO THE CREATE FORM
   injectDataIntoFormFields() {
     let fields = this.injectCategoryDataIntoFormFields()
-    console.log(fields)
 
     let initialValues = {}
     fields = fields.forEach((field) => {
@@ -153,8 +190,8 @@ class ProductForm extends Component {
           <>
             <Link to="/admin/products"><FontAwesomeIcon icon={faTimesCircle} />Cancel</Link>
             <div>
-              <Route exact path="/admin/products/add" component={this.createForm} />
-              <Route path="/admin/products/update" component={this.updateForm} />
+              <Route exact path="/admin/products/form/add" component={this.createForm} />
+              <Route exact path="/admin/products/form/update/:path_name" component={this.updateForm} />
             </div>
           </>
         : ""}

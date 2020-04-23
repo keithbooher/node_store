@@ -14,9 +14,9 @@ class Products extends Component {
   render() {
     return (
       <div id="admin_products_container">
-        <Route exact path="/admin/products" component={ProductList} />
-        <Route exact path="/admin/products/add" component={ProductForm} />
-        <Route path="/admin/products/update" component={ProductForm} />
+        <Route exact path="/admin/products/:id?" component={ProductList} />
+        <Route exact path="/admin/products/form/add" component={ProductForm} />
+        <Route exact path="/admin/products/form/update/:path_name" component={ProductForm} />
       </div>
     )
   }

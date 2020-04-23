@@ -11,12 +11,19 @@ class FormMultiSelect extends Component {
     }
   }
   render() {
+    let default_categories = []
+    this.props.options.forEach((option) => {
+      if (option.default === true) {
+        default_categories.push(option._id)
+      }
+    })
     return (
       <div>
         <label>{this.props.label}</label>
         <Multiselect
           data={this.props.options}
           valueField="_id"
+          defaultValue={default_categories}
           textField="name"
           onChange={this.props.input.onChange}
         />
