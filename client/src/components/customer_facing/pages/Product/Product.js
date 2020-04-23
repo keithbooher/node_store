@@ -20,16 +20,17 @@ class Product extends Component  {
   }
 
   getMatchingCategoryName(categories) {
+    console.log(categories)
     let category_name = categories.filter(category => {
-      return category.category_path_name === this.routeParamCategory
+      return category.path_name === this.routeParamCategory
     })
     console.log(category_name)
-    return hf.capitalizeFirsts(category_name[0].category_name)
+    return hf.capitalizeFirsts(category_name[0].name)
   }
 
   render_content() {
     let categories = this.state.product.category
-    console.log(categories)
+
     return (
       <div>
         <div>Back to <Link to={`/shop/${this.routeParamCategory}`}>{this.getMatchingCategoryName(categories)}</Link></div>
@@ -41,7 +42,6 @@ class Product extends Component  {
   }
   
   render() {
-    console.log(this.state)
     return (
       <div>
         {this.state.product ? this.render_content() : ""}

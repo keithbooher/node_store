@@ -3,7 +3,7 @@ import { allProducts } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faPlusCircle, faTimesCircle} from "@fortawesome/free-solid-svg-icons"
+import {faPlusCircle, faEdit} from "@fortawesome/free-solid-svg-icons"
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -38,6 +38,7 @@ class ProductList extends Component {
   productData(product) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
+        <Link to={`/admin/products/update/${product.path_name}`} > <FontAwesomeIcon icon={faEdit} />Edit</Link>
         <div>Name {product.name}</div>
         <div>Description:  {product.description}</div>
         <div>Inventory Count:  {product.inventory_count}</div>

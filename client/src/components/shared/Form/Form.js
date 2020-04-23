@@ -35,7 +35,7 @@ class Form extends Component {
               options={options} // first use case - to give array of multi select & drop down fields
               field_class={field_class} // class for css manipulation
               component={component} // component to be wrapped by field
-              initialValues={value} 
+              // initialValues={value} 
               type={typeOfComponent}
               label={label} 
               name={name}

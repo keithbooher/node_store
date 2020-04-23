@@ -21,7 +21,10 @@ const productSchema = new Schema({
     type: Object,
     default: {}
   },
-  category: [CategorySchema],
+  category: [{
+    type: Schema.Types.ObjectId,
+    ref: 'categorys'
+  }],
   image: String,
   display: {
     type: Boolean,

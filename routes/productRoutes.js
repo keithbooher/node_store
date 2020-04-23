@@ -7,6 +7,14 @@ module.exports = app => {
   // change to post route for admins
   app.post('/api/product/create', requireLogin, adminRequired, async (req, res) => {  
     let new_product = req.body.new_product
+    let categories = new_product.category
+    let category_id_array = []
+    categories.forEach((category) => {
+      category_id_array.push(category._id)
+    })
+
+    new_product.categories = category_id_array
+
     let product = new Product(new_product)
     try {
       await product.save()
@@ -16,13 +24,21 @@ module.exports = app => {
     }
   })
 
+  app.put('/api/product/update', requireLogin, adminRequired, async (req, res) => {  
+    const product = req.body.product
+    let updated_product = await Product.findOneAndUpdate({ _id: product._id }, product, {new: true})
+    res.send(updated_product)    
+  })
+
   app.get('/api/product/:path_name', async (req, res) => {    
-    const product = await Product.findOne({ path_name: req.params.path_name })
+    const product = await Product.findOne({ path_name: req.params.path_name }).populate({path: "category"})
     res.send(product)
   })
 
   app.get('/api/products/all/instock', async (req, res) => {    
-    const products = await Product.find({ inventory_count: {$gte: 1}, display: true})
+    const products = await Product.find({ inventory_count: {$gte: 1}, display: true}).populate({
+      path: 'category'
+    })
     res.send(products)
   })
 
