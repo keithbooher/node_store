@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-import { allProducts, getProductbyId } from '../../../utils/API'
+import { connect } from 'react-redux'
+import { reset } from "redux-form";
+import { allProducts, getProductbyId, getProductInfo } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faEdit, faSyncAlt } from "@fortawesome/free-solid-svg-icons"
+import { productSearchField } from "./formFields"
+import Form from "../../shared/Form"
+
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -87,8 +92,19 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
+    console.log(this.props)
     let products = await allProducts("none", "none")
     this.setState({ products: products.data })
+    this.props.dispatch(reset("product_search_form"))
+  }
+
+  async handleSearchSubmit(e) {
+    e.preventDefault()
+    const search_by_prpoduct_name = this.props.form['product_search_form'].values
+    console.log(search_by_prpoduct_name.search_bar)
+    let product = await getProductInfo(search_by_prpoduct_name.search_bar)
+
+    this.setState({ products: [product.data], chosen_product: product.data._id })
   }
 
   render() {
@@ -97,6 +113,13 @@ class ProductList extends Component {
       <>
         <Link to="/admin/products" onClick={this.getAllProducts} ><FontAwesomeIcon icon={faSyncAlt} />Get All Products</Link>
         <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
+        <Form 
+          onSubmit={(e) => this.handleSearchSubmit(e)}
+          submitButtonText={"Search By Product Name"}
+          formFields={productSearchField}
+          formId='product_search_form'
+          form='product_search_form'
+        />
         {this.state.products !== null ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
         <div className="flex">
           <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>
@@ -108,4 +131,9 @@ class ProductList extends Component {
   }
 }
 
-export default ProductList
+
+function mapStateToProps({ form }) {
+  return { form }
+}
+
+export default connect(mapStateToProps, null)(ProductList)

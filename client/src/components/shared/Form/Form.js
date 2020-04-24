@@ -5,6 +5,7 @@ import FormField from './FormField'
 import FormTextArea from './FormTextArea'
 import FormMultiSelect from './FormMultiSelect'
 import FormCheckbox from './FormCheckbox'
+import FormFieldDisabled from './FormFieldDisabled'
 import validateEmails from '../../../utils/validateEmails'
 
 
@@ -26,6 +27,9 @@ class Form extends Component {
           break;
         case 'text-area':
           component = FormTextArea
+          break;
+        case 'field-disable':
+          component = FormFieldDisabled
           break;
         default:
           component = FormField
