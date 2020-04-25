@@ -19,7 +19,12 @@ export const getTopCategories = () => {
 
 export const createCategory = (category) => {
     const data = { category }
-    return axios.post('/api/categories/create', data)
+    return axios.post('/api/category/create', data)
+}
+
+export const updateCategory = (category) => {
+    const data = { category }
+    return axios.put('/api/category/update', data)
 }
 
 

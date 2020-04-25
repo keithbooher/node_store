@@ -52,10 +52,18 @@ class Form extends Component {
       <div>
         <form style={{ marginTop: '10px' }} id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.onSubmit(e)}>
           {this.renderFields()}
+         
           {!this.props.replaceSubmitButton ?
-          <button type="submit" className="teal btn-flat right white-text">
-            <i className="material-icons right">{this.props.submitButtonText}</i>
-          </button> : this.props.submitButton}
+            <button type="submit" className="teal btn-flat right white-text">
+              <i className="material-icons right">{this.props.submitButtonText}</i>
+            </button> 
+          : this.props.submitButton}
+
+          {this.props.cancel ?
+            <button onClick={this.props.cancel} className="teal btn-flat right white-text">
+              <i className="material-icons right">Cancel</i>
+            </button> 
+          : ""}
         </form>
       </div>
     )

@@ -6,7 +6,7 @@ const Product = mongoose.model('products')
 
 module.exports = app => {
   // change to post route for when admins are creating categories
-  app.post('/api/categories/create', requireLogin, adminRequired, async (req, res) => {  
+  app.post('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
     const category = req.body.category
     
     const new_category = new Category(category)
@@ -18,6 +18,11 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+  app.put('/api/category/update', requireLogin, adminRequired, async (req, res) => {  
+    const category = req.body.category
+    let updated_category = await Category.findOneAndUpdate({ _id: category._id }, category, {new: true})
+    res.send(updated_category)    
+  })
   app.get('/api/category/:path_name', async (req, res) => {    
     category = await Category.findOne({ path_name: req.params.path_name })
     res.send(category)
@@ -27,11 +32,15 @@ module.exports = app => {
     res.send(products)
   })
   app.get('/api/categories', async (req, res) => {  
-    categories = await Category.find({})
+    categories = await Category.find({}).populate({
+      path: "sub_categories"
+    })
     res.send(categories)
   })
   app.get('/api/categories/top', async (req, res) => {  
-    categories = await Category.find({ top_level: true })
+    categories = await Category.find({ top_level: true }).populate({
+      path: "sub_categories"
+    })
     res.send(categories)
   })
 }

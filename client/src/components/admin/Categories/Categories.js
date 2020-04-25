@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getTopCategories, createCategory } from '../../../utils/API'
+import { reset } from "redux-form";
+import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
@@ -11,6 +12,7 @@ import Form from "../../shared/Form"
 class Categories extends Component {
   constructor(props) {
     super()
+    this.renderSubCategories = this.renderSubCategories.bind(this)
     this.state = {
       categories: [],
       page_number: 1,
@@ -44,22 +46,59 @@ class Categories extends Component {
     // TO DO
     // do something if create_category.status !== 200
 
-    if (top_or_not !== false) {
+    if (top_or_not === false) {
+      // if not a top category
       // then add the newly created category to the parent's list of subcategories
-      // addToParentCategory()
+      parent_category.sub_categories.push(create_category.data._id)
+      const updated_parent_category = await updateCategory(parent_category)
+      console.log(updateCategory)
+      // TO DO
+      // if updated_parent_category.status !== 200 flag error
     } 
 
     // get all categories again
     const top_categories =  await getTopCategories()
     this.setState({ categories: top_categories.data, show_create_input: null  })
+    this.props.dispatch(reset("product_search_form"))
   }
 
   renderSubCategories(parent_category) {
-    console.log(parent_category)
-    return <div style={{ marginLeft: '20px' }}>Sub Categories</div>
+    console.log("sub categories")
+    console.log(parent_category.sub_categories)
+    return ( parent_category.sub_categories.map((category) => {
+      return (
+        <div style={{ marginLeft: '20px' }}key={category._id}>
+          <div 
+            className="clickable margin-xs-v color-white flex justify-content-space-between" 
+            style={{ backgroundColor: 'rgb(45, 45, 45)' }} 
+          >
+            <div>{category.name}</div>
+            <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} />Add a new subcategory</button>
+          </div>
+          
+          {this.state.show_create_input === category._id ? 
+              <div>
+                <Form 
+                  onSubmit={(e) => this.handleCreateCategoryCreate(e, false, category)}
+                  submitButtonText={"Create Category"}
+                  formFields={createField}
+                  formId='create_category_form'
+                  form='create_category_form'
+                  cancel={() => this.setState({ show_create_input: null })}
+                  />
+              </div>
+          : ""}
+          
+          {category.sub_categories.length > 0 ? 
+            <div>{this.renderSubCategories(category)}</div>            
+          : "" }
+        </div>
+      )
+    }))
   }
 
   render() {
+    console.log(this.state)
     return (
       <div>
 
@@ -73,6 +112,7 @@ class Categories extends Component {
                   formFields={createField}
                   formId='create_category_form'
                   form='create_category_form'
+                  cancel={() => this.setState({ show_create_input: null })}
                 />
               </div>
           : ""}
@@ -83,11 +123,26 @@ class Categories extends Component {
             return (
               <div key={category._id}>
                 <div 
-                  className="clickable margin-xs-v color-white" 
+                  className="clickable margin-xs-v color-white flex justify-content-space-between" 
                   style={{ backgroundColor: 'rgb(45, 45, 45)' }} 
                 >
-                  {category.name}
+                  <div>{category.name}</div>
+                  <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} />Add a new subcategory</button>
                 </div>
+                          
+                {this.state.show_create_input === category._id ? 
+                    <div>
+                      <Form 
+                        onSubmit={(e) => this.handleCreateCategoryCreate(e, false, category)}
+                        submitButtonText={"Create Category"}
+                        formFields={createField}
+                        formId='create_category_form'
+                        form='create_category_form'
+                        cancel={() => this.setState({ show_create_input: null })}
+                      />
+                    </div>
+                : ""}
+
                 <div>{this.renderSubCategories(category)}</div>
               </div>
             )
