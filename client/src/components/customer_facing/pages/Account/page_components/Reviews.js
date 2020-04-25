@@ -19,7 +19,6 @@ class Reviews extends Component {
   
   async componentDidMount() {
     const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
-    console.log(reviews.data)
     this.setState({ reviews: reviews.data })
   }
 

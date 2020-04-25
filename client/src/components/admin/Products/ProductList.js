@@ -108,7 +108,7 @@ class ProductList extends Component {
           form='product_search_form'
         />
         <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
-        {this.state.products !== null ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
+        {this.state.products.length !== 0 ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
         <PageChanger list_items={this.state.products} requestMore={this.changePage} />
       </>
     )

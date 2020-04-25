@@ -29,7 +29,7 @@ class Product extends Component  {
   }
 
   render_content() {
-    let categories = this.state.product.category
+    let categories = this.state.product.categories
 
     return (
       <div>

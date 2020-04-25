@@ -6,15 +6,14 @@ const Product = mongoose.model('products')
 
 module.exports = app => {
   // change to post route for when admins are creating categories
-  app.get('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
-    const category = new Category({
-      name: 'test category three',
-      path_name: 'test_category_three'
-    })
+  app.post('/api/categories/create', requireLogin, adminRequired, async (req, res) => {  
+    const category = req.body.category
+    
+    const new_category = new Category(category)
 
     try {
-      await category.save()
-      res.send(category)
+      await new_category.save()
+      res.send(new_category)
     } catch (err) {
       res.status(422).send(err)
     }
@@ -29,6 +28,10 @@ module.exports = app => {
   })
   app.get('/api/categories', async (req, res) => {  
     categories = await Category.find({})
+    res.send(categories)
+  })
+  app.get('/api/categories/top', async (req, res) => {  
+    categories = await Category.find({ top_level: true })
     res.send(categories)
   })
 }

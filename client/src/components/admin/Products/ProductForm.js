@@ -47,12 +47,18 @@ class ProductForm extends Component {
     e.preventDefault()
     const create_product_values = this.props.form['create_product_form'].values
     let new_product = {
+      categories: [],
       dimensions: {}
     }
     for (let [key, value] of Object.entries(create_product_values)) {
       if (key === "depth" || key === "width" || key === "height") {
         new_product.dimensions[key] = value
-      } else {
+      } else if (key === "categories") {
+        // just pushing category id's into the category array attribute in the product
+        value.forEach((category) => {
+          new_product["categories"].push(category._id)
+        })
+      }  else {
        new_product[key] = value
       }
     }
@@ -69,16 +75,16 @@ class ProductForm extends Component {
     e.preventDefault()
     const create_product_values = this.props.form['update_product_form'].values
     let new_product_info = {
-      category: [],
+      categories: [],
       dimensions: {}
     }
     for (let [key, value] of Object.entries(create_product_values)) {
       if (key === "depth" || key === "width" || key === "height") {
         new_product_info.dimensions[key] = value
-      } else if (key === "category") {
+      } else if (key === "categories") {
         // just pushing category id's into the category array attribute in the product
         value.forEach((category) => {
-          new_product_info["category"].push(category._id)
+          new_product_info["categories"].push(category._id)
         })
       } else {
        new_product_info[key] = value
@@ -106,7 +112,7 @@ class ProductForm extends Component {
     // We cycle through the fields AND IF its the category field:
     // we'll want to add the array of categories to the options on the category field
     pulledFields.forEach((field) => {
-      if (field.name === 'category') {
+      if (field.name === 'categories') {
         let options = []
         this.state.categories.forEach((category) => {
           // This is a check to see if we are updating or creating
@@ -115,8 +121,8 @@ class ProductForm extends Component {
             // Loop through THIS products assigned categories and if its the same category
             // as the category from the forEach we set the default boolean to true
             // otherwise set default boolean value to false
-            for (let i = 0; i < this.state.product.category.length; i++) {
-              if(this.state.product.category[i]._id === category._id) {
+            for (let i = 0; i < this.state.product.categories.length; i++) {
+              if(this.state.product.categories[i]._id === category._id) {
                 options.push({ _id: category._id, name: category.name, default: true })
               } else {
                 options.push({ _id: category._id, name: category.name, default: false })
