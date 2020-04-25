@@ -12,5 +12,5 @@ export const productFields = [
 ]
 
 export const productSearchField = [
-  { label: 'Search For Product', name: 'search_bar', noValueError: 'You must provide an address', value: null },
+  { label: 'Search For Product By Name', name: 'search_bar', noValueError: 'You must provide an address', value: null },
 ]

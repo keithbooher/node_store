@@ -8,13 +8,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faEdit, faSyncAlt } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
-
+import PageChanger from "../../shared/PageChanger"
 class ProductList extends Component {
   constructor(props) {
     super()
     this.getAllProducts = this.getAllProducts.bind(this)
+    this.changePage = this.changePage.bind(this)
     this.state = {
-      products: null,
+      products: [],
       page_number: 1,
       chosen_product: null,
     }
@@ -44,21 +45,6 @@ class ProductList extends Component {
     }
 
     this.setState({ products: products, chosen_product: chosen_product})
-  }
-
-  async changePage(direction) {
-    let direction_reference_product_id
-    let page_increment
-    if (direction === "next") {
-      page_increment = 1
-      direction_reference_product_id = this.state.products[this.state.products.length - 1]
-    } else {
-      page_increment = -1
-      direction_reference_product_id = this.state.products[0]
-    }
-    
-    const products = await allProducts(direction_reference_product_id._id, direction)
-    this.setState({ products: products.data, page_number: this.state.page_number + page_increment })
   }
 
   productData(product) {
@@ -92,7 +78,6 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
-    console.log(this.props)
     let products = await allProducts("none", "none")
     this.setState({ products: products.data })
     this.props.dispatch(reset("product_search_form"))
@@ -101,18 +86,20 @@ class ProductList extends Component {
   async handleSearchSubmit(e) {
     e.preventDefault()
     const search_by_prpoduct_name = this.props.form['product_search_form'].values
-    console.log(search_by_prpoduct_name.search_bar)
     let product = await getProductInfo(search_by_prpoduct_name.search_bar)
 
     this.setState({ products: [product.data], chosen_product: product.data._id })
   }
 
+  async changePage(direction_reference_id, direction) {
+    const products = await allProducts(direction_reference_id, direction)
+    this.setState({ products: products.data })
+  }
+
   render() {
-    console.log(this.state)
     return (
       <>
         <Link to="/admin/products" onClick={this.getAllProducts} ><FontAwesomeIcon icon={faSyncAlt} />Get All Products</Link>
-        <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         <Form 
           onSubmit={(e) => this.handleSearchSubmit(e)}
           submitButtonText={"Search By Product Name"}
@@ -120,12 +107,9 @@ class ProductList extends Component {
           formId='product_search_form'
           form='product_search_form'
         />
+        <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         {this.state.products !== null ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
-        <div className="flex">
-          <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>
-          <div className="font-size-1-3">{this.state.page_number}</div>
-          <button onClick={() => this.changePage('next')} className="bare_button">Next</button>
-        </div>
+        <PageChanger list_items={this.state.products} requestMore={this.changePage} />
       </>
     )
   }

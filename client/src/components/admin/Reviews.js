@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAllReviews, getOrder } from "../../utils/API"
 import loadingGif from '../../images/pizzaLoading.gif'
-
+import PageChanger from "../shared/PageChanger"
 class Reviews extends Component {
   constructor(props) {
     super()
     this.getOrder = this.getOrder.bind(this)
+    this.changePage = this.changePage.bind(this)
     this.state = {
-      reviews: null,
+      reviews: [],
       review: null,
       order: null,
       page_number: 1,
@@ -36,19 +37,9 @@ class Reviews extends Component {
   }
 
 
-  async changePage(direction) {
-    let direction_reference_review_id
-    let page_increment
-    if (direction === "next") {
-      page_increment = 1
-      direction_reference_review_id = this.state.reviews[this.state.reviews.length - 1]
-    } else {
-      page_increment = -1
-      direction_reference_review_id = this.state.reviews[0]
-    }
-    
-    const reviews = await getAllReviews(direction_reference_review_id._id, direction, "all")
-    this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
+  async changePage(direction_reference_id, direction) {
+    const reviews = await getAllReviews(direction_reference_id, direction, "all")
+    this.setState({ reviews: reviews.data })
   }
 
   renderReviews() {
@@ -78,18 +69,14 @@ class Reviews extends Component {
     console.log(this.state)
     return (
       <div>
-        {this.state.reviews !== null ?
+        {this.state.reviews.length !== 0 ?
           <div className="flex flex_column">
             {this.renderReviews()}
           </div>
         : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
 
 
-        <div className="flex">
-          <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>
-          <div className="font-size-1-3">{this.state.page_number}</div>
-          <button onClick={() => this.changePage('next')} className="bare_button">Next</button>
-        </div>
+        <PageChanger list_items={this.state.reviews} requestMore={this.changePage} />
       </div>
     )
   }

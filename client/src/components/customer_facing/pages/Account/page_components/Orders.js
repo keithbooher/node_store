@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import { getUsersOrders } from "../../../../../utils/API"
 import LineItem from "../../../../shared/LineItem"
-
+import PageChanger from "../../../../shared/PageChanger"
 class Orders extends Component {
   constructor(props) {
     super()
+    this.changePage = this.changePage.bind(this)
     this.state = {
-      orders: null,
+      orders: [],
       page_number: 1,
       chosen_order: null
     }
@@ -35,19 +36,9 @@ class Orders extends Component {
     )
   }
 
-  async changePage(direction) {
-    let direction_reference_order_id
-    let page_increment
-    if (direction === "next") {
-      page_increment = 1
-      direction_reference_order_id = this.state.orders[this.state.orders.length - 1]
-    } else {
-      page_increment = -1
-      direction_reference_order_id = this.state.orders[0]
-    }
-    
-    const orders = await getUsersOrders(this.props.auth._id, direction_reference_order_id._id, direction)
-    this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
+  async changePage(direction_reference_id, direction) {
+    const orders = await getUsersOrders(this.props.auth._id, direction_reference_id, direction)
+    this.setState({ orders: orders.data })
   }
 
   renderOrders() {
@@ -64,12 +55,8 @@ class Orders extends Component {
   render() {
     return (
       <div>
-        {this.state.orders !== null ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
-        <div className="flex">
-          <button onClick={() => this.changePage('previous')} className="bare_button">Previous</button>
-          <div className="font-size-1-3">{this.state.page_number}</div>
-          <button onClick={() => this.changePage('next')} className="bare_button">Next</button>
-        </div>
+        {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
+        <PageChanger list_items={this.state.orders} requestMore={this.changePage} />
       </div>
     )
   }
