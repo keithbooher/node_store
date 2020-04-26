@@ -5,10 +5,7 @@ const categorySchema = new Schema({
   name: String,
   // NEVER EVER EVER EVER CHANGE PATH NAME
   path_name: String,
-  top_level:{ 
-    type: Boolean, 
-    default: false
-  },
+  nest_level: Number,
   display_order: Number,
   sub_categories: [{
     type: Schema.Types.ObjectId,

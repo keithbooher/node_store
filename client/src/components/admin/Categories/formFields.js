@@ -7,3 +7,7 @@ export const createField = [
   { label: 'Category Name', name: 'name', noValueError: 'You must provide an address', value: null },
 ]
 
+export const createSubField = [
+  { label: 'Sub Category Name', name: 'name', noValueError: 'You must provide an address', value: null },
+]
+
