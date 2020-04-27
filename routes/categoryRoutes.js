@@ -20,11 +20,54 @@ module.exports = app => {
   })
   app.put('/api/category/update', requireLogin, adminRequired, async (req, res) => {  
     const category = req.body.category
-    let updated_category = await Category.findOneAndUpdate({ _id: category._id }, category, {new: true})
+    let updated_category = await Category.findOneAndUpdate({ _id: category._id }, category, {new: true}).populate({
+      path: "sub_categories",
+      model: "categorys",
+      populate: {
+        path: 'sub_categories',
+        model: "categorys",
+        populate: {
+          path: 'sub_categories',
+          model: "categorys",
+          populate: {
+            path: 'sub_categories',
+            model: "categorys",
+            populate: {
+              path: 'sub_categories',
+              model: "categorys"
+            }
+          }
+        }
+      }
+    })
     res.send(updated_category)    
   })
-  app.get('/api/category/:path_name', async (req, res) => {    
+  app.get('/api/category/by_path_name/:path_name', async (req, res) => {    
     category = await Category.findOne({ path_name: req.params.path_name })
+    res.send(category)
+  })
+  app.get('/api/category/:id', async (req, res) => {    
+    category = await Category.findOne({ _id: req.params.id }).populate({
+      path: "sub_categories",
+      model: "categorys",
+      populate: {
+        path: 'sub_categories',
+        model: "categorys",
+        populate: {
+          path: 'sub_categories',
+          model: "categorys",
+          populate: {
+            path: 'sub_categories',
+            model: "categorys",
+            populate: {
+              path: 'sub_categories',
+              model: "categorys"
+            }
+          }
+        }
+      }
+    })
+    console.log(category)
     res.send(category)
   })
   app.get('/api/category/products/:category_path_name', async (req, res) => {  
@@ -33,7 +76,23 @@ module.exports = app => {
   })
   app.get('/api/categories', async (req, res) => {  
     categories = await Category.find({}).populate({
-      path: "sub_categories"
+      path: "sub_categories",
+      populate: {
+        path: 'sub_categories',
+        model: "categorys",
+        populate: {
+          path: 'sub_categories',
+          model: "categorys",
+          populate: {
+            path: 'sub_categories',
+            model: "categorys",
+            populate: {
+              path: 'sub_categories',
+              model: "categorys"
+            }
+          }
+        }
+      }
     })
     res.send(categories)
   })

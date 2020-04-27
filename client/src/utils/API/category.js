@@ -5,8 +5,12 @@ export const  getCategoryProducts = (path_name) => {
     return axios.get('/api/category/products/' + path_name)
 }
 
-export const getCategoryData = (path_name) => {
-    return axios.get('/api/category/' + path_name)
+export const getCategoryByPathName = (path_name) => {
+    return axios.get('/api/category/by_path_name/' + path_name)
+}
+
+export const getCategory = (id) => {
+    return axios.get('/api/category/' + id)
 }
 
 export const getAllCategories = () => {
