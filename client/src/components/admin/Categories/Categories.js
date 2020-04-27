@@ -4,24 +4,12 @@ import { reset } from "redux-form";
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import hf from "../../../utils/helperFunctions"
 import { categoryFields, createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
 
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
-
-const SortableItem = SortableElement(({value}) => <li>{value}</li>);
-
-const SortableList = SortableContainer(({items}) => {
-  return (
-    <ul>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${value}`} index={index} value={value} />
-      ))}
-    </ul>
-  );
-});
 
 class Categories extends Component {
   constructor(props) {
@@ -77,6 +65,49 @@ class Categories extends Component {
     this.props.dispatch(reset("create_category_form"))
   }
 
+  async moveDislayRank(direction, category, parent_category) {
+    console.log(direction)
+    console.log(category)
+    console.log(parent_category)
+    if (direction === "up") {
+      // Then cycle through the parent's sub categories 
+      // to find the category that is displaced by this action
+      parent_category.sub_categories.map(async (sub_cat) => {
+        console.log(sub_cat.display_order - category.display_order === -1)
+        if (sub_cat.display_order - category.display_order === -1 ) {
+          sub_cat.display_order = sub_cat.display_order + 1
+          console.log("displaced")
+          console.log(sub_cat)
+          const updated_displaced_category = await updateCategory(sub_cat)
+        }
+      })
+      category.display_order = category.display_order - 1
+      const updated_category = await updateCategory(category)
+      console.log("add")
+      console.log(updated_category)
+      // ^ ^ ^check if succesful ^ ^ ^ //
+    } else {
+      // Then cycle through the parent's sub categories 
+      // to find the category that is displaced by this action
+      parent_category.sub_categories.map(async (sub_cat) => {
+        if (sub_cat.display_order - category.display_order === 1 ) {
+          sub_cat.display_order = sub_cat.display_order - 1
+          console.log("displaced")
+          console.log(sub_cat)
+          const updated_displaced_category = await updateCategory(sub_cat)
+        }
+      })
+      category.display_order = category.display_order + 1
+      const updated_category = await updateCategory(category)
+      console.log("subtract")    
+      console.log(updated_category)      
+      // ^ ^ ^check if succesful ^ ^ ^ //
+    }
+    const top_categories =  await getTopCategories()
+    console.log(top_categories)
+    this.setState({ categories: top_categories.data })
+  }
+
   renderSubCategories(parent_category) {
     console.log("sub categories")
     console.log(parent_category.sub_categories)
@@ -88,9 +119,15 @@ class Categories extends Component {
             style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
           >
             <div>{category.name}</div>
-            {category.nest_level === 5 ? "" : 
-              <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
-            }
+            <div className="flex">
+              <div className="flex margin-s-h">
+                <a><FontAwesomeIcon onClick={() => this.moveDislayRank("up", category, parent_category)} icon={faCaretUp} /></a>
+                <a><FontAwesomeIcon onClick={() => this.moveDislayRank("down", category, parent_category)} icon={faCaretDown} /></a>
+              </div>
+              {category.nest_level === 5 ? "" : 
+                <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
+              }
+            </div>
           </div>
           
           {this.state.show_create_input === category._id ? 
@@ -107,7 +144,7 @@ class Categories extends Component {
           : ""}
           
           {category.sub_categories.length > 0 ? 
-            <div>{this.renderSubCategories(category)}</div>            
+            <div>{this.renderSubCategories(this.sortByDisplayOrder(category))}</div>            
           : "" }
         </div>
       )
@@ -116,7 +153,7 @@ class Categories extends Component {
 
   topLevelCategories() {
     return (
-      this.state.categories.map((category) => {
+      this.state.categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
         return (
           <div key={category._id}>
             <div 
@@ -124,7 +161,13 @@ class Categories extends Component {
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
             >
               <div>{category.name}</div>
-              <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
+              <div className="flex">
+                <div className="flex margin-s-h">
+                  <a><FontAwesomeIcon onClick={() => this.moveDislayRank("up", category, null)} icon={faCaretUp} /></a>
+                  <a><FontAwesomeIcon onClick={() => this.moveDislayRank("down", category, null)} icon={faCaretDown} /></a>
+                </div>
+                <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
+              </div>
             </div>
                       
             {this.state.show_create_input === category._id ? 
@@ -140,11 +183,16 @@ class Categories extends Component {
                 </div>
             : ""}
 
-            <div>{this.renderSubCategories(category)}</div>
+            <div>{this.renderSubCategories(this.sortByDisplayOrder(category))}</div>
           </div>
         )
       })
     )
+  }
+
+  sortByDisplayOrder(category) {
+    category.sub_categories = category.sub_categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
+    return category
   }
 
   render() {
