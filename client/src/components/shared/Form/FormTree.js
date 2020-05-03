@@ -82,6 +82,11 @@ class FormTree extends Component {
   }
 
   render() {
+    // THIS IS HOW TO COMBINE TWO ARRAYS WITH DUPLICATE VALUES
+    // (unrelated now... just thought it was cool)
+    // let values = thing.map((cat) => cat._id )
+    // let other_values = other.map((cat) => cat._id )
+    // let combined = Array.from(new Set([...other_values, ...values]))
     return (
       <div>
         <label>{this.props.label}</label>

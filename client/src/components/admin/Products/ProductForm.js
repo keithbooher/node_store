@@ -86,7 +86,6 @@ class ProductForm extends Component {
         new_product_info.dimensions[key] = value
       } else if (key === "categories") {
         // just pushing category id's into the category array attribute in the product
-        console.log(value)
         value.forEach((category) => {
           new_product_info["categories"].push(category._id)
         })
@@ -101,8 +100,6 @@ class ProductForm extends Component {
     // new_product_info["path_name"] = hf.productNameToPathName(new_product_info.name)
     
     new_product_info["_id"] = this.state.product._id
-
-    console.log(new_product_info)
 
     let updated_product = await updateProduct(new_product_info)
     if (updated_product.status === 200) {
@@ -123,20 +120,27 @@ class ProductForm extends Component {
         // fill out options indiscriminately 
         this.state.categories.forEach((category) => {
           options.push({ ...category, default: false })
-
         })
+      }
+
+      if (field.name === 'path_name' && this.state.product !== null) {
+        field.display = true
       }
     })
 
-    this.state.product.categories.forEach((state_product_category) => {
-      // working with category field
-      options.forEach((option_cat) => {
-        if (option_cat._id === state_product_category._id) {
-          option_cat.default = true
-        }
-      })
-    })
+    // if updating, lets set the product's assigned categories' default attribute to true for the tree form field
+    if (this.state.product !== null) {
+      this.state.product.categories.forEach((state_product_category) => {
+        // working with category field
+        options.forEach((option_cat) => {
+          if (option_cat._id === state_product_category._id) {
+            option_cat.default = true
+          }
+        })
+      }) 
+    }
 
+    // finally, putting the built options in the field.options
     pulledFields.forEach((field) => {
       if (field.name === 'categories') {
         field.options = options

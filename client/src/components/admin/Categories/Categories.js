@@ -65,52 +65,55 @@ class Categories extends Component {
   }
 
   async moveDislayRank(direction, category, parent_category) {
-    console.log(direction)
-    console.log(category)
-    console.log(parent_category)
+    let categories
+    if (parent_category !== null) {
+      categories = parent_category.sub_categories
+    } else {
+      categories = this.state.categories
+    }
+
     if (direction === "up") {
       // Then cycle through the parent's sub categories 
       // to find the category that is displaced by this action
-      parent_category.sub_categories.map(async (sub_cat) => {
-        console.log(sub_cat.display_order - category.display_order === -1)
+      categories.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === -1 ) {
           sub_cat.display_order = sub_cat.display_order + 1
-          console.log("displaced")
-          console.log(sub_cat)
           const updated_displaced_category = await updateCategory(sub_cat)
+          // ^ ^ ^check if succesful ^ ^ ^ //
         }
       })
       category.display_order = category.display_order - 1
       const updated_category = await updateCategory(category)
-      console.log("add")
-      console.log(updated_category)
       // ^ ^ ^check if succesful ^ ^ ^ //
     } else {
       // Then cycle through the parent's sub categories 
       // to find the category that is displaced by this action
-      parent_category.sub_categories.map(async (sub_cat) => {
+      categories.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === 1 ) {
           sub_cat.display_order = sub_cat.display_order - 1
-          console.log("displaced")
-          console.log(sub_cat)
           const updated_displaced_category = await updateCategory(sub_cat)
+          // ^ ^ ^check if succesful ^ ^ ^ //
         }
       })
       category.display_order = category.display_order + 1
-      const updated_category = await updateCategory(category)
-      console.log("subtract")    
-      console.log(updated_category)      
+      const updated_category = await updateCategory(category)   
       // ^ ^ ^check if succesful ^ ^ ^ //
     }
     const top_categories =  await getTopCategories()
-    console.log(top_categories)
     this.setState({ categories: top_categories.data })
   }
 
   renderSubCategories(parent_category) {
-    console.log("sub categories")
-    console.log(parent_category.sub_categories)
     return ( parent_category.sub_categories.map((category) => {
+      let up_disable = false
+      let down_disable = false
+      const sorted_cats = parent_category.sub_categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
+      if (sorted_cats[sorted_cats.length - 1]._id === category._id) {
+        down_disable = true
+      }
+      if (category.display_order === 1) {
+        up_disable = true
+      }
       return (
         <div style={{ marginLeft: '20px' }}key={category._id}>
           <div 
@@ -120,8 +123,8 @@ class Categories extends Component {
             <div>{category.name}</div>
             <div className="flex">
               <div className="flex margin-s-h">
-                <a><FontAwesomeIcon onClick={() => this.moveDislayRank("up", category, parent_category)} icon={faCaretUp} /></a>
-                <a><FontAwesomeIcon onClick={() => this.moveDislayRank("down", category, parent_category)} icon={faCaretDown} /></a>
+                <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, parent_category) : null} icon={faCaretUp} /></a>
+                <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, parent_category) : null} icon={faCaretDown} /></a>
               </div>
               {category.nest_level === 5 ? "" : 
                 <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
@@ -153,6 +156,15 @@ class Categories extends Component {
   topLevelCategories() {
     return (
       this.state.categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
+        let up_disable = false
+        let down_disable = false
+        const sorted_cats = this.state.categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
+        if (sorted_cats[sorted_cats.length - 1]._id === category._id) {
+          down_disable = true
+        }
+        if (category.display_order === 1) {
+          up_disable = true
+        }
         return (
           <div key={category._id}>
             <div 
@@ -162,8 +174,8 @@ class Categories extends Component {
               <div>{category.name}</div>
               <div className="flex">
                 <div className="flex margin-s-h">
-                  <a><FontAwesomeIcon onClick={() => this.moveDislayRank("up", category, null)} icon={faCaretUp} /></a>
-                  <a><FontAwesomeIcon onClick={() => this.moveDislayRank("down", category, null)} icon={faCaretDown} /></a>
+                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, null) : null} icon={faCaretUp} /></a>
+                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, null) : null} icon={faCaretDown} /></a>
                 </div>
                 <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
               </div>

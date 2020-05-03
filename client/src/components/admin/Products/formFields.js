@@ -1,6 +1,6 @@
 export const productFields = [
   { label: 'Name', name: 'name', noValueError: 'You must provide an address', value: null },
-  { label: 'Path Name', name: 'path_name', typeOfComponent: 'field-disable', noValueError: 'You must provide an address', value: null },
+  { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address', value: null },
   { label: 'Description', name: 'description', noValueError: 'You must provide an address', value: null },
   { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address', value: null },
   { label: 'Price', name: 'price', noValueError: 'You must provide an address', value: null },

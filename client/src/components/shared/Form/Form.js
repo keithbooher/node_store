@@ -18,7 +18,7 @@ class Form extends Component {
   
   renderFields() {
     console.log(this.props)
-    return _.map(this.props.formFields, ({ label, name, value, typeOfComponent="text", options, field_class }) => {
+    return _.map(this.props.formFields, ({ label, name, value, typeOfComponent="text", options, display, field_class }) => {
       let component
       switch (typeOfComponent) {
         case 'check-box':
@@ -49,6 +49,7 @@ class Form extends Component {
                 label={label} 
                 name={name}
                 change={this.props.change}
+                display={display}
               />
     })
   }

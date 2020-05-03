@@ -17,17 +17,21 @@ class FormFieldDisabled extends Component {
 
   render() {
     return (
-      <div>
-        <label>{this.props.label}</label>
-        <input disabled = {this.state.disabled === true ? "disabled" : ""} className={this.props.field_class} onChange={this.props.onChange} value={this.props.input.value} {...this.props.input} style={{ marginBottom: '5px' }} />
-        {this.state.disabled === false ?
-        <div onClick={this.changeDisbaled}>
-          <FontAwesomeIcon icon={faTimes} />
-        </div>
-        : <div onClick={this.changeDisbaled}>
-          <FontAwesomeIcon icon={faEdit} />
-        </div> }
-      </div>
+      <>
+        {this.props.display === true ?
+          <div>
+            <label>{this.props.label}</label>
+            <input disabled = {this.state.disabled === true ? "disabled" : ""} className={this.props.field_class} onChange={this.props.onChange} value={this.props.input.value} {...this.props.input} style={{ marginBottom: '5px' }} />
+            {this.state.disabled === false ?
+            <div onClick={this.changeDisbaled}>
+              <FontAwesomeIcon icon={faTimes} />
+            </div>
+            : <div onClick={this.changeDisbaled}>
+              <FontAwesomeIcon icon={faEdit} />
+            </div> }
+          </div>
+        : ""}
+      </>
     )
   }
 }
