@@ -9,7 +9,6 @@ class FormCheckbox extends Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <div>
         <label>{this.props.label}</label>

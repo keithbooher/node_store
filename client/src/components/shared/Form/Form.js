@@ -1,13 +1,14 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import { bindActionCreators } from 'redux'
+import { reduxForm, Field, FieldArray } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
 import FormMultiSelect from './FormMultiSelect'
 import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
 import validateEmails from '../../../utils/validateEmails'
-
+import FormTree from "./FormTree"
 
 class Form extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Form extends Component {
   }
   
   renderFields() {
+    console.log(this.props)
     return _.map(this.props.formFields, ({ label, name, value, typeOfComponent="text", options, field_class }) => {
       let component
       switch (typeOfComponent) {
@@ -31,18 +33,22 @@ class Form extends Component {
         case 'field-disable':
           component = FormFieldDisabled
           break;
+        case 'tree':
+          component = FormTree
+          break;
         default:
           component = FormField
       }
+
       return <Field 
-              onChange={this.props.onChange} 
-              options={options} // first use case - to give array of multi select & drop down fields
-              field_class={field_class} // class for css manipulation
-              component={component} // component to be wrapped by field
-              // initialValues={value} 
-              type={typeOfComponent}
-              label={label} 
-              name={name}
+                onChange={this.props.onChange} 
+                options={options} // first use case - to give array of multi select & drop down fields
+                field_class={field_class} // class for css manipulation
+                component={component} // component to be wrapped by field
+                type={typeOfComponent}
+                label={label} 
+                name={name}
+                change={this.props.change}
               />
     })
   }
@@ -83,6 +89,10 @@ function validate(values, props) {
   // if no errors i.e. an empty object, then we know all the values are valid.
   return errors;
 }
+
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ addFurniture, changeFieldValue }, dispatch);
+// }
 
 export default reduxForm({
   validate,

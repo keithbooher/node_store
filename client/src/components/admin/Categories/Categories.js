@@ -9,7 +9,6 @@ import hf from "../../../utils/helperFunctions"
 import { categoryFields, createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
 
-import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 class Categories extends Component {
   constructor(props) {

@@ -7,7 +7,7 @@ export const productFields = [
   { label: 'Height', name: 'height', noValueError: 'You must provide an address', value: null },
   { label: 'Width', name: 'width', noValueError: 'You must provide an address', value: null },
   { label: 'Depth', name: 'depth', noValueError: 'You must provide an address', value: null },
-  { label: 'Categories', name: 'categories', typeOfComponent: 'multi', options: {}, noValueError: 'You must provide an address', value: null },
+  { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address', value: null },
   { label: 'Display To Customer', name: 'display', typeOfComponent: 'check-box', noValueError: 'You must provide an address', value: null },
 ]
 

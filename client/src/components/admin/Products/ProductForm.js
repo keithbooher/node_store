@@ -8,6 +8,7 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { productFields } from "./formFields"
 import Form from "../../shared/Form"
 import loadingGif from '../../../images/pizzaLoading.gif'
+import { create } from 'domain';
 
 // TO DO
 // if we are in the create form lets show a disabled input 
@@ -29,6 +30,7 @@ class ProductForm extends Component {
   async componentDidMount() {
     console.log('???')
     let categories = await getAllCategories()
+    console.log(categories.data)
 
     const split_paths = window.location.pathname.split( '/' )
     const path = split_paths[split_paths.length - 2]
@@ -74,6 +76,7 @@ class ProductForm extends Component {
   async handleSubmitUpdate(e) {
     e.preventDefault()
     const create_product_values = this.props.form['update_product_form'].values
+    console.log(create_product_values)
     let new_product_info = {
       categories: [],
       dimensions: {}
@@ -83,6 +86,7 @@ class ProductForm extends Component {
         new_product_info.dimensions[key] = value
       } else if (key === "categories") {
         // just pushing category id's into the category array attribute in the product
+        console.log(value)
         value.forEach((category) => {
           new_product_info["categories"].push(category._id)
         })
@@ -98,6 +102,8 @@ class ProductForm extends Component {
     
     new_product_info["_id"] = this.state.product._id
 
+    console.log(new_product_info)
+
     let updated_product = await updateProduct(new_product_info)
     if (updated_product.status === 200) {
       this.props.history.push(`/admin/products/${new_product_info._id}`)
@@ -111,32 +117,32 @@ class ProductForm extends Component {
     let pulledFields = productFields
     // We cycle through the fields AND IF its the category field:
     // we'll want to add the array of categories to the options on the category field
+    let options = []
     pulledFields.forEach((field) => {
       if (field.name === 'categories') {
-        let options = []
+        // fill out options indiscriminately 
         this.state.categories.forEach((category) => {
-          // This is a check to see if we are updating or creating
-          // When we are in the update form we want to set the default boolean to true so it will auto fill the multi select
-          if (this.state.product !== null) {
-            // Loop through THIS products assigned categories and if its the same category
-            // as the category from the forEach we set the default boolean to true
-            // otherwise set default boolean value to false
-            for (let i = 0; i < this.state.product.categories.length; i++) {
-              if(this.state.product.categories[i]._id === category._id) {
-                options.push({ _id: category._id, name: category.name, default: true })
-              } else {
-                options.push({ _id: category._id, name: category.name, default: false })
-              }
-            }
-          } else {
-            // Since we've made it this far it means we are in the create form
-            // and we simply just want to throw in the categories to the options on the category form field
-            options.push({ _id: category._id, name: category.name, default: false })
-          }
+          options.push({ ...category, default: false })
+
         })
+      }
+    })
+
+    this.state.product.categories.forEach((state_product_category) => {
+      // working with category field
+      options.forEach((option_cat) => {
+        if (option_cat._id === state_product_category._id) {
+          option_cat.default = true
+        }
+      })
+    })
+
+    pulledFields.forEach((field) => {
+      if (field.name === 'categories') {
         field.options = options
       }
     })
+
     return pulledFields
   }
 
@@ -144,8 +150,9 @@ class ProductForm extends Component {
   injectDataIntoFormFields() {
     let fields = this.injectCategoryDataIntoFormFields()
 
+
     let initialValues = {}
-    fields = fields.forEach((field) => {
+    fields.forEach((field) => {
       switch (field.name) {
         case "depth":
           initialValues[field.name] = this.state.product.dimensions.depth
@@ -161,6 +168,9 @@ class ProductForm extends Component {
           break;
       }
     })
+
+
+
     return initialValues
   }
 
@@ -190,6 +200,7 @@ class ProductForm extends Component {
   }
 
   render() {
+    console.log(this.state)
     return (
       <>
        {this.state.categories !== null ?

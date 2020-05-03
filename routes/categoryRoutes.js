@@ -33,7 +33,24 @@ module.exports = app => {
   })
   app.get('/api/categories', async (req, res) => {  
     categories = await Category.find({}).populate({
-      path: "sub_categories"
+      path: "sub_categories",
+      model: "categorys",
+      populate: {
+        path: 'sub_categories',
+        model: "categorys",
+        populate: {
+          path: 'sub_categories',
+          model: "categorys",
+          populate: {
+            path: 'sub_categories',
+            model: "categorys",
+            populate: {
+              path: 'sub_categories',
+              model: "categorys"
+            }
+          }
+        }
+      }
     })
     res.send(categories)
   })
