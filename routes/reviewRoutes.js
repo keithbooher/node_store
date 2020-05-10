@@ -32,15 +32,46 @@ module.exports = app => {
     let direction = req.params.direction
     let approval = req.params.approval
     let reviews
-    if (last_review_id === 'none') {
-      reviews = await Review.find().sort({_id:-1}).limit(2)
-    } else {
-      if (direction === "next") {
-        reviews = await Review.find({_id: {$lt: last_review_id}}).sort({_id:-1}).limit(2)
-      } else {
-        reviews = await Review.find({_id: {$gt: last_review_id}}).limit(2)
-        reviews = reviews.reverse()
-      }
+
+    switch (approval) {
+      case "approved":
+        if (last_review_id === 'none') {
+          reviews = await Review.find({ approved: true }).sort({_id:-1}).limit(10)
+        } else {
+          if (direction === "next") {
+            reviews = await Review.find({_id: {$lt: last_review_id, approved: true}}).sort({_id:-1}).limit(10)
+          } else {
+            reviews = await Review.find({_id: {$gt: last_review_id, approved: true}}).limit(10)
+            reviews = reviews.reverse()
+          }
+        }
+        break;
+    
+      case "unapproved":
+        if (last_review_id === 'none') {
+          reviews = await Review.find({ approved: false }).sort({_id:-1}).limit(10)
+        } else {
+          if (direction === "next") {
+            reviews = await Review.find({_id: {$lt: last_review_id, approved: false }}).sort({_id:-1}).limit(10)
+          } else {
+            reviews = await Review.find({_id: {$gt: last_review_id, approved: false }}).limit(10)
+            reviews = reviews.reverse()
+          }
+        }
+        break;
+    
+      default:
+        if (last_review_id === 'none') {
+          reviews = await Review.find().sort({_id:-1}).limit(10)
+        } else {
+          if (direction === "next") {
+            reviews = await Review.find({_id: {$lt: last_review_id}}).sort({_id:-1}).limit(10)
+          } else {
+            reviews = await Review.find({_id: {$gt: last_review_id}}).limit(10)
+            reviews = reviews.reverse()
+          }
+        }
+        break;
     }
     res.send(reviews)
   })

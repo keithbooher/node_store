@@ -94,8 +94,8 @@ class LineItem extends Component {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, auth }) {
+  return { form, auth }
 }
 
 export default connect(mapStateToProps, null)(LineItem)

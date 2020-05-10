@@ -5,6 +5,34 @@ const Order = mongoose.model('orders')
 const Review = mongoose.model('reviews')
 
 module.exports = app => {
+
+  app.get('/api/users/:user_id', async (req, res) => {    
+    let user_id = req.params.user_id
+    let user
+    user = await User.find({_id: user_id})
+    res.send(user)
+  })
+
+  app.get('/api/users/:last_user_id/:direction', async (req, res) => {  
+    let direction = req.params.direction
+    let last_user_id = req.params.last_user_id
+    let users
+    if (last_user_id === 'none') {
+      users = await User.find({}).sort({_id:-1}).limit(10)
+    } else {
+      if (direction === "next") {
+        users = await User.find({_id: {$lt: last_user_id}}).sort({_id:-1}).limit(10)
+      } else {
+        users = await User.find({_id: {$gt: last_user_id}}).limit(10)
+        users = users.reverse()
+      }
+    }
+    console.log(users)
+    console.log(last_user_id)
+    console.log(direction)
+    res.send(users)
+  })
+
   app.put('/api/update/user', requireLogin, async (req, res) => {  
     let user = req.body.user
     let updated_user = await User.findOneAndUpdate({ _id: user._id }, user, {new: true})

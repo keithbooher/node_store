@@ -11,7 +11,11 @@ const reviewSchema = new Schema({
   first_name: String,
   _user_id: String,
   _order_id: String,
-  created_at: Date
+  created_at: Date,
+  approved: {
+    type: Boolean,
+    default: false
+  }
 })
 
 mongoose.model('reviews', reviewSchema)

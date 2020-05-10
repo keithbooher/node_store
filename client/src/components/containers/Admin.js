@@ -30,7 +30,7 @@ class Admin extends Component {
           <Route path="/admin/products" component={Products} />
           <Route exact path="/admin/categories" component={Categories} />
           <Route exact path="/admin/users" component={Users} />
-          <Route exact path="/admin/reviews" component={Reviews} />
+          <Route path="/admin/reviews" component={Reviews} />
         </div>
       </div>
     )

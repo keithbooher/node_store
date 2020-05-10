@@ -36,9 +36,9 @@ class Orders extends Component {
     )
   }
 
-  async changePage(direction_reference_id, direction) {
+  async changePage(direction_reference_id, direction, page_increment) {
     const orders = await getAllOrders(direction_reference_id, direction)
-    this.setState({ orders: orders.data })
+    this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 
   renderOrders() {
@@ -56,7 +56,7 @@ class Orders extends Component {
     return (
       <div>
         {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
-        <PageChanger list_items={this.state.orders} requestMore={this.changePage} />
+        <PageChanger page_number={this.state.page_number} list_items={this.state.orders} requestMore={this.changePage} />
       </div>
     )
   }

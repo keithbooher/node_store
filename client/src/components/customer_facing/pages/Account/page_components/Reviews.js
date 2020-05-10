@@ -36,9 +36,9 @@ class Reviews extends Component {
     }
   }
 
-  async changePage(direction_reference_id, direction) {
+  async changePage(direction_reference_id, direction, page_increment) {
     const reviews = await getUsersReviews(this.props.auth._id, direction_reference_id, direction)
-    this.setState({ reviews: reviews.data })
+    this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
   }
 
   renderReviews() {
@@ -74,7 +74,7 @@ class Reviews extends Component {
         : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
 
 
-        <PageChanger list_items={this.state.reviews} requestMore={this.changePage} />
+        <PageChanger page_number={this.state.page_number} list_items={this.state.reviews} requestMore={this.changePage} />
       </div>
     )
   }

@@ -103,6 +103,8 @@ class Categories extends Component {
     this.setState({ categories: top_categories.data })
   }
 
+  // TO DO
+  // maybe combine and generalize the renderSubCategories & topLevelCategories
   renderSubCategories(parent_category) {
     return ( parent_category.sub_categories.map((category) => {
       let up_disable = false
@@ -114,6 +116,7 @@ class Categories extends Component {
       if (category.display_order === 1) {
         up_disable = true
       }
+      
       return (
         <div style={{ marginLeft: '20px' }}key={category._id}>
           <div 
@@ -165,6 +168,7 @@ class Categories extends Component {
         if (category.display_order === 1) {
           up_disable = true
         }
+
         return (
           <div key={category._id}>
             <div 

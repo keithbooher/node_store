@@ -91,9 +91,9 @@ class ProductList extends Component {
     this.setState({ products: [product.data], chosen_product: product.data._id })
   }
 
-  async changePage(direction_reference_id, direction) {
+  async changePage(direction_reference_id, direction, page_increment) {
     const products = await allProducts(direction_reference_id, direction)
-    this.setState({ products: products.data })
+    this.setState({ products: products.data, page_number: this.state.page_number + page_increment  })
   }
 
   render() {
@@ -109,7 +109,7 @@ class ProductList extends Component {
         />
         <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         {this.state.products.length !== 0 ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
-        <PageChanger list_items={this.state.products} requestMore={this.changePage} />
+        <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} />
       </>
     )
   }
