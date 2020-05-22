@@ -4,7 +4,7 @@ import { reset } from "redux-form";
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import hf from "../../../utils/helperFunctions"
 import { categoryFields, createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
@@ -13,7 +13,6 @@ import Form from "../../shared/Form"
 class Categories extends Component {
   constructor(props) {
     super()
-    this.renderSubCategories = this.renderSubCategories.bind(this)
     this.state = {
       categories: [],
       page_number: 1,
@@ -103,65 +102,13 @@ class Categories extends Component {
     this.setState({ categories: top_categories.data })
   }
 
-  // TO DO
-  // maybe combine and generalize the renderSubCategories & topLevelCategories
-  renderSubCategories(parent_category) {
-    return ( parent_category.sub_categories.map((category) => {
-      let up_disable = false
-      let down_disable = false
-      const sorted_cats = parent_category.sub_categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
-      if (sorted_cats[sorted_cats.length - 1]._id === category._id) {
-        down_disable = true
-      }
-      if (category.display_order === 1) {
-        up_disable = true
-      }
-      
-      return (
-        <div style={{ marginLeft: '20px' }}key={category._id}>
-          <div 
-            className="margin-xs-v color-white flex justify-content-space-between" 
-            style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
-          >
-            <div>{category.name}</div>
-            <div className="flex">
-              <div className="flex margin-s-h">
-                <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, parent_category) : null} icon={faCaretUp} /></a>
-                <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, parent_category) : null} icon={faCaretDown} /></a>
-              </div>
-              {category.nest_level === 5 ? "" : 
-                <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
-              }
-            </div>
-          </div>
-          
-          {this.state.show_create_input === category._id ? 
-              <div style={{ marginLeft: '20px' }}>
-                <Form 
-                  onSubmit={(e) => this.handleCreateCategoryCreate(e, category)}
-                  submitButtonText={"Create A Subcategory"}
-                  formFields={createSubField}
-                  formId='create_category_form'
-                  form='create_category_form'
-                  cancel={() => this.setState({ show_create_input: null })}
-                  />
-              </div>
-          : ""}
-          
-          {category.sub_categories.length > 0 ? 
-            <div>{this.renderSubCategories(this.sortByDisplayOrder(category))}</div>            
-          : "" }
-        </div>
-      )
-    }))
-  }
-
-  topLevelCategories() {
+  categories(parent_category) {
+    let categories = parent_category !== null ? parent_category.sub_categories : this.state.categories
     return (
-      this.state.categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
+      categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
         let up_disable = false
         let down_disable = false
-        const sorted_cats = this.state.categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
+        const sorted_cats = categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
         if (sorted_cats[sorted_cats.length - 1]._id === category._id) {
           down_disable = true
         }
@@ -170,7 +117,7 @@ class Categories extends Component {
         }
 
         return (
-          <div key={category._id}>
+          <div style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
             <div 
               className="margin-xs-v color-white flex justify-content-space-between" 
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
@@ -182,6 +129,7 @@ class Categories extends Component {
                   <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, null) : null} icon={faCaretDown} /></a>
                 </div>
                 <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button onClick={() => this.deleteCategory(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
@@ -198,7 +146,9 @@ class Categories extends Component {
                 </div>
             : ""}
 
-            <div>{this.renderSubCategories(this.sortByDisplayOrder(category))}</div>
+            {/* Sub Categories */}
+            {/* calling its self to infinitely render subcategories */}
+            <div>{this.categories(this.sortByDisplayOrder(category))}</div>
           </div>
         )
       })
@@ -208,6 +158,14 @@ class Categories extends Component {
   sortByDisplayOrder(category) {
     category.sub_categories = category.sub_categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
     return category
+  }
+
+  async deleteCategory(category) {
+    let cat = category
+    cat.deleted_at = Date.now()
+    const delete_cat = await updateCategory(cat)
+    const top_categories =  await getTopCategories()
+    this.setState({ categories: top_categories.data })
   }
 
   render() {
@@ -232,7 +190,7 @@ class Categories extends Component {
         </div>
 
         {this.state.categories.length !== 0 ? 
-          this.topLevelCategories()
+          this.categories(null)
         : <img className="loadingGif" src={loadingGif} /> }
       </div>
     )

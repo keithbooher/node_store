@@ -55,7 +55,7 @@ module.exports = app => {
     res.send(categories)
   })
   app.get('/api/categories/top', async (req, res) => {  
-    categories = await Category.find({ nest_level: 0 }).populate({
+    categories = await Category.find({ nest_level: 0, deleted_at: null }).populate({
       path: "sub_categories",
       model: "categorys",
       populate: {

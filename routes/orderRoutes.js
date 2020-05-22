@@ -4,9 +4,7 @@ const Order = mongoose.model('orders')
 
 module.exports = app => {
   app.post('/api/order/create', requireLogin, async (req, res) => {  
-    console.log(req.body.order)
     const order = new Order(req.body.order)
-    console.log(order)
     try {
       await order.save()
       console.log(order)
@@ -21,6 +19,12 @@ module.exports = app => {
     const order = await Order.findOne({ "_id": order_id })
 
     res.send(order)
+  })
+
+
+  app.get('/api/orders/last_order', async (req, res) => {    
+    const product = await Order.findOne({ deleted_at: null })
+    res.send(product)
   })
 
 

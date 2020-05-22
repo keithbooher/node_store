@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { allProducts, getProductbyId, getProductInfo } from '../../../utils/API'
+import { allProducts, getProductbyId, getProductInfo, updateProduct, lastProduct } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
@@ -18,6 +18,7 @@ class ProductList extends Component {
       products: [],
       page_number: 1,
       chosen_product: null,
+      last_product: null
     }
   }
   
@@ -44,13 +45,25 @@ class ProductList extends Component {
       products = products.data
     }
 
-    this.setState({ products: products, chosen_product: chosen_product})
+    let last_product = await lastProduct()
+
+    this.setState({ products: products, chosen_product: chosen_product, last_product: last_product.data})
+  }
+
+  async deleteProduct(product) {
+    const prod = product
+    prod.deleted_at = Date.now()
+    const delete_product = await updateProduct(prod)
+    let products = await allProducts(this.state.products[0]._id, "from_here")
+    let last_product = await lastProduct()
+    this.setState({ products: products.data, chosen_product: null, last_product: last_product.data})
   }
 
   productData(product) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
         <Link to={`/admin/products/form/update/${product.path_name}`} > <FontAwesomeIcon icon={faEdit} />Edit</Link>
+        <button href="#" onClick={() => this.deleteProduct(product)} > <FontAwesomeIcon icon={faTrash} />Delete</button>
         <div>Name {product.name}</div>
         <div>Description:  {product.description}</div>
         <div>Inventory Count:  {product.inventory_count}</div>
@@ -79,7 +92,7 @@ class ProductList extends Component {
 
   async getAllProducts() {
     let products = await allProducts("none", "none")
-    this.setState({ products: products.data })
+    this.setState({ products: products.data, page_number: 1 })
     this.props.dispatch(reset("product_search_form"))
   }
 
@@ -97,6 +110,12 @@ class ProductList extends Component {
   }
 
   render() {
+    let lastPossibleItem = false
+    if (this.state.products.length > 0) {
+      if (this.state.products[this.state.products.length - 1]._id === this.state.last_product._id) {
+        lastPossibleItem = true
+      }
+    }
     return (
       <>
         <Link to="/admin/products" onClick={this.getAllProducts} ><FontAwesomeIcon icon={faSyncAlt} />Get All Products</Link>
@@ -109,7 +128,7 @@ class ProductList extends Component {
         />
         <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         {this.state.products.length !== 0 ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
-        <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} />
+        <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </>
     )
   }

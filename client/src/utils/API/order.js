@@ -17,3 +17,7 @@ export const getOrder = (order_id) => {
 export const getAllOrders = (last_order_id, direction) => {
     return axios.get('/api/orders/' + last_order_id + "/" + direction) 
 }
+
+export const lastOrder = () => {
+    return axios.get('/api/orders/last_order') 
+}

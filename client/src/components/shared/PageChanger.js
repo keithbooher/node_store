@@ -22,7 +22,10 @@ class PageChanger extends Component {
 
   render() {
     let previous_disable = this.props.page_number === 1 ? true : false
-    let next_disable = this.props.list_items.length < 10 ? true : false
+    let next_disable = 
+      this.props.list_items.length < 10 ? true :
+      this.props.lastPossibleItem === true ? true :
+      false
     return (
       <div className="flex">
         <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "black" }} className="bare_button">Previous</button>

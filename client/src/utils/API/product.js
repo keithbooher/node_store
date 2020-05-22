@@ -27,3 +27,7 @@ export const updateProduct = (product) => {
   const data = { product }
   return axios.put(`/api/product/update`, data)
 }
+
+export const lastProduct = () => {
+  return axios.get(`/api/products/last_product`)
+}

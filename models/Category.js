@@ -11,6 +11,8 @@ const categorySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'categorys'
   }],
+  created_at: Date,
+  deleted_at: Date
 })
 
 mongoose.model('categorys', categorySchema)

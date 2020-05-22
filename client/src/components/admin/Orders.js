@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { getAllOrders } from "../../utils/API"
+import { getAllOrders, lastOrder } from "../../utils/API"
 import LineItem from "../shared/LineItem"
 import loadingGif from '../../images/pizzaLoading.gif'
 import PageChanger from "../shared/PageChanger"
@@ -10,14 +10,15 @@ class Orders extends Component {
     this.state = {
       orders: [],
       page_number: 1,
-      chosen_order: null
+      chosen_order: null,
+      last_order: null
     }
   }
   
   async componentDidMount() {
     const orders = await getAllOrders("none", "none")
-    console.log(orders)
-    this.setState({ orders: orders.data })
+    const last_order = await lastOrder()
+    this.setState({ orders: orders.data, last_order: last_order.data })
   }
 
   setOrder(order) {
@@ -53,10 +54,16 @@ class Orders extends Component {
   }
 
   render() {
+    let lastPossibleItem = false
+    if (this.state.orders.length > 0) {
+      if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {
+        lastPossibleItem = true
+      }
+    }
     return (
       <div>
         {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
-        <PageChanger page_number={this.state.page_number} list_items={this.state.orders} requestMore={this.changePage} />
+        <PageChanger page_number={this.state.page_number} list_items={this.state.orders} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </div>
     )
   }

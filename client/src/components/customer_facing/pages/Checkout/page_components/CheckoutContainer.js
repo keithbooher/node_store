@@ -50,6 +50,8 @@ class CheckoutContainer extends Component  {
     this.setState({ new_order: order })
   }
 
+  // TO DO
+  // can this be moved to the address panel?
   choosePreExistingAddress(address) {
     console.log(address.bill_or_ship)
     switch (address.bill_or_ship) {
