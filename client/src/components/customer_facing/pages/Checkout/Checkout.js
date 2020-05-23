@@ -18,7 +18,6 @@ class Checkout extends Component  {
   }
   
   render() {
-    console.log(this.state)
     // Need to render a side container showing the contents of the cart 
     return (
       <div>

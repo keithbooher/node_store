@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { allProducts, getProductbyId, getProductInfo, updateProduct, lastProduct } from '../../../utils/API'
+import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastProduct } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -41,7 +41,7 @@ class ProductList extends Component {
       products = products.data
       products = [products]
     } else {
-      products = await allProducts("none", "none")
+      products = await paginatedProducts("none", "none")
       products = products.data
     }
 
@@ -54,7 +54,7 @@ class ProductList extends Component {
     const prod = product
     prod.deleted_at = Date.now()
     const delete_product = await updateProduct(prod)
-    let products = await allProducts(this.state.products[0]._id, "from_here")
+    let products = await paginatedProducts(this.state.products[0]._id, "from_here")
     let last_product = await lastProduct()
     this.setState({ products: products.data, chosen_product: null, last_product: last_product.data})
   }
@@ -91,7 +91,7 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
-    let products = await allProducts("none", "none")
+    let products = await paginatedProducts("none", "none")
     this.setState({ products: products.data, page_number: 1 })
     this.props.dispatch(reset("product_search_form"))
   }
@@ -105,7 +105,7 @@ class ProductList extends Component {
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const products = await allProducts(direction_reference_id, direction)
+    const products = await paginatedProducts(direction_reference_id, direction)
     this.setState({ products: products.data, page_number: this.state.page_number + page_increment  })
   }
 

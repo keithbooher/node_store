@@ -125,8 +125,8 @@ class Categories extends Component {
               <div>{category.name}</div>
               <div className="flex">
                 <div className="flex margin-s-h">
-                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, null) : null} icon={faCaretUp} /></a>
-                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, null) : null} icon={faCaretDown} /></a>
+                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
+                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
                 </div>
                 <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
                 <button onClick={() => this.deleteCategory(category)}><FontAwesomeIcon icon={faTrash} /></button>

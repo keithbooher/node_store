@@ -53,7 +53,6 @@ class CheckoutContainer extends Component  {
   // TO DO
   // can this be moved to the address panel?
   choosePreExistingAddress(address) {
-    console.log(address.bill_or_ship)
     switch (address.bill_or_ship) {
       case 'shipping':
         this.setState({ preExistingShipping: address })
@@ -74,7 +73,6 @@ class CheckoutContainer extends Component  {
 
   
   render() {
-    console.log(this.state)
     return (
       <>
         <h4 onClick={() => this.chooseTab('address')}>Address</h4>
