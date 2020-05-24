@@ -28,9 +28,7 @@ class ProductForm extends Component {
   }
 
   async componentDidMount() {
-    console.log('???')
     let categories = await getAllCategories()
-    console.log(categories.data)
 
     const split_paths = window.location.pathname.split( '/' )
     const path = split_paths[split_paths.length - 2]
@@ -76,7 +74,6 @@ class ProductForm extends Component {
   async handleSubmitUpdate(e) {
     e.preventDefault()
     const create_product_values = this.props.form['update_product_form'].values
-    console.log(create_product_values)
     let new_product_info = {
       categories: [],
       dimensions: {}

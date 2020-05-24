@@ -5,6 +5,7 @@ import { reduxForm, Field, FieldArray } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
 import FormMultiSelect from './FormMultiSelect'
+import FormDropdown from './FormDropdown'
 import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
 import validateEmails from '../../../utils/validateEmails'
@@ -17,7 +18,6 @@ class Form extends Component {
   }
   
   renderFields() {
-    console.log(this.props)
     return _.map(this.props.formFields, ({ label, name, value, typeOfComponent="text", options, display, field_class }) => {
       let component
       switch (typeOfComponent) {
@@ -32,6 +32,9 @@ class Form extends Component {
           break;
         case 'field-disable':
           component = FormFieldDisabled
+          break;
+        case 'dropdown':
+          component = FormDropdown
           break;
         case 'tree':
           component = FormTree

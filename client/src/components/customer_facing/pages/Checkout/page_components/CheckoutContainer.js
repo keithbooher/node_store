@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import AddressPanel from './panels/AddressPanel'
 import PaymentPanel from './panels/PaymentPanel'
 import ReviewPanel from './panels/ReviewPanel'
@@ -25,8 +26,7 @@ class CheckoutContainer extends Component  {
   }
 
   async componentDidMount() {
-    const current_cart = await getCurrentCart(this.props.current_user)
-    console.log(current_cart)
+    const current_cart = await getCurrentCart(this.props.current_user._id)
     if (current_cart.data.checkout_state === "shopping") {
       current_cart.data.checkout_state = "address"
     }
@@ -38,16 +38,18 @@ class CheckoutContainer extends Component  {
   }
 
   async updateCart(cart) {
+    //update data base
     const update_cart = await updateCart(cart)
     this.setState({ current_cart: update_cart.data })
+    return update_cart.data
   }
 
   chooseTab(chosen_tab) {
     this.setState({ chosen_tab: chosen_tab  })
   }
 
-  makeNewOrderAvailable(order) {
-    this.setState({ new_order: order })
+  makeNewOrderAvailable(order, cart) {
+    this.setState({ new_order: order, chosen_tab: "review", current_cart: cart })
   }
 
   // TO DO
@@ -106,6 +108,7 @@ class CheckoutContainer extends Component  {
             chosen_tab={this.state.chosen_tab} 
             preExistingShipping={this.state.preExistingShipping}
             preExistingBilling={this.state.preExistingBilling}
+            updateCart={this.updateCart}
             />
           : ""}
 
@@ -123,4 +126,7 @@ class CheckoutContainer extends Component  {
   }
 }
 
-export default CheckoutContainer
+
+const actions = { updateCart }
+
+export default connect(null, actions)(CheckoutContainer)

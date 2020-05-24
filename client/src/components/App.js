@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { BrowserRouter , Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchUser } from '../actions'
+import { fetchUser, usersCart } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import Header from './customer_facing/components/Header'
 import Admin from './containers/Admin'
-import CustomerFacing from './containers/CustomerFacing';
+import Customer from './containers/CustomerFacing';
 
 import PrivateRoute from './PrivateRoute'
 
@@ -17,9 +16,11 @@ class App extends Component {
   }
   async componentDidMount() {
     // Check to see if user is logged in
-    // Also using this to pass to prive route
-    let admin = await this.props.fetchUser()
-    switch (admin) {
+    // Also using this to pass to private route
+    let user = await this.props.fetchUser()
+    let cart = await this.props.usersCart(user._id)
+    let admin 
+    switch (user) {
       case undefined:
         admin = null      
         break;
@@ -37,11 +38,9 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.admin)
     return (
       <BrowserRouter>
-        <HideableHeader />
-        <HideableCustomerFacing />
+        <CustomerFacing />
         <PrivateRoute admin={this.state.admin} path="/admin">
           <Admin />
         </PrivateRoute>
@@ -50,31 +49,18 @@ class App extends Component {
   }
 }
 
-const HeaderSwitch = (props) => {
-  console.log('location?')
-  console.log(props)
-  const { location } = props;
-  if (location.pathname.match('/admin')){
-    return null;
-  }
-  return (
-    <Header />
-  )
-}
-
 const CustomerFacingSwitch = (props) => {
   const { location } = props;
   if (location.pathname.match('/admin')){
     return null;
   }
   return (
-    <CustomerFacing />
+    <Customer />
   )
 }
 
-const HideableHeader = withRouter(HeaderSwitch);
-const HideableCustomerFacing = withRouter(CustomerFacingSwitch);
+const CustomerFacing = withRouter(CustomerFacingSwitch);
 
-const actions = { fetchUser }
+const actions = { fetchUser, usersCart }
 
 export default connect(null, actions)(App)

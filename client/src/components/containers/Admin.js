@@ -4,6 +4,7 @@ import Sidebar from '../admin/Sidebar'
 import AdminDashboard from '../admin/AdminDashboard'
 import Categories from '../admin/Categories'
 import Orders from '../admin/Orders'
+import OrderPage from '../admin/Orders/OrderPage'
 import Products from '../admin/Products'
 import Reviews from '../admin/Reviews'
 import Users from '../admin/Users'
@@ -27,6 +28,7 @@ class Admin extends Component {
         <div id="admin_content_container" className="relative padding-s color-black" style={{ backgroundColor: "#F1F5F8" }}>
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/orders" component={Orders} />
+          <Route exact path="/admin/orders/:id" component={OrderPage} />
           <Route path="/admin/products" component={Products} />
           <Route exact path="/admin/categories" component={Categories} />
           <Route exact path="/admin/users" component={Users} />

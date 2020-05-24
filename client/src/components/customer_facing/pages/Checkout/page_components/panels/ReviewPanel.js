@@ -23,13 +23,10 @@ class ReviewPanel extends Component  {
     // their order and to show them their order number
     return (
       <>
-        {this.props.cart ? this.props.cart.checkout_state === 'complete' ?
-          <>
-            "Congrats on your order! You figure it out from here :]"
-            <div>Order #: {this.props.new_order._id}</div>
-          </>
-       : "" : "" }
-
+        <>
+          "Congrats on your order! You figure it out from here :]"
+          <div>Order #: {this.props.new_order._id}</div>
+        </>
       </>
     )
   }

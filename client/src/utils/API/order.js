@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export const createOrder = (order) => {
     const data = { order }
     return axios.post('/api/order/create', data)

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
-import { updateCart, convertCart, updateUser, handleToken } from '../../../../actions'
-import { createOrder } from '../../../../utils/API'
+import { convertCart, updateUser, handleToken } from '../../../../actions'
+import { createOrder, createShipment, updateCart } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 
@@ -14,13 +14,13 @@ class Payments extends Component {
   async someFunction(token) {
     await this.props.handleToken(token)
     let cart = this.props.cart
-    cart.checkout_state = 'complete'
-
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+    cart.checkout_state = 'complete'
     cart.deleted_at = date
     cart.converted = true
-    await this.props.updateCart(cart)
+
+    // update cart in db
         
     // Have to remove _id before we add billing and shipping to an order 
     // (mongoDB creates the _id so it throws a fit that there is already an _id)
@@ -77,33 +77,50 @@ class Payments extends Component {
       user.billing_address.push(cart.billing_address)
     }
     if (past_billing_used === false || past_shipping_used === false) {
+      // TO DO 
+      // Change this to just be an api call
       this.props.updateUser(user)
     }
 
+    console.log(cart)
+    // Make shipment
+    let shipment = {
+      billing_address: cart.billing_address,
+      shipping_address: cart.shipping_address,
+      chosen_rate: {
+        cost: cart.chosen_rate.cost,
+        shipping_method: cart.chosen_rate.shipping_method
+      },
+      status: 'pending',
+      date_shipped: null,
+      line_items: cart.line_items,
+      _user_id: cart._user_id
+    }
+
+    const new_shipment = await createShipment(shipment)
+
+    // Create Order
     let order = {
       sub_total: cart.sub_total,
       total: cart.sub_total,
-      billing_address: cart.billing_address,
-      shipping_address: cart.shipping_address,
+      shipment: new_shipment.data._id,
       date_placed: date,
-      line_items: cart.line_items,
       _user_id: cart._user_id,
       email: user.email
     }
 
     const new_order = await createOrder(order)
 
-    //make available to the checkout page, ultimately Review panel.
-    this.props.makeNewOrderAvailable(new_order.data)
 
-    this.props.chooseTab("review")
-    this.props.convertCart({checkout_state: 'complete', line_items: []})
-    this.props.reset("billing_checkout_form")
-    this.props.reset("shipping_checkout_form")
+    let updated_cart = await updateCart(cart)
+
+    //make available to the checkout page and ultimately Review panel.
+    this.props.makeNewOrderAvailable(new_order.data, updated_cart.data)
+    this.props.chooseTab('review')
+
   }
 
   render() {
-    // console.log(this.props)
     return (
         <StripeCheckout
           name="Node Store"
@@ -123,6 +140,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { reset, updateCart, convertCart, updateUser, handleToken }
+const actions = { reset, convertCart, updateUser, handleToken }
 
 export default connect(mapStateToProps, actions)(Payments)

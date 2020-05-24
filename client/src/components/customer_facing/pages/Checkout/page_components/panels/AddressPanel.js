@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
-import formFields from '../formFields'
+import { addressFormFields } from '../formFields'
 import hf from "../../../../../../utils/helperFunctions"
 import AddressCard from '../../../../components/AddressCard';
 
@@ -19,13 +19,11 @@ class AddressPanel extends Component  {
   }
 
   async componentDidMount() {    
-    console.log(this.props.auth)
   }
   
 
   handleFormSubmit(e) {
     e.preventDefault()
-    console.log("formSubmit")
     // NEED TO PREVENT SUBMISSION IF NEITHER A PRE-EXISTING ADDY CARD 
     // HAS BEEN SELECTED OR THE FORM HAS BEEN FILLED OUT
     let cart_instance = this.props.cart
@@ -81,7 +79,7 @@ class AddressPanel extends Component  {
   billing_initial_values() {
     let billing_initial_values = this.props.form.billing_checkout_form ? this.props.form.billing_checkout_form.values : {} 
     if (this.props.cart.billing_address) {
-      billing_initial_values = hf.updatedFormFields(formFields, this.props.cart.billing_address)
+      billing_initial_values = hf.updatedFormFields(addressFormFields, this.props.cart.billing_address)
     }
     return billing_initial_values
   }
@@ -89,7 +87,7 @@ class AddressPanel extends Component  {
   shipping_initial_values() {
     let shipping_initial_values = this.props.form.shipping_checkout_form ? this.props.form.shipping_checkout_form.values : {}
     if (this.props.cart.shipping_address) {
-      shipping_initial_values = hf.updatedFormFields(formFields, this.props.cart.shipping_address)
+      shipping_initial_values = hf.updatedFormFields(addressFormFields, this.props.cart.shipping_address)
     }
     return shipping_initial_values
   }
@@ -127,7 +125,7 @@ class AddressPanel extends Component  {
               onSubmit={this.handleFormSubmit} 
               onChange={() => this.formOnChange('billing null')}
               submitButtonText={"Next"}
-              formFields={formFields} 
+              formFields={addressFormFields} 
               replaceSubmitButton={true}
               submitButton={""}
               formId={"billing_form"}
@@ -142,7 +140,7 @@ class AddressPanel extends Component  {
             <Form 
               onSubmit={this.handleFormSubmit} 
               onChange={() => this.formOnChange('shipping null')}
-              formFields={formFields}
+              formFields={addressFormFields}
               formId={"shipping_form"}
               form={"shipping_checkout_form"}
               replaceSubmitButton={true}

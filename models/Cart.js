@@ -3,6 +3,12 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 const LineItemSchema = require('./LineItem')
 const AddressSchema = require('./Address')
 
+
+const rateSchema = new Schema({
+  cost: '',
+  shipping_method: ""
+})
+
 const cartSchema = new Schema({
   checkout_state: {
     type: String,
@@ -20,6 +26,7 @@ const cartSchema = new Schema({
     type: Date,
     default: null
   },
+  chosen_rate: rateSchema,
 })
 
 mongoose.model('carts', cartSchema)

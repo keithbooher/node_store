@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from '../../../../../../actions'
+import { convertCart } from '../../../../../../actions'
 import _ from "lodash"
-
+import Form from '../../../../../shared/Form';
+import { shippingMethods } from "../formFields"
+import { createShipment } from "../../../../../../utils/API"
 class AddressPanel extends Component  {
   constructor(props) {
     super()
-    this.handleNext = this.handleNext.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
 
     }
@@ -16,21 +18,45 @@ class AddressPanel extends Component  {
     // api call to assign "shipping" checkout status to cart 
   }
   
-  handleNext() {
-    this.props.chooseTab('payment')
+  async handleSubmit(e) {
+    e.preventDefault()
+    const selected_shipping_method = this.props.form[`shipping_method_selection_form`].values
+    const cost = selected_shipping_method.shipping_rates.cost
+    const shipping_method = selected_shipping_method.shipping_rates.name
+
+    let cart = {...this.props.cart}
+
+    let chosen_rate = {
+        cost,
+        shipping_method
+    }
+
+    cart.chosen_rate = chosen_rate
+    cart.checkout_state = "payment"
+
+    // update redux store
+    const thing = await this.props.updateCart(cart)
+
+    this.props.chooseTab("payment")
   }
 
   render() {
-    console.log(this.props)
-
     return (
       <div className="shipping_container">
         { this.props.cart ?
           <>
-            Shipping Panel
-            <button onClick={this.handleNext} className="teal btn-flat right white-text">
-              <i className="material-icons right">Next</i>
-            </button>
+            <div>
+              <h4>Choose Shipping Method</h4>
+              <div>
+                <Form 
+                  onSubmit={(e) => this.handleSubmit(e)}
+                  submitButtonText={"Select Shipping Method"}
+                  formFields={shippingMethods}
+                  formId='shipping_method_selection_form'
+                  form='shipping_method_selection_form'
+                />
+              </div>
+            </div>
           </>
         : ""}
       </div>
@@ -38,10 +64,10 @@ class AddressPanel extends Component  {
   }
 }
 
-function mapStateToProps({ cart }) {
-  return { cart }
+function mapStateToProps({ form }) {
+  return { form }
 }
 
-const actions = { updateCart }
+const actions = { convertCart }
 
 export default connect(mapStateToProps, actions)(AddressPanel)

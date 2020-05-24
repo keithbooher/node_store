@@ -2,8 +2,8 @@ import axios from 'axios'
 import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART} from './types'
 
 // Find the current user's cart
-export const usersCart = () => async dispatch => {
-  const res = await axios.get(`/api/cart`)
+export const usersCart = (id) => async dispatch => {
+  const res = await axios.get(`/api/cart/${id}`)
   if (res.data === "") {
     res.data = null
   }
@@ -24,8 +24,8 @@ export const addToCart = (create_boolean, cart, user_id) => async dispatch => {
 export const updateCart = (cart) => async dispatch => {
   const data = { cart }
   let res = await axios.put('/api/cart/update/' + cart.id, data) 
-  console.log(res.data)
   dispatch({ type: UPDATE_CART, payload: res.data })
+  return res.data
 }
 
 export const convertCart = (cart) => async dispatch => {

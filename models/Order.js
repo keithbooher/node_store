@@ -6,8 +6,6 @@ const AddressSchema = require('./Address')
 const orderSchema = new Schema({
   sub_total: Number,
   total: Number,
-  billing_address: AddressSchema,
-  shipping_address: AddressSchema,
   status: {
     type: String,
     default: 'pending'
@@ -19,7 +17,11 @@ const orderSchema = new Schema({
   },
   line_items: [LineItemSchema],
   _user_id: String,
-  email: String
+  email: String,
+  shipment: {
+    type: Schema.Types.ObjectId,
+    ref: 'shipments'
+  },
 
 })
 

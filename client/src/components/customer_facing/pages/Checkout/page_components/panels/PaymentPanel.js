@@ -21,7 +21,8 @@ class PaymentPanel extends Component  {
           preExistingBilling={this.props.preExistingBilling} 
           makeNewOrderAvailable={this.props.makeNewOrderAvailable} 
           chooseTab={this.props.chooseTab} 
-          />
+          updateCart={this.props.updateCart}
+        />
       </>
     )
   }

@@ -21,14 +21,15 @@ class Home extends Component  {
   }
 
   renderProducts() {
-    console.log(this.state.products)
     return this.state.products.map(product => {
       return <>
               <ProductCard 
                 addToCart={this.props.addToCart} 
                 user={this.props.auth} product={product} 
                 cart={this.props.cart} 
-                category_path_name={product.categories[0].path_name} /></>
+                category_path_name={product.categories[0].path_name} 
+              />
+            </>
     })
   }
 
@@ -38,7 +39,7 @@ class Home extends Component  {
     return (
       <div>
         <h1>Node Store</h1>
-        <div className="flex">
+        <div className="flex flex-wrap">
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>

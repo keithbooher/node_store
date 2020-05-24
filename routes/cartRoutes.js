@@ -5,8 +5,9 @@ const Cart = mongoose.model('carts')
 
 module.exports = app => {
   // GET A USERS CART
-  app.get('/api/cart', async (req, res) => {
-    const cart = await Cart.findOne({ _user_id: `${req.user._id}`, deleted_at: null })
+  app.get('/api/cart/:id', async (req, res) => {
+    const user_id = req.params.id
+    const cart = await Cart.findOne({ _user_id: user_id, deleted_at: null })
     res.send(cart)
   })
 

@@ -78,16 +78,16 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-            <div className="card border">
-              <div className="card-content">
-                <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
-                <p>{product.description}</p>
-              </div>
-              <div className="margin-m-v">
-                <Link to={`/shop/${category_path_name}/${product.path_name}`} className="product-card-link">Go to this product</Link>
-              </div>
-              <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
-              {/* add quantity buttons */}
+          <div className="card border">
+            <div className="card-content">
+              <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
+              <p>{product.description}</p>
+            </div>
+            <div className="margin-m-v">
+              <Link to={`/shop/${category_path_name}/${product.path_name}`} className="product-card-link">Go to this product</Link>
+            </div>
+            <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
+            {/* add quantity buttons */}
           </div>
         : <img className="loadingGif" src={loadingGif} /> }
     </>
