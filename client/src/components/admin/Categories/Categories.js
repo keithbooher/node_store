@@ -119,7 +119,7 @@ class Categories extends Component {
         return (
           <div style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
             <div 
-              className="margin-xs-v color-white flex justify-content-space-between" 
+              className="margin-xs-v color-white flex space-between" 
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
             >
               <div>{category.name}</div>

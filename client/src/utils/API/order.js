@@ -13,8 +13,8 @@ export const getOrder = (order_id) => {
     return axios.get(`/api/order/${order_id}`) 
 }
 
-export const paginatedOrders = (last_order_id, direction) => {
-    return axios.get('/api/orders/' + last_order_id + "/" + direction) 
+export const paginatedOrders = (last_order_id, direction, status) => {
+    return axios.get('/api/orders/' + last_order_id + "/" + direction + "/" + status) 
 }
 
 export const lastOrder = () => {

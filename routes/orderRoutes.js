@@ -28,17 +28,44 @@ module.exports = app => {
   })
 
 
-  app.get('/api/orders/:last_order_id/:direction', requireLogin, async (req, res) => {
+  app.get('/api/orders/:last_order_id/:direction/:status', requireLogin, async (req, res) => {
     let last_order_id = req.params.last_order_id
     let direction = req.params.direction
+    let status = req.params.status
     let orders
     if (last_order_id === 'none') {
-      orders = await Order.find().sort({_id:-1}).limit(10)
+
+      if (status === "all") {
+        orders = await Order.find({})
+        .populate({
+          path: "shipment",
+          model: "shipments",
+        })
+        .sort({_id:-1}).limit(10)
+      } else {
+        orders = await Order.find({ status })
+        .populate({
+          path: "shipment",
+          model: "shipments",
+        })
+        .sort({_id:-1}).limit(10)
+      }
+
+          
     } else {
       if (direction === "next") {
-        orders = await Order.find({_id: {$lt: last_order_id}}).sort({_id:-1}).limit(10)
+        orders = await Order.find({_id: {$lt: last_order_id}, status})
+          .populate({
+            path: "shipment",
+            model: "shipments",
+          })
+          .sort({_id:-1})
+          .limit(10)
       } else {
-        orders = await Order.find({_id: {$gt: last_order_id}}).limit(10)
+        orders = await Order.find({_id: {$gt: last_order_id}, status}).populate({
+          path: "shipment",
+          model: "shipments",
+        }).limit(10)
         orders = orders.reverse()
       }
     }

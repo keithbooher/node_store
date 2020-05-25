@@ -6,6 +6,8 @@ import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import QuickView from './QuickView';
+import { runInThisContext } from 'vm';
 
 class Orders extends Component {
   constructor(props) {
@@ -15,13 +17,15 @@ class Orders extends Component {
       orders: [],
       page_number: 1,
       chosen_order: null,
-      last_order: null
+      last_order: null,
+      status_filter: "pending"
     }
   }
   
   async componentDidMount() {
-    const orders = await paginatedOrders("none", "none")
+    const orders = await paginatedOrders("none", "none", "pending")
     const last_order = await lastOrder()
+    console.log(orders)
     this.setState({ orders: orders.data, last_order: last_order.data })
   }
 
@@ -41,26 +45,13 @@ class Orders extends Component {
     }
   }
 
-  orderData(order) {
-    return  (
-      <div className="padding-s " style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto', padding: '10px' }}>
-        <h4 className="margin-xs-v">Line Items:</h4>
-        <div className="margin-xs-h">{order.line_items.map((line_item) => <LineItem admin={true} order_id={order._id} line_item={line_item} />)}</div>
-        <h4 className="margin-xs-v">Adress Info:</h4>
-        <div className="margin-xs-h">{order.shipment.billing_address.first_name}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.last_name}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.company}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.street_address_1}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.street_address_2}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.city}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.state}</div>
-        <div className="margin-xs-h">{order.shipment.billing_address.zip_code}</div>
-      </div>
-    )
+  async changeOrderTab(status) {
+    const orders = await paginatedOrders("none", "none", status)
+    this.setState({ orders: orders.data, status_filter: status })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const orders = await paginatedOrders(direction_reference_id, direction)
+    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter)
     this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -69,23 +60,25 @@ class Orders extends Component {
       return (
         <>
           <tr className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
-            <td  onClick={ () => this.setOrder(order)} class="flex justify-content-space-between">
+            <td onClick={ () => this.setOrder(order)} class="padding-xs flex justify-content-space-between quick-view">
               <a><FontAwesomeIcon icon={faEye} /></a>
-            </td><td>
-              <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}><FontAwesomeIcon icon={faEdit} style={{ display: "inline"}} />{order._id}</Link>
-            </td><td>
+            </td><td className="padding-xs">
+              <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
+                <FontAwesomeIcon icon={faEdit} style={{ display: "inline"}} /><span style={{  marginLeft: "5px" }}>...{order._id.substring(order._id.length - 4)}</span>
+              </Link>
+            </td><td className="padding-xs">
               <Link to={`/admin/users/${order._user_id}`}>{order.email}</Link>
-            </td><td>
+            </td><td className="padding-xs">
               <span>{new Date(order.date_placed).toDateString()}</span>
-            </td><td>
+            </td><td className="padding-xs">
               <span>${order.total}</span>
-            </td><td>
+            </td><td className="padding-xs text-align-center">
               <span>{order.status}</span>
             </td>
           </tr>
           
           <tr>
-            <td colspan="6">{this.state.chosen_order === order._id ? this.orderData(order) : ""}</td>
+            <td colspan="6">{this.state.chosen_order === order._id ? <QuickView order={order} /> : ""}</td>
           </tr>
         </>
       )
@@ -101,11 +94,20 @@ class Orders extends Component {
     }
     return (
       <div>
-        <table style={{ width: "100%" }}>
+        <div className="flex space-evenly">
+          <div onClick={() => this.changeOrderTab("pending")}>Pending</div>
+          <div onClick={() =>this.changeOrderTab("processing")}>Processing Shipment</div>
+          <div onClick={() => this.changeOrderTab("complete")}>Complete</div>
+          <div onClick={() => this.changeOrderTab("cancelled")}>Cancelled</div>
+          <div onClick={() => this.changeOrderTab("returned")}>Returned</div>
+          <div onClick={() => this.changeOrderTab("all")}>All</div>
+        </div>
+        <br/>
+        <table>
           <thead>
             <tr>
-              <th style={{ wordWrap: "normal" }}>Quick View</th>
-              <th>Order Numer</th>
+              <th style={{ wordWrap: "normal", width: "2em" }}>Quick View</th>
+              <th>Order Number</th>
               <th>Customer Email</th>
               <th>Date Placed</th>
               <th>Total</th>
