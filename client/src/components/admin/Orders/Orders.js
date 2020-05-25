@@ -92,15 +92,21 @@ class Orders extends Component {
         lastPossibleItem = true
       }
     }
+
+    const highlightedColorStyle = {
+      backgroundColor: "darkgray",
+      padding: "5px"
+    }
+
     return (
       <div>
-        <div className="flex space-evenly">
-          <div onClick={() => this.changeOrderTab("pending")}>Pending</div>
-          <div onClick={() =>this.changeOrderTab("processing")}>Processing Shipment</div>
-          <div onClick={() => this.changeOrderTab("complete")}>Complete</div>
-          <div onClick={() => this.changeOrderTab("cancelled")}>Cancelled</div>
-          <div onClick={() => this.changeOrderTab("returned")}>Returned</div>
-          <div onClick={() => this.changeOrderTab("all")}>All</div>
+        <div style={{ backgroundColor: "grey", color: "white", padding: "5px" }} className="flex space-evenly">
+          <div style={ this.state.status_filter === "pending" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("pending")}>Pending</div>
+          <div style={ this.state.status_filter === "processing" ? highlightedColorStyle: {} } onClick={() =>this.changeOrderTab("processing")}>Processing Shipment</div>
+          <div style={ this.state.status_filter === "complete" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("complete")}>Complete</div>
+          <div style={ this.state.status_filter === "cancelled" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("cancelled")}>Cancelled</div>
+          <div style={ this.state.status_filter === "returned" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("returned")}>Returned</div>
+          <div style={ this.state.status_filter === "all" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("all")}>All</div>
         </div>
         <br/>
         <table>
