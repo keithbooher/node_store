@@ -4,7 +4,7 @@ import './line_item.css.scss'
 import hf from '../../../../utils/helperFunctions'
 import { updateCart } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
 
 class LineItems extends Component {
   constructor(props) {
@@ -60,18 +60,30 @@ class LineItems extends Component {
         {this.props.cart && 
           this.props.cart.line_items.map((line_item) => {
             return (
-              <li className="line_item">
+              <li className="line_item padding-s ">
+
                 <div className="line_item_sub_container">
-                  <i onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
-                    <FontAwesomeIcon icon={faPlus} />
-                  </i>
+
+                  <div clssName="flex">
+                    <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
+                      <FontAwesomeIcon icon={faPlus} />
+                    </i>
+                    <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
+                      <FontAwesomeIcon icon={faMinus} />
+                    </i>
+                  </div>
+
                   <div className="line_item_name">{line_item.product_name}</div>
                   <div className="line_item_quantity">x{line_item.quantity}</div>
-                  <i  onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
-                    <FontAwesomeIcon icon={faMinus} />
-                  </i>
-                  <a className="remove_line_item_button" onClick={() => this.removeProduct(line_item)}>remove</a>
+
+                  <div>
+                    <i className="color-black" onClick={() => this.removeProduct(line_item)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </i>
+                  </div>
+
                 </div>
+
               </li>
             )
           })

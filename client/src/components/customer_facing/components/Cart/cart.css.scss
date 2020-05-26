@@ -4,11 +4,12 @@
 }
 
 .expandedCart {
-  background: black;
+  transform: translateY(100%);
   position: absolute;
-  top: 48px;
   right: 0px;
   padding-left: 0px;
+  bottom: 0px;
+  background: white;
 }
 
 

@@ -42,7 +42,7 @@ class Cart extends Component {
 
   render() {
     return (
-    <div className="header_list_item clickable">
+    <div className="relative header_list_item clickable">
       <CartLength expandCart={this.expandCart} />
       {this.state.showCart === false ? "" : 
         <ul ref={this.setWrapperRef} className="expandedCart"><LineItems /></ul>
