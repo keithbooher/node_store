@@ -14,11 +14,11 @@ export const addressFormFields = [
 const shippingOptions = [
   {
     name: "$10 flatRate",
-    cost: 10
+    value: 10
   },
   {
     name: "$20 otherFlatRate",
-    cost: 20
+    value: 20
   }
 ]
 

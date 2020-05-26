@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { getOrder } from "../../../utils/API"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { connect } from 'react-redux'
+import { getOrder, updateShipment } from "../../../utils/API"
 import { Link } from "react-router-dom"
 import loadingGif from '../../../images/pizzaLoading.gif'
+import Form from "../../shared/Form"
+import  { shippingStatusDropDown }  from "./formFeilds"  
 
-class Orders extends Component {
+class OrderPage extends Component {
   constructor(props) {
     super()
     this.order_id = props.match.params.id
@@ -20,8 +21,37 @@ class Orders extends Component {
     this.setState({ order })
   }
 
+
+  async updateShipmentStatus(e) {
+    e.preventDefault()
+    if (!this.props.form['update_shipment_status_form'].values) {
+      return
+    }
+    const chosenStatus = this.props.form['update_shipment_status_form'].values.shipping_status.value
+
+
+
+    // TO DO 
+    // change shipping status when complete manually
+    let shipment = this.state.order.shipment
+    shipment.status = chosenStatus
+    const updateTheShipment = await updateShipment(shipment)
+  }
+
+  createFormFields() {
+    let formFields = shippingStatusDropDown[0]
+    for (let i = 0; i < formFields.options.length; i++) {
+      if (formFields.options[i].name === this.state.order.status) {
+        formFields.options[i].default = true
+      }
+    }
+    return [formFields]
+  }
+
   render() {
     let order = this.state.order
+
+
     return (
       <div>
         {
@@ -31,6 +61,16 @@ class Orders extends Component {
               <h3 className="underline">Order Data</h3>
               <div>Order ID: {order._id}</div>
               <h3 className="underline">Shipment Data</h3>
+        
+              <div>{JSON.stringify(order.shipment)}</div>
+
+              <Form 
+                onSubmit={(e) => this.updateShipmentStatus(e)}
+                submitButtonText={"update shipment statues"}
+                formFields={this.createFormFields()}
+                formId='update_shipment_status_form'
+                form='update_shipment_status_form'
+              />
             </>
           : <img className="loadingGif" src={loadingGif} />
         }
@@ -41,4 +81,7 @@ class Orders extends Component {
 }
 
 
-export default Orders
+function mapStateToProps({ form }) {
+  return { form }
+}
+export default connect(mapStateToProps, null)(OrderPage)

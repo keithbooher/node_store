@@ -46,12 +46,21 @@ module.exports = app => {
     let direction = req.params.direction
     let orders
     if (last_order_id === 'none') {
-      orders = await Order.find({ _user_id: user_id }).sort({_id:-1}).limit(10)
+      orders = await Order.find({ _user_id: user_id }).populate({
+        path: "shipment",
+        model: "shipments",
+      }).sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
-        orders = await Order.find({_id: {$lt: last_order_id}, _user_id: user_id}).sort({_id:-1}).limit(10)
+        orders = await Order.find({_id: {$lt: last_order_id}, _user_id: user_id}).populate({
+          path: "shipment",
+          model: "shipments",
+        }).sort({_id:-1}).limit(10)
       } else {
-        orders = await Order.find({_id: {$gt: last_order_id}, _user_id: user_id}).limit(10)
+        orders = await Order.find({_id: {$gt: last_order_id}, _user_id: user_id}).populate({
+          path: "shipment",
+          model: "shipments",
+        }).limit(10)
         orders = orders.reverse()
       }
     }

@@ -1,14 +1,16 @@
-@import './flex.css.scss';
-@import './margin.css.scss';
-@import './padding.css.scss';
-@import './elements.css.scss';
-@import './font-size.css.scss';
-@import './border.css.scss';
-@import './text-colors.css.scss';
+@import './store-theme/all.css.scss';
 @import './colors/colors.css.scss';
-@import './positioning.css.scss';
-@import './text-align.css.scss';
-@import './text-decoration.css.scss';
+
+@import './generals/flex.css.scss';
+@import './generals/margin.css.scss';
+@import './generals/padding.css.scss';
+@import './generals/elements.css.scss';
+@import './generals/font-size.css.scss';
+@import './generals/border.css.scss';
+@import './generals/text-colors.css.scss';
+@import './generals/positioning.css.scss';
+@import './generals/text-align.css.scss';
+@import './generals/text-decoration.css.scss';
 
 .clickable {
   padding: 10px 5px;

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import './line_item.css.scss'
 import hf from '../../../../utils/helperFunctions'
 import { updateCart } from "../../../../actions"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
 
 class LineItems extends Component {
   constructor(props) {
@@ -52,10 +54,14 @@ class LineItems extends Component {
     return this.props.cart.line_items.map((line_item) => {
       return (<li className="line_item">
                 <div className="line_item_sub_container">
-                  <i className="fas fa-plus cart_plus_minus" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}></i>
+                  <i onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </i>
                   <div className="line_item_name">{line_item.product_name}</div>
                   <div className="line_item_quantity">x{line_item.quantity}</div>
-                  <i className="fas fa-minus cart_plus_minus" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}></i>
+                  <i  onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
+                    <FontAwesomeIcon icon={faMinus} />
+                  </i>
                   <a className="remove_line_item_button" onClick={() => this.removeProduct(line_item)}>remove</a>
                 </div>
               </li>)
@@ -65,7 +71,7 @@ class LineItems extends Component {
   render() {
     return (
       <ul className="expandedCart">
-        {this.displayLineItems()}
+        {this.props.cart && this.displayLineItems()}
       </ul>
     )
   }

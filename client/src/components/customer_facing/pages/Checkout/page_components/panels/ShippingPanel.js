@@ -4,7 +4,6 @@ import { convertCart } from '../../../../../../actions'
 import _ from "lodash"
 import Form from '../../../../../shared/Form';
 import { shippingMethods } from "../formFields"
-import { createShipment } from "../../../../../../utils/API"
 class AddressPanel extends Component  {
   constructor(props) {
     super()

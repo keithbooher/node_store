@@ -6,19 +6,31 @@ import 'react-widgets/dist/css/react-widgets.css'
 class FormDropdown extends Component {
   constructor(props) {
     super()
-    this.state = {
+    this.default_option = props.options.find(option => option.default === true)
 
+    this.state = {
+      chosen: this.default_option
     }
   }
+
+  onChange(option) {
+    this.setState({ chosen: option.value })
+    this.props.input.onChange(option)
+  }
+
+
   render() {
+
     return (
       <div>
         <label>{this.props.label}</label>
         <DropdownList
           data={this.props.options}
-          valueField="cost"
+          valueField="value"
           textField="name"
-          onChange={this.props.input.onChange}
+          onChange={e => this.onChange(e)}
+          defaultValue={this.default_option}
+          value={this.state.chosen}
         />
       </div>
     )

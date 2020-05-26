@@ -6,6 +6,49 @@ import { createOrder, createShipment, updateCart } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 
+const checkPassedBillingUsed = (bill_addy, cart) => {
+  // Check if any of the customers past billing addresses match the one thats submitted
+  // If it matches then, we set the variable to true and prevent updating the user's address records
+  for (const address of bill_addy) {
+    if (
+        address.first_name === cart.billing_address.first_name
+        && address.last_name === cart.billing_address.last_name
+        && address.street_address_1 === cart.billing_address.street_address_1
+        && address.street_address_2 === cart.billing_address.street_address_2
+        && address.city === cart.billing_address.city
+        && address.state === cart.billing_address.state
+        && address.zip_code === cart.billing_address.zip_code
+        && address.phone_number === cart.billing_address.phone_number
+        && address._user_id === cart.billing_address._user_id
+        ) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+const checkPassedShippingUsed = (ship_addy, cart) => {
+  // Check if any of the customers past shipping addresses match the one thats submitted
+  // If it matches then, we set the variable to true and prevent updating the user's address records
+  for (const address of ship_addy) {
+    if (
+      address.first_name === cart.shipping_address.first_name
+      && address.last_name === cart.shipping_address.last_name
+      && address.street_address_1 === cart.shipping_address.street_address_1
+      && address.street_address_2 === cart.shipping_address.street_address_2
+      && address.city === cart.shipping_address.city
+      && address.state === cart.shipping_address.state
+      && address.zip_code === cart.shipping_address.zip_code
+      && address.phone_number === cart.shipping_address.phone_number
+      && address._user_id === cart.shipping_address._user_id
+      ) {
+      return true
+    } else {
+      return false
+    }
+  }
+}
+
 class Payments extends Component {
   constructor(props) {
     super()
@@ -32,42 +75,9 @@ class Payments extends Component {
     })
 
     let user = this.props.auth
-    let past_billing_used = false
-    let past_shipping_used = false
-    // Check if any of the customers past billing addresses match the one thats submitted
-    // If it matches then, we set the variable to true and prevent updating the user's address records
-    for (const address of this.props.auth.billing_address) {
-      if (
-          address.first_name === cart.billing_address.first_name
-          && address.last_name === cart.billing_address.last_name
-          && address.street_address_1 === cart.billing_address.street_address_1
-          && address.street_address_2 === cart.billing_address.street_address_2
-          && address.city === cart.billing_address.city
-          && address.state === cart.billing_address.state
-          && address.zip_code === cart.billing_address.zip_code
-          && address.phone_number === cart.billing_address.phone_number
-          && address._user_id === cart.billing_address._user_id
-          ) {
-        past_billing_used = true
-      }
-    }
-    // Check if any of the customers past shipping addresses match the one thats submitted
-    // If it matches then, we set the variable to true and prevent updating the user's address records
-    for (const address of this.props.auth.shipping_address) {
-      if (
-        address.first_name === cart.shipping_address.first_name
-        && address.last_name === cart.shipping_address.last_name
-        && address.street_address_1 === cart.shipping_address.street_address_1
-        && address.street_address_2 === cart.shipping_address.street_address_2
-        && address.city === cart.shipping_address.city
-        && address.state === cart.shipping_address.state
-        && address.zip_code === cart.shipping_address.zip_code
-        && address.phone_number === cart.shipping_address.phone_number
-        && address._user_id === cart.shipping_address._user_id
-        ) {
-        past_shipping_used = true
-      }
-    }
+    let past_billing_used = checkPassedBillingUsed(this.props.auth.billing_address, cart)
+    let past_shipping_used = checkPassedShippingUsed(this.props.auth.shipping_address, cart)
+
 
     // if this address doesn't match past addresses used, we add to the user's address records
     if (past_shipping_used === false) {
@@ -82,7 +92,6 @@ class Payments extends Component {
       this.props.updateUser(user)
     }
 
-    console.log(cart)
     // Make shipment
     let shipment = {
       billing_address: cart.billing_address,
@@ -96,7 +105,6 @@ class Payments extends Component {
       line_items: cart.line_items,
       _user_id: cart._user_id
     }
-
     const new_shipment = await createShipment(shipment)
 
     // Create Order
@@ -108,9 +116,7 @@ class Payments extends Component {
       _user_id: cart._user_id,
       email: user.email
     }
-
     const new_order = await createOrder(order)
-
 
     let updated_cart = await updateCart(cart)
 

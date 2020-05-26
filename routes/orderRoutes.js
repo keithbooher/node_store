@@ -16,7 +16,10 @@ module.exports = app => {
 
   app.get('/api/order/:order_id', requireLogin, async (req, res) => {  
     const order_id = req.params.order_id
-    const order = await Order.findOne({ "_id": order_id })
+    const order = await Order.findOne({ "_id": order_id }).populate({
+      path: "shipment",
+      model: "shipments",
+    })
 
     res.send(order)
   })

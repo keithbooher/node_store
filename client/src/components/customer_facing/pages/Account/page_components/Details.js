@@ -38,7 +38,6 @@ class Details extends Component {
           onSubmit={self.handleSubmit}
           submitButtonText={"Next"}
           formFields={[{ label: hf.capitalizeFirsts(key.replace(/_/g, " ")), name: key, noValueError: `You must provide a ${key}`, value: null }]} 
-          replaceSubmitButton={true}
           submitButton={(replacementSubmitButton(key))}
           formId={`${key}_form`}
           form={`${key}_form`}

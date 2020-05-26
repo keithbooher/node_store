@@ -188,6 +188,7 @@ class ProductForm extends Component {
   }
 
   updateForm() {
+    console.log(this.injectDataIntoFormFields())
     return(
       <Form 
         onSubmit={(e) => this.handleSubmitUpdate(e)}

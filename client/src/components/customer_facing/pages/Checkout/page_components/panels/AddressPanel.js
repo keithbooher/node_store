@@ -126,7 +126,6 @@ class AddressPanel extends Component  {
               onChange={() => this.formOnChange('billing null')}
               submitButtonText={"Next"}
               formFields={addressFormFields} 
-              replaceSubmitButton={true}
               submitButton={""}
               formId={"billing_form"}
               form={"billing_checkout_form"}
@@ -143,7 +142,6 @@ class AddressPanel extends Component  {
               formFields={addressFormFields}
               formId={"shipping_form"}
               form={"shipping_checkout_form"}
-              replaceSubmitButton={true}
               submitButton={""}
               initialValues={this.shipping_initial_values()}
             />

@@ -13,4 +13,9 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+  app.put('/api/shipment/update', requireLogin, async (req, res) => {  
+    const shipment = req.body.shipment
+    let updated_shipment = await Shipment.findOneAndUpdate({ _id: shipment._id }, shipment, {new: true})
+    res.send(updated_shipment)  
+  })
 }

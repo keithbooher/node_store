@@ -2,8 +2,6 @@
 
 html {
   scroll-behavior: smooth;
-  background: #1b1b1b;
-  color: white;
 }
 
 body {
@@ -11,7 +9,6 @@ body {
 }
 
 a {
-  color: $blue-3;
   text-decoration: none;
   padding: 10px 5px;
   margin: 1px 0px;
@@ -19,44 +16,24 @@ a {
   display: block;
 }
 
-a:hover {
-  background-color: rgba(1,1,1,0.5);
-}
-
-ul {
-  list-style-type: none;
-  padding-left: 0px;
-}
 
 button {
-  background-color:#313131;
-  border: solid 1px $blue-3;
   font-size: 14px;
-  color: $blue-3;
   border-radius: 2px;
   padding: 4px;
   font-weight: 600;
 }
 
 button:hover {
-  background-color: $blue-3;
-  border: solid 1px #313131;
   font-size: 14px;
-  color: #313131;
   border-radius: 2px;
   padding: 4px;
   cursor: pointer;
 }
 
-
-.bare_button {
-  border: none;
-  background-color: transparent !important;
-}
-
-.bare_button:hover {
-  border: none;
-  background-color: transparent !important;
+ul {
+  list-style-type: none;
+  padding-left: 0px;
 }
 
 label {
@@ -82,4 +59,14 @@ textarea {
 
 li {
   list-style-type: none;
+}
+
+.bare_button {
+  border: none;
+  background-color: transparent !important;
+}
+
+.bare_button:hover {
+  border: none;
+  background-color: transparent !important;
 }

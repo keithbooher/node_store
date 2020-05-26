@@ -70,7 +70,6 @@ class Addresses extends Component {
             onSubmit={this.handleSubmit} 
             submitButtonText={"Next"}
             formFields={addressFields} 
-            replaceSubmitButton={true}
             submitButton={replacementSubmitButton("billing")}
             formId={"user_billing_form"}
             form={"user_billing_form"}
@@ -83,7 +82,6 @@ class Addresses extends Component {
             onSubmit={this.handleSubmit} 
             submitButtonText={"Next"}
             formFields={addressFields} 
-            replaceSubmitButton={true}
             submitButton={replacementSubmitButton("shipping")}
             formId={"user_shipping_form"}
             form={"user_shipping_form"}
