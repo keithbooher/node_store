@@ -6,12 +6,35 @@ import CartLength from "./CartLength"
 class Cart extends Component {
   constructor(props) {
     super()
+
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+
     this.expandCart = this.expandCart.bind(this)
     this.state = {
       showCart: false
     }
   }
 
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.expandCart()
+    }
+  }
+  
   expandCart() {
     let boolean = this.state.showCart
     this.setState({ showCart: !boolean})
@@ -21,7 +44,9 @@ class Cart extends Component {
     return (
     <div className="header_list_item clickable">
       <CartLength expandCart={this.expandCart} />
-      {this.state.showCart === false ? "" : <LineItems />}
+      {this.state.showCart === false ? "" : 
+        <ul ref={this.setWrapperRef} className="expandedCart"><LineItems /></ul>
+        }
     </div>
     )
   }

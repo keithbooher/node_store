@@ -51,8 +51,16 @@ class LineItems extends Component {
   }
 
   displayLineItems() {
-    return this.props.cart.line_items.map((line_item) => {
-      return (<li className="line_item">
+    return 
+  }
+
+  render() {
+    return (
+      <>
+        {this.props.cart && 
+          this.props.cart.line_items.map((line_item) => {
+            return (
+              <li className="line_item">
                 <div className="line_item_sub_container">
                   <i onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
                     <FontAwesomeIcon icon={faPlus} />
@@ -64,15 +72,11 @@ class LineItems extends Component {
                   </i>
                   <a className="remove_line_item_button" onClick={() => this.removeProduct(line_item)}>remove</a>
                 </div>
-              </li>)
-    })
-  }
-
-  render() {
-    return (
-      <ul className="expandedCart">
-        {this.props.cart && this.displayLineItems()}
-      </ul>
+              </li>
+            )
+          })
+        }
+      </>
     )
   }
 }
