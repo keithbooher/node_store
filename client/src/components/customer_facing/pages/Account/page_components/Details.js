@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import Form from '../../../../shared/Form/Form'
 import hf from "../../../../../utils/helperFunctions"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
+import notAvailable from '../../../../../images/no-image-available.jpg'
 import { updateUser } from "../../../../../actions"
-
+import ReactFilestack from "filestack-react"
 class Details extends Component {
   constructor(props) {
     super()
@@ -47,13 +48,30 @@ class Details extends Component {
     });
   }
 
+  finishUploading(thing) {
+    console.log(thing)
+  }
+
 
   render() {
+    console.log(process.env.REACT_APP_FILESTACK_API)
     return (
       <div>
         { this.props.auth ?
           <>
             <h4>Email: {this.props.auth.email}</h4>
+            <div>
+              <img style={{ height: "200px", width: "auto" }} src={this.props.auth.photo === null ? notAvailable : this.props.auth.photo} />
+              <ReactFilestack
+                apikey={process.env.REACT_APP_FILESTACK_API}
+                customRender={({ onPick }) => (
+                  <div>
+                    <button onClick={onPick}>Upload image</button>
+                  </div>
+                )}
+                onSuccess={this.finishUploading}
+              />
+            </div>
             <div className="INSERT RFAMEWORK FLEX BOX NAME">
               { this.renderAttributeForms() }
             </div>

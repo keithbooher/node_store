@@ -27,8 +27,9 @@ class CartLength extends Component {
   }
 
   render() {
+    console.log(process.env)
     return (
-      <div className="flex" onClick={this.props.expandCart} style={{ padding: '0px 10px' }} >
+      <div className="flex" style={{ padding: '0px 10px' }} >
         {this.calculated_cart_length()}
         <FontAwesomeIcon icon={faShoppingCart} />
       </div>
