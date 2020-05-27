@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ProductCard from '../../components/ProductCard'
-import { addToCart } from '../../../../actions'
+import { updateCart, createCart } from '../../../../actions'
 import { allInStockProducts } from '../../../../utils/API'
 import './home.css.scss'
 
@@ -24,7 +24,8 @@ class Home extends Component  {
     return this.state.products.map(product => {
       return <>
               <ProductCard 
-                addToCart={this.props.addToCart} 
+                createCart={this.props.createCart}
+                updateCart={this.props.updateCart}
                 user={this.props.auth} product={product} 
                 cart={this.props.cart} 
                 category_path_name={product.categories[0].path_name} 
@@ -52,4 +53,4 @@ function mapStateToProps({ auth, cart }) {
   return { auth, cart }
 }
 
-export default connect(mapStateToProps, {addToCart})(Home)
+export default connect(mapStateToProps, {updateCart, createCart})(Home)

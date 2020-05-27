@@ -9,6 +9,29 @@ import Customer from './containers/CustomerFacing';
 
 import PrivateRoute from './PrivateRoute'
 
+const checkAdmin = (user) => {
+  let admin 
+  switch (user) {
+    case undefined:
+      admin = null      
+      break;
+    case null:
+      admin = false      
+      break;
+    case '':
+      admin = false      
+      break;
+    default:
+      if (user.admin === true) {
+        admin = true
+      } else {
+        admin = false
+      }
+      break;
+  }
+  return admin
+}
+
 class App extends Component {
   constructor(props) {
     super()
@@ -19,21 +42,8 @@ class App extends Component {
     // Also using this to pass to private route
     let user = await this.props.fetchUser()
     let cart = await this.props.usersCart(user._id)
-    let admin 
-    switch (user) {
-      case undefined:
-        admin = null      
-        break;
-      case null:
-        admin = false      
-        break;
-      case '':
-        admin = false      
-        break;
-      default:
-        admin = true
-        break;
-    }
+    
+    let admin = checkAdmin(user)
     this.setState({ admin: admin })
   }
 

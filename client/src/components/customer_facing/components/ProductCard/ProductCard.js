@@ -69,7 +69,11 @@ class ProductCard extends Component {
       cart.total = sub_total * .08
 
     }
-    this.props.addToCart(create_boolean, cart, user_id)
+    if (create_boolean === true) {
+      this.props.createCart(cart)
+    } else {
+      this.props.updateCart(cart)
+    }
   }
 
   render() {

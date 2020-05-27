@@ -8,16 +8,12 @@ export const usersCart = (id) => async dispatch => {
     res.data = null
   }
   dispatch({ type: FETCH_USER_CART, payload: res.data })
+  return res.data
 }
 
-export const addToCart = (create_boolean, cart, user_id) => async dispatch => {
+export const createCart = (cart) => async dispatch => {
   let data = { cart }
-  let res
-  if (create_boolean === true) {
-    res = await axios.post('/api/cart/create/' + user_id, data) 
-  } else {
-    res = await axios.put('/api/cart/update/' + cart._id, data)
-  }
+  let res = await axios.post('/api/cart/create/' + cart._user_id, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })
 }
 

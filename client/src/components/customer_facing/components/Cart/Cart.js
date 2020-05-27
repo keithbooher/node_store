@@ -44,9 +44,8 @@ class Cart extends Component {
     return (
     <div onClick={this.expandCart} className="relative header_list_item clickable">
       <CartLength />
-      {this.state.showCart === false ? "" : 
-        <ul ref={this.setWrapperRef} className="expandedCart"><LineItems /></ul>
-        }
+      {this.state.showCart === false && 
+        <ul ref={this.setWrapperRef} className="expandedCart"><LineItems /></ul>}
     </div>
     )
   }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './cart.css.scss'
-import { usersCart } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
 class CartLength extends Component {
@@ -10,10 +9,6 @@ class CartLength extends Component {
     this.state = {
 
     }
-  }
-
-  async componentDidMount() {
-    this.props.usersCart()
   }
 
   calculated_cart_length() {
@@ -27,7 +22,6 @@ class CartLength extends Component {
   }
 
   render() {
-    console.log(process.env)
     return (
       <div className="flex" style={{ padding: '0px 10px' }} >
         {this.calculated_cart_length()}
@@ -41,7 +35,5 @@ function mapStateToProps({ cart }) {
   return { cart }
 }
 
-const actions = { usersCart }
 
-
-export default connect(mapStateToProps, actions)(CartLength)
+export default connect(mapStateToProps, null)(CartLength)
