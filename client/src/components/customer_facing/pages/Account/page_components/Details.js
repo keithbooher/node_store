@@ -10,6 +10,7 @@ class Details extends Component {
   constructor(props) {
     super()
     this.renderAttributeForms = this.renderAttributeForms.bind(this)
+    this.finishUploading = this.finishUploading.bind(this)
     this.state = {}
   }
 
@@ -48,8 +49,11 @@ class Details extends Component {
     });
   }
 
-  finishUploading(thing) {
-    console.log(thing)
+  async finishUploading(data) {
+    let user = this.props.auth
+    const src = data.filesUploaded[0].url
+    user.photo = src
+    const updated_user = await this.props.updateUser(user)
   }
 
 
