@@ -15,6 +15,7 @@ class ProductCard extends Component {
     let cart = this.props.cart
     const quantity = this.state.quantity
     const user_id = this.props.user._id
+
     let sub_total, create_boolean
 
     if (this.props.cart == null) {
@@ -74,6 +75,7 @@ class ProductCard extends Component {
     } else {
       this.props.updateCart(cart)
     }
+    //////
   }
 
   render() {

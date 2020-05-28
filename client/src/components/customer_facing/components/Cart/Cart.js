@@ -36,16 +36,17 @@ class Cart extends Component {
   }
   
   expandCart() {
+    console.log('this')
     let boolean = this.state.showCart
     this.setState({ showCart: !boolean})
   }
 
   render() {
     return (
-    <div onClick={this.expandCart} className="relative header_list_item clickable">
+    <div ref={this.setWrapperRef} onClick={this.expandCart} className="relative header_list_item clickable">
       <CartLength />
-      {this.state.showCart === false && 
-        <ul ref={this.setWrapperRef} className="expandedCart"><LineItems /></ul>}
+      {this.state.showCart && 
+        <ul className="expandedCart"><LineItems /></ul>}
     </div>
     )
   }

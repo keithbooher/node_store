@@ -30,7 +30,7 @@ class Orders extends Component {
     console.log(order)
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>{order.shipment.line_items.map((line_item) => <LineItem admin={false} order_id={order._id} line_item={line_item} />)}</div>
+        <div>{order.shipment.line_items.map((line_item) => <LineItem order_id={order._id} line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
         <div>Date Place: ${order.date_placed}</div>
       </div>

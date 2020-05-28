@@ -72,9 +72,7 @@ class LineItem extends Component {
     <div>
       <div className="flex">
         <div>{item.product_name}</div>
-        {this.props.admin === true ? "" : 
-          <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
-        }
+        <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
       </div>
       {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       {this.state.show_review ?

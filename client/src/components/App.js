@@ -22,7 +22,7 @@ const checkAdmin = (user) => {
       admin = false      
       break;
     default:
-      if (user.admin === true) {
+      if (user.role === "admin") {
         admin = true
       } else {
         admin = false

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { paginatedOrders, lastOrder } from "../../../utils/API"
-import LineItem from "../../shared/LineItem"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
