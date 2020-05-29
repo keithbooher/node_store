@@ -15,10 +15,18 @@
   justify-content: space-between
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .space-evenly {
   justify-content: space-evenly
 }
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.align-items-center {
+  align-items: center
 }

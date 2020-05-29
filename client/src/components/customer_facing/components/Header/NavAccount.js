@@ -18,10 +18,9 @@ class AccountNav extends Component {
       case null:
         return
       case false:
-        return <a href="/auth/google">Sign in with Google</a>
+          return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
       default:
         return [
-          <Link className="header_list_item clickable" to="/checkout">Checkout</Link>,
           <Dropdown elements={this.renderDropDowm()} />,
           <Cart />
         ]

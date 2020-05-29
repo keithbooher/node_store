@@ -23,10 +23,10 @@ class CartLength extends Component {
 
   render() {
     return (
-      <div className="flex" style={{ padding: '0px 10px' }} >
+      <a data-no-close={false} onClick={this.props.expandCart} className="flex justify-center align-items-center h-100" style={{ width: "50px" }} >
         {this.calculated_cart_length()}
-        <FontAwesomeIcon icon={faShoppingCart} />
-      </div>
+        <FontAwesomeIcon ref={this.props.lengthRef} icon={faShoppingCart} />
+      </a>
     )
   }
 }

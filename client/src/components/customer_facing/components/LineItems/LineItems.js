@@ -64,7 +64,7 @@ class LineItems extends Component {
 
                 <div className="line_item_sub_container">
 
-                  <div clssName="flex">
+                  <div className="flex">
                     <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
                       <FontAwesomeIcon icon={faPlus} />
                     </i>
@@ -73,8 +73,8 @@ class LineItems extends Component {
                     </i>
                   </div>
 
-                  <div className="line_item_name">{line_item.product_name}</div>
-                  <div className="line_item_quantity">x{line_item.quantity}</div>
+                  <div className="color-black line_item_name">{line_item.product_name}</div>
+                  <div className="color-black line_item_quantity">x{line_item.quantity}</div>
 
                   <div>
                     <i className="color-black" onClick={() => this.removeProduct(line_item)}>
