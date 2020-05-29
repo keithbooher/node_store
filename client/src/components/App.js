@@ -71,7 +71,6 @@ class App extends Component {
     // if not, then create a guest users cart in the database and store it's ID in the cookies (_user_id set to "guest" for the time being)
     
     // NEXT!!!
-    // These requests will go dispatch to reducers so that redux has the most up to date guest cart
     // Later, if the user decides to login while they have a guest cart built; once logged in 
     // we will check to see if there was a saved guest cart in the cookies. If so, update that
     // cart with the user's ID and destroy prior open carts. 

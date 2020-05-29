@@ -1,6 +1,6 @@
 import React, { Component } from 'react' 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from 'react-router-dom'
 import "./dropdown.css.scss"
 
@@ -30,7 +30,9 @@ class Dropdown extends Component {
   }
 
   handleClickOutside(event) {
-    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    if (event.target.dataset.noClose || event.target.tagName === "path") {
+      return
+    } else if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.showAccountMenu()
     }
   }
@@ -41,9 +43,10 @@ class Dropdown extends Component {
 
   render() {
     return (
-      <div className="relative">
-        <Link className="header_list_item">
-          <FontAwesomeIcon onClick={this.showAccountMenu} icon={faUser} />
+      <div data-noClose={false} className="relative">
+        <Link data-noClose={false} onClick={this.showAccountMenu} className="header_list_item">
+          <FontAwesomeIcon data-noClose={false} icon={faUser} />
+          <FontAwesomeIcon data-noClose={false} icon={faCaretDown} />
         </Link>
         {this.state.open === true && 
           <div ref={this.setWrapperRef} id="cart_container" className="background-color-blue-2 color-white">

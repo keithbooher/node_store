@@ -36,8 +36,7 @@ class Cart extends Component {
   }
 
   handleClickOutside(event) {
-    console.log(event.target)
-    if (this.wrapperRef && event.target.dataset.noClose) {
+    if (event.target.dataset.noClose || event.target.tagName === "path") {
       return
     } else if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.expandCart()
@@ -45,13 +44,10 @@ class Cart extends Component {
   }
   
   expandCart() {
-    console.log('this')
-    let boolean = this.state.showCart
-    this.setState({ showCart: !boolean})
+    this.setState({ showCart: !this.state.showCart})
   }
 
   render() {
-    console.log(this.state.showCart)
     return (
     <div className="relative">
       <div data-noClose={false} className="h-100" style={{ zIndex: 100 }}>
@@ -62,7 +58,7 @@ class Cart extends Component {
         <div>
           <ul ref={this.setWrapperRef} className="expandedCart">
             <LineItems />
-            <div>
+            <div onClick={this.expandCart} >
               <Link className="header_list_item clickable" to="/checkout">Checkout</Link>
             </div>
           </ul>

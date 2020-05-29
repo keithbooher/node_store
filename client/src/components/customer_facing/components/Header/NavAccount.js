@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Cart from '../Cart'
 import { withRouter } from 'react-router-dom';  
-import Dropdown from "../../../shared/Dropdown"
+import AccountDropDown from "./Dropdown"
 
 class AccountNav extends Component {
   renderDropDowm() {
@@ -21,7 +21,7 @@ class AccountNav extends Component {
           return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
       default:
         return [
-          <Dropdown elements={this.renderDropDowm()} />,
+          <AccountDropDown elements={this.renderDropDowm()} />,
           <Cart />
         ]
     }

@@ -23,9 +23,9 @@ class CartLength extends Component {
 
   render() {
     return (
-      <a data-no-close={false} onClick={this.props.expandCart} className="flex justify-center align-items-center h-100" style={{ width: "50px" }} >
+      <a data-noClose={false} onClick={this.props.expandCart} className="flex justify-center align-items-center h-100" style={{ width: "50px" }} >
         {this.calculated_cart_length()}
-        <FontAwesomeIcon ref={this.props.lengthRef} icon={faShoppingCart} />
+        <FontAwesomeIcon data-noClose={false} ref={this.props.lengthRef} style={{ zIndex: 0 }} icon={faShoppingCart} />
       </a>
     )
   }

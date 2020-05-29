@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART} from './types'
+import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART, CREATE_GUEST_CART} from './types'
 
 // Find the current user's cart
 export const usersCart = (id) => async dispatch => {
@@ -14,7 +14,7 @@ export const usersCart = (id) => async dispatch => {
 
 export const createGuestCart = () => async dispatch => {
   let res = await axios.post('/api/cart/guest/create', {}) 
-  dispatch({ type: UPDATE_CART, payload: res.data })
+  dispatch({ type: CREATE_GUEST_CART, payload: res.data })
   return res.data
 }
 
