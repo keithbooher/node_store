@@ -47,7 +47,7 @@ class App extends Component {
     this.state = {admin: null}
   }
   async componentDidMount() {
-    const { cookies } = this.props;
+    const { cookies } = this.props
     // Check to see if user is logged in
     // Also using this to pass to private route
     let user = await this.props.fetchUser()

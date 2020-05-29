@@ -31,7 +31,10 @@ class AddressPanel extends Component  {
     let shipping_address = {}
     let billing_address = {}
 
+
     if (this.props.preExistingShipping === null) {
+      console.log("this.props.form")
+      console.log(this.props.form)
       const ship_addy = this.props.form.shipping_checkout_form.values
       shipping_address = {
         first_name: ship_addy.first_name,
@@ -73,7 +76,6 @@ class AddressPanel extends Component  {
     cart_instance.billing_address = billing_address
 
     this.props.updateCart(cart_instance)
-    this.props.chooseTab('shipping')
   }
 
   billing_initial_values() {
@@ -106,12 +108,14 @@ class AddressPanel extends Component  {
   }
 
   renderAddressCards() {
-    return (
-      <>
-        <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" />    
-        <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" />    
-      </>
-    )
+    if (this.props.auth._id !== 0) {
+      return (
+        <>
+          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" />    
+          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" />    
+        </>
+      )
+    }
   }
 
   renderNewAddressForm() {
@@ -150,17 +154,8 @@ class AddressPanel extends Component  {
     )
   }
 
-  checkForPastAddys() {
-    if (this.props.auth !== null) {
-      if (this.props.auth.billing_address.length > 0 || this.props.auth.shipping_address.length > 0) {
-        return true
-      }
-    } else {
-      return false
-    }
-  }
-
   render() {
+    console.log(this.props.auth)
     // console.log(this.props)
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
@@ -171,13 +166,6 @@ class AddressPanel extends Component  {
       <div>
         { this.props.cart ?
           <>
-
-            {/* LETS CHECK IF THEY HAVE ANY PAST ADDRESSES TO USE  */}
-            {/* IF NOT, THEN DISPLAY THE FORM FIRST, OTHERWISE DISPLAY PAST ADDRESS CARDS */}
-            {/* WE'LL PUT BACK IN THE LEGIT SUBMIT BUTTON FOR THE FORM AND USE THE CUSTOM NEXT 
-                BUTTON FOR THE ADDRESS CARDS, THIS WAY WE GET UTILIZE THE REDUX FORM VAILDATION 
-                WHEN WE DO A TRUE FORM SUBMISSION */}
-            {/* {this.checkForPastAddys() ? : } */}
 
             { this.renderAddressCards() }
 

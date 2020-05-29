@@ -40,6 +40,8 @@ class AddressPanel extends Component  {
   }
 
   render() {
+    console.log("shipping")
+    console.log(this.props)
     return (
       <div className="shipping_container">
         { this.props.cart ?

@@ -16,6 +16,7 @@ class CustomerFacing extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <>
         <Header />
