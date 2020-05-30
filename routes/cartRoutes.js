@@ -12,11 +12,13 @@ module.exports = app => {
   })
 
   // GET A GUEST CART
-  app.get('/api/cart/guest/:id', async (req, res) => {
+  app.put('/api/cart/guest/:id', async (req, res) => {
     const cart_id = req.params.id
+    console.log("cart_id")
+    console.log(cart_id)
     // TO DO
     // I'd love to figure out how to tighten this up and say any cart with a status that isn't "complete"
-    const cart = await Cart.findOne({ _id: cart_id, deleted_at: null  })
+    const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000" }, {new: true})
     res.send(cart)
   })
 
@@ -33,18 +35,18 @@ module.exports = app => {
   })
 
   // CONVERT GUEST CART TO MEMBER CART
-  app.put('/api/cart/guest/convert-to-member-cart', async (req, res) => {  
+  app.put('/api/cart/convert-to-member-cart', async (req, res) => {  
     const guest_cart_id = req.body.guest_cart_id
-    const user_id = req.body.user_id
-
+    const _user_id = req.body.user_id
+    
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
 
-    // delete previously opened cart
-    let delete_previous_cart = await Cart.findOneAndUpdate({ _user_id: user_id, deleted_at: null  }, { deleted_at: date }, {new: true})
+    // delete previously opened cart if there was one
+    let delete_previous_cart = await Cart.findOneAndUpdate({ _user_id: mongoose.Types.ObjectId(_user_id), deleted_at: null  }, { deleted_at: date }, {new: true})
 
     // assign the new cart the customer is working with to them now
-    let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { user_id }, {new: true})
+    let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { _user_id }, {new: true})
 
     res.send(updated_cart)
   })

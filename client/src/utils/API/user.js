@@ -12,3 +12,9 @@ export const getUsers = (last_user_id, direction) => {
 export const getUser = (id) => {
   return axios.get(`/api/users/${id}`)
 }
+
+
+export const logout = (id) => {
+  return axios.get(`/api/logout`)
+}
+

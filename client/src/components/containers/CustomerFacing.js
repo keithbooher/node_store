@@ -19,7 +19,7 @@ class CustomerFacing extends Component {
     console.log(this.props)
     return (
       <>
-        <Header />
+        <Header setCartCookie={this.props.setCartCookie} />
         <div id="body_content_container">
           <Route exact path="/" component={Home} />
           <Route exact path="/shop/:category" component={Category} />

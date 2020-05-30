@@ -3,7 +3,6 @@ import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART, CREATE_GUEST_CART} from './
 
 // Find the current user's cart
 export const usersCart = (id) => async dispatch => {
-  console.log(id)
   const res = await axios.get(`/api/cart/${id}`)
   if (res.data === "") {
     res.data = null
@@ -23,14 +22,16 @@ export const convertGuestCart = (guest_cart_id, user_id) => async dispatch => {
     guest_cart_id,
     user_id
   }
-  let res = await axios.put(`/api/cart/guest/convert-to-member-cart`, data) 
+  let res = await axios.put(`/api/cart/convert-to-member-cart`, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })
   return res.data
 }
 
 export const getGuestCart = (id) => async dispatch => {
-  let res = await axios.get(`/api/cart/guest/${id}`, ) 
+  console.log(id)
+  let res = await axios.put(`/api/cart/guest/${id}`, {}) 
   dispatch({ type: UPDATE_CART, payload: res.data })
+  console.log(res.data)
   return res.data
 }
 

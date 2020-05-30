@@ -2,25 +2,36 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Cart from '../Cart'
-import { withRouter } from 'react-router-dom';  
+import { useHistory } from 'react-router-dom';  
 import AccountDropDown from "./Dropdown"
+import { logout as logoutReq } from "../../../../utils/API"
 
-class AccountNav extends Component {
-  renderDropDowm() {
+// when the user logs out we need to store their cart id in the guest_cart cookies
+const AccountNav = ({ auth, cart, setCartCookie }) => {
+  const history = useHistory()
+  const logout = async () => {
+    console.log(cart._id)
+    setCartCookie(cart._id)
+    await logoutReq()
+    history.push("/")
+    window.location.reload()
+  }
+
+  const renderDropDown = () => {
     return [
-      <Link className="header_list_item clickable a-invert" to="/account">{this.props.auth.email}</Link>,
-      <a className="header_list_item clickable a-invert" href="/api/logout">Logout</a>
+      <Link className="header_list_item clickable a-invert" to="/account">{auth.email}</Link>,
+      <div onClick={logout} className="header_list_item clickable a-invert">Logout</div>
     ]
   }
 
-  renderContent() {
-    if (this.props.auth) {
-      switch (this.props.auth._id) {
+  const renderContent = () => {
+    if (auth) {
+      switch (auth._id) {
         case "000000000000000000000000":
             return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
         default:
           return [
-            <AccountDropDown elements={this.renderDropDowm()} />,
+            <AccountDropDown elements={renderDropDown()} />,
             <Cart />
           ]
       }
@@ -28,17 +39,15 @@ class AccountNav extends Component {
 
   }
 
-  render() {
-    return (
-    <>
-      {this.renderContent()}
-    </>
-    )
-  }
+  return (
+  <>
+    {renderContent()}
+  </>
+  )
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, cart }) {
+  return { auth, cart }
 }
 
 

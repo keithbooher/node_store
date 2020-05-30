@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import { withCookies, Cookies, useCookies } from 'react-cookie'
+import { withCookies, useCookies } from 'react-cookie'
 
 import Admin from './containers/Admin'
 import Customer from './containers/CustomerFacing';
@@ -36,13 +36,16 @@ const checkAdmin = (user) => {
 
 
 
-const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart,  }) => {
+const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['guest_cart']);
+
+  const setCartCookie = (id) => {
+    setCookie('guest_cart', id, { path: '/' })
+  }
 
   const [admin, setAdmin] = useState(null)
   useEffect(async () => {
     // Check to see if user is logged in
-    // Also using this to pass to private route
     let user = await fetchUser()
  
     // If no user signed in
@@ -50,28 +53,35 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
       // Look for guest cart
       const cookieGuestCart = cookies.guest_cart
       if (!cookieGuestCart) {
+        console.log('4')
         // Guest user landing for the first time
         // Create the guest cart
         const guest_cart = await createGuestCart()        
-        setCookie('guest_cart', guest_cart._id, { path: '/' });
+        setCookie('guest_cart', guest_cart._id, { path: '/' })
       } else {
+        console.log('3')
         // Guest user, but they have cart cookies with us 
         // Find the guest cart
         const guest_cart_id = cookies.guest_cart
-        const guest_cart = await getGuestCart(guest_cart_id)
+        const guestCart = await getGuestCart(guest_cart_id)
+        if (!guestCart) {
+          await createGuestCart()
+        }
       } 
     } else if (user && cookies.guest_cart) {
+      console.log('2')
       // User is signed in but had an open guest cart
       // convert guest cart to this user's cart
       const guest_cart_id = cookies.guest_cart
-      const guest_cart = await convertGuestCart(guest_cart_id, user._id)
+      await convertGuestCart(guest_cart_id, user._id)
       removeCookie('guest_cart')
     } else {
+      console.log('1')
       // User is signed in and no cart in cookies
-      let cart = await usersCart(user._id)
+      await usersCart(user._id)
     }
 
-
+    console.log(cookies)
     window.cookie = cookies
     window.removeCookie = removeCookie
     
@@ -81,7 +91,7 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
 
   return (
     <BrowserRouter>
-      <CustomerFacing />
+      <CustomerFacing setCartCookie={setCartCookie} />
       <PrivateRoute admin={admin} path="/admin">
         <Admin />
       </PrivateRoute>
@@ -91,12 +101,12 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
 }
 
 const CustomerFacingSwitch = (props) => {
-  const { location } = props;
+  const { location, setCartCookie } = props;
   if (location.pathname.match('/admin')){
     return null;
   }
   return (
-    <Customer />
+    <Customer setCartCookie={setCartCookie} />
   )
 }
 

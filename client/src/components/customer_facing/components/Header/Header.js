@@ -10,7 +10,7 @@ class Header extends Component {
       <div className="flex theme-nav-background-color" style={{ justifyContent: 'space-between' }}>
         <Link to='/' className=""><h2 className="margin-none">Node Store</h2></Link>
         <ul className="flex" style={{ margin: '0px' }}>
-          <NavAccount />
+          <NavAccount setCartCookie={this.props.setCartCookie} />
         </ul>
       </div>
     </div>
