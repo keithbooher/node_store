@@ -1,7 +1,7 @@
 import { FETCH_USER, UPDATE_USER, CREATE_GUEST_CART } from '../actions/types'
 
 const guest_user = {
-  _id: 0,
+  _id: "000000000000000000000000",
   email: null,
   first_name: null,
   last_name: null,

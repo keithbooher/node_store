@@ -52,14 +52,16 @@ class App extends Component {
     // Also using this to pass to private route
     let user = await this.props.fetchUser()
  
+    // If no user signed in
     if (!user) {
+      // Look for guest cart
       const cookieGuestCart = cookies.get('guest_cart')
       if (!cookieGuestCart) {
-        console.log('no guest cart')
+        // Create the guest cart
         const guest_cart = await this.props.createGuestCart()        
         cookies.set('guest_cart', guest_cart._id, { path: '/' });
       } else {
-        console.log('find the guest cart')
+        // Find the guest cart
         const guest_cart_id = cookies.get('guest_cart')
         const guest_cart = await this.props.getGuestCart(guest_cart_id)
       }

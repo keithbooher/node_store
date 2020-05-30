@@ -120,6 +120,10 @@ class Payments extends Component {
 
     let updated_cart = await updateCart(cart)
 
+    if (cart._user_id === "000000000000000000000000") {
+
+    }
+
     //make available to the checkout page and ultimately Review panel.
     this.props.makeNewOrderAvailable(new_order.data, updated_cart.data)
     this.props.chooseTab('review')
