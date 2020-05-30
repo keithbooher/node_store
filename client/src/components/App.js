@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter , Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchUser, usersCart, createGuestCart, getGuestCart } from '../actions'
+import { fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart } from '../actions'
 import '../stylesheets/all.css.scss'
 
-import RemoveCookies from "./removeCookies"
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie'
+import { withCookies, Cookies, useCookies } from 'react-cookie'
 
 import Admin from './containers/Admin'
 import Customer from './containers/CustomerFacing';
@@ -38,66 +36,58 @@ const checkAdmin = (user) => {
 
 
 
-class App extends Component {
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  };
-  constructor(props) {
-    super()
-    this.state = {admin: null}
-  }
-  async componentDidMount() {
-    const { cookies } = this.props
+const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart,  }) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['guest_cart']);
+
+  const [admin, setAdmin] = useState(null)
+  useEffect(async () => {
     // Check to see if user is logged in
     // Also using this to pass to private route
-    let user = await this.props.fetchUser()
+    let user = await fetchUser()
  
     // If no user signed in
     if (!user) {
       // Look for guest cart
-      const cookieGuestCart = cookies.get('guest_cart')
+      const cookieGuestCart = cookies.guest_cart
       if (!cookieGuestCart) {
+        // Guest user landing for the first time
         // Create the guest cart
-        const guest_cart = await this.props.createGuestCart()        
-        cookies.set('guest_cart', guest_cart._id, { path: '/' });
+        const guest_cart = await createGuestCart()        
+        setCookie('guest_cart', guest_cart._id, { path: '/' });
       } else {
+        // Guest user, but they have cart cookies with us 
         // Find the guest cart
-        const guest_cart_id = cookies.get('guest_cart')
-        const guest_cart = await this.props.getGuestCart(guest_cart_id)
-      }
+        const guest_cart_id = cookies.guest_cart
+        const guest_cart = await getGuestCart(guest_cart_id)
+      } 
+    } else if (user && cookies.guest_cart) {
+      // User is signed in but had an open guest cart
+      // convert guest cart to this user's cart
+      const guest_cart_id = cookies.guest_cart
+      const guest_cart = await convertGuestCart(guest_cart_id, user._id)
+      removeCookie('guest_cart')
     } else {
-      let cart = await this.props.usersCart(user._id)
+      // User is signed in and no cart in cookies
+      let cart = await usersCart(user._id)
     }
 
-    // if not signed in, we'll check for any created guest carts in the cookies
-    // if not, then create a guest users cart in the database and store it's ID in the cookies (_user_id set to "guest" for the time being)
+
+    window.cookie = cookies
+    window.removeCookie = removeCookie
     
-    // NEXT!!!
-    // Later, if the user decides to login while they have a guest cart built; once logged in 
-    // we will check to see if there was a saved guest cart in the cookies. If so, update that
-    // cart with the user's ID and destroy prior open carts. 
+    let checkedAdmin = checkAdmin(user)
+    setAdmin(checkedAdmin)
+  }, [])
 
-    // THEN NEED TO SEE IF A GUEST CAN MAKE IT THROUGH CHECKOUT
+  return (
+    <BrowserRouter>
+      <CustomerFacing />
+      <PrivateRoute admin={admin} path="/admin">
+        <Admin />
+      </PrivateRoute>
+    </BrowserRouter>
+  )
 
-    // Then we can fire the below request to get the user's cart. 
-
-    window.cookie = cookies.get('guest_cart')
-    
-    let admin = checkAdmin(user)
-    this.setState({ admin: admin })
-  }
-
-  render() {
-    return (
-      <BrowserRouter>
-        <CustomerFacing />
-        {/* <RemoveCookies /> for debugging */}
-        <PrivateRoute admin={this.state.admin} path="/admin">
-          <Admin />
-        </PrivateRoute>
-      </BrowserRouter>
-    )
-  }
 }
 
 const CustomerFacingSwitch = (props) => {
@@ -112,6 +102,6 @@ const CustomerFacingSwitch = (props) => {
 
 const CustomerFacing = withRouter(CustomerFacingSwitch);
 
-const actions = { fetchUser, usersCart, createGuestCart, getGuestCart }
+const actions = { fetchUser, usersCart, createGuestCart, getGuestCart, convertGuestCart }
 
 export default connect(null, actions)(withCookies(App))

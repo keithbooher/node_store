@@ -31,6 +31,23 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+
+  // CONVERT GUEST CART TO MEMBER CART
+  app.put('/api/cart/guest/convert-to-member-cart', async (req, res) => {  
+    const guest_cart_id = req.body.guest_cart_id
+    const user_id = req.body.user_id
+
+    let today = new Date()
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+
+    // delete previously opened cart
+    let delete_previous_cart = await Cart.findOneAndUpdate({ _user_id: user_id, deleted_at: null  }, { deleted_at: date }, {new: true})
+
+    // assign the new cart the customer is working with to them now
+    let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { user_id }, {new: true})
+
+    res.send(updated_cart)
+  })
   
 
   // Create Guest Cart

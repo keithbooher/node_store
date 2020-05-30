@@ -16,7 +16,7 @@ class AccountNav extends Component {
   renderContent() {
     if (this.props.auth) {
       switch (this.props.auth._id) {
-        case 0:
+        case "000000000000000000000000":
             return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
         default:
           return [

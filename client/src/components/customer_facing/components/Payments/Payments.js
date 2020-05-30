@@ -5,6 +5,8 @@ import { convertCart, updateUser, handleToken } from '../../../../actions'
 import { createOrder, createShipment, updateCart } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
+import { useCookies } from 'react-cookie'
+
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
   // Check if any of the customers past billing addresses match the one thats submitted
@@ -49,14 +51,12 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
   }
 }
 
-class Payments extends Component {
-  constructor(props) {
-    super()
-    this.someFunction = this.someFunction.bind(this)
-  }
-  async someFunction(token) {
-    await this.props.handleToken(token)
-    let cart = this.props.cart
+const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, chooseTab }) => {
+  const [cookies, setCookie, removeCookie] = useCookies(null)
+
+  const someFunction = async (token) => {
+    await handleToken(token)
+    // let cart = cart
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
     cart.checkout_state = 'complete'
@@ -74,9 +74,9 @@ class Payments extends Component {
       return line_item
     })
 
-    let user = this.props.auth
-    let past_billing_used = checkPassedBillingUsed(this.props.auth.billing_address, cart)
-    let past_shipping_used = checkPassedShippingUsed(this.props.auth.shipping_address, cart)
+    let user = auth
+    let past_billing_used = checkPassedBillingUsed(user.billing_address, cart)
+    let past_shipping_used = checkPassedShippingUsed(user.shipping_address, cart)
 
 
     // if this address doesn't match past addresses used, we add to the user's address records
@@ -89,7 +89,7 @@ class Payments extends Component {
     if (past_billing_used === false || past_shipping_used === false) {
       // TO DO 
       // Change this to just be an api call
-      this.props.updateUser(user)
+      updateUser(user)
     }
 
     // Make shipment
@@ -120,30 +120,31 @@ class Payments extends Component {
 
     let updated_cart = await updateCart(cart)
 
-    if (cart._user_id === "000000000000000000000000") {
-
-    }
+    /////////////////////////////////////////////
+    // For now Im just going to remove guest cart  
+    // cookies every time someone checks out
+    removeCookie("guest_cart")
 
     //make available to the checkout page and ultimately Review panel.
-    this.props.makeNewOrderAvailable(new_order.data, updated_cart.data)
-    this.props.chooseTab('review')
+    makeNewOrderAvailable(new_order.data, updated_cart.data)
+    chooseTab('review')
 
   }
 
-  render() {
-    return (
-        <StripeCheckout
-          name="Node Store"
-          description='Purchase your order at ______' 
-          panelLabel="Purchase"
-          amount={500}
-          token={token => this.someFunction(token)}
-          stripeKey={process.env.REACT_APP_STRIPE_KEY}
-        >
-          <button className="btn">Pay For Order</button>
-        </StripeCheckout>
-    )
-  }
+
+  return (
+      <StripeCheckout
+        name="Node Store"
+        description='Purchase your order at ______' 
+        panelLabel="Purchase"
+        amount={500}
+        token={token => someFunction(token)}
+        stripeKey={process.env.REACT_APP_STRIPE_KEY}
+      >
+        <button className="btn">Pay For Order</button>
+      </StripeCheckout>
+  )
+
 }
 
 function mapStateToProps({ auth }) {
