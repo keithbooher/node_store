@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Order = mongoose.model('orders')
 
 module.exports = app => {
-  app.post('/api/order/create', requireLogin, async (req, res) => {  
+  app.post('/api/order/create', async (req, res) => {  
     const order = new Order(req.body.order)
     try {
       await order.save()

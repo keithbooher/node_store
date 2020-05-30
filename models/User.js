@@ -18,9 +18,9 @@ const userSchema = new Schema({
     type: Number,
     default: 0
   },
-  admin: {
-    type: Boolean,
-    default: false
+  role: {
+    type: String,
+    default: "customer"
   },
   billing_address: [AddressSchema],
   shipping_address: [AddressSchema],
