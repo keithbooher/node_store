@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "./Form"
-import hf from "../../utils/helperFunctions"
+import { updatedFormFields } from "../../utils/helperFunctions"
 import { checkIfReviewExists, submitReview, updateReview } from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"
@@ -63,7 +63,7 @@ class LineItem extends Component {
   }
 
   review_initial_values() {
-    return hf.updatedFormFields(this.fields, this.state.reviewed)
+    return updatedFormFields(this.fields, this.state.reviewed)
   }
 
   render() {

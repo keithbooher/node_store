@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getProductInfo,  } from "../../../../utils/API";
 import { Link } from 'react-router-dom'
-import hf from '../../../../utils/helperFunctions'
+import { capitalizeFirsts } from '../../../../utils/helperFunctions'
 
 class Product extends Component  {
   constructor(props) {
@@ -25,7 +25,7 @@ class Product extends Component  {
       return category.path_name === this.routeParamCategory
     })
     console.log(category_name)
-    return hf.capitalizeFirsts(category_name[0].name)
+    return capitalizeFirsts(category_name[0].name)
   }
 
   render_content() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createProduct, updateProduct, getAllCategories, getProductInfo } from '../../../utils/API'
-import hf from '../../../utils/helperFunctions'
+import { productNameToPathName } from '../../../utils/helperFunctions'
 import { connect } from 'react-redux'
 import { Route, Link, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -62,7 +62,7 @@ class ProductForm extends Component {
        new_product[key] = value
       }
     }
-    new_product["path_name"] = hf.productNameToPathName(new_product.name)
+    new_product["path_name"] = productNameToPathName(new_product.name)
     let create_product = await createProduct(new_product)
     if (create_product.status === 200) {
       this.props.history.push(`/admin/products/${create_product.data._id}`)
@@ -94,7 +94,7 @@ class ProductForm extends Component {
     // TO DO
     // Actually lets not update the path name with the new name. 
     // Lets offer this as a specific redirect feature
-    // new_product_info["path_name"] = hf.productNameToPathName(new_product_info.name)
+    // new_product_info["path_name"] = productNameToPathName(new_product_info.name)
     
     new_product_info["_id"] = this.state.product._id
 

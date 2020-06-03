@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
-import hf from '../../../../utils/helperFunctions'
+import { calculateSubtotal } from '../../../../utils/helperFunctions'
 import { updateCart } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
@@ -28,7 +28,7 @@ class LineItems extends Component {
     let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
     cart.line_items = removed_zero_quantity_items
     
-    let sub_total = hf.calculateSubtotal(cart)
+    let sub_total = calculateSubtotal(cart)
 
     cart.total = sub_total * .08
     this.props.updateCart(cart)
@@ -44,7 +44,7 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
-    let sub_total = hf.calculateSubtotal(cart)
+    let sub_total = calculateSubtotal(cart)
 
     cart.total = sub_total * .08
     this.props.updateCart(cart)

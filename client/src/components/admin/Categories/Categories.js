@@ -5,7 +5,7 @@ import { getTopCategories, createCategory, updateCategory } from '../../../utils
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faCaretUp, faCaretDown, faTrash } from "@fortawesome/free-solid-svg-icons"
-import hf from "../../../utils/helperFunctions"
+import { productNameToPathName } from "../../../utils/helperFunctions"
 import { categoryFields, createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
 
@@ -31,7 +31,7 @@ class Categories extends Component {
     const create_category_form_values = this.props.form['create_category_form'].values
     let new_category = {}
     new_category["name"] = create_category_form_values.name
-    new_category["path_name"] = hf.productNameToPathName(create_category_form_values.name)
+    new_category["path_name"] = productNameToPathName(create_category_form_values.name)
 
     let display_order
     if (parent_category !== null) {

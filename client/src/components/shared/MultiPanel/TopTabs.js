@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import hf from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helperFunctions"
 
 class TopTabs extends Component  {
   constructor(props) {
@@ -17,7 +17,7 @@ class TopTabs extends Component  {
         flexBasis: `${100*(1/this.props.sections.length)}%`,
         textAlign: 'center'
       }
-      return <h3 data-tab={section} style={style} onClick={() => this.props.chooseTab(section)} className="tab_section_header margin-none clickable">{hf.capitalizeFirsts(section)}</h3>
+      return <h3 data-tab={section} style={style} onClick={() => this.props.chooseTab(section)} className="tab_section_header margin-none clickable">{capitalizeFirsts(section)}</h3>
     })
   }
 

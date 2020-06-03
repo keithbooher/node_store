@@ -4,7 +4,7 @@ import { updateUser } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash, faPlusCircle} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
-import hf from "../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 
 class AddressCard extends Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class AddressCard extends Component {
     }
     return (
       <h5>
-        <span style={{ marginRight: "5px" }}>{hf.capitalizeFirsts(title)} Addresses</span>
+        <span style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
         <FontAwesomeIcon 
           className="hover"
           onClick={() => this.props.showForm(this.props.bill_or_ship)} 

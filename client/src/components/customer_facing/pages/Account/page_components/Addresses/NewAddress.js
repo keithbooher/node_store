@@ -4,7 +4,7 @@ import Form from '../../../../../shared/Form'
 import { addressFields } from '../formFields'
 import { updateUser } from '../../../../../../actions'
 import {reset} from 'redux-form'
-import hf from "../../../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../../../utils/helperFunctions"
 
 class NewBillAddress extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class NewBillAddress extends Component {
     return (
       <div className="new_user_address_forms_container">
         <div className="user_billing_form">
-          <h4>New {hf.capitalizeFirsts(this.props.bill_or_ship)} Address</h4>
+          <h4>New {capitalizeFirsts(this.props.bill_or_ship)} Address</h4>
           <Form 
             onSubmit={this.handleSubmit} 
             submitButtonText={"Next"}

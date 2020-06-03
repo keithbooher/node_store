@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
 import { addressFormFields } from '../formFields'
-import hf from "../../../../../../utils/helperFunctions"
+import { updatedFormFields } from "../../../../../../utils/helperFunctions"
 import AddressCard from '../../../../components/AddressCard';
 
 
@@ -79,7 +79,7 @@ class AddressPanel extends Component  {
   billing_initial_values() {
     let billing_initial_values = this.props.form.billing_checkout_form ? this.props.form.billing_checkout_form.values : {} 
     if (this.props.cart.billing_address) {
-      billing_initial_values = hf.updatedFormFields(addressFormFields, this.props.cart.billing_address)
+      billing_initial_values = updatedFormFields(addressFormFields, this.props.cart.billing_address)
     }
     return billing_initial_values
   }
@@ -87,7 +87,7 @@ class AddressPanel extends Component  {
   shipping_initial_values() {
     let shipping_initial_values = this.props.form.shipping_checkout_form ? this.props.form.shipping_checkout_form.values : {}
     if (this.props.cart.shipping_address) {
-      shipping_initial_values = hf.updatedFormFields(addressFormFields, this.props.cart.shipping_address)
+      shipping_initial_values = updatedFormFields(addressFormFields, this.props.cart.shipping_address)
     }
     return shipping_initial_values
   }

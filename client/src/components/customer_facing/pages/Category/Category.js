@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { getCategoryData, getCategoryProducts } from "../../../../utils/API";
 import ProductCard from '../../components/ProductCard'
-import hf from '../../../../utils/helperFunctions'
+import { capitalizeFirsts } from '../../../../utils/helperFunctions'
 
 class Category extends Component  {
   constructor(props) {
@@ -25,7 +25,7 @@ class Category extends Component  {
     return (
       <div>
         <h1>
-          {hf.capitalizeFirsts(this.state.category_data.name)}
+          {capitalizeFirsts(this.state.category_data.name)}
         </h1>
         <div style={{display: 'flex'}}>
           {this.renderProductCards()}

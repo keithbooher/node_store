@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import hf from '../../../../utils/helperFunctions'
+import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import './productCard.css.scss'
 
@@ -66,7 +66,7 @@ class ProductCard extends Component {
       }
 
 
-      sub_total = hf.calculateSubtotal(cart)
+      sub_total = calculateSubtotal(cart)
       cart.total = sub_total * .08
     }
     cart.checkout_state = "shopping"
@@ -86,7 +86,7 @@ class ProductCard extends Component {
         {this.props.auth !== null ? 
           <div className="card border">
             <div className="card-content">
-              <h3 className="card-title">{hf.capitalizeFirsts(product.name)}</h3>
+              <h3 className="card-title">{capitalizeFirsts(product.name)}</h3>
               <p>{product.description}</p>
             </div>
             <div className="margin-m-v">
