@@ -68,8 +68,8 @@ class ProductCard extends Component {
 
       sub_total = hf.calculateSubtotal(cart)
       cart.total = sub_total * .08
-
     }
+    cart.checkout_state = "shopping"
     if (create_boolean === true) {
       this.props.createCart(cart)
     } else {

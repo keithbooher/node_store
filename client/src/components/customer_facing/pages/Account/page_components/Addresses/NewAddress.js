@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Form from '../../../../shared/Form'
-import { addressFields } from './formFields'
-import AddressCard from '../../../components/AddressCard'
-import { updateUser } from '../../../../../actions'
+import Form from '../../../../../shared/Form'
+import { addressFields } from '../formFields'
+import { updateUser } from '../../../../../../actions'
 import {reset} from 'redux-form'
+import hf from "../../../../../../utils/helperFunctions"
 
-class Addresses extends Component {
+class NewBillAddress extends Component {
   constructor(props) {
     super()
     this.state = {}
@@ -14,8 +14,6 @@ class Addresses extends Component {
 
   async handleSubmit(e, bill_or_ship) {
     // some request to update the users general info
-    console.log(bill_or_ship)
-    console.log(this.props)
     e.preventDefault()
     
     let addy
@@ -47,49 +45,32 @@ class Addresses extends Component {
 
     }
     this.props.updateUser(user)
+    this.props.showForm(null)
     window.scrollTo(0, 0);
   }
 
   render() {
-    console.log(this.props)
     const replacementSubmitButton = (bill_or_ship) => {
       return (<button onClick={(e) => this.handleSubmit(e, bill_or_ship)} className="teal btn-flat right white-text">
         <i className="material-icons right">Submit</i>
       </button>)
     }
     return (
-    <div>
-      <div>
-        <AddressCard bill_or_ship="billing_address" />    
-        <AddressCard bill_or_ship="shipping_address" />    
-      </div>
       <div className="new_user_address_forms_container">
         <div className="user_billing_form">
-          <h4>New Billing Address</h4>
+          <h4>New {hf.capitalizeFirsts(this.props.bill_or_ship)} Address</h4>
           <Form 
             onSubmit={this.handleSubmit} 
             submitButtonText={"Next"}
             formFields={addressFields} 
-            submitButton={replacementSubmitButton("billing")}
-            formId={"user_billing_form"}
-            form={"user_billing_form"}
+            submitButton={replacementSubmitButton(this.props.bill_or_ship)}
+            formId={`user_${this.props.bill_or_ship}_form`}
+            form={`user_${this.props.bill_or_ship}_form`}
             initialValues={{}}
-          />
-        </div>
-        <div className="user_shipping_form">
-          <h4>New Shipping Address</h4>
-          <Form 
-            onSubmit={this.handleSubmit} 
-            submitButtonText={"Next"}
-            formFields={addressFields} 
-            submitButton={replacementSubmitButton("shipping")}
-            formId={"user_shipping_form"}
-            form={"user_shipping_form"}
-            initialValues={{}}
+            cancel={() => this.props.showForm(null)}
           />
         </div>
       </div>
-    </div>
     )
   }
 }
@@ -102,4 +83,4 @@ function mapStateToProps({ form, auth }) {
 
 const actions = { updateUser, reset }
 
-export default connect(mapStateToProps, actions)(Addresses)
+export default connect(mapStateToProps, actions)(NewBillAddress)

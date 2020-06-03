@@ -53,13 +53,11 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
       // Look for guest cart
       const cookieGuestCart = cookies.guest_cart
       if (!cookieGuestCart) {
-        console.log('4')
         // Guest user landing for the first time
         // Create the guest cart
         const guest_cart = await createGuestCart()        
         setCookie('guest_cart', guest_cart._id, { path: '/' })
       } else {
-        console.log('3')
         // Guest user, but they have cart cookies with us 
         // Find the guest cart
         const guest_cart_id = cookies.guest_cart
@@ -69,21 +67,17 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
         }
       } 
     } else if (user && cookies.guest_cart) {
-      console.log('2')
       // User is signed in but had an open guest cart
       // convert guest cart to this user's cart
       const guest_cart_id = cookies.guest_cart
       await convertGuestCart(guest_cart_id, user._id)
       removeCookie('guest_cart')
     } else {
-      console.log('1')
       // User is signed in and no cart in cookies
       await usersCart(user._id)
     }
 
-    console.log(cookies)
-    window.cookie = cookies
-    window.removeCookie = removeCookie
+    window.cookies = cookies
     
     let checkedAdmin = checkAdmin(user)
     setAdmin(checkedAdmin)

@@ -14,8 +14,6 @@ module.exports = app => {
   // GET A GUEST CART
   app.put('/api/cart/guest/:id', async (req, res) => {
     const cart_id = req.params.id
-    console.log("cart_id")
-    console.log(cart_id)
     // TO DO
     // I'd love to figure out how to tighten this up and say any cart with a status that isn't "complete"
     const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000" }, {new: true})
@@ -38,7 +36,7 @@ module.exports = app => {
   app.put('/api/cart/convert-to-member-cart', async (req, res) => {  
     const guest_cart_id = req.body.guest_cart_id
     const _user_id = req.body.user_id
-    
+
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
 
@@ -70,7 +68,6 @@ module.exports = app => {
       chosen_rate: null,
     }
     const cart = new Cart(guest_cart)
-    console.log(cart)
     try {
       await cart.save()
       res.send(cart)

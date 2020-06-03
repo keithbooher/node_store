@@ -23,6 +23,7 @@ export const createCategory = (category) => {
 }
 
 export const updateCategory = (category) => {
+    console.log(category)
     const data = { category }
     return axios.put('/api/category/update', data)
 }

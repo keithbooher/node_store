@@ -51,7 +51,7 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
   }
 }
 
-const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, chooseTab }) => {
+const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
 
   const someFunction = async (token) => {
@@ -80,11 +80,15 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
 
 
     // if this address doesn't match past addresses used, we add to the user's address records
-    if (past_shipping_used === false) {
-      user.shipping_address.push(cart.shipping_address)
+    if (past_shipping_used === false ) {
+      if (!preExistingShipping) {
+        user.shipping_address.push(cart.shipping_address)
+      }
     }
     if (past_billing_used === false) {
-      user.billing_address.push(cart.billing_address)
+      if (!preExistingBilling) {
+        user.billing_address.push(cart.billing_address)
+      }
     }
     if (past_billing_used === false || past_shipping_used === false) {
       // TO DO 
@@ -140,6 +144,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
         amount={500}
         token={token => someFunction(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
+        email={null}
       >
         <button className="btn">Pay For Order</button>
       </StripeCheckout>

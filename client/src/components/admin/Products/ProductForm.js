@@ -188,7 +188,6 @@ class ProductForm extends Component {
   }
 
   updateForm() {
-    console.log(this.injectDataIntoFormFields())
     return(
       <Form 
         onSubmit={(e) => this.handleSubmitUpdate(e)}
@@ -202,7 +201,6 @@ class ProductForm extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <>
        {this.state.categories !== null ?

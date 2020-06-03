@@ -10,7 +10,6 @@ import { logout as logoutReq } from "../../../../utils/API"
 const AccountNav = ({ auth, cart, setCartCookie }) => {
   const history = useHistory()
   const logout = async () => {
-    console.log(cart._id)
     setCartCookie(cart._id)
     await logoutReq()
     history.push("/")

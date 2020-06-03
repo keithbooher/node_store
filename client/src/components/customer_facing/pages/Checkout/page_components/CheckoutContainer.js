@@ -51,10 +51,7 @@ class CheckoutContainer extends Component  {
 
   async updateCart(cart) {
     //update data base
-    console.log("update please?")
     const update_cart = await updateCart(cart)
-    console.log("?dsafdnsjkahfjkdsa")
-    console.log(update_cart)
     this.setState({ current_cart: update_cart.data, chosen_tab: update_cart.data.checkout_state  })
   }
 

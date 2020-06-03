@@ -25,7 +25,7 @@ class Details extends Component {
 
   renderAttributeForms() {
     let user = this.props.auth
-    let do_not_use = ['billing_address', 'shipping_address', 'email', 'googleId', '__v', '_id', 'joined_on', 'admin', 'credits', 'photo']
+    let do_not_use = ['billing_address', 'shipping_address', 'email', 'googleId', '__v', '_id', 'joined_on', 'role', 'credits', 'photo']
     let self = this
 
     const replacementSubmitButton = (key) => {
@@ -58,7 +58,6 @@ class Details extends Component {
 
 
   render() {
-    console.log(process.env.REACT_APP_FILESTACK_API)
     return (
       <div>
         { this.props.auth ?

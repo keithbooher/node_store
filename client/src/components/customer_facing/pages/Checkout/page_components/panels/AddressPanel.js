@@ -33,8 +33,6 @@ class AddressPanel extends Component  {
 
 
     if (this.props.preExistingShipping === null) {
-      console.log("this.props.form")
-      console.log(this.props.form)
       const ship_addy = this.props.form.shipping_checkout_form.values
       shipping_address = {
         first_name: ship_addy.first_name,
@@ -108,7 +106,7 @@ class AddressPanel extends Component  {
   }
 
   renderAddressCards() {
-    if (this.props.auth._id !== 0) {
+    if (this.props.auth._id !== "000000000000000000000000") {
       return (
         <>
           <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" />    
@@ -128,12 +126,11 @@ class AddressPanel extends Component  {
             <Form 
               onSubmit={this.handleFormSubmit} 
               onChange={() => this.formOnChange('billing null')}
-              submitButtonText={"Next"}
               formFields={addressFormFields} 
-              submitButton={""}
               formId={"billing_form"}
               form={"billing_checkout_form"}
               initialValues={this.billing_initial_values()}
+              submitButton={<></>}
             />
           </div> }
 
@@ -146,8 +143,8 @@ class AddressPanel extends Component  {
               formFields={addressFormFields}
               formId={"shipping_form"}
               form={"shipping_checkout_form"}
-              submitButton={""}
               initialValues={this.shipping_initial_values()}
+              submitButton={<></>}
             />
           </div>}
       </div>
@@ -155,8 +152,6 @@ class AddressPanel extends Component  {
   }
 
   render() {
-    console.log(this.props.auth)
-    // console.log(this.props)
     const replacementSubmitButton = (
       <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>

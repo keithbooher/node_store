@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateUser } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faTrash} from "@fortawesome/free-solid-svg-icons"
+import {faTrash, faPlusCircle} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
+import hf from "../../../../utils/helperFunctions"
 
 class AddressCard extends Component {
   constructor(props) {
@@ -33,7 +34,16 @@ class AddressCard extends Component {
     } else {
       title = "Shipping"
     }
-    return <h5>Past {title} Addresses</h5>
+    return (
+      <h5>
+        <span style={{ marginRight: "5px" }}>{hf.capitalizeFirsts(title)} Addresses</span>
+        <FontAwesomeIcon 
+          className="hover"
+          onClick={() => this.props.showForm(this.props.bill_or_ship)} 
+          icon={faPlusCircle} 
+        />
+      </h5>
+    )
   }
   
   check_highlight(address) {
@@ -51,16 +61,17 @@ class AddressCard extends Component {
     let new_ship = user.shipping_address.filter(address => address_to_be_deleted._id !== address._id)
     user.billing_address = new_bill
     user.shipping_address = new_ship
-    console.log(user)
     this.props.updateUser(user)
   }
 
   render() {
-    // console.log(this.state)
     return (
       <div style={{ position: 'relative' }}>
         {/* delete icon */}
-        {this.title()}
+        <div className="flex">
+          {this.title()}
+          
+        </div>
         <div style={{ display: 'flex' }}>
           {this.props.auth[this.props.bill_or_ship].map((address) => {
             return <div data-address-id={address._id} style={ this.check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
