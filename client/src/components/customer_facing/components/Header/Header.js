@@ -20,12 +20,11 @@ class Header extends Component {
     this.props.sidebarBoolean(!this.props.sidebar)
   }
   render() {
-    console.log(this.props)
     return (
     <div>
       <div className="flex space-between theme-nav-background-color">
         <div className="flex justify-center align-items-center">
-          <FontAwesomeIcon onClick={this.sidebar} className="margin-s-h hover" data-noClose={false} icon={faBars} />
+          <FontAwesomeIcon onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
           <Link to='/' className="margin-s-h"><h2 className="margin-none">Node Store</h2></Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>

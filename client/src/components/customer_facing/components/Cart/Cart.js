@@ -7,9 +7,8 @@ import { Link } from 'react-router-dom'
 class Cart extends Component {
   constructor(props) {
     super()
+    this.dropRef = React.createRef()
 
-    this.setWrapperRef = this.setWrapperRef.bind(this);
-    this.setLengthRef = this.setLengthRef.bind(this);
     this.handleClickOutside = this.handleClickOutside.bind(this);
 
     this.expandCart = this.expandCart.bind(this)
@@ -27,18 +26,10 @@ class Cart extends Component {
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
-  setWrapperRef(node) {
-    this.wrapperRef = node;
-  }
-
-  setLengthRef(node) {
-    this.lengthRef = node;
-  }
-
-  handleClickOutside(event) {
-    if (event.target.dataset.noClose || event.target.tagName === "path") {
+  handleClickOutside(e) {
+    if(e.target === this.dropRef.current || e.target.tagName === "svg" || e.target.tagName === "path") {
       return
-    } else if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    } else if (this.state.showCart === true && !this.node.contains(e.target)) {
       this.expandCart()
     }
   }
@@ -50,13 +41,13 @@ class Cart extends Component {
   render() {
     return (
     <div className="relative">
-      <div data-noClose={false} className="h-100" style={{ zIndex: 100 }}>
+      <div ref={this.dropRef} className="h-100">
         <CartLength expandCart={this.expandCart}  />
       </div>
 
       {this.state.showCart && 
         <div>
-          <ul ref={this.setWrapperRef} className="expandedCart">
+          <ul ref={node => this.node = node} className="expandedCart">
             <LineItems />
             <div onClick={this.expandCart} >
               <Link className="header_list_item clickable" to="/checkout">Checkout</Link>

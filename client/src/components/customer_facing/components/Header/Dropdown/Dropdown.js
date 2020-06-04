@@ -7,9 +7,11 @@ import "./dropdown.css.scss"
 class Dropdown extends Component {
   constructor(props) {
     super()
-    this.setWrapperRef = this.setWrapperRef.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
+    this.dropRef = React.createRef()
+    this.userIconRef = React.createRef()
+    this.caratDownRef = React.createRef()
 
+    this.handleClickOutside = this.handleClickOutside.bind(this);
 
     this.showAccountMenu = this.showAccountMenu.bind(this)
     this.state = {
@@ -25,14 +27,11 @@ class Dropdown extends Component {
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
-  setWrapperRef(node) {
-    this.wrapperRef = node;
-  }
-
   handleClickOutside(event) {
-    if (event.target.dataset.noClose || event.target.tagName === "path") {
+    const refs = [this.dropRef.current, this.userIconRef.current, this.caratDownRef.current]
+    if(refs.includes(event.target) || event.target.tagName === "svg" || event.target.tagName === "path") {
       return
-    } else if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+    } else if (this.state.open === true && !this.node.contains(event.target)) {
       this.showAccountMenu()
     }
   }
@@ -43,13 +42,13 @@ class Dropdown extends Component {
 
   render() {
     return (
-      <div data-noClose={false} className="relative">
-        <Link data-noClose={false} onClick={this.showAccountMenu} className="header_list_item">
-          <FontAwesomeIcon data-noClose={false} icon={faUser} />
-          <FontAwesomeIcon data-noClose={false} icon={faCaretDown} />
+      <div className="relative">
+        <Link ref={this.dropRef} onClick={this.showAccountMenu} className="header_list_item">
+          <FontAwesomeIcon ref={this.userIconRef} icon={faUser} />
+          <FontAwesomeIcon ref={this.caratDownRef} icon={faCaretDown} />
         </Link>
         {this.state.open === true && 
-          <div ref={this.setWrapperRef} id="cart_container" className="background-color-blue-2 color-white">
+          <div ref={node => this.node = node} id="cart_container" className="background-color-blue-2 color-white">
             <ul>
               {this.props.elements.map((element) => {
                 return <li onClick={() => this.setState({ open: !this.state.open })}>{element}</li>

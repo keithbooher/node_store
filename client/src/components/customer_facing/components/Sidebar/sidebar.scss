@@ -1,4 +1,6 @@
-
+////////////////////////////////////////////////////////
+//////////// SIDEBAR ANIMATION /////////////////////////
+////////////////////////////////////////////////////////
 
 /* Standard syntax */
 @keyframes width_open {
@@ -27,7 +29,8 @@
   bottom: 0px;
   left: -200px;
   background-color: white;
-  width: 0px;
+  width: 200px;
+  z-index: 9999;
 }
 
 

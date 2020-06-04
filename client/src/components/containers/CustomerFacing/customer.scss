@@ -1,4 +1,12 @@
+#body_content_container {
+  padding: 30px 50px;
+}
 
+
+
+////////////////////////////////////////////////////////
+//////////// SIDEBAR ANIMATION /////////////////////////
+////////////////////////////////////////////////////////
 
 /* Standard syntax */
 @keyframes width_open {
@@ -31,19 +39,3 @@
   animation: width_close .4s;
   animation-fill-mode: forwards;
 }
-
-
-
-
-
-
-
-
-#body_content_container {
-  padding: 30px 50px;
-}
-
-
-
-
-

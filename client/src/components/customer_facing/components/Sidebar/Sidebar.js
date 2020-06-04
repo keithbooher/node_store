@@ -6,8 +6,25 @@ import "./sidebar.scss"
 class Sidebar extends Component  {
   constructor(props) {
     super()
-    this.state = {
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
 
+  componentDidMount() {
+    // find all categories that have been selected to be shown to the customers
+    //
+    //
+    //
+    
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  handleClickOutside(e) {
+    if (this.props.sidebar === true && !this.node.contains(e.target)) {
+      this.props.sidebarBoolean(!this.props.sidebar)
     }
   }
   
@@ -29,8 +46,8 @@ class Sidebar extends Component  {
 
     return (
       <>
-        <div className={"sidebar " + sidebar_class}>
-          <div style={{ marginTop: "100px" }}>
+        <div ref={node => this.node = node} className={"sidebar " + sidebar_class}>
+          <div style={{ color: "black" }}>
             Sidebar
           </div>
         </div>
