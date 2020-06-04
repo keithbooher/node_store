@@ -1,0 +1,49 @@
+
+
+/* Standard syntax */
+@keyframes width_open {
+  from {
+    margin-left: 0px;
+  }
+  to {
+    margin-left: 200px;
+  }
+}
+
+/* Standard syntax */
+@keyframes width_close {
+  from {
+    margin-left: 200px;
+  }
+  to {
+    margin-left: 0px;
+  }
+}
+
+
+
+.sidebar_open_content {
+  animation: width_open .4s;
+  animation-fill-mode: forwards;
+}
+
+.sidebar_closed_container {
+  animation: width_close .4s;
+  animation-fill-mode: forwards;
+}
+
+
+
+
+
+
+
+
+#body_content_container {
+  padding: 30px 50px;
+}
+
+
+
+
+

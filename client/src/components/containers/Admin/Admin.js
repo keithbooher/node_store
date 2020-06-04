@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import Sidebar from '../admin/Sidebar'
-import AdminDashboard from '../admin/AdminDashboard'
-import Categories from '../admin/Categories'
-import Orders from '../admin/Orders'
-import OrderPage from '../admin/Orders/OrderPage'
-import Products from '../admin/Products'
-import Reviews from '../admin/Reviews'
-import Users from '../admin/Users'
+import Sidebar from '../../admin/Sidebar'
+import AdminDashboard from '../../admin/AdminDashboard'
+import Categories from '../../admin/Categories'
+import Orders from '../../admin/Orders'
+import OrderPage from '../../admin/Orders/OrderPage'
+import Products from '../../admin/Products'
+import Reviews from '../../admin/Reviews'
+import Users from '../../admin/Users'
+import "./admin.scss"
 
 class Admin extends Component {
   constructor(props) {

@@ -1,0 +1,17 @@
+
+#admin_container {
+  display: grid;
+  grid-template-columns: 15em auto;
+  grid-template-rows: 100vh;
+  grid-template-areas: "asc acc";
+}
+
+#admin_sidebar_container {
+  grid-area: asc;
+  overflow: scroll;
+}
+
+#admin_content_container {
+  grid-area: acc;
+  overflow: scroll;
+}
