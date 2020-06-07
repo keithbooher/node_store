@@ -12,7 +12,11 @@ const categorySchema = new Schema({
     ref: 'categorys'
   }],
   created_at: Date,
-  deleted_at: Date
+  deleted_at: Date,
+  display: {
+    type: Boolean,
+    default: true
+  }
 })
 
 mongoose.model('categorys', categorySchema)

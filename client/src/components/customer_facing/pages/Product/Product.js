@@ -20,11 +20,9 @@ class Product extends Component  {
   }
 
   getMatchingCategoryName(categories) {
-    console.log(categories)
     let category_name = categories.filter(category => {
       return category.path_name === this.routeParamCategory
     })
-    console.log(category_name)
     return capitalizeFirsts(category_name[0].name)
   }
 

@@ -16,8 +16,7 @@ class OrderPage extends Component {
   }
   
   async componentDidMount() {
-    let order = await getOrder(this.order_id )
-    order = order.data
+    let order = await getOrder(this.order_id).then(res => res.data)
     this.setState({ order })
   }
 

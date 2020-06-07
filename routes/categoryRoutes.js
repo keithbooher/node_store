@@ -23,16 +23,19 @@ module.exports = app => {
     let updated_category = await Category.findOneAndUpdate({ _id: category._id }, category, {new: true})
     res.send(updated_category)    
   })
-  app.get('/api/category/:path_name', async (req, res) => {    
-    category = await Category.findOne({ path_name: req.params.path_name })
-    res.send(category)
-  })
-  app.get('/api/category/products/:category_path_name', async (req, res) => {  
-    products = await Product.find({ "category": { $elemMatch: { category_path_name: req.params.category_path_name }}})
-    res.send(products)
+  app.get('/api/category/products/:category_path_name', async (req, res) => {
+    category = await Category.findOne({ path_name: req.params.category_path_name })
+    products = await Product.find({ "categories": category._id })
+
+    const data = {
+      category,
+      products
+    }
+
+    res.send(data)
   })
   app.get('/api/categories', async (req, res) => {  
-    categories = await Category.find({}).populate({
+    categories = await Category.find({ deleted_at: null }).populate({
       path: "sub_categories",
       model: "categorys",
       populate: {
@@ -54,8 +57,35 @@ module.exports = app => {
     })
     res.send(categories)
   })
-  app.get('/api/categories/top', async (req, res) => {  
+  app.get('/api/categories/top', async (req, res) => {
     categories = await Category.find({ nest_level: 0, deleted_at: null }).populate({
+      path: "sub_categories",
+      model: "categorys",
+      populate: {
+        path: 'sub_categories',
+        model: "categorys",
+        populate: {
+          path: 'sub_categories',
+          model: "categorys",
+          populate: {
+            path: 'sub_categories',
+            model: "categorys",
+            populate: {
+              path: 'sub_categories',
+              model: "categorys"
+            }
+          }
+        }
+      }
+    })
+    res.send(categories)
+  })
+  app.get('/api/categories/sidebar', async (req, res) => {
+    categories = await Category.find({ 
+      nest_level: 0,
+      deleted_at: null,
+      display: true
+    }).populate({
       path: "sub_categories",
       model: "categorys",
       populate: {

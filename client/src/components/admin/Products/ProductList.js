@@ -37,26 +37,24 @@ class ProductList extends Component {
     let chosen_product = null
     if (path !== "products") {
       chosen_product = path
-      products = await getProductbyId(path)
-      products = products.data
+      products = await getProductbyId(path).then(res => res.data)
       products = [products]
     } else {
-      products = await paginatedProducts("none", "none")
-      products = products.data
+      products = await paginatedProducts("none", "none").then(res => res.data)
     }
 
-    let last_product = await lastProduct()
+    let last_product = await lastProduct().then(res => res.data)
 
-    this.setState({ products: products, chosen_product: chosen_product, last_product: last_product.data})
+    this.setState({ products, chosen_product, last_product})
   }
 
   async deleteProduct(product) {
     const prod = product
     prod.deleted_at = Date.now()
     const delete_product = await updateProduct(prod)
-    let products = await paginatedProducts(this.state.products[0]._id, "from_here")
-    let last_product = await lastProduct()
-    this.setState({ products: products.data, chosen_product: null, last_product: last_product.data})
+    let products = await paginatedProducts(this.state.products[0]._id, "from_here").then(res => res.data)
+    let last_product = await lastProduct().then(res => res.data)
+    this.setState({ products, chosen_product: null, last_product})
   }
 
   productData(product) {
@@ -91,22 +89,22 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
-    let products = await paginatedProducts("none", "none")
-    this.setState({ products: products.data, page_number: 1 })
+    let products = await paginatedProducts("none", "none").then(res => res.data)
+    this.setState({ products, page_number: 1 })
     this.props.dispatch(reset("product_search_form"))
   }
 
   async handleSearchSubmit(e) {
     e.preventDefault()
     const search_by_prpoduct_name = this.props.form['product_search_form'].values
-    let product = await getProductInfo(search_by_prpoduct_name.search_bar)
+    let product = await getProductInfo(search_by_prpoduct_name.search_bar).then(res => res.data)
 
-    this.setState({ products: [product.data], chosen_product: product.data._id })
+    this.setState({ products: [product], chosen_product: product._id })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const products = await paginatedProducts(direction_reference_id, direction)
-    this.setState({ products: products.data, page_number: this.state.page_number + page_increment  })
+    const products = await paginatedProducts(direction_reference_id, direction).then(res => res.data)
+    this.setState({ products, page_number: this.state.page_number + page_increment  })
   }
 
   render() {

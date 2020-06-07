@@ -6,7 +6,7 @@ import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faCaretUp, faCaretDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { productNameToPathName } from "../../../utils/helperFunctions"
-import { categoryFields, createField, createSubField } from "./formFields"
+import { createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
 
 
@@ -21,9 +21,8 @@ class Categories extends Component {
   }
   
   async componentDidMount() {
-    const top_categories =  await getTopCategories()
-    console.log(top_categories)
-    this.setState({ categories: top_categories.data })
+    const categories =  await getTopCategories().then(res => res.data)
+    this.setState({ categories })
   }
 
   async handleCreateCategoryCreate(e, parent_category) {
@@ -43,7 +42,7 @@ class Categories extends Component {
     }
     new_category["display_order"] = display_order
 
-    const create_category = await createCategory(new_category)
+    const create_category = await createCategory(new_category).then(res => res.data)
 
     // TO DO
     // do something if create_category.status !== 200
@@ -51,15 +50,15 @@ class Categories extends Component {
     if (parent_category !== null) {
       // if not a top category
       // then add the newly created category to the parent's list of subcategories
-      parent_category.sub_categories.push(create_category.data._id)
+      parent_category.sub_categories.push(create_category._id)
       const updated_parent_category = await updateCategory(parent_category)
       // TO DO
       // if updated_parent_category.status !== 200 flag error
     } 
 
     // get all categories again
-    const top_categories =  await getTopCategories()
-    this.setState({ categories: top_categories.data, show_create_input: null  })
+    const categories =  await getTopCategories().then(res => res.data)
+    this.setState({ categories, show_create_input: null  })
     this.props.dispatch(reset("create_category_form"))
   }
 
@@ -98,8 +97,8 @@ class Categories extends Component {
       const updated_category = await updateCategory(category)   
       // ^ ^ ^check if succesful ^ ^ ^ //
     }
-    const top_categories =  await getTopCategories()
-    this.setState({ categories: top_categories.data })
+    categories =  await getTopCategories().then(res => res.data)
+    this.setState({ categories })
   }
 
   categories(parent_category) {
@@ -164,8 +163,8 @@ class Categories extends Component {
     let cat = category
     cat.deleted_at = Date.now()
     const delete_cat = await updateCategory(cat)
-    const top_categories =  await getTopCategories()
-    this.setState({ categories: top_categories.data })
+    const categories =  await getTopCategories().then(res => res.data)
+    this.setState({ categories })
   }
 
   render() {

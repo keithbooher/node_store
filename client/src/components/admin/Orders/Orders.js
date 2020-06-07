@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView';
-import { runInThisContext } from 'vm';
 
 class Orders extends Component {
   constructor(props) {
@@ -22,10 +21,9 @@ class Orders extends Component {
   }
   
   async componentDidMount() {
-    const orders = await paginatedOrders("none", "none", "pending")
-    const last_order = await lastOrder()
-    console.log(orders)
-    this.setState({ orders: orders.data, last_order: last_order.data })
+    const orders = await paginatedOrders("none", "none", "pending").then(res => res.data)
+    const last_order = await lastOrder().then(res => res.data)
+    this.setState({ orders, last_order })
   }
 
   // figuring out which hidden order tab to show when selected
@@ -45,13 +43,13 @@ class Orders extends Component {
   }
 
   async changeOrderTab(status) {
-    const orders = await paginatedOrders("none", "none", status)
-    this.setState({ orders: orders.data, status_filter: status })
+    const orders = await paginatedOrders("none", "none", status).then(res => res.data)
+    this.setState({ orders, status_filter: status })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter)
-    this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
+    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter).then(res => res.data)
+    this.setState({ orders, page_number: this.state.page_number + page_increment })
   }
 
   renderOrders() {
@@ -59,7 +57,7 @@ class Orders extends Component {
       return (
         <>
           <tr className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
-            <td onClick={ () => this.setOrder(order)} class="padding-xs flex justify-content-space-between quick-view">
+            <td onClick={ () => this.setOrder(order)} className="padding-xs flex justify-content-space-between quick-view">
               <a><FontAwesomeIcon icon={faEye} /></a>
             </td><td className="padding-xs">
               <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
