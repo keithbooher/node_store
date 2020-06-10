@@ -2,27 +2,26 @@
 
 
 ## this is what our form AIP looks like
-  \<div>
+  <br />
+    \<Form
       <br />
-        \<Form
-         <br />
-         onSubmit={}
-         <br />
-         submitButtonText={}
-         <br />
-         formFields={} 
-         <br />
-         initialValues={}
-         <br />
-         form={}
-         <br />
-         formId={}
-         <br />
-         cancel={}
+       onSubmit={}
+      <br />
+       submitButtonText={}
+      <br />
+       formFields={} 
+      <br />
+       initialValues={}
+      <br />
+       form={}
+      <br />
+       formId={}
+      <br />
+       cancel={}
       <br />
     />
-    <br />
-  \</div>
+  <br />
+
 
 ### onSubmit
  the function to execute when the form is submitted
