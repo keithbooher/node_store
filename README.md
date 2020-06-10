@@ -24,11 +24,11 @@
  an array of objects that represent the fields to be used in the form 
 
  #### formField Properties
- label: name to be shown above the field
+ <u>label</u>: name to be shown above the field
 
- name: under the hood name, typically the same name as the property its associated with for dynamic uses
+ <u>name</u>: under the hood name, typically the same name as the property its associated with for dynamic uses
 
- typeOfComponent: set the type of component to use
+ <u>typeOfComponent</u>: set the type of component to use
    - check-box
    - multi (multi select drop down)
    - text-area
@@ -36,9 +36,9 @@
    - dropdown
    - tree
 
- options: an object to help build non traditional form fields like dropdown, multi and tree
+ <u>options</u>: an object to help build non traditional form fields like dropdown, multi and tree
 
- noValueError: message to display to user when a  field must be provided and its not provided
+ <u>noValueError</u>: message to display to user when a  field must be provided and its not provided
 
 ### initialValues
  create an array of objects that contain a single key and property. 
