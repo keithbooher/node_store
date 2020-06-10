@@ -138,7 +138,6 @@ class Categories extends Component {
                     onSubmit={(e) => this.handleCreateCategoryCreate(e, category)}
                     submitButtonText={"Create A Subcategory"}
                     formFields={createSubField}
-                    formId='create_category_form'
                     form='create_category_form'
                     cancel={() => this.setState({ show_create_input: null })}
                   />
@@ -179,7 +178,6 @@ class Categories extends Component {
                   onSubmit={(e) => this.handleCreateCategoryCreate(e, null)}
                   submitButtonText={"Create Category"}
                   formFields={createField}
-                  formId='create_category_form'
                   form='create_category_form'
                   cancel={() => this.setState({ show_create_input: null })}
                 />

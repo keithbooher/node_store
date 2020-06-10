@@ -39,9 +39,8 @@ class Details extends Component {
         <Form 
           onSubmit={self.handleSubmit}
           submitButtonText={"Next"}
-          formFields={[{ label: capitalizeFirsts(key.replace(/_/g, " ")), name: key, noValueError: `You must provide a ${key}`, value: null }]} 
+          formFields={[{ label: capitalizeFirsts(key.replace(/_/g, " ")), name: key, noValueError: `You must provide a ${key}` }]} 
           submitButton={(replacementSubmitButton(key))}
-          formId={`${key}_form`}
           form={`${key}_form`}
           initialValues={{[key]: user[key]}}
         />

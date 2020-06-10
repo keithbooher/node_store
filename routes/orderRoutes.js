@@ -38,38 +38,66 @@ module.exports = app => {
     let orders
     if (last_order_id === 'none') {
 
+      // making a fresh call with no beginning ID for reference
       if (status === "all") {
         orders = await Order.find({})
-        .populate({
-          path: "shipment",
-          model: "shipments",
-        })
-        .sort({_id:-1}).limit(10)
-      } else {
-        orders = await Order.find({ status })
-        .populate({
-          path: "shipment",
-          model: "shipments",
-        })
-        .sort({_id:-1}).limit(10)
-      }
-
-          
-    } else {
-      if (direction === "next") {
-        orders = await Order.find({_id: {$lt: last_order_id}, status})
           .populate({
             path: "shipment",
             model: "shipments",
           })
-          .sort({_id:-1})
-          .limit(10)
+          .sort({_id:-1}).limit(10)
       } else {
-        orders = await Order.find({_id: {$gt: last_order_id}, status}).populate({
-          path: "shipment",
-          model: "shipments",
-        }).limit(10)
+        orders = await Order.find({ status })
+          .populate({
+            path: "shipment",
+            model: "shipments",
+          })
+          .sort({_id:-1}).limit(10)
+      }
+
+          
+    } else {
+
+      if (direction === "next") {
+
+        // if status all, dont distinguish between order statuses
+        // otherwise we look for orders with specific statuses
+        if (status === "all") {
+          orders = await Order.find({_id: {$lt: last_order_id}})
+            .populate({
+              path: "shipment",
+              model: "shipments",
+            })
+            .sort({_id:-1})
+            .limit(10)
+        } else {
+          orders = await Order.find({_id: {$lt: last_order_id}, status})
+            .populate({
+              path: "shipment",
+              model: "shipments",
+            })
+            .sort({_id:-1})
+            .limit(10)
+        }
+
+      } else { // if going in the "previous" direction
+
+        // if status all, dont distinguish between order statuses
+        // otherwise we look for orders with specific statuses
+        if (status === "all") {
+          orders = await Order.find({_id: {$gt: last_order_id}}).populate({
+            path: "shipment",
+            model: "shipments",
+          }).limit(10)
+        } else {
+          orders = await Order.find({_id: {$gt: last_order_id}, status}).populate({
+            path: "shipment",
+            model: "shipments",
+          }).limit(10)
+        }
+
         orders = orders.reverse()
+
       }
     }
     res.send(orders)

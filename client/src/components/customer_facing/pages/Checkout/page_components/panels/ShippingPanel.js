@@ -53,7 +53,6 @@ class AddressPanel extends Component  {
                   onSubmit={(e) => this.handleSubmit(e)}
                   submitButtonText={"Select Shipping Method"}
                   formFields={shippingMethods}
-                  formId='shipping_method_selection_form'
                   form='shipping_method_selection_form'
                 />
               </div>

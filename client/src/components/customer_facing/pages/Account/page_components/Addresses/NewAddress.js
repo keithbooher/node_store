@@ -64,9 +64,7 @@ class NewBillAddress extends Component {
             submitButtonText={"Next"}
             formFields={addressFields} 
             submitButton={replacementSubmitButton(this.props.bill_or_ship)}
-            formId={`user_${this.props.bill_or_ship}_form`}
             form={`user_${this.props.bill_or_ship}_form`}
-            initialValues={{}}
             cancel={() => this.props.showForm(null)}
           />
         </div>

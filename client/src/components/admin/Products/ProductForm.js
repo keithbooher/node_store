@@ -181,7 +181,6 @@ class ProductForm extends Component {
         onSubmit={(e) => this.handleSubmitCreate(e)}
         submitButtonText={"Create Product"}
         formFields={this.injectCategoryDataIntoFormFields()}
-        formId='create_product_form'
         form='create_product_form'
       />
     )
@@ -193,7 +192,6 @@ class ProductForm extends Component {
         onSubmit={(e) => this.handleSubmitUpdate(e)}
         submitButtonText={"Update Product"}
         formFields={this.injectCategoryDataIntoFormFields()}
-        formId='update_product_form'
         form='update_product_form'
         initialValues={this.injectDataIntoFormFields()}
       />

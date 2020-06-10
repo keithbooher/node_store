@@ -66,7 +66,7 @@ class Sidebar extends Component  {
     return (
       <>
         <div ref={node => this.node = node} className={"sidebar " + sidebar_class}>
-          <div style={{ color: "black" }}>
+          <div style={{ color: "black" }} className="padding-s">
             {this.renderCategories(null)}
           </div>
         </div>

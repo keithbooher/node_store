@@ -121,7 +121,6 @@ class ProductList extends Component {
           onSubmit={(e) => this.handleSearchSubmit(e)}
           submitButtonText={"Search By Product Name"}
           formFields={productSearchField}
-          formId='product_search_form'
           form='product_search_form'
         />
         <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>

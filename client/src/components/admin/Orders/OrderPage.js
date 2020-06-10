@@ -67,7 +67,6 @@ class OrderPage extends Component {
                 onSubmit={(e) => this.updateShipmentStatus(e)}
                 submitButtonText={"update shipment statues"}
                 formFields={this.createFormFields()}
-                formId='update_shipment_status_form'
                 form='update_shipment_status_form'
               />
             </>
