@@ -4,10 +4,11 @@ import { reset } from "redux-form";
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"
 import { productNameToPathName } from "../../../utils/helperFunctions"
 import { createField, createSubField } from "./formFields"
 import Form from "../../shared/Form"
+import { useHistory } from 'react-router-dom';  
 
 
 class Categories extends Component {
@@ -128,6 +129,7 @@ class Categories extends Component {
                   <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
                 </div>
                 <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button onClick={() => this.editCategory(category)}><FontAwesomeIcon icon={faEdit} /></button>
                 <button onClick={() => this.deleteCategory(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
@@ -158,10 +160,19 @@ class Categories extends Component {
     return category
   }
 
+  editCategory(category) {
+    const history = useHistory()
+    history.push(`/admin/categories/edit/${category}`)
+  }
+
   async deleteCategory(category) {
     let cat = category
     cat.deleted_at = Date.now()
     const delete_cat = await updateCategory(cat)
+    // adjust other category's display numbers once deleted
+    // send a request to the database with the parent category's
+    // ID so we know which set of sub categories to adjust
+    // TO DO
     const categories =  await getTopCategories().then(res => res.data)
     this.setState({ categories })
   }

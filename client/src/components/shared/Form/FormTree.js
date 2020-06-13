@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect }  from 'react'
+import React, { Component }  from 'react'
 import Multiselect from 'react-widgets/lib/Multiselect'
 import 'react-widgets/dist/css/react-widgets.css'
 

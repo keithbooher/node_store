@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect }  from 'react'
+import React, { Component }  from 'react'
 
 // export default ({ input, label, field_class, options, onChange, meta: { error, touched } }) => {
 class FormCheckbox extends Component {
