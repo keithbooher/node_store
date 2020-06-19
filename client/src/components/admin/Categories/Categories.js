@@ -1,80 +1,39 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { reset } from "redux-form";
-import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
+import React, { useState, useEffect } from 'react'
+import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"
-import { productNameToPathName } from "../../../utils/helperFunctions"
 import { createField, createSubField } from "./formFields"
-import Form from "../../shared/Form"
-import { useHistory } from 'react-router-dom';  
+import CategoryForm from "./CategoryForm"
+
+// import { useHistory } from 'react-router-dom'
 
 
-class Categories extends Component {
-  constructor(props) {
-    super()
-    this.state = {
-      categories: [],
-      page_number: 1,
-      show_create_input: false
+const Categories = ({ }) => {
+  const [ categories, setCategories ] = useState([])
+  const [ show_create_input, setShowCreateInput ] = useState([])
+
+  useEffect(() => {
+    async function mount() {
+      const categories =  await getTopCategories().then(res => res.data)
+      setCategories(categories)
     }
-  }
-  
-  async componentDidMount() {
-    const categories =  await getTopCategories().then(res => res.data)
-    this.setState({ categories })
-  }
+    mount()
+  }, [])
 
-  async handleCreateCategoryCreate(e, parent_category) {
-    e.preventDefault()
-    const create_category_form_values = this.props.form['create_category_form'].values
-    let new_category = {}
-    new_category["name"] = create_category_form_values.name
-    new_category["path_name"] = productNameToPathName(create_category_form_values.name)
 
-    let display_order
+  const moveDislayRank = async (direction, category, parent_category) => {
+    let parent_cats
     if (parent_category !== null) {
-      display_order = parent_category.sub_categories.length + 1
-      new_category["nest_level"] = parent_category.nest_level + 1
+      parent_cats = parent_category.sub_categories
     } else {
-      display_order = this.state.categories.length + 1
-      new_category["nest_level"] = 0
-    }
-    new_category["display_order"] = display_order
-
-    const create_category = await createCategory(new_category).then(res => res.data)
-
-    // TO DO
-    // do something if create_category.status !== 200
-
-    if (parent_category !== null) {
-      // if not a top category
-      // then add the newly created category to the parent's list of subcategories
-      parent_category.sub_categories.push(create_category._id)
-      const updated_parent_category = await updateCategory(parent_category)
-      // TO DO
-      // if updated_parent_category.status !== 200 flag error
-    } 
-
-    // get all categories again
-    const categories =  await getTopCategories().then(res => res.data)
-    this.setState({ categories, show_create_input: null  })
-    this.props.dispatch(reset("create_category_form"))
-  }
-
-  async moveDislayRank(direction, category, parent_category) {
-    let categories
-    if (parent_category !== null) {
-      categories = parent_category.sub_categories
-    } else {
-      categories = this.state.categories
+      parent_cats = categories
     }
 
     if (direction === "up") {
       // Then cycle through the parent's sub categories 
       // to find the category that is displaced by this action
-      categories.map(async (sub_cat) => {
+      parent_cats.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === -1 ) {
           sub_cat.display_order = sub_cat.display_order + 1
           const updated_displaced_category = await updateCategory(sub_cat)
@@ -87,7 +46,7 @@ class Categories extends Component {
     } else {
       // Then cycle through the parent's sub categories 
       // to find the category that is displaced by this action
-      categories.map(async (sub_cat) => {
+      parent_cats.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === 1 ) {
           sub_cat.display_order = sub_cat.display_order - 1
           const updated_displaced_category = await updateCategory(sub_cat)
@@ -98,17 +57,17 @@ class Categories extends Component {
       const updated_category = await updateCategory(category)   
       // ^ ^ ^check if succesful ^ ^ ^ //
     }
-    categories =  await getTopCategories().then(res => res.data)
-    this.setState({ categories })
+    parent_cats =  await getTopCategories().then(res => res.data)
+    setCategories(parent_cats)
   }
 
-  categories(parent_category) {
-    let categories = parent_category !== null ? parent_category.sub_categories : this.state.categories
+  const renderCategories = (parent_category) => {
+    let category_set = parent_category !== null ? parent_category.sub_categories : categories
     return (
-      categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
+      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
         let up_disable = false
         let down_disable = false
-        const sorted_cats = categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
+        const sorted_cats = category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
         if (sorted_cats[sorted_cats.length - 1]._id === category._id) {
           down_disable = true
         }
@@ -125,87 +84,78 @@ class Categories extends Component {
               <div>{category.name}</div>
               <div className="flex">
                 <div className="flex margin-s-h">
-                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => this.moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
-                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => this.moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
+                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
+                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
                 </div>
-                <button onClick={() => this.setState({ show_create_input: category._id })}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button onClick={() => this.editCategory(category)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button onClick={() => this.deleteCategory(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button onClick={() => editCategory(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
-            {this.state.show_create_input === category._id ? 
-                <div style={{ marginLeft: '20px' }}>
-                  <Form 
-                    onSubmit={(e) => this.handleCreateCategoryCreate(e, category)}
-                    submitButtonText={"Create A Subcategory"}
-                    formFields={createSubField}
-                    form='create_category_form'
-                    cancel={() => this.setState({ show_create_input: null })}
+            {show_create_input === category._id ? 
+                <CategoryForm 
+                  category={category} 
+                  field={createSubField}
+                  categories={categories}
+                  setShowCreateInput={setShowCreateInput}
+                  setCategories={setCategories}
                   />
-                </div>
             : ""}
 
             {/* Sub Categories */}
             {/* calling its self to infinitely render subcategories */}
-            <div>{this.categories(this.sortByDisplayOrder(category))}</div>
+            <div>{renderCategories(sortByDisplayOrder(category))}</div>
           </div>
         )
       })
     )
   }
 
-  sortByDisplayOrder(category) {
+  const sortByDisplayOrder = (category) => {
     category.sub_categories = category.sub_categories.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
     return category
   }
 
-  editCategory(category) {
-    const history = useHistory()
-    history.push(`/admin/categories/edit/${category}`)
+  const editCategory = () => {
+    
   }
 
-  async deleteCategory(category) {
+  // Can use this later to direct to a category edit page 
+  // if we have more things to edit in the future
+  // const history = useHistory()
+  // const goToEditCategory = (category) => {
+  //   history.push(`/admin/categories/edit/${category._id}`)
+  // }
+
+  const deleteCat = async (category) => {
     let cat = category
     cat.deleted_at = Date.now()
-    const delete_cat = await updateCategory(cat)
-    // adjust other category's display numbers once deleted
-    // send a request to the database with the parent category's
-    // ID so we know which set of sub categories to adjust
-    // TO DO
-    const categories =  await getTopCategories().then(res => res.data)
-    this.setState({ categories })
+    const delete_cat = await deleteCategory(cat).then(res => res.data)
+    setCategories( delete_cat )
   }
 
-  render() {
-    return (
+  return (
+    <div>
       <div>
-
-        <div>
-          <button onClick={() => this.setState({ show_create_input: "top" })}><FontAwesomeIcon icon={faPlusCircle} /> Add a New Top Level Category</button>
-          {this.state.show_create_input === "top" ? 
-              <div>
-                <Form 
-                  onSubmit={(e) => this.handleCreateCategoryCreate(e, null)}
-                  submitButtonText={"Create Category"}
-                  formFields={createField}
-                  form='create_category_form'
-                  cancel={() => this.setState({ show_create_input: null })}
-                />
-              </div>
-          : ""}
-        </div>
-
-        {this.state.categories.length !== 0 ? 
-          this.categories(null)
-        : <img className="loadingGif" src={loadingGif} /> }
+        <button onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Add a New Top Level Category</button>
+        {show_create_input === "top" ? 
+            <CategoryForm
+              category={null}
+              field={createField} 
+              categories={categories}
+              setShowCreateInput={setShowCreateInput}
+              setCategories={setCategories}
+            />
+        : ""}
       </div>
-    )
-  }
+
+      {categories.length !== 0 ? 
+        renderCategories(null)
+      : <img className="loadingGif" src={loadingGif} /> }
+    </div>
+  )
+
 }
 
-function mapStateToProps({ form }) {
-  return { form }
-}
-
-export default connect(mapStateToProps, null)(Categories)
+export default Categories

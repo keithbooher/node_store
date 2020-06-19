@@ -11,6 +11,11 @@ export const updateCategory = (category) => {
     return axios.put('/api/category/update', data)
 }
 
+export const deleteCategory = (category) => {
+    const data = { category }
+    return axios.put('/api/category/delete', data)
+}
+
 ////////////////////////////////////////////////////////////
 
 export const  getCategoryProducts = (path_name) => {
@@ -19,6 +24,10 @@ export const  getCategoryProducts = (path_name) => {
 }
 
 ////////////////////////////////////////////////////////////
+
+export const findCategory = (id) => {
+    return axios.get(`/api/category/${id}`)
+}
 
 export const getAllCategories = () => {
     return axios.get('/api/categories')
