@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from '../../../../../shared/Form'
-import { addressFields } from '../formFields'
+import { addressFields, validate } from '../formFields'
 import { updateUser } from '../../../../../../actions'
 import {reset} from 'redux-form'
 import { capitalizeFirsts } from "../../../../../../utils/helperFunctions"
@@ -12,9 +12,8 @@ class NewBillAddress extends Component {
     this.state = {}
   }
 
-  async handleSubmit(e, bill_or_ship) {
+  async handleSubmit(bill_or_ship) {
     // some request to update the users general info
-    e.preventDefault()
     
     let addy
     let user = this.props.auth
@@ -50,22 +49,17 @@ class NewBillAddress extends Component {
   }
 
   render() {
-    const replacementSubmitButton = (bill_or_ship) => {
-      return (<button onClick={(e) => this.handleSubmit(e, bill_or_ship)} className="teal btn-flat right white-text">
-        <i className="material-icons right">Submit</i>
-      </button>)
-    }
     return (
       <div className="new_user_address_forms_container">
         <div className="user_billing_form">
           <h4>New {capitalizeFirsts(this.props.bill_or_ship)} Address</h4>
           <Form 
-            onSubmit={this.handleSubmit} 
-            submitButtonText={"Next"}
+            onSubmit={() => this.handleSubmit(this.props.bill_or_ship)} 
+            submitButtonText={"Submit"}
             formFields={addressFields} 
-            submitButton={replacementSubmitButton(this.props.bill_or_ship)}
             form={`user_${this.props.bill_or_ship}_form`}
             cancel={() => this.props.showForm(null)}
+            validation={validate}
           />
         </div>
       </div>

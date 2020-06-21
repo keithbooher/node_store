@@ -1,14 +1,13 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, FieldArray } from 'redux-form'
+import { reduxForm, Field, FieldArray, SubmissionError } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
 import FormMultiSelect from './FormMultiSelect'
 import FormDropdown from './FormDropdown'
 import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
-import validateEmails from '../../../utils/validateEmails'
 import FormTree from "./FormTree"
 
 class Form extends Component {
@@ -60,7 +59,7 @@ class Form extends Component {
   render() {
     return (
       <div>
-        <form style={{ marginTop: '10px' }} id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.onSubmit(e)}>
+        <form style={{ marginTop: '10px' }} id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.handleSubmit(e)}>
           {this.renderFields()}
          
           {!this.props.submitButton ?
@@ -80,23 +79,13 @@ class Form extends Component {
   }
 }
 
-
 function validate(values, props) {
-  const errors = {}
-  errors.recipients = validateEmails(values.recipients || '')
-  
-  _.each(props.formFields, ({ name, noValueError }) => {
-    if(!values[name]) {
-      errors[name] = noValueError
-    }
-  })
-  // if no errors i.e. an empty object, then we know all the values are valid.
-  return errors;
+  if (!props.validation) {
+    return
+  }
+  let validation = props.validation(values, props)
+  return validation
 }
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ addFurniture, changeFieldValue }, dispatch);
-// }
 
 export default reduxForm({
   validate,

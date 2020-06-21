@@ -22,6 +22,7 @@ class OrderPage extends Component {
 
 
   async updateShipmentStatus(e) {
+    console.log('?')
     e.preventDefault()
     if (!this.props.form['update_shipment_status_form'].values) {
       return
@@ -34,13 +35,15 @@ class OrderPage extends Component {
     // change shipping status when complete manually
     let shipment = this.state.order.shipment
     shipment.status = chosenStatus
-    const updateTheShipment = await updateShipment(shipment)
+    await updateShipment(shipment)
+    let order = await getOrder(this.order_id).then(res => res.data)
+    this.setState({ order })
   }
 
   createFormFields() {
     let formFields = shippingStatusDropDown[0]
     for (let i = 0; i < formFields.options.length; i++) {
-      if (formFields.options[i].name === this.state.order.status) {
+      if (formFields.options[i].name === this.state.order.shipment.status) {
         formFields.options[i].default = true
       }
     }
@@ -49,7 +52,6 @@ class OrderPage extends Component {
 
   render() {
     let order = this.state.order
-
 
     return (
       <div>

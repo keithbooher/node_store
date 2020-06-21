@@ -41,7 +41,7 @@ module.exports = app => {
     parent_category.sub_categories.forEach(async (sub_category) => {
       if (sub_category.display_order > category.display_order) {
           let display_order = sub_category.display_order - 1
-          const thing = await Category.findOneAndUpdate({ _id: sub_category._id }, { display_order: display_order }, {new: true})
+          await Category.findOneAndUpdate({ _id: sub_category._id }, { display_order: display_order }, {new: true})
       }
     })
 

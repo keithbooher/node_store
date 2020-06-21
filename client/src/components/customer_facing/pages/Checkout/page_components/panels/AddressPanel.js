@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
-import { addressFormFields } from '../formFields'
+import { addressFormFields, validate } from '../formFields'
 import { updatedFormFields } from "../../../../../../utils/helperFunctions"
 import AddressCard from '../../../../components/AddressCard';
 
@@ -130,6 +130,7 @@ class AddressPanel extends Component  {
               form={"billing_checkout_form"}
               initialValues={this.billing_initial_values()}
               submitButton={<></>}
+              validation={validate}
             />
           </div> }
 
@@ -143,6 +144,7 @@ class AddressPanel extends Component  {
               form={"shipping_checkout_form"}
               initialValues={this.shipping_initial_values()}
               submitButton={<></>}
+              validation={validate}
             />
           </div>}
       </div>

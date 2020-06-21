@@ -5,7 +5,7 @@ import { updatedFormFields } from "../../utils/helperFunctions"
 import { checkIfReviewExists, submitReview, updateReview } from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"
-
+import { validatePresenceOnAll } from "../../utils/validations"
 class LineItem extends Component {
   constructor(props) {
     super()
@@ -83,6 +83,7 @@ class LineItem extends Component {
             formFields={this.fields} 
             form={`line_item_${item._id}_review_form`}
             initialValues={this.state.reviewed === "" ? {} : this.review_initial_values()}
+            validation={validatePresenceOnAll}
           />
         </div>
       : ""}

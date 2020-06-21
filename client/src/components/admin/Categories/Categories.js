@@ -19,6 +19,7 @@ const Categories = ({ }) => {
       setCategories(categories)
     }
     mount()
+    return () => {}
   }, [])
 
 

@@ -6,6 +6,7 @@ import loadingGif from '../../../../../images/pizzaLoading.gif'
 import notAvailable from '../../../../../images/no-image-available.jpg'
 import { updateUser } from "../../../../../actions"
 import ReactFilestack from "filestack-react"
+import { validatePresenceOnAll } from "../../../../../utils/validations"
 class Details extends Component {
   constructor(props) {
     super()
@@ -14,10 +15,9 @@ class Details extends Component {
     this.state = {}
   }
 
-  async handleSubmit(e, key) {
+  async handleSubmit(key) {
     // takes in the user attribute that was tied to the form field that submitted this request
     // and dynamically pulls the value from that redux-form field value
-    e.preventDefault()
     let user = this.props.auth
     user[key] = this.props.form[`${key}_form`].values[`${key}`]
     this.props.updateUser(user)
@@ -28,21 +28,15 @@ class Details extends Component {
     let do_not_use = ['billing_address', 'shipping_address', 'email', 'googleId', '__v', '_id', 'joined_on', 'role', 'credits', 'photo']
     let self = this
 
-    const replacementSubmitButton = (key) => {
-      return (<button onClick={(e) => this.handleSubmit(e, key)} className="teal btn-flat right white-text">
-        <i className="material-icons right">Submit</i>
-      </button>)
-    }
-
     return Object.keys(user).filter((property) => do_not_use.includes(property) ? false : true ).map(function(key, index) {
       return (
         <Form 
-          onSubmit={self.handleSubmit}
+          onSubmit={() => self.handleSubmit(key)}
           submitButtonText={"Next"}
           formFields={[{ label: capitalizeFirsts(key.replace(/_/g, " ")), name: key, noValueError: `You must provide a ${key}` }]} 
-          submitButton={(replacementSubmitButton(key))}
           form={`${key}_form`}
           initialValues={{[key]: user[key]}}
+          validation={validatePresenceOnAll}
         />
       )
     });

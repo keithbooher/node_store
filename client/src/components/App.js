@@ -44,43 +44,47 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
   }
 
   const [admin, setAdmin] = useState(null)
-  useEffect(async () => {
-    // Check to see if user is logged in
-    let user = await fetchUser()
- 
-    // If no user signed in
-    if (!user) {
-      // Look for guest cart
-      const cookieGuestCart = cookies.guest_cart
-      if (!cookieGuestCart) {
-        // Guest user landing for the first time
-        // Create the guest cart
-        const guest_cart = await createGuestCart()        
-        setCookie('guest_cart', guest_cart._id, { path: '/' })
-      } else {
-        // Guest user, but they have cart cookies with us 
-        // Find the guest cart
+  useEffect(() => {
+    async function mount() {
+      // Check to see if user is logged in
+      let user = await fetchUser()
+  
+      // If no user signed in
+      if (!user) {
+        // Look for guest cart
+        const cookieGuestCart = cookies.guest_cart
+        if (!cookieGuestCart) {
+          // Guest user landing for the first time
+          // Create the guest cart
+          const guest_cart = await createGuestCart()        
+          setCookie('guest_cart', guest_cart._id, { path: '/' })
+        } else {
+          // Guest user, but they have cart cookies with us 
+          // Find the guest cart
+          const guest_cart_id = cookies.guest_cart
+          const guestCart = await getGuestCart(guest_cart_id)
+          if (!guestCart) {
+            await createGuestCart()
+          }
+        } 
+      } else if (user && cookies.guest_cart) {
+        // User is signed in but had an open guest cart
+        // convert guest cart to this user's cart
         const guest_cart_id = cookies.guest_cart
-        const guestCart = await getGuestCart(guest_cart_id)
-        if (!guestCart) {
-          await createGuestCart()
-        }
-      } 
-    } else if (user && cookies.guest_cart) {
-      // User is signed in but had an open guest cart
-      // convert guest cart to this user's cart
-      const guest_cart_id = cookies.guest_cart
-      await convertGuestCart(guest_cart_id, user._id)
-      removeCookie('guest_cart')
-    } else {
-      // User is signed in and no cart in cookies
-      await usersCart(user._id)
-    }
+        await convertGuestCart(guest_cart_id, user._id)
+        removeCookie('guest_cart')
+      } else {
+        // User is signed in and no cart in cookies
+        await usersCart(user._id)
+      }
 
-    window.cookies = cookies
-    
-    let checkedAdmin = checkAdmin(user)
-    setAdmin(checkedAdmin)
+      window.cookies = cookies
+      
+      let checkedAdmin = checkAdmin(user)
+      setAdmin(checkedAdmin)
+    }
+    mount()
+    return () => {}
   }, [])
 
   return (

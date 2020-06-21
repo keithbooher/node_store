@@ -1,7 +1,7 @@
 # node_store
 
 
-## this is what our form AIP looks like
+## this is what our form API looks like
       <div>
         <Form
           onSubmit={}

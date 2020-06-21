@@ -18,9 +18,7 @@ class FormDropdown extends Component {
     this.props.input.onChange(option)
   }
 
-
   render() {
-
     return (
       <div>
         <label>{this.props.label}</label>

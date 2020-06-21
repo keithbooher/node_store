@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const addressFormFields = [
   { label: 'Address', name: 'street_address_1', noValueError: 'You must provide an address', value: "DERP" },
   { label: 'Address Cont', name: 'street_address_2', noValueError: 'You must provide a subject' },
@@ -32,3 +34,23 @@ export const shippingMethods = [
     value: null 
   }
 ]
+
+export const validate = (values, props) => {
+  if (!props.validation) {
+    return
+  }
+  const errors = {}
+
+  _.each(props.formFields, ({ name, noValueError }) => {
+    if (name === "street_address_2") {
+      return
+    }
+    
+    if(!values[name]) {
+      errors[name] = noValueError
+    }
+  })
+
+  // if no errors i.e. an empty object, then we know all the values are valid.
+  return errors;
+}

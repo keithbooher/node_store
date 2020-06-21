@@ -4,7 +4,7 @@ import { productNameToPathName } from "../../../utils/helperFunctions"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
-
+import { validatePresenceOnAll } from '../../../utils/validations'
 
 const CategoryForm = ({ 
   category,
@@ -61,6 +61,7 @@ const CategoryForm = ({
         formFields={field}
         form='create_category_form'
         cancel={() => setShowCreateInput(null)}
+        validation={validatePresenceOnAll}
       />
   </div>
   )
