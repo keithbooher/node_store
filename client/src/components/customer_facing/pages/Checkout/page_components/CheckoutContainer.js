@@ -15,21 +15,17 @@ class CheckoutContainer extends Component  {
     super()
     this.chooseTab = this.chooseTab.bind(this)
     this.makeNewOrderAvailable = this.makeNewOrderAvailable.bind(this)
-    this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
     this.updateCart = this.updateCart.bind(this)
     
     this.state = {
       chosen_tab: 'address',
       new_order: null,
-      preExistingShipping: null,
-      preExistingBilling: null,
       current_cart: null
     }
   }
 
   async componentDidMount() {
     const { cookies } = this.props
-    console.log(cookies)
     let current_cart
     if (!this.props.current_user) {
       const guest_cart_id = cookies.get('guest_cart')
@@ -37,7 +33,6 @@ class CheckoutContainer extends Component  {
     } else {
       current_cart = await getCurrentCart(this.props.current_user._id)
       current_cart = current_cart.data
-      console.log(current_cart)
     }
 
     if (current_cart.checkout_state === "shopping") {
@@ -64,30 +59,9 @@ class CheckoutContainer extends Component  {
     this.setState({ new_order: order, chosen_tab: "review", current_cart: cart })
   }
 
-  // TO DO
-  // can this be moved to the address panel?
-  choosePreExistingAddress(address) {
-    switch (address.bill_or_ship) {
-      case 'shipping':
-        this.setState({ preExistingShipping: address })
-        break
-      case 'billing':
-        this.setState({ preExistingBilling: address })
-        break
-      case 'shipping null':
-        this.setState({ preExistingShipping: null })
-        break
-      case 'billing null':
-        this.setState({ preExistingBilling: null })
-        break
-      default:
-        break;
-    }
-  }
-
   
   render() {
-    console.log(this.state.current_cart)
+
     return (
       <>
         <h4 onClick={() => this.chooseTab('address')}>Address</h4>
@@ -96,10 +70,6 @@ class CheckoutContainer extends Component  {
             chooseTab={this.chooseTab}
             chosen_tab={this.state.chosen_tab} 
             updateCart={this.updateCart}
-            // pass this to the preAddy cards
-            choosePreExistingAddress={this.choosePreExistingAddress}
-            preExistingShipping={this.state.preExistingShipping}
-            preExistingBilling={this.state.preExistingBilling}
             />
         : ""}
 
