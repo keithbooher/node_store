@@ -37,6 +37,7 @@ class CheckoutContainer extends Component  {
     } else {
       current_cart = await getCurrentCart(this.props.current_user._id)
       current_cart = current_cart.data
+      console.log(current_cart)
     }
 
     if (current_cart.checkout_state === "shopping") {
@@ -86,6 +87,7 @@ class CheckoutContainer extends Component  {
 
   
   render() {
+    console.log(this.state.current_cart)
     return (
       <>
         <h4 onClick={() => this.chooseTab('address')}>Address</h4>

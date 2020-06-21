@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 import MultiPanel from '../../../shared/MultiPanel/MultiPanel'
 import Details from './page_components/Details'
 import Addresses from './page_components/Addresses'
@@ -21,16 +22,21 @@ class Account extends Component  {
 
   
   render() {
-    const sections = ["details", "addresses", "orders", "reviews"]
+    const sections = [
+      {tab: "details", path: "/account/details"},
+      {tab: "addresses", path: "/account/addresses"},
+      {tab: "orders", path: "/account/orders"},
+      {tab: "reviews", path: "/account/reviews"}
+    ]
     return (
       <div>
         <h1 style={{ textAlign: 'center' }}>Account</h1>
         <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
           <div>
-            {this.state.chosen_tab === 'details' ? <Details /> : ""}
-            {this.state.chosen_tab === 'addresses' ? <Addresses /> : ""}
-            {this.state.chosen_tab === 'orders' ? <Orders /> : ""}
-            {this.state.chosen_tab === 'reviews' ? <Reviews /> : ""}
+            <Route exact path="/account/details" component={Details} />
+            <Route exact path="/account/addresses" component={Addresses} />
+            <Route exact path="/account/orders" component={Orders} />
+            <Route exact path="/account/reviews" component={Reviews} />
           </div>
         </MultiPanel>
       </div>

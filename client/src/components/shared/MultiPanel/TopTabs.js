@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 import { capitalizeFirsts } from "../../../utils/helperFunctions"
 
 class TopTabs extends Component  {
@@ -11,26 +12,18 @@ class TopTabs extends Component  {
 
   renderTabs() {
     return this.props.sections.map((section) => {
-      let style = {
-        color: section === this.props.chosenTab ?  '#6CB2EB' : 'white',
-        backgroundColor: section === this.props.chosenTab ?  'rgb(45,45,45)' : 'rgb(33,33,33)',
-        flexBasis: `${100*(1/this.props.sections.length)}%`,
-        textAlign: 'center'
-      }
-      return <h3 data-tab={section} style={style} onClick={() => this.props.chooseTab(section)} className="tab_section_header margin-none clickable">{capitalizeFirsts(section)}</h3>
+      return <NavLink style={{ flexBasis: "25%", textAlign: "center" }} activeClassName="color-white" exact to={section.path}><h3 data-tab={section} className="tab_section_header margin-none clickable">{capitalizeFirsts(section.tab)}</h3></NavLink>
     })
   }
 
   
   render() {
-    let tabs_container_style = {
-      display: 'flex',
-      justifyContent: 'space-evenly',
+    let bg_style = {
       backgroundColor: '#212121'
     }
 
     return (
-      <div style={ tabs_container_style }>
+      <div style={bg_style} className="flex space-evenly">
         {this.renderTabs()}
       </div>
     )

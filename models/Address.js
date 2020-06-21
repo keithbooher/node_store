@@ -11,6 +11,7 @@ const AddressSchema = new Schema({
   state: String,
   zip_code: String,
   phone_number: String,
+  country: String,
   bill_or_ship: String,
   _user_id: { type: Schema.Types.ObjectId, ref: 'User' }
 })

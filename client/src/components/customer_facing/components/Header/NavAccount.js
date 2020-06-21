@@ -18,7 +18,7 @@ const AccountNav = ({ auth, cart, setCartCookie }) => {
 
   const renderDropDown = () => {
     return [
-      <Link className="header_list_item clickable a-invert" to="/account">{auth.email}</Link>,
+      <Link className="header_list_item clickable a-invert" to="/account/details">{auth.email}</Link>,
       <div onClick={logout} className="header_list_item clickable a-invert">Logout</div>
     ]
   }

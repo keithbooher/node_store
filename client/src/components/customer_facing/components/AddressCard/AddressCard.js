@@ -37,11 +37,13 @@ class AddressCard extends Component {
     return (
       <h5>
         <span style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
-        <FontAwesomeIcon 
-          className="hover"
-          onClick={() => this.props.showForm(this.props.bill_or_ship)} 
-          icon={faPlusCircle} 
-        />
+        {this.props.hideCreate ? "" : 
+          <FontAwesomeIcon 
+            className="hover"
+            onClick={() => this.props.showForm(this.props.bill_or_ship)} 
+            icon={faPlusCircle} 
+          />
+        }
       </h5>
     )
   }
@@ -73,7 +75,8 @@ class AddressCard extends Component {
           
         </div>
         <div style={{ display: 'flex' }}>
-          {this.props.auth[this.props.bill_or_ship].map((address) => {
+          {this.props.auth &&
+            this.props.auth[this.props.bill_or_ship].map((address) => {
             return <div data-address-id={address._id} style={ this.check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
                     <div>first name: {address.first_name ? address.first_name : "" }</div>
                     <div>last name: {address.last_name ? address.first_name : "" }</div>

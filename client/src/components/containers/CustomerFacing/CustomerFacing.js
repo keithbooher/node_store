@@ -45,7 +45,7 @@ class CustomerFacing extends Component {
             <Route exact path="/shop/:category" component={Category} />
             <Route exact path="/shop/:category/:product" component={Product} />
             <Route exact path="/checkout" component={Checkout} />
-            <Route exact path="/account" component={Account} />
+            <Route path="/account" component={Account} />
           </div>
         </div>
 

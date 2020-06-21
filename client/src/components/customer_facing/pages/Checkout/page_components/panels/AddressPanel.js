@@ -5,16 +5,22 @@ import Form from '../../../../../shared/Form/Form'
 import { addressFormFields, validate } from '../formFields'
 import { updatedFormFields } from "../../../../../../utils/helperFunctions"
 import AddressCard from '../../../../components/AddressCard';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEdit } from "@fortawesome/free-solid-svg-icons"
 
 
 class AddressPanel extends Component  {
   constructor(props) {
     super()
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
+    this.nextTab = this.nextTab.bind(this)
+    this.editSubmittedForm = this.editSubmittedForm.bind(this)
     this.choosePreExistingAddress = this.choosePreExistingAddress.bind(this)
     this.state = {
       billing_card_chosen: false,
       shipping_card_chosen: false,
+      billing_form_submit: false,
+      shipping_form_submit: false
     }
   }
 
@@ -22,17 +28,13 @@ class AddressPanel extends Component  {
   }
   
 
-  handleFormSubmit(e) {
-    e.preventDefault()
-    // NEED TO PREVENT SUBMISSION IF NEITHER A PRE-EXISTING ADDY CARD 
-    // HAS BEEN SELECTED OR THE FORM HAS BEEN FILLED OUT
+  handleFormSubmit(bill_or_ship) {
     let cart_instance = this.props.cart
-    cart_instance.checkout_state = 'shipping'
+    cart_instance.checkout_state = 'address'
     let shipping_address = {}
     let billing_address = {}
 
-
-    if (this.props.preExistingShipping === null) {
+    if (bill_or_ship === "shipping") {
       const ship_addy = this.props.form.shipping_checkout_form.values
       shipping_address = {
         first_name: ship_addy.first_name,
@@ -47,11 +49,10 @@ class AddressPanel extends Component  {
         bill_or_ship: 'shipping',
         _user_id: cart_instance._user_id
       }
-    } else {
-      shipping_address = this.props.preExistingShipping
-    }
 
-    if (this.props.preExistingBilling === null) {
+      cart_instance.shipping_address = shipping_address
+      this.setState({ shipping_form_submit: true })
+    } else  {
       const bill_addy = this.props.form.billing_checkout_form.values
       billing_address = {
         first_name: bill_addy.first_name,
@@ -66,13 +67,10 @@ class AddressPanel extends Component  {
         bill_or_ship: 'billing',
         _user_id: cart_instance._user_id
       }
-    } else {
-      billing_address = this.props.preExistingBilling
+
+      cart_instance.billing_address = billing_address
+      this.setState({ billing_form_submit: true })
     }
-
-    cart_instance.shipping_address = shipping_address
-    cart_instance.billing_address = billing_address
-
     this.props.updateCart(cart_instance)
   }
 
@@ -97,66 +95,113 @@ class AddressPanel extends Component  {
   }
 
   choosePreExistingAddress(address) {
+    let cart_instance = this.props.cart
+    cart_instance.checkout_state = 'address'
+
     if (address.bill_or_ship === "billing") {
+      cart_instance.billing_address = address
       this.setState({ billing_card_chosen: !this.state.billing_card_chosen })
     } else {
+      cart_instance.shipping_address = address
       this.setState({ shipping_card_chosen: !this.state.shipping_card_chosen })
     }
     this.props.choosePreExistingAddress(address)
+    this.props.updateCart(cart_instance)
   }
 
   renderAddressCards() {
     if (this.props.auth._id !== "000000000000000000000000") {
       return (
         <>
-          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" />    
-          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" />    
+          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" hideCreate={true} />    
+          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" hideCreate={true} />    
         </>
       )
+    }
+  }
+
+  editSubmittedForm(bill_or_ship) {
+    if(bill_or_ship === "bill") {
+      this.setState({ billing_form_submit: false, billing_card_chosen: false })
+    } else {
+      this.setState({ shipping_form_submit: false, shipping_card_chosen: false })
     }
   }
 
   renderNewAddressForm() {
     return (
       <div className="address_form_container">
-      
-        { this.state.billing_card_chosen === true ? "" :
-          <div className="billing_address_form_container address_form">
-            <h5 className="address_form_title">Billing</h5>
-            <Form 
-              onSubmit={this.handleFormSubmit} 
-              onChange={() => this.formOnChange('billing null')}
-              formFields={addressFormFields} 
-              form={"billing_checkout_form"}
-              initialValues={this.billing_initial_values()}
-              submitButton={<></>}
-              validation={validate}
-            />
-          </div> }
+        <div className="billing_address_form_container address_form">
+          { this.state.billing_card_chosen === true || this.state.billing_form_submit === true ? 
+              <div style={{ marginTop: "50px" }} className="hover" onClick={() => this.editSubmittedForm("bill")}>
+                Edit Billing Form
+                <FontAwesomeIcon icon={faEdit} />
+              </div>
+            :
+              <>
+                <h5 className="address_form_title">Billing</h5>
+                <Form 
+                  onSubmit={() => this.handleFormSubmit("billing")} 
+                  submitButtonText={"Submit"}
+                  onChange={() => this.formOnChange('billing null')}
+                  formFields={addressFormFields} 
+                  form={"billing_checkout_form"}
+                  initialValues={this.billing_initial_values()}
+                  validation={validate}
+                />
+              </>
+          }
+        </div> 
 
-        { this.state.shipping_card_chosen === true ? "" :
-          <div className="shipping_address_form_container address_form">
-            <h5 className="address_form_title">Shipping</h5>
-            <Form 
-              onSubmit={this.handleFormSubmit} 
-              onChange={() => this.formOnChange('shipping null')}
-              formFields={addressFormFields}
-              form={"shipping_checkout_form"}
-              initialValues={this.shipping_initial_values()}
-              submitButton={<></>}
-              validation={validate}
-            />
-          </div>}
+
+        <div className="shipping_address_form_container address_form">
+          { this.state.shipping_card_chosen === true || this.state.shipping_form_submit === true ? 
+              <div style={{ marginTop: "50px" }} className="hover" onClick={() => this.editSubmittedForm("ship")}>
+                Edit Shipping Form  
+                <FontAwesomeIcon icon={faEdit} />
+              </div>
+            :
+              <>
+                <h5 className="address_form_title">Shipping</h5>
+                <Form 
+                  onSubmit={() => this.handleFormSubmit("shipping")}
+                  submitButtonText={"Submit"}
+                  onChange={() => this.formOnChange('shipping null')}
+                  formFields={addressFormFields}
+                  form={"shipping_checkout_form"}
+                  initialValues={this.shipping_initial_values()}
+                  validation={validate}
+                />
+              </>
+          }
+        </div>
+
       </div>
     )
   }
 
+  nextTab() {
+    let cart_instance = this.props.cart
+    cart_instance.checkout_state = "shipping"
+    this.props.updateCart(cart_instance)
+  }
+
   render() {
     const replacementSubmitButton = (
-      <button onClick={(e) => this.handleFormSubmit(e)} className="teal btn-flat right white-text">
+      <button onClick={this.nextTab} className="teal btn-flat right white-text">
         <i className="material-icons right">Next</i>
       </button>
     )
+
+    let bill_complete = false
+    let ship_complete = false
+    if (this.state.billing_form_submit === true || this.state.billing_card_chosen) {
+      bill_complete = true
+    }
+    if (this.state.shipping_form_submit === true || this.state.shipping_card_chosen) {
+      ship_complete = true
+    }
+
     return (
       <div>
         { this.props.cart ?
@@ -166,7 +211,7 @@ class AddressPanel extends Component  {
 
             { this.renderNewAddressForm() }
 
-            { replacementSubmitButton }
+            { bill_complete && ship_complete && replacementSubmitButton }
 
           </>
         : ""}
