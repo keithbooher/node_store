@@ -22,7 +22,6 @@ class OrderPage extends Component {
 
 
   async updateShipmentStatus(e) {
-    console.log('?')
     e.preventDefault()
     if (!this.props.form['update_shipment_status_form'].values) {
       return

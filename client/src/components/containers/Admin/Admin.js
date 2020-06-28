@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 import Sidebar from '../../admin/Sidebar'
 import AdminDashboard from '../../admin/AdminDashboard'
 import Categories from '../../admin/Categories'
-import EditCategory from '../../admin/Categories/EditCategory'
+import Shipping from "../../admin/Shipping"
 import Orders from '../../admin/Orders'
 import OrderPage from '../../admin/Orders/OrderPage'
 import Products from '../../admin/Products'
@@ -33,9 +33,10 @@ class Admin extends Component {
           <Route exact path="/admin/orders/:id" component={OrderPage} />
           <Route path="/admin/products" component={Products} />
           <Route exact path="/admin/categories" component={Categories} />
-          {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> */}
+          {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
           <Route exact path="/admin/users" component={Users} />
           <Route path="/admin/reviews" component={Reviews} />
+          <Route path="/admin/shipping" component={Shipping} />
         </div>
       </div>
     )

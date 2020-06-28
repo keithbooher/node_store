@@ -16,6 +16,7 @@ class Sidebar extends Component {
         <NavLink activeClassName="color-white" exact to="/admin/categories">Categories</NavLink>
         <NavLink activeClassName="color-white" exact to="/admin/users">Users</NavLink>
         <NavLink activeClassName="color-white" exact to="/admin/reviews">Reviews</NavLink>
+        <NavLink activeClassName="color-white" exact to="/admin/shipping/methods">Shipping</NavLink>
       </div>
     )
   }
