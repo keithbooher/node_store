@@ -4,6 +4,10 @@ export const getShippingMethods = () => {
   return axios.get('/api/shipping_methods')
 }
 
+export const getShippingMethodForCheckout = () => {
+  return axios.get('/api/shipping_methods/checkout')
+}
+
 export const getShippingMethod = (internal_name) => {
   return axios.get(`/api/shipping_methods/${internal_name}`)
 }

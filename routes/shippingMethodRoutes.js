@@ -6,6 +6,10 @@ module.exports = app => {
     let shippingMethods = await ShippingMethod.find({ deleted_at: null })
     res.send(shippingMethods)
   })
+  app.get('/api/shipping_methods/checkout', async (req, res) => {
+    let shippingMethods = await ShippingMethod.findOne({ deleted_at: null, display: true })
+    res.send(shippingMethods)
+  })
   app.get('/api/shipping_methods/:internal_name', async (req, res) => {
     let internal_name = req.params.internal_name
     let shippingMethod = await ShippingMethod.findOne({ internal_name })

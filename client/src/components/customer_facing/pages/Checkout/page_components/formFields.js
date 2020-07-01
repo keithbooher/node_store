@@ -13,28 +13,6 @@ export const addressFormFields = [
   { label: 'Country', name: 'country', noValueError: 'You must provide a country' }
 ]
 
-const shippingOptions = [
-  {
-    name: "$10 flatRate",
-    value: 10
-  },
-  {
-    name: "$20 otherFlatRate",
-    value: 20
-  }
-]
-
-export const shippingMethods = [
-  { 
-    label: 'Shipping method', 
-    name: 'shipping_rates', 
-    typeOfComponent: 'dropdown', 
-    options: shippingOptions, 
-    noValueError: 'You must provide an address', 
-    value: null 
-  }
-]
-
 export const validate = (values, props) => {
   if (!props.validation) {
     return

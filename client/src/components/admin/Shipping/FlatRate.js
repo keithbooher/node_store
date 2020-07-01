@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getShippingMethod, updateShippingMethod } from '../../../utils/API'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faTimesCircle, faCircle, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faTimesCircle, faCircle, faTrash, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import FormModal from "../../shared/Form/FormModal"
 import _ from 'lodash'
 import { reset } from "redux-form"
@@ -57,6 +57,22 @@ class FlatRate extends Component {
   cancelForm(form_name) {
     this.props.dispatch(reset(form_name))
     this.setState({ rateForm: !this.state.rateForm })
+  }
+
+  async rateDisplay(rate_to_change) {
+    console.log(rate_to_change)
+    rate_to_change.display = !rate_to_change.display
+    console.log(rate_to_change)
+    let shippingMethod = this.state.shippingMethod
+    shippingMethod.shipping_rates.forEach((rate) => {
+      if (rate._id !== rate_to_change._id) {
+        rate = rate_to_change
+      }
+    })
+    console.log(shippingMethod)
+
+    const { data } = await updateShippingMethod(shippingMethod)
+    this.setState({ shippingMethod: data })
   }
 
   async destroyRate(rate_to_remove) {
@@ -172,16 +188,21 @@ class FlatRate extends Component {
                 <div className="flex">
                   <FontAwesomeIcon icon={faCircle} style={{ marginTop: "10px" }} />
                   {rateProperties.map((prop) => {
-                    return (
-                      <RateProperty 
-                        setEditIndication={this.setEditIndication}
-                        renderEditIndicator={this.renderEditIndicator}
-                        rate={rate}
-                        property={prop}
-                      />
-                    )
+                    if (prop === "display") {
+                      return 
+                    } else {
+                      return (
+                        <RateProperty 
+                          setEditIndication={this.setEditIndication}
+                          renderEditIndicator={this.renderEditIndicator}
+                          rate={rate}
+                          property={prop}
+                        />
+                      )
+                    }
                   })}
-                  <FontAwesomeIcon onClick={() => this.destroyRate(rate)} icon={faTrash} style={{ marginTop: "10px" }} />
+                  <FontAwesomeIcon onClick={() => this.rateDisplay(rate)} icon={rate.display ? faEye : faEyeSlash} style={{ marginTop: "10px" }} />
+                  <FontAwesomeIcon onClick={() => this.destroyRate(rate)} icon={faTrash} style={{ margin: "10px 5px 0px" }} />
                 </div>
               )
             })}
@@ -214,7 +235,7 @@ class FlatRate extends Component {
 const RateProperty = ({ setEditIndication, renderEditIndicator, rate, property }) => {
   return (
     <div className="margin-s-h border padding-s relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
-      <div>{capitalizeFirsts(property === "effector" ? "rate" : property)}: {rate[property]}</div>
+      <div>{capitalizeFirsts(property === "effector" ? "rate" : property)}: {`${rate[property]}`}</div>
       {renderEditIndicator(rate, property)}
     </div>
   )

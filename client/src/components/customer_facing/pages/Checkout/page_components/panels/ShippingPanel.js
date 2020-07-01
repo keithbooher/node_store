@@ -3,31 +3,56 @@ import { connect } from 'react-redux'
 import { convertCart } from '../../../../../../actions'
 import _ from "lodash"
 import Form from '../../../../../shared/Form';
-import { shippingMethods } from "../formFields"
+import { getShippingMethodForCheckout } from "../../../../../../utils/API"
+
+// ONLY MAKING CONSIDERATIONS FOR FLAT RATE SHIPPING FOR NOW
 class AddressPanel extends Component  {
   constructor(props) {
     super()
     this.handleSubmit = this.handleSubmit.bind(this)
     this.state = {
-
+      shipping_method: [],
+      rateFields: []
     }
   }
 
   async componentDidMount() {    
     // api call to assign "shipping" checkout status to cart 
+    const { data } = await getShippingMethodForCheckout()
+    console.log(data)
+
+    const rates = data.shipping_rates.filter((rate) => rate.display === true)
+    const fields = rates.map((rate) => {
+      return {
+        name: rate.name,
+        value: rate.effector
+      }
+    })
+
+    const formRates = [{ 
+      label: 'Shipping method', 
+      name: 'shipping_rates', 
+      typeOfComponent: 'dropdown', 
+      options: fields, 
+      noValueError: 'You must provide an address', 
+      value: null 
+    }]
+
+    this.setState({ shipping_method: data, rateFields: formRates  })
   }
   
-  async handleSubmit(e) {
-    e.preventDefault()
+  async handleSubmit() {
     const selected_shipping_method = this.props.form[`shipping_method_selection_form`].values
-    const cost = selected_shipping_method.shipping_rates.cost
-    const shipping_method = selected_shipping_method.shipping_rates.name
+    const cost = selected_shipping_method.shipping_rates.value
+    const shipping_method = "Flate Rate"
+    const rate = selected_shipping_method.shipping_rates.name
 
     let cart = {...this.props.cart}
 
     let chosen_rate = {
         cost,
-        shipping_method
+        shipping_method,
+        rate
     }
 
     cart.chosen_rate = chosen_rate
@@ -40,8 +65,7 @@ class AddressPanel extends Component  {
   }
 
   render() {
-    console.log("shipping")
-    console.log(this.props)
+    console.log(this.state)
     return (
       <div className="shipping_container">
         { this.props.cart ?
@@ -50,9 +74,9 @@ class AddressPanel extends Component  {
               <h4>Choose Shipping Method</h4>
               <div>
                 <Form 
-                  onSubmit={(e) => this.handleSubmit(e)}
+                  onSubmit={this.handleSubmit}
                   submitButtonText={"Select Shipping Method"}
-                  formFields={shippingMethods}
+                  formFields={this.state.rateFields}
                   form='shipping_method_selection_form'
                 />
               </div>
