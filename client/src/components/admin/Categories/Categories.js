@@ -2,16 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { createField, createSubField } from "./formFields"
 import CategoryForm from "./CategoryForm"
+import { validatePresenceOnAll } from "../../../utils/validations"
+import { connect } from 'react-redux'
+import { reset } from "redux-form"
+import FormModal from "../../shared/Form/FormModal"
+import { capitalizeFirsts } from "../../../utils/helperFunctions"
 
 // import { useHistory } from 'react-router-dom'
 
 
-const Categories = ({ }) => {
+const Categories = ({ form, dispatch }) => {
   const [ categories, setCategories ] = useState([])
   const [ show_create_input, setShowCreateInput ] = useState([])
+  const [ editForm, setEditForm ] = useState(null)
 
   useEffect(() => {
     async function mount() {
@@ -58,8 +64,8 @@ const Categories = ({ }) => {
       const updated_category = await updateCategory(category)   
       // ^ ^ ^check if succesful ^ ^ ^ //
     }
-    parent_cats =  await getTopCategories().then(res => res.data)
-    setCategories(parent_cats)
+    const { data } =  await getTopCategories()
+    setCategories(data)
   }
 
   const renderCategories = (parent_category) => {
@@ -82,14 +88,19 @@ const Categories = ({ }) => {
               className="margin-xs-v color-white flex space-between" 
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
             >
-              <div>{category.name}</div>
               <div className="flex">
                 <div className="flex margin-s-h">
                   <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
                   <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
                 </div>
+                <div>
+                  {category.name}
+                </div>
+              </div>
+              <div className="flex">
                 <button onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button onClick={() => editCategory(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
                 <button onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
@@ -118,8 +129,38 @@ const Categories = ({ }) => {
     return category
   }
 
-  const editCategory = () => {
-    
+  const showEditForm = (category) => {
+    // for now all we need to edit is category name
+    const form_object = {
+      category,
+      onSubmit: editCategory,
+      cancel: () => {
+        dispatch(reset("edit_category_form"))
+        setEditForm(null)
+      },
+      submitButtonText: "Update Category",
+      formFields: [
+        { label: "Name", name: "name", noValueError: `You must provide a value` },
+      ],
+      form: "edit_category_form",
+      validation: validatePresenceOnAll,
+      initialValues: {
+          name: category["name"]
+        }
+    }
+    setEditForm(form_object)
+  }
+
+  const editCategory = (form_data) => {
+    // form_data['edit_category_form'].values
+    console.log(form_data['edit_category_form'].values)
+  }
+
+  const changeDisplay = async (category) => {
+    category.display = !category.display
+    await updateCategory(category)
+    const { data } =  await getTopCategories()
+    setCategories(data)
   }
 
   // Can use this later to direct to a category edit page 
@@ -135,6 +176,9 @@ const Categories = ({ }) => {
     const delete_cat = await deleteCategory(cat).then(res => res.data)
     setCategories( delete_cat )
   }
+
+  console.log(editForm)
+  console.log(form)
 
   return (
     <div>
@@ -154,9 +198,28 @@ const Categories = ({ }) => {
       {categories.length !== 0 ? 
         renderCategories(null)
       : <img className="loadingGif" src={loadingGif} /> }
+
+      {editForm &&
+        <div>
+          <FormModal
+            onSubmit={() => editForm.onSubmit(form)}
+            cancel={editForm.cancel}
+            submitButtonText={editForm.submitButtonText}
+            formFields={editForm.formFields}
+            form={editForm.form}
+            validation={editForm.validation}
+            title={capitalizeFirsts(editForm.category.name)}
+            initialValues={editForm.initialValues}
+          />
+        </div>
+      }
     </div>
   )
 
 }
 
-export default Categories
+function mapStateToProps({ form }) {
+  return { form }
+}
+
+export default connect(mapStateToProps, null)(Categories)

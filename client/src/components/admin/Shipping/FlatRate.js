@@ -60,16 +60,13 @@ class FlatRate extends Component {
   }
 
   async rateDisplay(rate_to_change) {
-    console.log(rate_to_change)
     rate_to_change.display = !rate_to_change.display
-    console.log(rate_to_change)
     let shippingMethod = this.state.shippingMethod
     shippingMethod.shipping_rates.forEach((rate) => {
       if (rate._id !== rate_to_change._id) {
         rate = rate_to_change
       }
     })
-    console.log(shippingMethod)
 
     const { data } = await updateShippingMethod(shippingMethod)
     this.setState({ shippingMethod: data })
