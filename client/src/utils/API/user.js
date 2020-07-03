@@ -13,8 +13,10 @@ export const getUser = (id) => {
   return axios.get(`/api/users/${id}`)
 }
 
-
 export const logout = (id) => {
   return axios.get(`/api/logout`)
 }
 
+export const lastUser = () => {
+  return axios.get('/api/users/last_user') 
+}

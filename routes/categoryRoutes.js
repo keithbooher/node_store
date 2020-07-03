@@ -3,7 +3,6 @@ const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
 const Category = mongoose.model('categorys')
 const Product = mongoose.model('products')
-const ObjectId = mongoose.Types.ObjectId
 
 module.exports = app => {
   // change to post route for when admins are creating categories

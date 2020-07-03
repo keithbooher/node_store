@@ -5,6 +5,11 @@ const Order = mongoose.model('orders')
 const Review = mongoose.model('reviews')
 
 module.exports = app => {
+  
+  app.get('/api/users/last_user', async (req, res) => {    
+    const user = await User.findOne({ deleted_at: null })
+    res.send(user)
+  })
 
   app.get('/api/users/:user_id', async (req, res) => {    
     let user_id = req.params.user_id
@@ -27,6 +32,7 @@ module.exports = app => {
         users = users.reverse()
       }
     }
+
     res.send(users)
   })
 

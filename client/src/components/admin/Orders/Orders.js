@@ -121,7 +121,12 @@ class Orders extends Component {
             {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
           </tbody>
         </table>
-        <PageChanger page_number={this.state.page_number} list_items={this.state.orders} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
+        <PageChanger 
+          page_number={this.state.page_number} 
+          list_items={this.state.orders} 
+          requestMore={this.changePage} 
+          lastPossibleItem={lastPossibleItem} 
+        />
       </div>
     )
   }

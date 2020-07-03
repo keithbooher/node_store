@@ -9,6 +9,7 @@ import OrderPage from '../../admin/Orders/OrderPage'
 import Products from '../../admin/Products'
 import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
+import UserPage from '../../admin/Users/UserPage'
 import "./admin.scss"
 
 class Admin extends Component {
@@ -35,6 +36,7 @@ class Admin extends Component {
           <Route exact path="/admin/categories" component={Categories} />
           {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
           <Route exact path="/admin/users" component={Users} />
+          <Route exact path="/admin/users/:id" component={UserPage} />
           <Route path="/admin/reviews" component={Reviews} />
           <Route path="/admin/shipping" component={Shipping} />
         </div>

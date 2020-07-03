@@ -151,9 +151,12 @@ const Categories = ({ form, dispatch }) => {
     setEditForm(form_object)
   }
 
-  const editCategory = (form_data) => {
-    // form_data['edit_category_form'].values
-    console.log(form_data['edit_category_form'].values)
+  const editCategory = async (form_data, categoryToEdit) => {
+    categoryToEdit.name = form_data['edit_category_form'].values.name
+    await updateCategory(categoryToEdit)
+    const { data } =  await getTopCategories()
+    setCategories(data)
+    setEditForm(null)
   }
 
   const changeDisplay = async (category) => {
@@ -177,9 +180,6 @@ const Categories = ({ form, dispatch }) => {
     setCategories( delete_cat )
   }
 
-  console.log(editForm)
-  console.log(form)
-
   return (
     <div>
       <div>
@@ -202,7 +202,7 @@ const Categories = ({ form, dispatch }) => {
       {editForm &&
         <div>
           <FormModal
-            onSubmit={() => editForm.onSubmit(form)}
+            onSubmit={() => editForm.onSubmit(form, editForm.category)}
             cancel={editForm.cancel}
             submitButtonText={editForm.submitButtonText}
             formFields={editForm.formFields}
