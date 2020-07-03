@@ -14,7 +14,7 @@ module.exports = app => {
   app.get('/api/users/:user_id', async (req, res) => {    
     let user_id = req.params.user_id
     let user
-    user = await User.find({_id: user_id})
+    user = await User.findOne({_id: user_id})
     res.send(user)
   })
 

@@ -20,3 +20,8 @@ export const logout = (id) => {
 export const lastUser = () => {
   return axios.get('/api/users/last_user') 
 }
+
+export const updateUser = (user) => {
+  const data = { user }
+  return axios.put('/api/update/user', data) 
+}
