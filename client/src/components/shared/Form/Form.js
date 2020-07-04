@@ -9,6 +9,7 @@ import FormDropdown from './FormDropdown'
 import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
+import PhotoUpload from "./PhotoUpload"
 
 class Form extends Component {
   constructor(props) {
@@ -37,6 +38,9 @@ class Form extends Component {
           break;
         case 'tree':
           component = FormTree
+          break;
+        case 'photo-upload':
+          component = PhotoUpload
           break;
         default:
           component = FormField

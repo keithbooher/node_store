@@ -1,5 +1,4 @@
 import React, { Component }  from 'react'
-import Multiselect from 'react-widgets/lib/Multiselect'
 import 'react-widgets/dist/css/react-widgets.css'
 
 // Right now this is only for categories. 
@@ -97,10 +96,6 @@ class FormTree extends Component {
               )
             })
           }
-        </div>
-
-        <div style={{ position: "absolute", visibility: "hidden" }}>
-          <input ref={this.submitInput} className={this.props.field_class} onChange={this.props.onChange} value={this.props.input.value} style={{ marginBottom: '5px' }} />
         </div>
       </div>
     )

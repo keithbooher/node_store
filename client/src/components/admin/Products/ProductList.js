@@ -5,7 +5,7 @@ import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastP
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCartArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
@@ -60,8 +60,6 @@ class ProductList extends Component {
   productData(product) {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <Link to={`/admin/products/form/update/${product.path_name}`} > <FontAwesomeIcon icon={faEdit} />Edit</Link>
-        <button href="#" onClick={() => this.deleteProduct(product)} > <FontAwesomeIcon icon={faTrash} />Delete</button>
         <div>Name {product.name}</div>
         <div>Description:  {product.description}</div>
         <div>Inventory Count:  {product.inventory_count}</div>
@@ -81,7 +79,14 @@ class ProductList extends Component {
     return this.state.products.map((product) => {
       return (
         <div key={product._id}>
-          <div className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-product-tab={product._id} onClick={ () => this.setProduct(product) }>{product._id}----{product.name}</div>
+          <div className="padding-s margin-xs-v color-white flex space-between" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-product-tab={product._id}>
+            <div>{product.name}</div>
+            <div className="flex">
+              <Link className="margin-s-h" to={`/admin/products/form/update/${product.path_name}`} ><FontAwesomeIcon icon={faEdit} /></Link>
+              <a><FontAwesomeIcon className="margin-xs-h" onClick={() => this.deleteProduct(product)} icon={faTrash} /></a>
+              <a><FontAwesomeIcon className="margin-xs-h" onClick={ () => this.setProduct(product) } icon={faCaretDown} /></a>
+            </div>
+          </div>
           { this.state.chosen_product === product._id ? this.productData(product) : ""}
         </div>
       )

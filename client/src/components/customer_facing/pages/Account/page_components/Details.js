@@ -46,7 +46,7 @@ class Details extends Component {
     let user = this.props.auth
     const src = data.filesUploaded[0].url
     user.photo = src
-    const updated_user = await this.props.updateUser(user)
+    await this.props.updateUser(user)
   }
 
 

@@ -8,6 +8,7 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
+import { create } from 'domain';
 
 
 // TO DO
@@ -36,6 +37,8 @@ class ProductForm extends Component {
 
   async handleSubmitCreate() {
     const create_product_values = this.props.form['create_product_form'].values
+
+    console.log(create_product_values)
     let new_product = {
       categories: [],
       dimensions: {}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { getUser, updateUser } from "../../../utils/API"
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
 import { connect } from 'react-redux'
+import { roleField, generalUserField } from "./formFields"
 
 class Users extends Component {
   constructor(props) {
@@ -22,15 +22,27 @@ class Users extends Component {
   }
 
   async updateUserProperty(property) {
-    const form_value = this.props.form['edit_user_property_form'].values
+    let form_value = this.props.form['edit_user_property_form'].values
     let user = this.state.user
-    user[property] = form_value[property]
+
+    if (property === "role") {
+      user[property] = form_value[property].value
+    } else {
+      user[property] = form_value[property]
+    }
+
     const { data } = await updateUser(user)
     this.props.dispatch(reset("edit_user_property_form"))
     this.setState({ user: data, editForm: null })
   }
 
   showEdit(property) {
+    let field
+    if (property === "role") {
+      field = roleField(this.state.user.role)
+    } else {
+      field = generalUserField(property)
+    }
     const form_object = {
       onSubmit: () => this.updateUserProperty(property),
       cancel: () => {
@@ -38,9 +50,7 @@ class Users extends Component {
         this.setState({ editForm: null })
       },
       submitButtonText: "Update User Property",
-      formFields: [
-        { label: capitalizeFirsts(property.replace("_", " ")), name: property, noValueError: `You must provide a value` },
-      ],
+      formFields: field,
       form: "edit_user_property_form",
       validation: validatePresenceOnAll,
       initialValues: {
@@ -52,12 +62,15 @@ class Users extends Component {
 
 
   render() {
-    console.log(this.state)
     return (
       <div>
         {this.state.user &&
           <div>
-            <div onClick={() => this.showEdit("first_name")}>First Name: {this.state.user.first_name}</div>
+            <div>Email: {this.state.user.email}</div>
+            <div onClick={() => this.showEdit("first_name")}>First Name: <a className="inline">{this.state.user.first_name}</a></div>
+            <div onClick={() => this.showEdit("last_name")}>Last Name: <a className="inline">{this.state.user.last_name}</a></div>
+            <div  onClick={() => this.showEdit("role")}>Role: <a className="inline">{this.state.user.role}</a></div>
+            <div>Joined On: {this.state.user.joined_on}</div>
           </div>
         }
 

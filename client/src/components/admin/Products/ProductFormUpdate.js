@@ -39,8 +39,7 @@ class ProductForm extends Component {
   }
 
 
-  async handleSubmitUpdate(e) {
-    e.preventDefault()
+  async handleSubmitUpdate() {
     const create_product_values = this.props.form['update_product_form'].values
     let new_product_info = {
       categories: [],
