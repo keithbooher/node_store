@@ -33,6 +33,11 @@ module.exports = app => {
     res.send(product)
   })
 
+  app.get('/api/product/name/:name', async (req, res) => {    
+    const product = await Product.findOne({ name: req.params.name }).populate({path: "categories"})
+    res.send(product)
+  })
+
   app.get('/api/products/all/instock', async (req, res) => {    
     const products = await Product.find({ inventory_count: {$gte: 1}, display: true}).populate({
       path: 'categories'

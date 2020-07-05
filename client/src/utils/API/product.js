@@ -10,6 +10,11 @@ export const getProductbyId = (id) => {
   return axios.get('/api/product/' + id)
 }
 
+// find product by path name
+export const getProductbyname = (name) => {
+  return axios.get('/api/product/name/' + name)
+}
+
 export const allInStockProducts = () => {
   return axios.get('/api/products/all/instock')
 }
