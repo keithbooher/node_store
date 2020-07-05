@@ -38,7 +38,6 @@ class ProductForm extends Component {
   async handleSubmitCreate() {
     const create_product_values = this.props.form['create_product_form'].values
 
-    console.log(create_product_values)
     let new_product = {
       categories: [],
       dimensions: {}

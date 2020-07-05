@@ -3,7 +3,7 @@ import { paginatedOrders, lastOrder } from "../../../utils/API"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEye, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faEye, faEdit, faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView';
 
@@ -97,6 +97,7 @@ class Orders extends Component {
 
     return (
       <div>
+        <Link to="/admin/order/create" className="inline padding-s">New Order<FontAwesomeIcon icon={faPlusCircle} /></Link>
         <div style={{ backgroundColor: "grey", color: "white", padding: "5px" }} className="flex space-evenly">
           <div style={ this.state.status_filter === "pending" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("pending")}>Pending</div>
           <div style={ this.state.status_filter === "processing" ? highlightedColorStyle: {} } onClick={() =>this.changeOrderTab("processing")}>Processing Shipment</div>

@@ -6,6 +6,7 @@ import Categories from '../../admin/Categories'
 import Shipping from "../../admin/Shipping"
 import Orders from '../../admin/Orders'
 import OrderPage from '../../admin/Orders/OrderPage'
+import OrderCreate from '../../admin/Orders/OrderCreate'
 import Products from '../../admin/Products'
 import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
@@ -16,22 +17,21 @@ class Admin extends Component {
   constructor(props) {
     super()
     this.state = {
-      chosen_tab: "Dashboard"
     }
   }
   
 
   render() {
-    let chosen_tab = this.state.chosen_tab
     return (
       <div id="admin_container">
         <div id="admin_sidebar_container" className="relative border padding-s" style={{ backgroundColor: '#22292F' }}>
-          <Sidebar chooseTab={this.chooseTab} />
+          <Sidebar />
         </div>
         <div id="admin_content_container" className="relative padding-s color-black" style={{ backgroundColor: "#F1F5F8" }}>
           <Route exact path="/admin" component={AdminDashboard} />
           <Route exact path="/admin/orders" component={Orders} />
           <Route exact path="/admin/orders/:id" component={OrderPage} />
+          <Route exact path="/admin/order/create" component={OrderCreate} />
           <Route path="/admin/products" component={Products} />
           <Route exact path="/admin/categories" component={Categories} />
           {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 

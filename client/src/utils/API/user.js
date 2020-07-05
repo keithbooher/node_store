@@ -25,3 +25,8 @@ export const updateUser = (user) => {
   const data = { user }
   return axios.put('/api/update/user', data) 
 }
+
+export const getUserByEmail = (email) => {
+  const data = { email }
+  return axios.post('/api/user/email', data)
+}

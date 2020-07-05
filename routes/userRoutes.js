@@ -6,6 +6,12 @@ const Review = mongoose.model('reviews')
 
 module.exports = app => {
   
+  app.post('/api/user/email', async (req, res) => {
+    const email = req.body.email
+    const user = await User.findOne({ email })
+    res.send(user)
+  })
+  
   app.get('/api/users/last_user', async (req, res) => {    
     const user = await User.findOne({ deleted_at: null })
     res.send(user)
