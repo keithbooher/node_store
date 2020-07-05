@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ChooseCustomer from './ChooseCustomer'
 import FillCart from "./FillCart"
+import ShippingOptions from "./ShippingOptions"
 
 class OrderCreate extends Component {
   constructor(props) {
@@ -26,8 +27,12 @@ class OrderCreate extends Component {
         {/* Choose customer (guest or not) and fill out info */}
         { this.state.step === "customer" && <ChooseCustomer topStateSetter={this.topStateSetter} /> }
         {/* Create Cart and add line items */}
-        { this.state.step === "cart" && <FillCart topStateSetter={this.topStateSetter} /> }
+        { this.state.step === "cart" && <FillCart cart={this.state.cart} topStateSetter={this.topStateSetter} /> }
+
+        {/* <FillCart cart={cart} topStateSetter={this.topStateSetter} /> */}
         {/* Choose Shipping */}
+        { this.state.step === "shipping" && <ShippingOptions topStateSetter={this.topStateSetter} /> }
+
         {/* Enter Payment Info */}
         {/* Done */}
       </div>

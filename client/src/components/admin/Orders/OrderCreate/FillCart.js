@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "../../../shared/Form"
+import { reset } from "redux-form"
 import { getProductbyname } from "../../../../utils/API"
 class FillCart extends Component {
   constructor(props) {
     super()
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
     this.addToLineItems = this.addToLineItems.bind(this)
+    this.proceedToNextStep = this.proceedToNextStep.bind(this)
     this.state = {
       line_items: [],
       result: null
@@ -20,22 +22,56 @@ class FillCart extends Component {
   }
 
   addToLineItems(product) {
-    console.log(product)
-    console.log(this.state.line_items)
-    let line_item = {
-      product_name: product.name,
-      image: product.image,
-      _product_id: product._id,
-      quantity: 1,
-      product_price: product.price
-    }
-
+    // MAKE A CHECK TO SEE IF THE LINE ITEM IS ALREADY I THE ARRAY, IF SO, JUST ADD QUANTITY
     let line_items = [...this.state.line_items]
-    line_items.push(line_item)
 
-    console.log(line_items)
+    let already_in_array = false
+    line_items.forEach(item => {
+      if( item._product_id === product._id) { 
+        item.quantity += 1
+        already_in_array = true
+      }
+    });
+
+    // If the product is not in the array, we construct
+    //  the object and push it to the lien items array
+    if (!already_in_array) {
+      let line_item = {
+        product_name: product.name,
+        image: product.image,
+        _product_id: product._id,
+        quantity: 1,
+        product_price: product.price
+      }
+      line_items.push(line_item)
+    } 
 
     this.setState({ line_items })
+  }
+
+  renderTotal() {
+    let total = 0
+    this.state.line_items.forEach((item) => {
+      total = total + (item.product_price * item.quantity)
+    })
+    return total
+  }
+
+  proceedToNextStep() {
+    let cart = this.props.cart
+    cart.line_items = this.state.line_items
+    cart.checkout_state = "shipping"
+    cart.total = this.renderTotal()
+    
+
+    // MAKE API REQUEST TO MAKE THIS AN OFFICIAL CART IN DB
+
+    let state = {
+      cart,
+      step: "shipping",
+    }
+    this.props.topStateSetter(state)
+    this.props.dispatch(reset("product_order_search_form"))
   }
 
   render() {
@@ -62,15 +98,30 @@ class FillCart extends Component {
 
           {this.state.line_items.length > 0 &&
             <>
-              <h2>Line Items</h2>
-              {this.state.line_items.map((item) => {
-                return (
-                    <div>{item.product_name}</div>
-                  )
-                })
-              }
+              <div>
+                <h1 style={{ textDecoration: "underline"}}> Cart</h1>
+                <h3>Line Items</h3>
+                <div  className="flex flex-wrap space-evenly">
+                  {this.state.line_items.map((item) => {
+                    return (
+                        <div style={{ flexBasis: "25%" }}>
+                          <div><img style={{ height: "150px", width: "auto" }} src={item.image}/></div>
+                          <div>{item.product_name}</div>
+                          <div>${item.product_price}</div>
+                          <div>{item.quantity}</div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+              <div>
+                Total: ${this.renderTotal()}
+              </div>
             </>
           }
+
+          <button onClick={this.proceedToNextStep}>Move to shipping step</button>
       </div>
     )
   }

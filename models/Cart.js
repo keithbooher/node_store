@@ -21,12 +21,12 @@ const cartSchema = new Schema({
   total: Number,
   billing_address: AddressSchema,
   shipping_address: AddressSchema,
-  shipping_method: String,
   created_at: Date,
   deleted_at: {
     type: Date,
     default: null
   },
+  shipping_method: String,
   chosen_rate: rateSchema,
 })
 
