@@ -14,6 +14,16 @@ module.exports = app => {
     }
   })
 
+
+  app.put('/api/order/update', requireLogin, async (req, res) => {  
+    let order = req.body.order
+    let updated_order = await Order.findOneAndUpdate({ _id: order._id }, order, {new: true}).populate({
+      path: "shipment",
+      model: "shipments",
+    })
+    res.send(updated_order)
+  })
+
   app.get('/api/order/:order_id', requireLogin, async (req, res) => {  
     const order_id = req.params.order_id
     const order = await Order.findOne({ "_id": order_id }).populate({

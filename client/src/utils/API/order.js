@@ -5,6 +5,11 @@ export const createOrder = (order) => {
     return axios.post('/api/order/create', data)
 }
 
+export const updateOrder = (order) => {
+    const data = { order }
+    return axios.put('/api/order/update', data)
+}
+
 export const getUsersOrders = (user_id, last_order_id, direction) => {
     return axios.get('/api/user/orders/' + user_id + "/" + last_order_id + "/" + direction) 
 }
@@ -20,3 +25,4 @@ export const paginatedOrders = (last_order_id, direction, status) => {
 export const lastOrder = () => {
     return axios.get('/api/orders/last_order') 
 }
+

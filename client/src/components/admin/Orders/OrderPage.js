@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getOrder, updateShipment } from "../../../utils/API"
+import { getOrder, updateShipment, updateOrder } from "../../../utils/API"
 import { Link } from "react-router-dom"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import Form from "../../shared/Form"
@@ -18,6 +18,7 @@ class OrderPage extends Component {
     this.order_id = props.match.params.id
     this.showEditIndicator = this.showEditIndicator.bind(this)
     this.showEditModal = this.showEditModal.bind(this)
+    this.handleNoteSubmission = this.handleNoteSubmission.bind(this)
     this.state = {
       order: null,
       propertyToEdit: null,
@@ -102,7 +103,16 @@ class OrderPage extends Component {
 
     let { data } = await getOrder(this.order_id)
     this.props.dispatch(reset("edit_shipping_property_form"))
-    this.setState({ order: data, editForm: null })
+    this.setState({ order: data, editForm: null, propertyToEdit: null })
+  }
+
+  async handleNoteSubmission() {
+    const form_value = this.props.form['admin_order_notes_form'].values.admin_notes
+    let order = this.state.order
+    order.admin_notes = form_value
+    let { data } = await updateOrder(order)
+    console.log(data)
+    this.setState({ order: data })
   }
 
   render() {
@@ -124,7 +134,15 @@ class OrderPage extends Component {
               <div>Total: {order.total}</div>
 
               <h5>Notes</h5>
-              {order.admin_notes}
+              <Form 
+                onSubmit={this.handleNoteSubmission}
+                submitButtonText={"Update"}
+                formFields={[
+                  { label: 'Notes', name: 'admin_notes', noValueError: 'You must provide an address', value: null },
+                ]} 
+                form={"admin_order_notes_form"}
+                initialValues={{"admin_notes": order.admin_notes}}
+              />
 
               <h3 className="underline">Shipment Data</h3>
         
