@@ -56,6 +56,12 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
 
   const someFunction = async (token) => {
     await handleToken(token)
+
+    // TO DO
+    // IF HANDLING ABOVE TOKEN FAILS ^
+
+
+    
     // let cart = cart
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
@@ -118,7 +124,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       shipment: new_shipment.data._id,
       date_placed: date,
       _user_id: cart._user_id,
-      email: user.email
+      email: auth.email ? auth.email : cart.email
     }
     const new_order = await createOrder(order)
 
@@ -134,7 +140,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
     chooseTab('review')
 
   }
-
+  console.log(auth)
 
   return (
       <StripeCheckout

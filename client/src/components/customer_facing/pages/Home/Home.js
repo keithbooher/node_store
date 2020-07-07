@@ -26,7 +26,8 @@ class Home extends Component  {
               <ProductCard 
                 createCart={this.props.createCart}
                 updateCart={this.props.updateCart}
-                user={this.props.auth} product={product} 
+                user={this.props.auth} 
+                product={product} 
                 cart={this.props.cart} 
                 category_path_name={product.categories[0].path_name} 
               />

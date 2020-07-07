@@ -16,6 +16,7 @@ const cartSchema = new Schema({
     default: "shopping"
   },
   line_items: [LineItemSchema],
+  email: String,
   _user_id: String,
   sub_total: Number,
   total: Number,
@@ -26,7 +27,6 @@ const cartSchema = new Schema({
     type: Date,
     default: null
   },
-  shipping_method: String,
   chosen_rate: rateSchema,
 })
 

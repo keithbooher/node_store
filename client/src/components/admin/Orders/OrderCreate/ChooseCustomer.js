@@ -40,20 +40,23 @@ class ChooseCustomer extends Component {
 
   proceedToNextStep() {
     let customer
+    let email
     if (this.state.chosen_customer) {
       customer = this.state.chosen_customer
-      
+      email = this.state.chosen_customer.email
     } else {
+      email = this.props.form.guest_email_admin_checkout_form.values.email
       customer = {
         _id: "000000000000000000000000",
-        email: this.props.form.guest_email_admin_checkout_form.values.email
+        email: email
       }
     }
 
     let cart = {
       billing_address: this.props.form.billing_admin_checkout_form.values,
       shipping_address: this.props.form.shipping_admin_checkout_form.values,
-      _user_id: customer._id
+      _user_id: customer._id,
+      email
     }
 
     const state = {

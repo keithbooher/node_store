@@ -5,7 +5,8 @@ const LineItemSchema = require('./LineItem')
 
 const rateSchema = new Schema({
   cost: '',
-  shipping_method: ""
+  shipping_rate: "",
+  shipping_method: "",
 })
 
 const shipmentSchema = new Schema({

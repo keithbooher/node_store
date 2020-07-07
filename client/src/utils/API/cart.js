@@ -8,3 +8,8 @@ export const updateCart = (cart) => {
   const data = { cart }
   return axios.put('/api/cart/update/' + cart.id, data) 
 }
+
+export const createCart = (cart) => {
+  const data = { cart }
+  return axios.post('/api/cart/create', data) 
+}

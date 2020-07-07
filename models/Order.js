@@ -15,14 +15,13 @@ const orderSchema = new Schema({
     type: Date,
     default: null
   },
-  line_items: [LineItemSchema],
   _user_id: String,
   email: String,
   shipment: {
     type: Schema.Types.ObjectId,
     ref: 'shipments'
   },
-
+  admin_notes: String
 })
 
 mongoose.model('orders', orderSchema)

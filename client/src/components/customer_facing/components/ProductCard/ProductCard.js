@@ -32,6 +32,7 @@ class ProductCard extends Component {
           }
         ],
         _user_id: user_id,
+        email: this.props.user.email,
         sub_total: sub_total,
         total: sub_total + product.price
       }

@@ -20,7 +20,20 @@ module.exports = app => {
     res.send(cart)
   })
 
-  // ADD ITEM TO NEW CART
+  // create cart fro admin
+  app.post('/api/cart/create', async (req, res) => {  
+    console.log("here")
+    const incoming_cart = req.body.cart
+    const cart = new Cart(incoming_cart)
+    try {
+      await cart.save()
+      res.send(cart)
+    } catch (err) {
+      res.status(422).send(err)
+    }
+  })
+
+  // ADD ITEM TO NEW CART /create 
   app.post('/api/cart/create/:user_id', async (req, res) => {  
     const incoming_cart = req.body.cart
     const cart = new Cart(incoming_cart)

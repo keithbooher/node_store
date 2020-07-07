@@ -7,6 +7,7 @@ import { updatedFormFields } from "../../../../../../utils/helperFunctions"
 import AddressCard from '../../../../components/AddressCard';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { validatePresenceOnAll } from "../../../../../../utils/validations"
 
 
 class AddressPanel extends Component  {
@@ -27,6 +28,11 @@ class AddressPanel extends Component  {
   handleFormSubmit(bill_or_ship) {
     let cart_instance = this.props.cart
     cart_instance.checkout_state = 'address'
+
+    if (this.props.cart._user_id === "000000000000000000000000") {
+      const guest_email = this.props.form.guest_email_checkout_form.values.email
+      cart_instance.email = guest_email
+    }
 
     if (bill_or_ship === "shipping") {
       const ship_addy = this.props.form.shipping_checkout_form.values
@@ -111,6 +117,19 @@ class AddressPanel extends Component  {
           <>
 
             { this.renderAddressCards() }
+
+            {this.props.cart._user_id === "000000000000000000000000" &&
+              <div>
+                <Form 
+                  submitButton={<div></div>}
+                  formFields={[
+                    { label: 'Guest Email', name: 'email', noValueError: 'You must provide an address', value: null },
+                  ]} 
+                  form={"guest_email_checkout_form"}
+                  validation={validatePresenceOnAll}
+                />
+              </div>
+            }
 
             <div className="address_form_container">
               <div className="billing_address_form_container address_form">

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "../../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyname } from "../../../../utils/API"
+import { getProductbyname, createCart } from "../../../../utils/API"
 class FillCart extends Component {
   constructor(props) {
     super()
@@ -57,7 +57,7 @@ class FillCart extends Component {
     return total
   }
 
-  proceedToNextStep() {
+  async proceedToNextStep() {
     let cart = this.props.cart
     cart.line_items = this.state.line_items
     cart.checkout_state = "shipping"
@@ -66,8 +66,10 @@ class FillCart extends Component {
 
     // MAKE API REQUEST TO MAKE THIS AN OFFICIAL CART IN DB
 
+    let { data } = await createCart(cart)
+
     let state = {
-      cart,
+      cart: data,
       step: "shipping",
     }
     this.props.topStateSetter(state)
@@ -75,7 +77,6 @@ class FillCart extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <div>Search For Line Items to add to the cart</div>
