@@ -15,10 +15,11 @@ class FormDropdown extends Component {
 
   onChange(option) {
     this.setState({ chosen: option.value })
-    this.props.input.onChange(option)
+    this.props.change("order_status", option)
   }
 
   render() {
+    console.log(this.props)
     return (
       <div>
         <label>{this.props.label}</label>

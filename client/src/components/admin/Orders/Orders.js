@@ -6,17 +6,63 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEye, faEdit, faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView';
+import Form from "../../shared/Form"
+import { connect } from 'react-redux'
+import mobile from "is-mobile"
+
+let isMobile = mobile()
 
 class Orders extends Component {
   constructor(props) {
     super()
     this.changePage = this.changePage.bind(this)
+    this.changeOrderTab = this.changeOrderTab.bind(this)
     this.state = {
       orders: [],
       page_number: 1,
       chosen_order: null,
       last_order: null,
-      status_filter: "pending"
+      status_filter: "pending",
+      dropDownField: [
+        { 
+          label: "By Order Status", 
+          name: "order_status", 
+          typeOfComponent: "dropdown",
+          options: [
+            {
+              default: true,
+              value: "pending",
+              name: "pending"
+            },
+            {
+              default: false,
+              value: "processing",
+              name: "processing"
+            },
+            {
+              default: false,
+              value: "complete",
+              name: "complete"
+            },
+            {
+              default: false,
+              value: "cancelled",
+              name: "cancelled"
+            },
+            {
+              default: false,
+              value: "returned",
+              name: "returned"
+            },
+            {
+              default: false,
+              value: "all",
+              name: "all"
+            },
+          ], 
+          noValueError: `You must provide a value` 
+        },
+      ]
     }
   }
   
@@ -42,9 +88,31 @@ class Orders extends Component {
     }
   }
 
-  async changeOrderTab(status) {
+  async changeOrderTab() {
+    let status = this.props.form.order_status_dropdown.values.order_status.value
+
+    let dropDownField = this.state.dropDownField
+    dropDownField[0].options = dropDownField[0].options.map((option) => {
+      if (option.name === status) {
+        return (
+          {
+            default: true,
+            value: option.name,
+            name: option.name
+          }
+        )
+      } else {
+        return (
+          {
+            default: false,
+            value: option.name,
+            name: option.name
+          }
+        )
+      }
+    })
     const orders = await paginatedOrders("none", "none", status).then(res => res.data)
-    this.setState({ orders, status_filter: status })
+    this.setState({ orders, status_filter: status, dropDownField })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
@@ -59,19 +127,24 @@ class Orders extends Component {
           <tr className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
             <td onClick={ () => this.setOrder(order)} className="padding-xs flex justify-content-space-between quick-view">
               <a><FontAwesomeIcon icon={faEye} /></a>
-            </td><td className="padding-xs">
+            </td>
+            <td className="padding-xs">
               <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
                 <FontAwesomeIcon icon={faEdit} style={{ display: "inline"}} /><span style={{  marginLeft: "5px" }}>...{order._id.substring(order._id.length - 4)}</span>
               </Link>
-            </td><td className="padding-xs">
-              <Link to={`/admin/users/${order._user_id}`}>{order.email}</Link>
-            </td><td className="padding-xs">
-              <span>{new Date(order.date_placed).toDateString()}</span>
-            </td><td className="padding-xs">
-              <span>${order.total}</span>
-            </td><td className="padding-xs text-align-center">
-              <span>{order.status}</span>
             </td>
+            <td className="padding-xs">
+              <Link to={`/admin/users/${order._user_id}`}>{order.email}</Link>
+            </td>
+            {!isMobile && <td className="padding-xs">
+              <span>{new Date(order.date_placed).toDateString()}</span>
+            </td>}
+            {!isMobile && <td className="padding-xs">
+              <span>${order.total}</span>
+            </td>}
+            {!isMobile && <td className="padding-xs text-align-center">
+              <span>{order.status}</span>
+            </td>}
           </tr>
           
           <tr>
@@ -97,15 +170,19 @@ class Orders extends Component {
 
     return (
       <div>
-        <Link to="/admin/order/create" className="inline padding-s">New Order<FontAwesomeIcon icon={faPlusCircle} /></Link>
-        <div style={{ backgroundColor: "grey", color: "white", padding: "5px" }} className="flex space-evenly">
-          <div style={ this.state.status_filter === "pending" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("pending")}>Pending</div>
-          <div style={ this.state.status_filter === "processing" ? highlightedColorStyle: {} } onClick={() =>this.changeOrderTab("processing")}>Processing Shipment</div>
-          <div style={ this.state.status_filter === "complete" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("complete")}>Complete</div>
-          <div style={ this.state.status_filter === "cancelled" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("cancelled")}>Cancelled</div>
-          <div style={ this.state.status_filter === "returned" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("returned")}>Returned</div>
-          <div style={ this.state.status_filter === "all" ? highlightedColorStyle: {} } onClick={() => this.changeOrderTab("all")}>All</div>
+        <div className="flex">
+          <Link to="/admin/order/create" className="flex flex_column align-items-center padding-s"><FontAwesomeIcon style={{ fontSize: '30px' }}icon={faPlusCircle} /><div>New Order</div></Link>
+          <div style={{ width: "20em" }}>
+            <Form
+              submitButton={<div/>}
+              onChange={this.changeOrderTab}
+              formFields={this.state.dropDownField}
+              form='order_status_dropdown'
+            />
+          </div>
         </div>
+
+
         <br/>
         <table>
           <thead>
@@ -113,9 +190,9 @@ class Orders extends Component {
               <th style={{ wordWrap: "normal", width: "2em" }}>Quick View</th>
               <th>Order Number</th>
               <th>Customer Email</th>
-              <th>Date Placed</th>
-              <th>Total</th>
-              <th>Status</th>
+              {!isMobile && <th>Date Placed</th>}
+              {!isMobile && <th>Total</th>}
+              {!isMobile && <th>Status</th>}
             </tr>
           </thead>
           <tbody>
@@ -134,4 +211,8 @@ class Orders extends Component {
 }
 
 
-export default Orders
+function mapStateToProps({ form }) {
+  return { form }
+}
+
+export default connect(mapStateToProps, null)(Orders)

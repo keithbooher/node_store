@@ -1,17 +1,100 @@
 
-#admin_container {
-  display: grid;
-  grid-template-columns: 15em auto;
-  grid-template-rows: 100vh;
-  grid-template-areas: "asc acc";
+
+
+////////////////////////////////////////////////////////
+//////////// Content ANIMATION /////////////////////////
+////////////////////////////////////////////////////////
+
+/* Standard syntax */
+@keyframes admin_width_open {
+  from {
+    left: 5px;
+  }
+  to {
+    left: 11.5em;
+  }
 }
 
-#admin_sidebar_container {
-  grid-area: asc;
+/* Standard syntax */
+@keyframes admin_width_close {
+  from {
+    left: 11.5em;
+  }
+  to {
+    left: 5px;
+  }
+}
+
+
+
+.admin_sidebar_open_content {
+  animation: admin_width_open .4s;
+  animation-fill-mode: forwards;
+}
+
+.admin_sidebar_closed_container {
+  animation: admin_width_close .4s;
+  animation-fill-mode: forwards;
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+//////////// SIDEBAR ANIMATION /////////////////////////
+////////////////////////////////////////////////////////
+
+/* Standard syntax */
+@keyframes width_admin_open {
+  from {
+    left: -11em;
+  }
+  to {
+    left: 0em;
+  }
+}
+
+/* Standard syntax */
+@keyframes width_admin_close {
+  from {
+    left: 0px;
+  }
+  to {
+    left: -11em;
+  }
+}
+
+.admin_sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0px;
+  left: -11em;
+  background-color: white;
+  width: 10em;
+  z-index: 9999;
+}
+
+.admin_sidebar_open {
+  animation: width_admin_open .4s;
+  animation-fill-mode: forwards;
+}
+
+.admin_sidebar_closed {
+  animation: width_admin_close .4s;
+  animation-fill-mode: forwards;
+}
+
+
+///////////////////////////////////////////////@at-root
+
+.admin_sidebar_open_container {
   overflow: scroll;
 }
 
-#admin_content_container {
-  grid-area: acc;
-  overflow: scroll;
+.admin_sidebar_closed_container {
+  overflow: hidden;
 }

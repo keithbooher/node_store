@@ -123,7 +123,7 @@ class OrderPage extends Component {
         {
           this.state.order !== null ?
             <>
-              <Link to="/admin/orders">Back To Orders</Link>
+              <Link style={{ marginLeft: "2em" }} to="/admin/orders">Back To Orders</Link>
 
               <h3 className="underline">Order Data</h3>
 
@@ -138,7 +138,7 @@ class OrderPage extends Component {
                 onSubmit={this.handleNoteSubmission}
                 submitButtonText={"Update"}
                 formFields={[
-                  { label: 'Notes', name: 'admin_notes', noValueError: 'You must provide an address', value: null },
+                  { label: 'Notes', name: 'admin_notes', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
                 ]} 
                 form={"admin_order_notes_form"}
                 initialValues={{"admin_notes": order.admin_notes}}
@@ -171,7 +171,7 @@ class OrderPage extends Component {
               <hr/>
 
               <div className="flex">
-                <div>
+                <div className="flex-basis-50-50">
                   <h5>Shipping Address</h5>
                   <AddressDisplay 
                     showEditIndicator={this.showEditIndicator} 
@@ -181,7 +181,7 @@ class OrderPage extends Component {
                     propertyToEdit={this.state.propertyToEdit}
                   />
                 </div>
-                <div>
+                <div className="flex-basis-50-50">
                   <h5>Billing Address</h5>
                   <AddressDisplay 
                     showEditIndicator={this.showEditIndicator} 

@@ -1,17 +1,15 @@
 import _ from 'lodash'
 
 export const productFields = [
-  { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
-  { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
-  { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
-  { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address' },
-  { label: 'Price', name: 'price', noValueError: 'You must provide an address' },
-  { label: 'Height', name: 'height', noValueError: 'You must provide an address' },
-  { label: 'Width', name: 'width', noValueError: 'You must provide an address' },
-  { label: 'Depth', name: 'depth', noValueError: 'You must provide an address' },
+  // { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
+  // { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
+  // { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
+  // { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address' },
+  // { label: 'Price', name: 'price', noValueError: 'You must provide an address' },
+  // { label: 'Height', name: 'height', noValueError: 'You must provide an address' },
+  // { label: 'Width', name: 'width', noValueError: 'You must provide an address' },
+  // { label: 'Depth', name: 'depth', noValueError: 'You must provide an address' },
   { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
-  { label: 'Image', name: 'image', typeOfComponent: 'photo-upload', noValueError: 'You must provide an address' },
-  { label: 'Display To Customer', name: 'display', typeOfComponent: 'check-box', noValueError: 'You must provide an address' },
 ]
 
 export const productSearchField = [
@@ -68,11 +66,17 @@ export const  validate = (values, props) => {
   }
   const errors = {}
 
-  _.each(props.formFields, ({ name, noValueError }) => {
-    if(!values["name"]) {
-      errors["name"] = noValueError
-    }
-  })
+  if(!values["name"]) {
+    errors["name"] = "must provide a name"
+  }
+
+  if(!values["inventory_count"]) {
+    errors["inventory_count"] = "must provide a inventory count"
+  }
+
+  if(!values["price"]) {
+    errors["inventory_count"] = "must provide a inventory count"
+  }
 
   // if no errors i.e. an empty object, then we know all the values are valid.
   return errors;

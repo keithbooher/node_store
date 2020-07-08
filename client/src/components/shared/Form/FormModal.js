@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Form from "./Form"
+import mobile from "is-mobile"
 
+let isMobile = mobile()
 class FormModal extends Component {
   constructor(props) {
     super()
@@ -45,7 +47,7 @@ class FormModal extends Component {
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: "30em",
+      width: isMobile ? "90%" : "30em",
       height: "auto",
       padding: "3em",
       zIndex: 20

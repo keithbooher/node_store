@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import Sidebar from '../../admin/Sidebar'
+import Sidebar from '../../admin/Sidebar/Sidebar'
 import AdminDashboard from '../../admin/AdminDashboard'
 import Categories from '../../admin/Categories'
 import Shipping from "../../admin/Shipping"
@@ -12,33 +12,72 @@ import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
 import UserPage from '../../admin/Users/UserPage'
 import "./admin.scss"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars } from "@fortawesome/free-solid-svg-icons"
 class Admin extends Component {
   constructor(props) {
     super()
+    this.sidebar = this.sidebar.bind(this)
     this.state = {
+      sidebar: null
     }
+  }
+
+  sidebar() {
+    this.setState({ sidebar: !this.state.sidebar })
   }
   
 
   render() {
+    let sidebar_class
+    let content_class
+    let container_class
+    switch (this.state.sidebar) {
+      case true:
+        container_class = "admin_sidebar_open_container"
+        content_class = "admin_sidebar_open_content"
+        sidebar_class = "admin_sidebar_open"
+        break;
+      case false:
+        container_class = "admin_sidebar_closed_container"
+        content_class = "admin_sidebar_closed_container"
+        sidebar_class = "admin_sidebar_closed"        
+        break;
+      case null:
+        container_class = ""
+        content_class = ""
+        sidebar_class = ""                
+        break;
+      default:
+        container_class = ""
+        content_class = ""
+        sidebar_class = ""      
+        break;
+    }
+
+
     return (
-      <div id="admin_container">
-        <div id="admin_sidebar_container" className="relative border padding-s" style={{ backgroundColor: '#22292F' }}>
-          <Sidebar />
+      <div id="admin_container" className={`${container_class}`}>
+        <div className={`relative border padding-s admin_sidebar ${sidebar_class}`} style={{ backgroundColor: '#22292F' }}>
+          <Sidebar sidebar={this.sidebar}/>
         </div>
-        <div id="admin_content_container" className="relative padding-s color-black" style={{ backgroundColor: "#F1F5F8" }}>
-          <Route exact path="/admin" component={AdminDashboard} />
-          <Route exact path="/admin/orders" component={Orders} />
-          <Route exact path="/admin/orders/:id" component={OrderPage} />
-          <Route exact path="/admin/order/create" component={OrderCreate} />
-          <Route path="/admin/products" component={Products} />
-          <Route exact path="/admin/categories" component={Categories} />
-          {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
-          <Route exact path="/admin/users" component={Users} />
-          <Route exact path="/admin/users/:id" component={UserPage} />
-          <Route path="/admin/reviews" component={Reviews} />
-          <Route path="/admin/shipping" component={Shipping} />
+
+        <div className={`relative color-black`} style={{ backgroundColor: "#F1F5F8" }}>
+          <div className="padding-s">
+            <FontAwesomeIcon className={`${content_class}`} onClick={this.sidebar} style={{ position: "absolute", top: "5px", left: "5px" }} icon={faBars} />
+            <Route exact path="/admin" component={AdminDashboard} />
+            <Route exact path="/admin/orders" component={Orders} />
+            <Route exact path="/admin/orders/:id" component={OrderPage} />
+            <Route exact path="/admin/order/create" component={OrderCreate} />
+            <Route path="/admin/products" component={Products} />
+            <Route exact path="/admin/categories" component={Categories} />
+            {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
+            <Route exact path="/admin/users" component={Users} />
+            <Route exact path="/admin/users/:id" component={UserPage} />
+            <Route path="/admin/reviews" component={Reviews} />
+            <Route path="/admin/shipping" component={Shipping} />
+          </div>
+
         </div>
       </div>
     )

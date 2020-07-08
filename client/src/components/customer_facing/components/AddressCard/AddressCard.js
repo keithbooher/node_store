@@ -74,7 +74,7 @@ class AddressCard extends Component {
           {this.title()}
           
         </div>
-        <div style={{ display: 'flex' }}>
+        <div className="flex flex-wrap">
           {this.props.auth &&
             this.props.auth[this.props.bill_or_ship].map((address) => {
             return <div data-address-id={address._id} style={ this.check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
