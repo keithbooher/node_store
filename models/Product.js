@@ -6,6 +6,10 @@ const productSchema = new Schema({
   name: String,
   // NEVER EVER EVER EVER CHANGE PATH NAME
   path_name: String,
+  short_description: {
+    type: String,
+    default: ""
+  },
   description: {
     type: String,
     default: ""
@@ -17,9 +21,14 @@ const productSchema = new Schema({
   },
   inventory_count: Number,
   price: Number,
+  weight: Number,
   dimensions: {
     type: Object,
-    default: {}
+    default: {
+      height: null,
+      width: null,
+      depth: null
+    }
   },
   categories: [{
     type: Schema.Types.ObjectId,
@@ -28,7 +37,11 @@ const productSchema = new Schema({
   image: String,
   display: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  home_promotion:  {
+    type: Boolean,
+    default: false
   }
 })
 
