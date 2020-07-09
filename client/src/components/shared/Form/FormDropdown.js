@@ -13,13 +13,16 @@ class FormDropdown extends Component {
     }
   }
 
+  componentDidMount() {
+    this.props.change(this.default_option.redux_field, this.default_option)
+  }
+
   onChange(option) {
     this.setState({ chosen: option.value })
-    this.props.change("order_status", option)
+    this.props.change(option.redux_field, option)
   }
 
   render() {
-    console.log(this.props)
     return (
       <div>
         <label>{this.props.label}</label>

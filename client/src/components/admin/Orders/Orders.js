@@ -32,32 +32,38 @@ class Orders extends Component {
             {
               default: true,
               value: "pending",
-              name: "pending"
+              name: "pending",
+              redux_field: "order_status"
             },
             {
               default: false,
               value: "processing",
-              name: "processing"
+              name: "processing",
+              redux_field: "order_status"
             },
             {
               default: false,
               value: "complete",
-              name: "complete"
+              name: "complete",
+              redux_field: "order_status"
             },
             {
               default: false,
               value: "cancelled",
-              name: "cancelled"
+              name: "cancelled",
+              redux_field: "order_status"
             },
             {
               default: false,
               value: "returned",
-              name: "returned"
+              name: "returned",
+              redux_field: "order_status"
             },
             {
               default: false,
               value: "all",
-              name: "all"
+              name: "all",
+              redux_field: "order_status"
             },
           ], 
           noValueError: `You must provide a value` 

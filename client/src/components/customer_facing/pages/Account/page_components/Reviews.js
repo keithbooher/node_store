@@ -18,6 +18,13 @@ class Reviews extends Component {
   }
   
   async componentDidMount() {
+    if (this.props.auth) {
+      const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
+      this.setState({ reviews: reviews.data })
+    }
+  }
+  
+  async componentDidUpdate() {
     const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
     this.setState({ reviews: reviews.data })
   }

@@ -108,7 +108,8 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       shipping_address: cart.shipping_address,
       chosen_rate: {
         cost: cart.chosen_rate.cost,
-        shipping_method: cart.chosen_rate.shipping_method
+        shipping_method: cart.chosen_rate.shipping_method,
+        shipping_rate: cart.chosen_rate.rate
       },
       status: 'pending',
       date_shipped: null,

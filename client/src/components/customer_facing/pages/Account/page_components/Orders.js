@@ -16,6 +16,13 @@ class Orders extends Component {
   }
 
   async componentDidMount() {
+    if (this.props.auth) {
+      const orders = await getUsersOrders(this.props.auth._id, "none", "none")
+      this.setState({ orders: orders.data })
+    }
+  }
+
+  async componentDidUpdate() {
     const orders = await getUsersOrders(this.props.auth._id, "none", "none")
     this.setState({ orders: orders.data })
   }

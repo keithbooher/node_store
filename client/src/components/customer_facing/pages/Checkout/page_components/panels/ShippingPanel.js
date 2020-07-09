@@ -19,13 +19,14 @@ class AddressPanel extends Component  {
   async componentDidMount() {    
     // api call to assign "shipping" checkout status to cart 
     const { data } = await getShippingMethodForCheckout()
-    console.log(data)
 
     const rates = data.shipping_rates.filter((rate) => rate.display === true)
     const fields = rates.map((rate) => {
       return {
         name: rate.name,
-        value: rate.effector
+        value: rate.effector,
+        default: true,
+        redux_field: "shipping_rates"
       }
     })
 
@@ -43,8 +44,9 @@ class AddressPanel extends Component  {
   
   async handleSubmit() {
     const selected_shipping_method = this.props.form[`shipping_method_selection_form`].values
+    console.log(this.props.form)
     const cost = selected_shipping_method.shipping_rates.value
-    const shipping_method = "Flate Rate"
+    const shipping_method = "Flat Rate"
     const rate = selected_shipping_method.shipping_rates.name
 
     let cart = {...this.props.cart}

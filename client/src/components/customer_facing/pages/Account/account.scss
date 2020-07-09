@@ -16,8 +16,8 @@
 .address_card_container {
   border: solid 1px lightgrey;
   padding: 3px;
-  flex-basis: 45%;
-  margin: 0px 1%;
+  min-width: 14em;
+  margin: 0px .2em;
 }
 
 .card_container {

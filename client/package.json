@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.0",
     "dotenv": "^8.2.0",
+    "embla-carousel": "^3.0.16",
     "filestack-react": "^3.1.0",
     "http-proxy-middleware": "^0.20.0",
     "is-mobile": "^2.2.2",
