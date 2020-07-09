@@ -159,6 +159,15 @@ class ProductForm extends Component {
                 }
             </div>
             <div className="relative">
+              Short Description: <a className="inline" onClick={() => this.showEditIndicator("short_description")}>{this.state.product.short_description ? this.state.product.short_description : "N/A"}</a>
+              {this.state.propertyToEdit && this.state.propertyToEdit === "short_description" && 
+                  <FontAwesomeIcon 
+                    icon={faEdit} 
+                    onClick={() => this.showEditModal("short_description")} 
+                  />
+                }
+            </div>
+            <div className="relative">
               Inventory Count: <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "inventory_count" && 
                   <FontAwesomeIcon 

@@ -21,10 +21,10 @@ class Header extends Component {
   }
   render() {
     return (
-    <div>
-      <div className="flex space-between theme-nav-background-color">
-        <div className="flex justify-center align-items-center">
-          <FontAwesomeIcon onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
+    <div className="header_container">
+      <div className="header_container flex space-between theme-nav-background-color">
+        <div className="header_container flex justify-center align-items-center">
+          <FontAwesomeIcon id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
           <Link to='/' className="margin-s-h"><h2 className="margin-none">Node Store</h2></Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>

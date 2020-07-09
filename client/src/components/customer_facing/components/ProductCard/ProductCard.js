@@ -85,14 +85,15 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-          <div className="card border">
+          <div className="card margin-s-v">
             <div className="card-content">
-              <h3 className="card-title">{capitalizeFirsts(product.name)}</h3>
+              <h3 className="card-title"><Link to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h3>
+              <div className="flex flex_column justify-center background-color-black" style={{ height: "14em" }}>
+                <img className="h-auto margin-auto-h" style={{ width: "98%" }} src={product.image} />
+              </div>
               <p>{product.description}</p>
             </div>
-            <div className="margin-m-v">
-              <Link to={`/shop/${category_path_name}/${product.path_name}`} className="product-card-link">Go to this product</Link>
-            </div>
+            <div className="margin-m-v">${product.price}</div>
             <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
             {/* add quantity buttons */}
           </div>

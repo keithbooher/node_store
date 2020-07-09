@@ -38,9 +38,9 @@ class CustomerFacing extends Component {
 
         <Sidebar />
 
-        <div className={sidebar_class}>
+        <div className={`content_subcontainer ${sidebar_class}`}>
           <Header setCartCookie={this.props.setCartCookie} />
-          <div id="body_content_container">
+          <div id="body_content_container" className="padding-s">
             <Route exact path="/" component={Home} />
             <Route exact path="/shop/:category" component={Category} />
             <Route exact path="/shop/:category/:product" component={Product} />

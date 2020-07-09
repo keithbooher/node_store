@@ -13,7 +13,14 @@
 @import './generals/text-decoration.css.scss';
 @import './generals/backgrounds.css.scss';
 @import './generals/height.css.scss';
+@import './generals/width.css.scss';
 @import './generals/display.css.scss';
+@import './generals/overflow.css.scss';
+
+#root {
+  height: 100vh;
+  overflow: scroll;
+}
 
 .clickable {
   padding: 10px 5px;

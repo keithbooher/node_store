@@ -74,7 +74,7 @@ class ProductForm extends Component {
               <Form 
                 onSubmit={(e) => this.handleSubmitCreate(e)}
                 submitButtonText={"Create Product"}
-                formFields={injectCategoryDataIntoFormFields(this.state.categories, null)}
+                formFields={injectCategoryDataIntoFormFields(this.state.categories, null, "create")}
                 form='create_product_form'
                 validation={validate}
               />

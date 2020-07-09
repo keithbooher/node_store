@@ -40,7 +40,7 @@ class Admin extends Component {
         break;
       case false:
         container_class = "admin_sidebar_closed_container"
-        content_class = "admin_sidebar_closed_container"
+        content_class = "admin_sidebar_closed_content"
         sidebar_class = "admin_sidebar_closed"        
         break;
       case null:
@@ -62,9 +62,9 @@ class Admin extends Component {
           <Sidebar sidebar={this.sidebar}/>
         </div>
 
-        <div className={`relative color-black`} style={{ backgroundColor: "#F1F5F8" }}>
+        <div className={`relative color-black h-100 overflow-scroll`} style={{ backgroundColor: "#F1F5F8"  }}>
           <div className="padding-s">
-            <FontAwesomeIcon className={`${content_class}`} onClick={this.sidebar} style={{ position: "absolute", top: "5px", left: "5px" }} icon={faBars} />
+            <FontAwesomeIcon className={`${content_class}`} onClick={this.sidebar} style={{ position: "fixed", top: "5px", left: "5px" }} icon={faBars} />
             <Route exact path="/admin" component={AdminDashboard} />
             <Route exact path="/admin/orders" component={Orders} />
             <Route exact path="/admin/orders/:id" component={OrderPage} />

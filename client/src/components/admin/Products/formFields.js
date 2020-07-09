@@ -1,14 +1,19 @@
 import _ from 'lodash'
 
 export const productFields = [
-  // { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
-  // { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
-  // { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
-  // { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address' },
-  // { label: 'Price', name: 'price', noValueError: 'You must provide an address' },
-  // { label: 'Height', name: 'height', noValueError: 'You must provide an address' },
-  // { label: 'Width', name: 'width', noValueError: 'You must provide an address' },
-  // { label: 'Depth', name: 'depth', noValueError: 'You must provide an address' },
+  { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
+  { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
+  { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
+  { label: 'Short Description', name: 'short_description', noValueError: 'You must provide an address' },
+  { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address' },
+  { label: 'Price', name: 'price', noValueError: 'You must provide an address' },
+  { label: 'Height', name: 'height', noValueError: 'You must provide an address' },
+  { label: 'Width', name: 'width', noValueError: 'You must provide an address' },
+  { label: 'Depth', name: 'depth', noValueError: 'You must provide an address' },
+  { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
+]
+
+export const categoryField = [
   { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
 ]
 
@@ -17,8 +22,8 @@ export const productSearchField = [
 ]
 // FOR INJECTING ***CATEGORY*** DATA
 
-export const injectCategoryDataIntoFormFields = (categories, product) => {
-  let pulledFields = productFields
+export const injectCategoryDataIntoFormFields = (categories, product, create_or_update) => {
+  let pulledFields = create_or_update === "create" ? productFields : categoryField
   // We cycle through the fields AND IF its the category field:
   // we'll want to add the array of categories to the options on the category field
   let options = []

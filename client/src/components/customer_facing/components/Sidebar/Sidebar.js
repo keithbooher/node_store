@@ -27,7 +27,7 @@ class Sidebar extends Component  {
   }
 
   handleClickOutside(e) {
-    if (this.props.sidebar === true && !this.node.contains(e.target)) {
+    if (this.props.sidebar === true && !this.node.contains(e.target) && e.target.id !== "sidebar_bars" && !e.target.classList.contains("header_container") && e.target.tagName !== "svg" && e.target.tagName !== "path") {
       this.props.sidebarBoolean(!this.props.sidebar)
     }
   }

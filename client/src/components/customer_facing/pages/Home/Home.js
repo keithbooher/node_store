@@ -37,11 +37,10 @@ class Home extends Component  {
 
   
   render() {
-    console.log('home',this.props)
     return (
       <div>
         <h1>Node Store</h1>
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap space-evenly">
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>

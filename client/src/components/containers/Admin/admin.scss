@@ -1,4 +1,6 @@
-
+#admin_container {
+  height: 100%;
+}
 
 
 ////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@
   animation-fill-mode: forwards;
 }
 
-.admin_sidebar_closed_container {
+.admin_sidebar_closed_content {
   animation: admin_width_close .4s;
   animation-fill-mode: forwards;
 }

@@ -1,9 +1,14 @@
 .card {
-  background: #6f6f6f;
-  margin: 10px;
-  padding: 20px 10px;
-  flex-basis: 12em;
+  padding: 20px 5px;
+  flex-basis: 11.5em;
   border-radius: 1.5px;
+  background-color: #2b2b2b;
+  @media screen and (max-width: 375px) {
+    flex-basis: 15em;    
+  }
+}
+.card:hover {
+  background-color: #2b2b2b;
 }
 
 .card-title {
