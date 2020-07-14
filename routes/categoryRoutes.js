@@ -70,7 +70,7 @@ module.exports = app => {
 
   app.get('/api/category/products/:category_path_name', async (req, res) => {
     const category = await Category.findOne({ path_name: req.params.category_path_name })
-    const products = await Product.find({ "categories": category._id })
+    const products = await Product.find({ "categories": category._id, inventory_count: {$gte: 1}, display: true,  })
     const data = {
       category,
       products
