@@ -134,9 +134,9 @@ class AddressPanel extends Component  {
             <div className="address_form_container">
               <div className="billing_address_form_container address_form">
                 { this.state.billing_card_chosen === true || this.state.billing_form_submit === true ? 
-                    <div style={{ marginTop: "50px" }} className="hover" onClick={() => this.editSubmittedForm("bill")}>
-                      Edit Billing Form
-                      <FontAwesomeIcon icon={faEdit} />
+                    <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("bill")}>
+                      <h2>Edit Billing</h2>
+                      <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faEdit} />
                     </div>
                   :
                     <>
@@ -156,9 +156,9 @@ class AddressPanel extends Component  {
       
               <div className="shipping_address_form_container address_form">
                 { this.state.shipping_card_chosen === true || this.state.shipping_form_submit === true ? 
-                    <div style={{ marginTop: "50px" }} className="hover" onClick={() => this.editSubmittedForm("ship")}>
-                      Edit Shipping Form  
-                      <FontAwesomeIcon icon={faEdit} />
+                    <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("ship")}>
+                      <h2>Edit Shipping</h2>
+                      <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faEdit} />
                     </div>
                   :
                     <>

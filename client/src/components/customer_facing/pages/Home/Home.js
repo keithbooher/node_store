@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ProductCard from '../../components/ProductCard'
 import { updateCart, createCart } from '../../../../actions'
-import { allInStockProducts } from '../../../../utils/API'
+import { homeProducts } from '../../../../utils/API'
 import './home.css.scss'
 
 // pull from actions. create action to make request for adding product-data to the cart
@@ -16,8 +16,8 @@ class Home extends Component  {
   }
 
   async componentDidMount() {
-    const inStockProducts = await allInStockProducts()
-    this.setState({ products: inStockProducts.data })
+    const { data } = await homeProducts()
+    this.setState({ products: data })
   }
 
   renderProducts() {

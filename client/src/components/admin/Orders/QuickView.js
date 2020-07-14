@@ -19,7 +19,7 @@ class QuickView extends Component  {
         <div className="margin-xs-h"><Link to={`/admin/users/${order._user_id}`}>{order.email}</Link></div>
         <h4 className="margin-xs-v">Line Items:</h4>
         <div className="margin-xs-h">{order.shipment.line_items.map((line_item) => <div>{line_item.product_name}</div>)}</div>
-        <h4 className="margin-xs-v">Adress Info:</h4>
+        <h4 className="margin-xs-v">Address Info:</h4>
         <div className="margin-xs-h">{order.shipment.billing_address.first_name}</div>
         <div className="margin-xs-h">{order.shipment.billing_address.last_name}</div>
         <div className="margin-xs-h">{order.shipment.billing_address.company}</div>
@@ -28,6 +28,7 @@ class QuickView extends Component  {
         <div className="margin-xs-h">{order.shipment.billing_address.city}</div>
         <div className="margin-xs-h">{order.shipment.billing_address.state}</div>
         <div className="margin-xs-h">{order.shipment.billing_address.zip_code}</div>
+        <div className="margin-xs-h">{order.shipment.billing_address.country}</div>
         <h4 className="margin-xs-v">Date Placed:</h4>
         <div className="margin-xs-h">{new Date(order.date_placed).toDateString()}</div>
         <h4 className="margin-xs-v">Total:</h4>

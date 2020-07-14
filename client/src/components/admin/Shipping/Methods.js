@@ -39,23 +39,25 @@ class Carriers extends Component {
             url= '/admin/shipping/methods'
           }
           return (
-            <div key={method.internal_name}>
-              <Link to={url} className={`carrier_card background-color-grey-3 ${method.display && "clickable"}`}>
-                <div>{method.name}</div>
-                {not_available.indexOf(method.internal_name) > -1 && "Not available"}
-                {!method.display && 
-                  <>
-                    <div>Hidden in checkout</div>
-                  </>
-                }
-              </Link>
-              <div>
-                {not_available.indexOf(method.internal_name) < 0 ? 
-                  <div className="flex clickable" onClick={() => this.changeDisplay(method)}>
-                    <FontAwesomeIcon icon={method.display ? faEye : faEyeSlash} />
-                    {method.display ? <div className="margin-s-h">This shipping method is used in checkout</div> : <div className="margin-s-h">use this shipping method in checkout</div>}
-                  </div>
-                : "Not available"}
+            <div className="" key={method.internal_name}>
+              <div className="background-color-grey-2">
+                <Link to={url} className={` ${method.display && "hover"}`}>
+                  <h2 className="padding-s">{method.name}</h2>
+                  {not_available.indexOf(method.internal_name) > -1 && <div className="padding-s-h">Not available</div>}
+                  {!method.display && 
+                    <>
+                      <div className="padding-s-h">Hidden in checkout</div>
+                    </>
+                  }
+                </Link>
+                <div className="padding-s">
+                  {not_available.indexOf(method.internal_name) < 0 ? 
+                    <div className="flex clickable" onClick={() => this.changeDisplay(method)}>
+                      <FontAwesomeIcon icon={method.display ? faEye : faEyeSlash} />
+                      {method.display ? <div className="margin-s-h">This shipping method is used in checkout</div> : <div className="margin-s-h">use this shipping method in checkout</div>}
+                    </div>
+                  : "Not available"}
+                </div>
               </div>
             </div>
           )

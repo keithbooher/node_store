@@ -32,7 +32,7 @@ class Users extends Component {
       }
     }
     return (
-      <div>
+      <div style={{ marginTop: "30px" }}>
         {this.state.users.map((user) => {
           return (<div>
                   <Link to={`/admin/users/${user._id}`}>{user.first_name}</Link>

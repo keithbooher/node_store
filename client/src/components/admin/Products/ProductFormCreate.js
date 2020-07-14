@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { createProduct, getAllCategories, getProductInfo } from '../../../utils/API'
+import { createProduct, getAllCategories } from '../../../utils/API'
 import { productNameToPathName } from '../../../utils/helperFunctions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,6 @@ import { faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
-import { create } from 'domain';
 
 
 // TO DO

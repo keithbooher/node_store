@@ -3,7 +3,7 @@ import { paginatedOrders, lastOrder } from "../../../utils/API"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEye, faEdit, faPlusCircle } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faPlusCircle, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView';
 import Form from "../../shared/Form"
@@ -132,7 +132,7 @@ class Orders extends Component {
         <>
           <tr className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
             <td onClick={ () => this.setOrder(order)} className="padding-xs flex justify-content-space-between quick-view">
-              <a><FontAwesomeIcon icon={faEye} /></a>
+              <a className="margin-auto-h"><FontAwesomeIcon style={{ fontSize: "20px" }} icon={faCaretDown} /></a>
             </td>
             <td className="padding-xs">
               <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
@@ -163,21 +163,16 @@ class Orders extends Component {
 
   render() {
     let lastPossibleItem = false
-    if (this.state.orders.length > 0) {
+    if (this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {
         lastPossibleItem = true
       }
     }
 
-    const highlightedColorStyle = {
-      backgroundColor: "darkgray",
-      padding: "5px"
-    }
-
     return (
       <div>
-        <div className="flex">
-          <Link to="/admin/order/create" className="flex flex_column align-items-center padding-s"><FontAwesomeIcon style={{ fontSize: '30px' }}icon={faPlusCircle} /><div>New Order</div></Link>
+        <div className="flex" style={{ marginTop: "20px" }}>
+          <Link to="/admin/order/create" className="text-align-center flex flex_column align-items-center padding-s"><FontAwesomeIcon style={{ fontSize: '30px' }} icon={faPlusCircle} /><div>New Order</div></Link>
           <div style={{ width: "20em" }}>
             <Form
               submitButton={<div/>}
@@ -193,7 +188,7 @@ class Orders extends Component {
         <table>
           <thead>
             <tr>
-              <th style={{ wordWrap: "normal", width: "2em" }}>Quick View</th>
+              <th style={{ wordWrap: "normal", width: "2em" }}>Info</th>
               <th>Order Number</th>
               <th>Customer Email</th>
               {!isMobile && <th>Date Placed</th>}

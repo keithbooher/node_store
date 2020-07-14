@@ -40,6 +40,7 @@ class FormModal extends Component {
       right: 0,
       bottom: 0,
       backgroundColor: "#4242428a",
+      zIndex: 10
     }
 
     const style_inner = {

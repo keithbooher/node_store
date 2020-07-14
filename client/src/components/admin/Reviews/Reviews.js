@@ -116,8 +116,8 @@ class Reviews extends Component {
   render() {
     console.log(this.state)
     return (
-      <div>
-        <div>
+      <div  style={{ marginTop: "30px" }}>
+        <div className="flex space-evenly">
           <div>
             <Link to="/admin/reviews" onClick={() => this.getReviews("all")}>All</Link>
           </div>

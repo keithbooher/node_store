@@ -181,7 +181,7 @@ const Categories = ({ form, dispatch }) => {
   }
 
   return (
-    <div>
+    <div style={{ marginTop: "30px" }}>
       <div>
         <button onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Add a New Top Level Category</button>
         {show_create_input === "top" ? 

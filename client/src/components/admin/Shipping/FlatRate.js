@@ -83,7 +83,7 @@ class FlatRate extends Component {
     if (e.target.dataset.edit ) {
       return
     }
-    if (_rate_id === this.state.editIndication._rate_id) {
+    if (_rate_id === this.state.editIndication._rate_id && this.state.editIndication.property === property) {
       this.setState({ editIndication: { _rate_id: null, property: null } })
     } else {
       this.setState({ editIndication: { _rate_id, property } })
@@ -135,11 +135,9 @@ class FlatRate extends Component {
       && this.state.editIndication.property === property) {
       return <FontAwesomeIcon 
                 icon={faEdit} 
-                className="absolute" 
                 style={{ 
-                  top: "-10px", 
-                  right: "-5px", 
-                  zIndex: "20" 
+                  zIndex: "20",
+                  marginLeft: "5px"
                 }}
                 onClick={() => this.showEditForm(rate, property)}
                 data-edit="edit"
@@ -154,7 +152,7 @@ class FlatRate extends Component {
     const rateProperties = ["name", "description", "effector", "display"]
 
     return (
-    <div>
+    <div style={{ marginTop: "30px" }}>
       {this.state.shippingMethod && 
         <>
           <div className="flex" onClick={this.showRateForm} >
@@ -182,24 +180,37 @@ class FlatRate extends Component {
             <h3>Rates</h3>
             {this.state.shippingMethod.shipping_rates.map((rate) => {
               return (
-                <div className="flex">
-                  <FontAwesomeIcon icon={faCircle} style={{ marginTop: "10px" }} />
-                  {rateProperties.map((prop) => {
-                    if (prop === "display") {
-                      return 
-                    } else {
-                      return (
-                        <RateProperty 
-                          setEditIndication={this.setEditIndication}
-                          renderEditIndicator={this.renderEditIndicator}
-                          rate={rate}
-                          property={prop}
-                        />
-                      )
-                    }
-                  })}
-                  <FontAwesomeIcon onClick={() => this.rateDisplay(rate)} icon={rate.display ? faEye : faEyeSlash} style={{ marginTop: "10px" }} />
-                  <FontAwesomeIcon onClick={() => this.destroyRate(rate)} icon={faTrash} style={{ margin: "10px 5px 0px" }} />
+                <div className="flex flex_column padding-m background-color-grey-2 margin-s-v relative">
+                  <RateProperty 
+                    setEditIndication={this.setEditIndication}
+                    renderEditIndicator={this.renderEditIndicator}
+                    rate={rate}
+                    property={"name"}
+                  />
+                  <RateProperty 
+                    setEditIndication={this.setEditIndication}
+                    renderEditIndicator={this.renderEditIndicator}
+                    rate={rate}
+                    property={"description"}
+                  />
+                  <RateProperty 
+                    setEditIndication={this.setEditIndication}
+                    renderEditIndicator={this.renderEditIndicator}
+                    rate={rate}
+                    property={"effector"}
+                  />
+                  <FontAwesomeIcon 
+                    className="absolute" 
+                    onClick={() => this.rateDisplay(rate)} 
+                    icon={rate.display ? faEye : faEyeSlash} 
+                    style={{ top: "5px", right: "25px" }} 
+                  />
+                  <FontAwesomeIcon 
+                    className="absolute" 
+                    onClick={() => this.destroyRate(rate)} 
+                    icon={faTrash} 
+                    style={{ top: "5px", right: "5px" }} 
+                  />
                 </div>
               )
             })}
@@ -231,8 +242,8 @@ class FlatRate extends Component {
 
 const RateProperty = ({ setEditIndication, renderEditIndicator, rate, property }) => {
   return (
-    <div className="margin-s-h border padding-s relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
-      <div>{capitalizeFirsts(property === "effector" ? "rate" : property)}: {`${rate[property]}`}</div>
+    <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
+      <div className="inline">{capitalizeFirsts(property === "effector" ? "rate" : property)}: {`${rate[property]}`}</div>
       {renderEditIndicator(rate, property)}
     </div>
   )

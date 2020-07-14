@@ -5,7 +5,7 @@ import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastP
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCartArrowDown, faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCartArrowDown, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
@@ -70,8 +70,12 @@ class ProductList extends Component {
   }
 
   setProduct(product) {
+    let id = product._id
+    if (product._id === this.state.chosen_product) {
+      id = null
+    }
     this.setState({ 
-      chosen_product: product._id,
+      chosen_product: id,
     })
   }
 
@@ -80,11 +84,13 @@ class ProductList extends Component {
       return (
         <div key={product._id}>
           <div className="padding-s margin-xs-v color-white flex space-between" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-product-tab={product._id}>
-            <div>{product.name}</div>
+            <div className="flex">
+              <a style={{ marginRight: '5px' }}><FontAwesomeIcon onClick={ () => this.setProduct(product) } icon={faCaretDown} /></a>
+              <div>{product.name}</div>
+            </div>
             <div className="flex">
               <Link className="margin-s-h" to={`/admin/products/form/update/${product.path_name}`} ><FontAwesomeIcon icon={faEdit} /></Link>
               <a><FontAwesomeIcon className="margin-xs-h" onClick={() => this.deleteProduct(product)} icon={faTrash} /></a>
-              <a><FontAwesomeIcon className="margin-xs-h" onClick={ () => this.setProduct(product) } icon={faCaretDown} /></a>
             </div>
           </div>
           { this.state.chosen_product === product._id ? this.productData(product) : ""}
@@ -99,12 +105,18 @@ class ProductList extends Component {
     this.props.dispatch(reset("product_search_form"))
   }
 
-  async handleSearchSubmit(e) {
-    e.preventDefault()
-    const search_by_prpoduct_name = this.props.form['product_search_form'].values
-    let product = await getProductInfo(search_by_prpoduct_name.search_bar).then(res => res.data)
+  async handleSearchSubmit() {
+    const search_by_product_name = this.props.form['product_search_form'].values
+    console.log(search_by_product_name)
+    let product
+    if (search_by_product_name === undefined) {
+      this.getAllProducts()
+      return
+    } else {
+      product = [await getProductInfo(search_by_product_name.search_bar).then(res => res.data)]
+    }
 
-    this.setState({ products: [product], chosen_product: product._id })
+    this.setState({ products: product, chosen_product: product._id })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
@@ -121,14 +133,18 @@ class ProductList extends Component {
     }
     return (
       <>
-        <Link to="/admin/products" onClick={this.getAllProducts} ><FontAwesomeIcon icon={faSyncAlt} />Get All Products</Link>
+        <div className="flex space-evenly" style={{ marginLeft: "10px" }}>
+          <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All Products</button></Link>
+          <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
+        </div>
+
         <Form 
           onSubmit={(e) => this.handleSearchSubmit(e)}
-          submitButtonText={"Search By Product Name"}
+          submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+          searchButton={true}
           formFields={productSearchField}
           form='product_search_form'
         />
-        <Link to="/admin/products/form/add" ><FontAwesomeIcon icon={faPlusCircle} />Add Product</Link>
         {this.state.products.length !== 0 ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
         <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </>

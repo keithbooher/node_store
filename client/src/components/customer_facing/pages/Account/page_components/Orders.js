@@ -11,7 +11,8 @@ class Orders extends Component {
     this.state = {
       orders: [],
       page_number: 1,
-      chosen_order: null
+      chosen_order: null,
+      retry: 0
     }
   }
 
@@ -23,8 +24,10 @@ class Orders extends Component {
   }
 
   async componentDidUpdate() {
-    const orders = await getUsersOrders(this.props.auth._id, "none", "none")
-    this.setState({ orders: orders.data })
+    if (this.state.orders.length === 0 && this.state.retry < 3) {
+      const orders = await getUsersOrders(this.props.auth._id, "none", "none")
+      this.setState({ orders: orders.data, retry: this.state.retry + 1 })
+    }
   }
 
   setOrder(order) {
@@ -34,7 +37,6 @@ class Orders extends Component {
   }
 
   orderData(order) {
-    console.log(order)
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
         <div>{order.shipment.line_items.map((line_item) => <LineItem order_id={order._id} line_item={line_item} />)}</div>

@@ -3,7 +3,7 @@ import { updateProduct, getAllCategories, getProductInfo } from '../../../utils/
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimesCircle, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faTimesCircle, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -118,8 +118,16 @@ class ProductForm extends Component {
     this.setState({ product: data })
   }
 
+  async changeBoolean(property, boolean) {
+    let product = this.state.product
+    product[property] = boolean
+    let { data } = await updateProduct(product)
+    this.setState({ product: data })
+  }
+
 
   render() {
+    console.log(this.state.product)
     let fields = injectCategoryDataIntoFormFields(this.state.categories, this.state.product)
     return (
       <>
@@ -230,6 +238,12 @@ class ProductForm extends Component {
                 initialValues={fields}
                 validation={validate}
               />            
+            </div>
+            <div>
+              Display: {this.state.product.display ? <FontAwesomeIcon onClick={() => this.changeBoolean("display", !this.state.product.display)} icon={faEye} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("display", !this.state.product.display)} icon={faEyeSlash} /> }
+            </div>
+            <div>
+              Home Page Promotion: {this.state.product.home_promotion ? <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEye} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEyeSlash} /> }
             </div>
 
             {

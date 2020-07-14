@@ -6,12 +6,13 @@ import loadingGif from '../../../images/pizzaLoading.gif'
 import Form from "../../shared/Form"
 import  { shippingStatusDropDown }  from "./formFeilds"  
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helperFunctions"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
-
+import AddressDisplay from "../shared/AddressDisplay"
+import "./order.scss"
 class OrderPage extends Component {
   constructor(props) {
     super()
@@ -111,7 +112,6 @@ class OrderPage extends Component {
     let order = this.state.order
     order.admin_notes = form_value
     let { data } = await updateOrder(order)
-    console.log(data)
     this.setState({ order: data })
   }
 
@@ -123,9 +123,11 @@ class OrderPage extends Component {
         {
           this.state.order !== null ?
             <>
-              <Link style={{ marginLeft: "2em" }} to="/admin/orders">Back To Orders</Link>
-
-              <h3 className="underline">Order Data</h3>
+              <div className="relative" style={{ marginTop: "2em" }}>
+                <Link className="absolute" style={{ left: "0px" }} to="/admin/orders"><FontAwesomeIcon icon={faArrowLeft}/></Link>
+                <h3 className="underline text-align-center">Order Data</h3>
+              </div>
+   
 
               <div>Order ID: {order._id}</div>
               <div>Status: {order.status}</div>
@@ -133,10 +135,9 @@ class OrderPage extends Component {
               <div>Date Placed: {order.date_placed}</div>
               <div>Total: {order.total}</div>
 
-              <h5>Notes</h5>
               <Form 
                 onSubmit={this.handleNoteSubmission}
-                submitButtonText={"Update"}
+                submitButtonText={"Update Notes"}
                 formFields={[
                   { label: 'Notes', name: 'admin_notes', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
                 ]} 
@@ -144,18 +145,18 @@ class OrderPage extends Component {
                 initialValues={{"admin_notes": order.admin_notes}}
               />
 
-              <h3 className="underline">Shipment Data</h3>
+              <h3 className="underline text-align-center">Shipment Data</h3>
         
-              <h5>Line Items</h5>
+              <h4>Line Items</h4>
               <div className="flex flex-wrap">
                 {order.shipment.line_items.map((item) => {
                   return (
                     <div className="margin-s-h">
                       <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
                       <div>Product name: {item.product_name}</div>
-                      <div>quantity: {item.quantity}</div>
                       <div>product price: ${item.product_price}</div>
-                      <div>item total: {item.quantity * item.product_price}</div>
+                      <div>quantity: {item.quantity}</div>
+                      <div>item total: ${item.quantity * item.product_price}</div>
                     </div>
                   )
                 })}       
@@ -163,33 +164,38 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <h5>Shipping Rate</h5>
+              <h4>Shipping Rate</h4>
               <div>Method: {order.shipment.chosen_rate.shipping_method}</div>
               <div>Rate: {order.shipment.chosen_rate.shipping_rate}</div>
               <div>Cost: {order.shipment.chosen_rate.cost}</div>
 
               <hr/>
 
-              <div className="flex">
-                <div className="flex-basis-50-50">
-                  <h5>Shipping Address</h5>
-                  <AddressDisplay 
-                    showEditIndicator={this.showEditIndicator} 
-                    showEditModal={this.showEditModal}
-                    address={order.shipment.shipping_address} 
-                    bill_or_ship={"shipping"} 
-                    propertyToEdit={this.state.propertyToEdit}
-                  />
+              <div className="flex flex_column">
+                <div>
+                  <h4>Shipping Address</h4>
+                  <div style={{ marginLeft: "1em" }}>
+                    <AddressDisplay 
+                      showEditIndicator={this.showEditIndicator} 
+                      showEditModal={this.showEditModal}
+                      address={order.shipment.shipping_address} 
+                      bill_or_ship={"shipping"} 
+                      propertyToEdit={this.state.propertyToEdit}
+                    />
+                  </div>
                 </div>
-                <div className="flex-basis-50-50">
-                  <h5>Billing Address</h5>
-                  <AddressDisplay 
-                    showEditIndicator={this.showEditIndicator} 
-                    showEditModal={this.showEditModal}
-                    address={order.shipment.billing_address} 
-                    bill_or_ship={"billing"} 
-                    propertyToEdit={this.state.propertyToEdit}
-                  />
+                <div>
+                  <h4>Billing Address</h4>
+                  <div style={{ marginLeft: "1em" }}>
+                    <AddressDisplay 
+                      showEditIndicator={this.showEditIndicator} 
+                      showEditModal={this.showEditModal}
+                      address={order.shipment.billing_address} 
+                      bill_or_ship={"billing"} 
+                      propertyToEdit={this.state.propertyToEdit}
+                    />
+                  </div>
+
                 </div>
               </div>
 
@@ -231,106 +237,6 @@ class OrderPage extends Component {
   }
 }
 
-const AddressDisplay = ({ address, showEditIndicator, propertyToEdit, showEditModal, bill_or_ship }) => {
-  // logic stuff up here
-
-  // TO DO
-  // MAP THROUGH ADDRESS OBJECT TO CLEAN UP
-  return (
-    <div>
-      <div>
-        First Name: <a className="inline" onClick={() => showEditIndicator("first_name", bill_or_ship)} >{address.first_name}</a>
-        {propertyToEdit && propertyToEdit.property === "first_name" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("first_name", address)} 
-          />
-        }
-      </div>
-      <div>
-        Last Name: <a className="inline" onClick={() => showEditIndicator("last_name", bill_or_ship)} >{address.last_name}</a>
-        {propertyToEdit && propertyToEdit.property === "last_name" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("last_name", address)} 
-          />
-        }
-      </div>
-      <div>
-        Company: <a className="inline" onClick={() => showEditIndicator("company", bill_or_ship)} >{address.company}</a>
-        {propertyToEdit && propertyToEdit.property === "company" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("company", address)} 
-          />
-        }
-      </div>
-      <div>
-        Address One: <a className="inline" onClick={() => showEditIndicator("street_address_1", bill_or_ship)} >{address.street_address_1}</a>
-        {propertyToEdit && propertyToEdit.property === "street_address_1" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("street_address_1", address)} 
-          />
-        }
-      </div>
-      <div>
-        Address Two: <a className="inline" onClick={() => showEditIndicator("street_address_2", bill_or_ship)} >{address.street_address_2}</a>
-        {propertyToEdit && propertyToEdit.property === "street_address_2" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("street_address_2", address)} 
-          />
-        }
-      </div>
-      <div>
-        City: <a className="inline" onClick={() => showEditIndicator("city", bill_or_ship)} >{address.city}</a>
-        {propertyToEdit && propertyToEdit.property === "city" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("city", address)} 
-          />
-        }
-      </div>
-      <div>
-        State: <a className="inline" onClick={() => showEditIndicator("state", bill_or_ship)} >{address.state}</a>
-        {propertyToEdit && propertyToEdit.property === "state" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("state", address)} 
-          />
-        }
-      </div>
-      <div>
-        Zip Code: <a className="inline" onClick={() => showEditIndicator("zip_code", bill_or_ship)} >{address.zip_code}</a>
-        {propertyToEdit && propertyToEdit.property === "zip_code" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("zip_code", address)} 
-          />
-        }
-      </div>
-      <div>
-        Phone Number: <a className="inline" onClick={() => showEditIndicator("phone_number", bill_or_ship)} >{address.phone_number}</a>
-        {propertyToEdit && propertyToEdit.property === "phone_number" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("phone_number", address)} 
-          />
-        }
-      </div>
-      <div>
-        Country: <a className="inline" onClick={() => showEditIndicator("country", bill_or_ship)} >{address.country}</a>
-        {propertyToEdit && propertyToEdit.property === "country" && propertyToEdit.bill_or_ship === bill_or_ship && 
-          <FontAwesomeIcon 
-            icon={faEdit} 
-            onClick={() => showEditModal("country", address)} 
-          />
-        }
-      </div>
-    </div>
-  )
-}
 
 
 function mapStateToProps({ form }) {

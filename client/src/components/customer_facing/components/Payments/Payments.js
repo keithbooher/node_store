@@ -141,7 +141,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
     chooseTab('review')
 
   }
-  console.log(auth)
+  console.log(cart)
 
   return (
       <StripeCheckout

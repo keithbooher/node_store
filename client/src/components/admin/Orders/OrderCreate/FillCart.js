@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "../../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyname, createCart } from "../../../../utils/API"
+import { getProductbyname, createCart, updateCart } from "../../../../utils/API"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSearch, faTrash, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 class FillCart extends Component {
   constructor(props) {
     super()
@@ -11,7 +13,15 @@ class FillCart extends Component {
     this.proceedToNextStep = this.proceedToNextStep.bind(this)
     this.state = {
       line_items: [],
-      result: null
+      result: null,
+      update: false
+    }
+  }
+
+  componentDidMount() {
+    console.log(this.props.cart)
+    if (this.props.cart.line_items && this.props.cart.line_items.length > 0) {
+      this.setState({ line_items: this.props.cart.line_items, update: true })
     }
   }
 
@@ -49,6 +59,29 @@ class FillCart extends Component {
     this.setState({ line_items })
   }
 
+  removeLineItem(item) {
+    let line_items = this.state.line_items.filter((line_item) => line_item._product_id !== item._product_id)
+    this.setState({ line_items })
+  }
+
+  adjustLineItemQuantity(item, up_or_down) {
+    let line_items = this.state.line_items
+    
+    line_items.map((line_item) => {
+      if (line_item._product_id === item._product_id) {
+        if (up_or_down === "down") {
+          console.log(line_item)
+          line_item.quantity = line_item.quantity - 1
+        } else {
+          console.log(line_item)
+          line_item.quantity = line_item.quantity + 1
+        }
+      }
+    })
+    line_items = line_items.filter((line_item) => line_item.quantity !== 0)
+    this.setState({ line_items })
+  }
+
   renderTotal() {
     let total = 0
     this.state.line_items.forEach((item) => {
@@ -65,24 +98,31 @@ class FillCart extends Component {
     
 
     // MAKE API REQUEST TO MAKE THIS AN OFFICIAL CART IN DB
-
-    let { data } = await createCart(cart)
+    let request
+    if (this.state.update) {
+      request = await updateCart(cart)
+    } else {
+      request = await createCart(cart)
+    }
 
     let state = {
-      cart: data,
+      cart: request.data,
       step: "shipping",
     }
     this.props.topStateSetter(state)
     this.props.dispatch(reset("product_order_search_form"))
+
+    this.props.refProp.current.scrollTo(0, 0);
   }
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: "30px" }}>
         <div>Search For Line Items to add to the cart</div>
           <Form 
             onSubmit={this.handleSearchSubmit}
-            submitButtonText={"Search For product"}
+            submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+            searchButton={true}
             formFields={[
               { label: 'Search For Product By Name', name: 'name', noValueError: 'You must provide an name' },
             ]}
@@ -105,24 +145,35 @@ class FillCart extends Component {
                 <div  className="flex flex-wrap space-evenly">
                   {this.state.line_items.map((item) => {
                     return (
-                        <div style={{ flexBasis: "25%" }}>
-                          <div><img style={{ height: "150px", width: "auto" }} src={item.image}/></div>
+                        <div className="relative padding-m background-color-grey-2" style={{ flexBasis: "100%", marginTop: "10px" }}>
+                          <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute" style={{ right: "0px", top: "0px" }} icon={faTrash} />
+                          <div><img style={{ height: "auto", width: "98%" }} src={item.image}/></div>
                           <div>{item.product_name}</div>
-                          <div>${item.product_price}</div>
-                          <div>{item.quantity}</div>
+                          <div>Price: ${item.product_price}</div>
+                          <div>
+                            Quantity: {item.quantity}
+                            <FontAwesomeIcon 
+                              onClick={() => this.adjustLineItemQuantity(item, "up")} 
+                              icon={faCaretUp} 
+                            />
+                            <FontAwesomeIcon 
+                              onClick={() => this.adjustLineItemQuantity(item, "down")} 
+                              icon={faCaretDown} 
+                            />
+                          </div>
                         </div>
                       )
                     })
                   }
                 </div>
               </div>
-              <div>
+              <div className="margin-s-v">
                 Total: ${this.renderTotal()}
               </div>
             </>
           }
 
-          <button onClick={this.proceedToNextStep}>Move to shipping step</button>
+         {this.state.line_items.length > 0 && <button onClick={this.proceedToNextStep}>Move to shipping step</button>}
       </div>
     )
   }

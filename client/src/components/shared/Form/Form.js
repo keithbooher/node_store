@@ -10,7 +10,7 @@ import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
 import PhotoUpload from "./PhotoUpload"
-
+import "./form.scss"
 class Form extends Component {
   constructor(props) {
     super()
@@ -56,6 +56,7 @@ class Form extends Component {
                 name={name}
                 change={this.props.change}
                 display={display}
+                searchButton={this.props.searchButton}
               />
     })
   }
@@ -63,11 +64,16 @@ class Form extends Component {
   render() {
     return (
       <div>
-        <form style={{ marginTop: '10px' }} id={!this.props.formId ? "general_form_id" : this.props.formId} onSubmit={(e) => this.props.handleSubmit(e)}>
+        <form 
+          style={{ marginTop: '10px' }} 
+          className={`${this.props.searchButton ? "flex space-evenly" : ""}`} 
+          id={!this.props.formId ? "general_form_id" : this.props.formId} 
+          onSubmit={(e) => this.props.handleSubmit(e)}
+        >
           {this.renderFields()}
          
           {!this.props.submitButton ?
-            <button type="submit" className="teal btn-flat right white-text">
+            <button type="submit" className={`teal btn-flat right white-text ${this.props.searchButton ? "search_button" : ""}`}>
               <i className="material-icons right">{this.props.submitButtonText}</i>
             </button> 
           : this.props.submitButton}

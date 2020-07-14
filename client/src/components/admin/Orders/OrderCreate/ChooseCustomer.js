@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import AddressCard from '../../../customer_facing/components/AddressCard'
 import { addressFormFields, validate } from './formFields'
-import { runInThisContext } from 'vm';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
 class ChooseCustomer extends Component {
   constructor(props) {
@@ -69,6 +70,9 @@ class ChooseCustomer extends Component {
     this.props.dispatch(reset("billing_admin_checkout_form"))
     this.props.dispatch(reset("shipping_admin_checkout_form"))
     this.props.dispatch(reset("guest_email_admin_checkout_form"))
+
+    this.props.refProp.current.scrollTo(0, 0);
+
   }
 
   billing_initial_values() {
@@ -87,16 +91,50 @@ class ChooseCustomer extends Component {
       show_address_form = true
     }
     return (
-      <div>
-        <div style={ this.state.customer_type === "guest" ? { color: "blue" } : {}} onClick={() => this.setState({ customer_type: "guest" })}>Guest</div>
-        <div style={ this.state.customer_type === "customer" ? { color: "blue" } : {}} onClick={() => this.setState({ customer_type: "customer" })}>Customer</div>
+      <>
+        {this.state.customer_type === null && 
+          <div className="h-100">
+            <div  
+              onClick={() => this.setState({ customer_type: "guest" })}
+              className="h-40 flex flex_column justify-center"
+            >
+              <h1 className="text-align-center">Guest</h1>
+            </div>
+            <div 
+              onClick={() => this.setState({ customer_type: "customer" })}
+              className="h-40 flex flex_column justify-center"
+            >
+              <h1 className="text-align-center">Customer</h1>
+            </div>
+          </div>
+        }
+
+        {this.state.customer_type !== null && 
+          <div className="flex flex_column" style={{ marginTop: "30px" }}>
+            <div 
+              style={ this.state.customer_type === "guest" ? { color: "blue" } : {}} 
+              onClick={() => this.setState({ customer_type: "guest" })}
+            >
+              Guest
+            </div>
+            <div 
+              style={ this.state.customer_type === "customer" ? { color: "blue" } : {}} 
+              onClick={() => this.setState({ customer_type: "customer" })}
+            >
+              Customer
+            </div>
+          </div>
+        }
+
+
 
         {this.state.customer_type === "customer" &&
           <div className="margin-m-v">
             <div>Choose Customer</div>
             <Form 
               onSubmit={this.handleSearchSubmit}
-              submitButtonText={"Search For Customer"}
+              submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+              searchButton={true}
               formFields={[
                 { label: 'Search For User By Email', name: 'email', noValueError: 'You must provide an email' },
               ]}
@@ -153,7 +191,7 @@ class ChooseCustomer extends Component {
           </div>
 
         }
-      </div>
+      </>
     )
   }
 }

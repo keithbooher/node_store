@@ -59,12 +59,46 @@ class CheckoutContainer extends Component  {
     this.setState({ new_order: order, chosen_tab: "review", current_cart: cart })
   }
 
+  paramterChooseTab(chosen_tab) {
+    if (chosen_tab === "shipping") {
+      if (this.state.current_cart.shipping_address && this.state.current_cart.billing_address) {
+        this.setState({ chosen_tab: chosen_tab  })
+      }
+    } else if (chosen_tab === "payment") {
+      if (this.state.current_cart.shipping_address && 
+            this.state.current_cart.billing_address &&
+              this.state.current_cart.chosen_rate ) {
+        this.setState({ chosen_tab: chosen_tab  })
+      }
+    }
+  }
+
   
   render() {
-
+    console.log(this.state)
+    let address_boolean = false
+    let shipping_boolean = false
+    let payment_boolean = false
+    switch (this.state.chosen_tab) {
+      case "address":
+      case "shipping":
+        address_boolean = true
+        break;
+      case "payment":
+        address_boolean = true        
+        shipping_boolean = true        
+        break;
+      case "review":
+        address_boolean = true        
+        shipping_boolean = true
+        payment_boolean = true
+        break;
+      default:
+        break;
+    }
     return (
       <>
-        <h4 onClick={() => this.chooseTab('address')}>Address</h4>
+        <h2 className={`underline ${address_boolean && "color-grey-4"}`} onClick={() => this.chooseTab('address')}>Address</h2>
         {this.state.chosen_tab === 'address' ? 
           <AddressPanel 
             chooseTab={this.chooseTab}
@@ -73,7 +107,7 @@ class CheckoutContainer extends Component  {
             />
         : ""}
 
-        <h4 onClick={() => this.chooseTab('shipping')}>Shipping</h4>
+        <h2 className={`underline ${shipping_boolean && "color-grey-4"}`} onClick={() => this.paramterChooseTab('shipping')}>Shipping</h2>
         {this.state.chosen_tab === 'shipping' ? 
           <ShippingPanel
             cart={this.state.current_cart}
@@ -82,7 +116,7 @@ class CheckoutContainer extends Component  {
             />
         : ""}
 
-        <h4 onClick={() => this.chooseTab('payment')}>Payment</h4>
+        <h2  className={`underline ${payment_boolean && "color-grey-4"}`} onClick={() => this.paramterChooseTab('payment')}>Payment</h2>
         {this.state.chosen_tab === "payment" ? 
           <PaymentPanel 
             cart={this.state.current_cart}
@@ -95,7 +129,7 @@ class CheckoutContainer extends Component  {
             />
           : ""}
 
-        <h4>Review</h4>
+        <h2 className="underline">Review</h2>
         {this.state.new_order !== null ? this.state.chosen_tab === "review" ?
           <ReviewPanel 
             convertCart={this.props.convertCart} 

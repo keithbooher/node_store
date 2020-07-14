@@ -19,6 +19,10 @@ export const allInStockProducts = () => {
   return axios.get('/api/products/all/instock')
 }
 
+export const homeProducts = () => {
+  return axios.get('/api/products/home_promotion')
+}
+
 export const paginatedProducts = (last_product_id, direction) => {
   return axios.get('/api/products/all/' + last_product_id + "/" + direction)
 }

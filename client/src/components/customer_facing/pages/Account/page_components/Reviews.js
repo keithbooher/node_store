@@ -13,7 +13,8 @@ class Reviews extends Component {
       reviews: [],
       order: null,
       page_number: 1,
-      line_item_id: null
+      line_item_id: null,
+      retry: 0
     }
   }
   
@@ -25,8 +26,10 @@ class Reviews extends Component {
   }
   
   async componentDidUpdate() {
-    const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
-    this.setState({ reviews: reviews.data })
+    if (this.state.reviews.length === 0 && this.state.retry < 3) {
+      const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
+      this.setState({ reviews: reviews.data, retry: this.state.retry + 1 })
+    }
   }
 
   async getOrder(order_id, line_item_id) {

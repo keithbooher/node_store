@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import ChooseCustomer from './ChooseCustomer'
-import FillCart from "./FillCart"
 import { getShippingMethodForCheckout } from "../../../../utils/API"
 import { updateCart } from "../../../../utils/API"
 
@@ -38,17 +36,18 @@ class ShippingOptions extends Component {
       step: "payment",
     }
     this.props.topStateSetter(state)
+
+    this.props.refProp.current.scrollTo(0, 0);
   }
 
   render() {
-    console.log(this.state)
     console.log(this.props)
     return (
       <div>
         {this.state.shipping_method !== null && 
           <>
-            <h3>Shipping Method: {this.state.shipping_method.name}</h3>
-            <h5>Shipping Rates</h5>
+            <h1>Shipping Method: {this.state.shipping_method.name}</h1>
+            <h2>Shipping Rates</h2>
             {this.state.shipping_method.shipping_rates.map((rate) => {
               let active = false
               if (this.state.chosen_rate && this.state.chosen_rate._id === rate._id ) {
@@ -57,11 +56,11 @@ class ShippingOptions extends Component {
               return (
                 <div 
                   style={active ? {color: "blue"} : {}} 
-                  className={"clickable background-color-grey-2"} 
+                  className={"padding-s margin-xs-v background-color-grey-2"} 
                   onClick={() => this.chooseRate(rate)}
                 >
-                  <div>{rate.name}</div>
-                  <div>${rate.effector}</div>
+                  <h2 className="padding-s">{rate.name}</h2>
+                  <h3 className="padding-s">${rate.effector}</h3>
                 </div>
               )
             })}
@@ -69,7 +68,7 @@ class ShippingOptions extends Component {
         }
 
         {this.state.chosen_rate && 
-          <button onClick={this.proceedToNextStep}>Proceed to Payment</button>
+          <button className="margin-s-v" onClick={this.proceedToNextStep}>Proceed to Payment</button>
         }
       </div>
     )

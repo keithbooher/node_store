@@ -24,6 +24,9 @@ export const validate = (values, props) => {
     if (name === "street_address_2") {
       return
     }
+    if (name === "company") {
+      return
+    }
     
     if(!values[name]) {
       errors[name] = noValueError

@@ -17,6 +17,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons"
 class Admin extends Component {
   constructor(props) {
     super()
+    this.myRef = React.createRef();
+
     this.sidebar = this.sidebar.bind(this)
     this.state = {
       sidebar: null
@@ -59,16 +61,16 @@ class Admin extends Component {
     return (
       <div id="admin_container" className={`${container_class}`}>
         <div className={`relative border padding-s admin_sidebar ${sidebar_class}`} style={{ backgroundColor: '#22292F' }}>
-          <Sidebar sidebar={this.sidebar}/>
+          <Sidebar setSidebar={this.sidebar} sidebar={this.state.sidebar} />
         </div>
 
-        <div className={`relative color-black h-100 overflow-scroll`} style={{ backgroundColor: "#F1F5F8"  }}>
-          <div className="padding-s">
-            <FontAwesomeIcon className={`${content_class}`} onClick={this.sidebar} style={{ position: "fixed", top: "5px", left: "5px" }} icon={faBars} />
+        <div ref={this.myRef} className={`relative color-black h-100 overflow-scroll`} style={{ backgroundColor: "#F1F5F8"  }}>
+          <div className="padding-s h-100">
+            <FontAwesomeIcon id="sidebar_bars" className={`${content_class}`} onClick={this.sidebar} style={{ position: "fixed", top: "5px", left: "5px" }} icon={faBars} />
             <Route exact path="/admin" component={AdminDashboard} />
             <Route exact path="/admin/orders" component={Orders} />
             <Route exact path="/admin/orders/:id" component={OrderPage} />
-            <Route exact path="/admin/order/create" component={OrderCreate} />
+            <Route exact path="/admin/order/create" component={() => <OrderCreate refProp={this.myRef} />} />
             <Route path="/admin/products" component={Products} />
             <Route exact path="/admin/categories" component={Categories} />
             {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
