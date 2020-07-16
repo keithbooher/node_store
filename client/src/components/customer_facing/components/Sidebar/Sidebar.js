@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { sidebarBoolean } from "../../../../actions"
 import { getSidebarCategories } from "../../../../utils/API"
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
 
 import "./sidebar.scss"
 
@@ -39,8 +41,11 @@ class Sidebar extends Component  {
     })
     return categories.map((category) => {
       return (
-        <div style={ parent_cat === null ? null : { marginLeft: "10px" } }>
-          <Link to={`/shop/${category.path_name}`}>{category.name}</Link>
+        <div style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "10px", maxWidth: "8em" } }>
+          <div>
+            <FontAwesomeIcon className="inline color-white" style={{ marginRight: "5px" }} icon={faCaretRight} />
+            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline" to={`/shop/${category.path_name}`}>{category.name}</Link>
+          </div>
           <div>{this.renderCategories(category)}</div>
         </div>
       )
@@ -65,9 +70,13 @@ class Sidebar extends Component  {
 
     return (
       <>
-        <div ref={node => this.node = node} className={"sidebar " + sidebar_class}>
-          <div style={{ color: "black" }} className="padding-s">
+        <div ref={node => this.node = node} className={"flex flex_column space-between sidebar-background-color sidebar " + sidebar_class}>
+          <div className="padding-m font-size-20">
+            <h3 className="margin-top-none">Categories</h3>
             {this.renderCategories(null)}
+          </div>
+          <div className="padding-m">
+            <Link to="/faq">FAQ</Link>
           </div>
         </div>
       </>

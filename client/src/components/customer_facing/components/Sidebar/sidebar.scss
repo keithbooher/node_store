@@ -5,7 +5,7 @@
 /* Standard syntax */
 @keyframes width_open {
   from {
-    left: -14em;;
+    left: -250px;
   }
   to {
     left: 0px;
@@ -18,7 +18,7 @@
     left: 0px;
   }
   to {
-    left: -14em;;
+    left: -250px;
   }
 }
 
@@ -26,9 +26,8 @@
   position: fixed;
   top: 0;
   bottom: 0px;
-  left: -14em;;
-  background-color: white;
-  width: 14em;;
+  left: -250px;
+  width: 250px;
   z-index: 9999;
 }
 

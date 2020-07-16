@@ -2,3 +2,22 @@
   height: auto;
   padding: 15px;
 }
+
+.nav {
+  height: 50px;
+  width: 100%;
+}
+
+.scrolling_down_nav {
+  position: fixed;
+  top: -50px;
+}
+
+.scrolling_up_nav {
+  position: fixed;
+  top: 0px;
+}
+
+.top_of_page_nav {
+  position: relative;
+}

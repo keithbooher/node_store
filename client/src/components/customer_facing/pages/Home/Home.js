@@ -17,29 +17,7 @@ class Home extends Component  {
 
   async componentDidMount() {
     let { data } = await homeProducts()
-    console.log(data)
-    if (!this.isEven(data.length)) {
-      data.push({
-        _id: "",
-        name: "",
-        // NEVER EVER EVER EVER CHANGE PATH NAME
-        path_name: "",
-        short_description: "",
-        inventory_count: 0,
-        price: 0,
-        categories: [],
-        image: "",
-      })
-      console.log(data)
-    }
     this.setState({ products: data })
-  }
-
-  isEven(value){
-      if (value%2 == 0)
-          return true;
-      else
-          return false;
   }
 
   renderProducts() {

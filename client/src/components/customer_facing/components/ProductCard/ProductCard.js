@@ -101,18 +101,18 @@ class ProductCard extends Component {
         {this.props.auth !== null ? 
           <div className={`card margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
-              <div className="margin-m-v">
+              <div style={{ marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>
                 <h2 className="inline card-title margin-s-h"><Link className="inline" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
               <div className="flex flex_column justify-center background-color-black card_image_container">
                 <img className="margin-auto-h card_image" src={product.image} />
               </div>
-              <p>{product.short_description}</p>
+              <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
             </div>
             <div>
               <div className="inline relative" style={{ marginRight: "20px" }}>
-                <div className="font-size-1-5 inline">x{this.state.quantity}</div>
+                <div className="font-size-1-5 inline">x {this.state.quantity}</div>
                 <div className="inline-flex flex_column absolute" style={{ right: "-15px", top: "-9px", fontSize: "20px" }}>
                   <FontAwesomeIcon style={{ marginBottom: "-8px" }} onClick={() => this.setQuantity("up")} icon={faCaretUp} />
                   <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faCaretDown} />
