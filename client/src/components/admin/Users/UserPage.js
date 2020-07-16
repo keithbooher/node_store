@@ -63,7 +63,7 @@ class Users extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: "30px" }}>
         {this.state.user &&
           <div>
             <div>Email: {this.state.user.email}</div>

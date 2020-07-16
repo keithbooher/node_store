@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
 const AddressSchema = require('./Address')
+const PaymentSchema = require('./Address')
 
 const userSchema = new Schema({
   googleId: String,
@@ -24,7 +25,7 @@ const userSchema = new Schema({
   },
   billing_address: [AddressSchema],
   shipping_address: [AddressSchema],
-  joined_on: Date,
+  joined_on: Date
 })
 
 mongoose.model('users', userSchema)

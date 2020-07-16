@@ -2,12 +2,17 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons"
 import './productCard.css.scss'
 
 class ProductCard extends Component {
   constructor(props) {
     super()
-    this.state = {quantity: 1}
+    this.setQuantity = this.setQuantity.bind(this)
+    this.state = {
+      quantity: 1
+    }
   }
 
   addToCart() {
@@ -79,22 +84,42 @@ class ProductCard extends Component {
     //////
   }
 
+  setQuantity(direction) {
+    if (direction === "up") {
+      this.setState({ quantity: this.state.quantity + 1 })
+    } else {
+      if (this.state.quantity === 1) return
+      this.setState({ quantity: this.state.quantity - 1 })
+    }
+  }
+
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
     return (
       <>
         {this.props.auth !== null ? 
-          <div className="card margin-s-v">
+          <div className={`card margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
-              <h3 className="card-title"><Link to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h3>
-              <div className="flex flex_column justify-center background-color-black" style={{ height: "14em" }}>
-                <img className="h-auto margin-auto-h" style={{ width: "98%" }} src={product.image} />
+              <div className="margin-m-v">
+                <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>
+                <h2 className="inline card-title margin-s-h"><Link className="inline" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
-              <p>{product.description}</p>
+              <div className="flex flex_column justify-center background-color-black card_image_container">
+                <img className="margin-auto-h card_image" src={product.image} />
+              </div>
+              <p>{product.short_description}</p>
             </div>
-            <div className="margin-m-v">${product.price}</div>
-            <button onClick={this.addToCart.bind(this)}>Add To Cart</button>
+            <div>
+              <div className="inline relative" style={{ marginRight: "20px" }}>
+                <div className="font-size-1-5 inline">x{this.state.quantity}</div>
+                <div className="inline-flex flex_column absolute" style={{ right: "-15px", top: "-9px", fontSize: "20px" }}>
+                  <FontAwesomeIcon style={{ marginBottom: "-8px" }} onClick={() => this.setQuantity("up")} icon={faCaretUp} />
+                  <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faCaretDown} />
+                </div>
+              </div>
+              <button className="inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
+            </div>
             {/* add quantity buttons */}
           </div>
         : <img className="loadingGif" src={loadingGif} /> }

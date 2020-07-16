@@ -98,7 +98,7 @@ class Orders extends Component {
     let status = this.props.form.order_status_dropdown.values.order_status.value
 
     let dropDownField = this.state.dropDownField
-    dropDownField[0].options = dropDownField[0].options.map((option) => {
+    let options = dropDownField[0].options.map((option) => {
       if (option.name === status) {
         return (
           {
@@ -117,6 +117,10 @@ class Orders extends Component {
         )
       }
     })
+    console.log(options)
+
+    dropDownField.options = options
+
     const orders = await paginatedOrders("none", "none", status).then(res => res.data)
     this.setState({ orders, status_filter: status, dropDownField })
   }
@@ -162,6 +166,7 @@ class Orders extends Component {
   }
 
   render() {
+    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {

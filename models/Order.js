@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
-const LineItemSchema = require('./LineItem')
-const AddressSchema = require('./Address')
 
 const orderSchema = new Schema({
   sub_total: Number,
@@ -21,7 +19,8 @@ const orderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'shipments'
   },
-  admin_notes: String
+  admin_notes: String,
+  payment: Object
 })
 
 mongoose.model('orders', orderSchema)

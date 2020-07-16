@@ -1,0 +1,6 @@
+.home_product_container {
+  flex-direction: column;
+  @media screen and (min-width: 550px) {
+    flex-direction: row;
+  }
+}

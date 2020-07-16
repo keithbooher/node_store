@@ -10,7 +10,7 @@ class AdminDashboard extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: "30px" }}>
         Admin Dash        
       </div>
     )

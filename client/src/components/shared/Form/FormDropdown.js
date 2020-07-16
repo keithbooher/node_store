@@ -31,7 +31,7 @@ class FormDropdown extends Component {
           valueField="value"
           textField="name"
           onChange={e => this.onChange(e)}
-          defaultValue={this.default_option}
+          defaultValue={this.state.chosen}
           value={this.state.chosen}
         />
       </div>

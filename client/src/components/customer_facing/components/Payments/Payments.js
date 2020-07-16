@@ -55,6 +55,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
   const [cookies, setCookie, removeCookie] = useCookies(null)
 
   const someFunction = async (token) => {
+    console.log(token)
     await handleToken(token)
 
     // TO DO
@@ -125,7 +126,8 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       shipment: new_shipment.data._id,
       date_placed: date,
       _user_id: cart._user_id,
-      email: auth.email ? auth.email : cart.email
+      email: auth.email ? auth.email : cart.email,
+      payment: token
     }
     const new_order = await createOrder(order)
 

@@ -3,7 +3,7 @@ import { updateProduct, getAllCategories, getProductInfo } from '../../../utils/
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimesCircle, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
+import { faTimesCircle, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -127,13 +127,12 @@ class ProductForm extends Component {
 
 
   render() {
-    console.log(this.state.product)
     let fields = injectCategoryDataIntoFormFields(this.state.categories, this.state.product)
     return (
       <>
        {this.state.categories.length > 0 ?
           <>
-            <Link to="/admin/products"><FontAwesomeIcon icon={faTimesCircle} />Back to products</Link>
+            <Link to="/admin/products"><FontAwesomeIcon icon={faArrowAltCircleLeft} />Back to products</Link>
 
               <img style={{ height: "200px", width: "auto" }} src={this.state.product.image ? this.state.product.image : ""} />
               <ReactFilestack

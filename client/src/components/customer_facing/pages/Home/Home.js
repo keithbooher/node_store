@@ -16,8 +16,30 @@ class Home extends Component  {
   }
 
   async componentDidMount() {
-    const { data } = await homeProducts()
+    let { data } = await homeProducts()
+    console.log(data)
+    if (!this.isEven(data.length)) {
+      data.push({
+        _id: "",
+        name: "",
+        // NEVER EVER EVER EVER CHANGE PATH NAME
+        path_name: "",
+        short_description: "",
+        inventory_count: 0,
+        price: 0,
+        categories: [],
+        image: "",
+      })
+      console.log(data)
+    }
     this.setState({ products: data })
+  }
+
+  isEven(value){
+      if (value%2 == 0)
+          return true;
+      else
+          return false;
   }
 
   renderProducts() {
@@ -29,7 +51,7 @@ class Home extends Component  {
                 user={this.props.auth} 
                 product={product} 
                 cart={this.props.cart} 
-                category_path_name={product.categories[0].path_name} 
+                category_path_name={product.categories.length > 1 ? product.categories[0].path_name : ""} 
               />
             </>
     })
@@ -40,7 +62,7 @@ class Home extends Component  {
     return (
       <div>
         <h1>Node Store</h1>
-        <div className="flex flex-wrap space-evenly">
+        <div className="flex flex-wrap space-evenly home_product_container">
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>
