@@ -30,8 +30,9 @@
 
 .card_image {
   height: auto;
-  width: 100%;
+  width: auto;
   max-height: 20em;
+  max-width: 100%;
   @media screen and (min-width: 550px) {
     max-height: 15em;
   }
