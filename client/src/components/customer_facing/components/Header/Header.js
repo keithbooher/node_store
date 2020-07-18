@@ -12,7 +12,7 @@ class Header extends Component {
   constructor(props) {
     super()
     this.sidebar = this.sidebar.bind(this)
-    this.tracker = this.tracker.bind(this)
+    this.scrollTracker = this.scrollTracker.bind(this)
     this.state = {
       offsetTop: 0,
       scrollClass: "top_of_page_nav"
@@ -20,40 +20,42 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    this.tracker()
-  }
-
-  tracker() {
     const self = this
     const root = document.getElementById("root")
+    root.addEventListener('scroll', () => this.scrollTracker(self, root))
+  }
 
-    root.addEventListener('scroll', function(e) {
-      let scrollClass
-      if (root.scrollTop < 15 && self.state.offsetTop > root.scrollTop) {  
-        // if getting really clsoe to the top, assign relative positioning
-        scrollClass = "top_of_page_nav"
-      }else if (root.scrollTop > 50 && self.state.offsetTop < root.scrollTop) {
-        // hide nav if scrolling down
-        // but only after its left the screen
-        // fixed position top: -50px
-        scrollClass = "scrolling_down_nav"
-      } else if (self.state.offsetTop > root.scrollTop) {
-        // show nav if scrolling up
-        // fixed position top: 0
-        scrollClass = "scrolling_up_nav"
-      } else {
-        // apply regular stylings
-        scrollClass = "top_of_page_nav"
-      }
-      self.setState({ offsetTop: root.scrollTop, scrollClass })
-    })
+  componentWillUnmount() {
+    const self = this
+    const root = document.getElementById("root")
+    root.removeEventListener('scroll', () => this.scrollTracker(self, root))
+  }
+
+  scrollTracker(self, root) {
+    let scrollClass
+    if (root.scrollTop < 15 && self.state.offsetTop > root.scrollTop) {  
+      // if getting really clsoe to the top, assign relative positioning
+      scrollClass = "top_of_page_nav"
+    }else if (root.scrollTop > 50 && self.state.offsetTop < root.scrollTop) {
+      // hide nav if scrolling down
+      // but only after its left the screen
+      // fixed position top: -50px
+      scrollClass = "scrolling_down_nav"
+    } else if (self.state.offsetTop > root.scrollTop) {
+      // show nav if scrolling up
+      // fixed position top: 0
+      scrollClass = "scrolling_up_nav"
+    } else {
+      // apply regular stylings
+      scrollClass = "top_of_page_nav"
+    }
+    self.setState({ offsetTop: root.scrollTop, scrollClass })
   }
 
   sidebar() {
     this.props.sidebarBoolean(!this.props.sidebar)
   }
   render() {
-    console.log(this.state.offsetTop)
     return (
     <div className={`${this.state.scrollClass} nav header_container`}>
       <div className="header_container flex space-between theme-nav-background-color">

@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
 import { convertCart, updateUser, handleToken } from '../../../../actions'
-import { createOrder, createShipment, updateCart } from '../../../../utils/API'
+import { createOrder, createShipment, updateCart, checkInventory } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
+import OutOfStock from "./OutOfStock"
 
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
@@ -53,8 +54,20 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
 
 const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
+  const [outOfStockMessage, setOutOfStock] = useState(null)
 
   const someFunction = async (token) => {
+    // First check if products are still available to buy
+    const inventoryCheck = await checkInventory(cart.line_items)
+    console.log("inventory check", inventoryCheck)
+
+    if (inventoryCheck.data.length > 0) {
+      // setState for low inventory error and then remove from cart
+      console.log('oops, low inventory')
+      setOutOfStock(inventoryCheck.data)
+      return 
+    }
+
     console.log(token)
     await handleToken(token)
 
@@ -143,9 +156,9 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
     chooseTab('review')
 
   }
-  console.log(cart)
 
   return (
+    <>
       <StripeCheckout
         name="Node Store"
         description='Purchase your order at ______' 
@@ -157,6 +170,8 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       >
         <button className="btn">Pay For Order</button>
       </StripeCheckout>
+      {outOfStockMessage && <OutOfStock cart={cart} out_of_stock_items={outOfStockMessage} />}
+  </>
   )
 
 }

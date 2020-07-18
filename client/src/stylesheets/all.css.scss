@@ -51,3 +51,7 @@
 * {
   font-family:  'Raleway', sans-serif;
 }
+
+input[type=number]::-webkit-inner-spin-button {
+  opacity: 1
+}

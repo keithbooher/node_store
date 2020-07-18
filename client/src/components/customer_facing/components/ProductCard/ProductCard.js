@@ -4,6 +4,8 @@ import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFun
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons"
+import { NumberPicker } from 'react-widgets/lib/NumberPicker'
+import 'react-widgets/dist/css/react-widgets.css'
 import './productCard.css.scss'
 
 class ProductCard extends Component {
@@ -84,13 +86,8 @@ class ProductCard extends Component {
     //////
   }
 
-  setQuantity(direction) {
-    if (direction === "up") {
-      this.setState({ quantity: this.state.quantity + 1 })
-    } else {
-      if (this.state.quantity === 1) return
-      this.setState({ quantity: this.state.quantity - 1 })
-    }
+  setQuantity(e) {
+    this.setState({ quantity: e.target.value })
   }
 
   render() {
@@ -109,18 +106,12 @@ class ProductCard extends Component {
                 <img className="margin-auto-h card_image" src={product.image} />
               </div>
               <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
+              <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>
             </div>
             <div>
-              <div className="inline relative" style={{ marginRight: "20px" }}>
-                <div className="font-size-1-5 inline">x {this.state.quantity}</div>
-                <div className="inline-flex flex_column absolute" style={{ right: "-15px", top: "-9px", fontSize: "20px" }}>
-                  <FontAwesomeIcon style={{ marginBottom: "-8px" }} onClick={() => this.setQuantity("up")} icon={faCaretUp} />
-                  <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faCaretDown} />
-                </div>
-              </div>
+              <input style={{ marginRight: "5px", width: "60px" }} className="inline" type="number" onChange={this.setQuantity} defaultValue={1} min="1" max={product.inventory_count}/>
               <button className="inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
             </div>
-            {/* add quantity buttons */}
           </div>
         : <img className="loadingGif" src={loadingGif} /> }
     </>

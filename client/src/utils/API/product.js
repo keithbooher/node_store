@@ -40,3 +40,10 @@ export const updateProduct = (product) => {
 export const lastProduct = () => {
   return axios.get(`/api/products/last_product`)
 }
+
+export const checkInventory = (line_items) => {
+  const data = {
+    line_items
+  }
+  return axios.post(`/api/products/inventory_check`, data)
+}
