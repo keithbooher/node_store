@@ -10,6 +10,7 @@ import Account from '../../customer_facing/pages/Account'
 import Header from '../../customer_facing/components/Header'
 import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
+import OrderPage from "../../customer_facing/pages/Order"
 import "./customer.scss"
 
 
@@ -47,6 +48,7 @@ class CustomerFacing extends Component {
             <Route exact path="/shop/:category/:product" component={Product} />
             <Route exact path="/checkout" component={Checkout} />
             <Route path="/account" component={Account} />
+            <Route path="/order/:id" component={OrderPage} />
             <Route path="/faq" component={FAQ} />
           </div>
         </div>

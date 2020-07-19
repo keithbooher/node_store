@@ -71,7 +71,7 @@ const Categories = ({ form, dispatch }) => {
   const renderCategories = (parent_category) => {
     let category_set = parent_category !== null ? parent_category.sub_categories : categories
     return (
-      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category) => {
+      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category, index) => {
         let up_disable = false
         let down_disable = false
         const sorted_cats = category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
@@ -83,7 +83,7 @@ const Categories = ({ form, dispatch }) => {
         }
 
         return (
-          <div style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
+          <div key={index} style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
             <div 
               className="margin-xs-v color-white flex space-between" 
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 

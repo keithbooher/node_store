@@ -7,7 +7,7 @@ import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
 import OutOfStock from "./OutOfStock"
-
+import ReviewItems from "./ReviewItems"
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
   // Check if any of the customers past billing addresses match the one thats submitted
@@ -63,12 +63,10 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
 
     if (inventoryCheck.data.length > 0) {
       // setState for low inventory error and then remove from cart
-      console.log('oops, low inventory')
       setOutOfStock(inventoryCheck.data)
       return 
     }
 
-    console.log(token)
     await handleToken(token)
 
     // TO DO
@@ -159,6 +157,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
 
   return (
     <>
+      {auth && <ReviewItems cart={cart} customer={auth} />}
       <StripeCheckout
         name="Node Store"
         description='Purchase your order at ______' 
@@ -168,7 +167,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
         email={null}
       >
-        <button className="btn">Pay For Order</button>
+        <button className="btn margin-s-v">Pay For Order</button>
       </StripeCheckout>
       {outOfStockMessage && <OutOfStock cart={cart} out_of_stock_items={outOfStockMessage} />}
   </>
@@ -183,3 +182,6 @@ function mapStateToProps({ auth }) {
 const actions = { reset, convertCart, updateUser, handleToken }
 
 export default connect(mapStateToProps, actions)(Payments)
+
+
+

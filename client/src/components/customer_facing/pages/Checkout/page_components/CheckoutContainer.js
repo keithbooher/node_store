@@ -20,6 +20,7 @@ class CheckoutContainer extends Component  {
     this.state = {
       chosen_tab: 'address',
       new_order: null,
+      new_shipment: null,
       current_cart: null
     }
   }
@@ -55,8 +56,8 @@ class CheckoutContainer extends Component  {
     this.setState({ chosen_tab: chosen_tab  })
   }
 
-  makeNewOrderAvailable(order, cart) {
-    this.setState({ new_order: order, chosen_tab: "review", current_cart: cart })
+  makeNewOrderAvailable(order, cart, shipment) {
+    this.setState({ new_order: order, chosen_tab: "review", current_cart: cart, new_shipment: shipment })
   }
 
   paramterChooseTab(chosen_tab) {
@@ -134,6 +135,7 @@ class CheckoutContainer extends Component  {
           <ReviewPanel 
             convertCart={this.props.convertCart} 
             new_order={this.state.new_order} 
+            new_shipment={this.state.new_shipment} 
             chooseTab={this.chooseTab} 
             chosen_tab={this.state.chosen_tab} 
             />

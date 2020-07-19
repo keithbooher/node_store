@@ -173,7 +173,7 @@ class FillCart extends Component {
             </>
           }
 
-         {this.state.line_items.length > 0 && <button onClick={this.proceedToNextStep}>Move to shipping step</button>}
+         {this.state.line_items.length > 0 && <button onClick={this.proceedToNextStep} className="margin-s-v">Move to shipping step</button>}
       </div>
     )
   }

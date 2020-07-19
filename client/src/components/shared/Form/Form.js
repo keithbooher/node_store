@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
-import { reduxForm, Field, FieldArray, SubmissionError } from 'redux-form'
+import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
 import FormMultiSelect from './FormMultiSelect'

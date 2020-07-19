@@ -4,6 +4,9 @@ import loadingGif from '../../../../../images/pizzaLoading.gif'
 import { getUsersOrders } from "../../../../../utils/API"
 import LineItem from "../../../../shared/LineItem"
 import PageChanger from "../../../../shared/PageChanger"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom"
 class Orders extends Component {
   constructor(props) {
     super()
@@ -37,11 +40,12 @@ class Orders extends Component {
   }
 
   orderData(order) {
+    var date = order.date_placed.split("T")[0]
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
         <div>{order.shipment.line_items.map((line_item) => <LineItem order_id={order._id} line_item={line_item} />)}</div>
         <div>Total: ${order.total}</div>
-        <div>Date Place: ${order.date_placed}</div>
+        <div>Date Place: {date}</div>
       </div>
     )
   }
@@ -53,9 +57,15 @@ class Orders extends Component {
 
   renderOrders() {
     return this.state.orders.map((order) => {
+      var date = order.date_placed.split("T")[0]
       return (
         <div>
-          <div className="clickable margin-xs-v" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} onClick={ () => this.setOrder(order) }>{order._id}----{order.date_placed}</div>
+          <div className="flex space-between margin-xs-v padding-s" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>        
+            <FontAwesomeIcon icon={faCaretDown} onClick={ () => this.setOrder(order) } />
+            <div>{"..." + order._id.substr(order._id.length - 8)}</div>
+            <div>{date}</div>
+            <Link to={`/order/${order._id}`}><FontAwesomeIcon icon={faExternalLinkAlt} onClick={ () => this.setOrder(order) } /></Link>
+          </div>
           { this.state.chosen_order === order._id ? this.orderData(order) : ""}
         </div>
       )
