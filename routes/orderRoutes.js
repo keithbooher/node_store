@@ -1,19 +1,18 @@
 const requireLogin = require('../middlewares/requireLogin')
 const mongoose = require('mongoose')
 const Order = mongoose.model('orders')
+const Shipment = mongoose.model('shipments')
 
 module.exports = app => {
   app.post('/api/order/create', async (req, res) => {  
     const order = new Order(req.body.order)
     try {
       await order.save()
-      console.log(order)
       res.send(order)
     } catch (err) {
       res.status(422).send(err)
     }
   })
-
 
   app.put('/api/order/update', requireLogin, async (req, res) => {  
     let order = req.body.order
@@ -34,12 +33,10 @@ module.exports = app => {
     res.send(order)
   })
 
-
   app.get('/api/orders/last_order', async (req, res) => {    
     const product = await Order.findOne({ deleted_at: null })
     res.send(product)
   })
-
 
   app.get('/api/orders/:last_order_id/:direction/:status', requireLogin, async (req, res) => {
     let last_order_id = req.params.last_order_id

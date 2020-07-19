@@ -57,6 +57,27 @@ module.exports = app => {
     res.send(product)
   })
 
+  app.post('/api/products/inventory_check', async (req, res) => {   
+    let line_items = req.body.line_items
+    checkLineItems(line_items).then(data => {
+      res.send(data)
+    })
+  })
+
+  const checkLineItems = async (line_items) => {
+    return Promise.all(line_items.map(line_item => {
+      return checkProduct(line_item)
+    }))
+  }
+
+  const checkProduct = async (line_item) => {
+    const product = await Product.findOne({ _id: line_item._product_id })
+    if (parseInt(product.inventory_count) < 1) {
+      return line_item
+    }
+    return
+  }
+
   app.get('/api/products/all/:last_product_id/:direction', async (req, res) => {   
     let last_product_id = req.params.last_product_id
     let direction = req.params.direction
