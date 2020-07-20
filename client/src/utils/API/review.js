@@ -21,3 +21,13 @@ export const getUsersReviews = (user_id, last_review_id, direction) => {
 export const getAllReviews = (last_review_id, direction, approval) => {
     return axios.get('/api/reviews/' + last_review_id + "/" + direction + "/" + approval) 
 }
+
+export const getProductsReviews = (_product_id, direction, last_review_id) => {
+    return axios.get('/api/reviews/product/' + _product_id + "/" + direction + "/" + last_review_id) 
+}
+
+export const lastReview = (_product_id) => {
+    return axios.get('/api/review/product/last_review/' + _product_id) 
+}
+
+

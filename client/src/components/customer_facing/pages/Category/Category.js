@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getCategoryProducts } from "../../../../utils/API";
+import { getCategoryProducts } from "../../../../utils/API"
 import ProductCard from '../../components/ProductCard'
 import { capitalizeFirsts } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { sidebarBoolean } from "../../../../actions"
+import { Link } from "react-router-dom"
 class Category extends Component  {
   constructor(props) {
     super()
@@ -16,14 +19,15 @@ class Category extends Component  {
     }
   }
   async componentDidMount() {
+    console.log('hi')
     const category_products = await getCategoryProducts(this.routeParamCategory)
     this.setState({ 
-      products: category_products.data.products, 
+      products: category_products.data.products.reverse(), 
       category_data: category_products.data.category 
     })
   }
   renderProductCards() {
-    return this.state.products.reverse().map(product => {
+    return this.state.products.map(product => {
       return <ProductCard 
                 product={product} 
                 category_path_name={this.props.match.params.category}
@@ -41,6 +45,7 @@ class Category extends Component  {
   }
   
   render() {
+    console.log(this.props)
     if(this.props.match.params.category !== this.state.current_cat) {
       this.getProducts()
     }
@@ -48,7 +53,8 @@ class Category extends Component  {
       <div>
         { this.state.products !== null ?
           <>
-            <h1>
+            <Link className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</Link>
+            <h1 style={{ marginTop: "0px" }}>
               {capitalizeFirsts(this.state.category_data.name)}
             </h1>
             <div className="flex flex-wrap">
@@ -62,8 +68,10 @@ class Category extends Component  {
 }
 
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, sidebar }) {
+  return { auth, sidebar }
 }
 
-export default connect(mapStateToProps, null)(Category)
+const actions = { sidebarBoolean }
+
+export default connect(mapStateToProps, actions)(Category)

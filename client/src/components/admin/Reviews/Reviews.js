@@ -85,10 +85,10 @@ class Reviews extends Component {
             <div>First Name: {review.first_name}</div>
             <div>Rating: {review.rating}</div>
             <div>description: {review.description}</div>
-            <div>line_item: {review.line_item.product_name}</div>
-            <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>
+            {review.line_item && <div>line_item: {review.line_item.product_name}</div>}
+            {review._order_id && <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>}
             {this.state.order !== null ?
-              this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id? 
+              this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id ? 
               <div className="padding-m">
                 <div>Review Number: {this.state.order._id}</div>
                 <div>Date Placed: {this.state.order.date_placed}</div>

@@ -148,7 +148,7 @@ class ProductCard extends Component {
               <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
               <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>
             </div>
-            <div>
+            <div className="flex">
               <div className="flex">
                 <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
                 <div className="flex flex_column">
@@ -156,7 +156,7 @@ class ProductCard extends Component {
                   <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faChevronDown} />
                 </div>
               </div>
-              <button className="inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
+              <button className="margin-s-h inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
             </div>
           </div>
         : <img className="loadingGif" src={loadingGif} /> }

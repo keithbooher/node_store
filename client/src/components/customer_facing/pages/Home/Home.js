@@ -29,7 +29,7 @@ class Home extends Component  {
                 user={this.props.auth} 
                 product={product} 
                 cart={this.props.cart} 
-                category_path_name={product.categories.length > 1 ? product.categories[0].path_name : ""} 
+                category_path_name={product.categories.length > 0 ? product.categories[0].path_name : ""} 
               />
             </>
     })

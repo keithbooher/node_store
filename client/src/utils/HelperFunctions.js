@@ -26,3 +26,6 @@ export const updatedFormFields = (fields, objectToPullDataFrom) => {
 export const productNameToPathName = (string) => {
   return string.toLowerCase().replace(/ /g,"_");
 }
+export const productPathNameToName = (string) => {
+  return string.toLowerCase().replace(/_/g," ");
+}

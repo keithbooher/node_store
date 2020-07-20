@@ -3,7 +3,7 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 const LineItemSchema = require('./LineItem')
 
 // Used for both store and product reviews. 
-// If a review has no line items it can be assumed that its a store review
+// If a review has no line items it can be assumed that its a store review or product review
 const reviewSchema = new Schema({
   rating: Number,
   description: String,
@@ -11,6 +11,7 @@ const reviewSchema = new Schema({
   first_name: String,
   _user_id: String,
   _order_id: String,
+  _product_id: String,
   created_at: Date,
   approved: {
     type: Boolean,
