@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import StripeCheckout from 'react-stripe-checkout'
 import { updateCart, createOrder, createShipment, updateOrder } from "../../../../utils/API"
 import { handleToken } from '../../../../actions'
-import AddressDisplay from "../../shared/AddressDisplay"
+import AddressDisplayEdit from "../../shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
@@ -159,7 +159,7 @@ class Payment extends Component {
           </div>
 
           <h3>Billing Address</h3>
-          <AddressDisplay 
+          <AddressDisplayEdit 
             showEditIndicator={this.showEditIndicator} 
             showEditModal={this.showEditModal}
             address={this.props.cart.billing_address} 
@@ -168,7 +168,7 @@ class Payment extends Component {
           />
 
           <h3>Shipping Address</h3>
-          <AddressDisplay 
+          <AddressDisplayEdit 
             showEditIndicator={this.showEditIndicator} 
             showEditModal={this.showEditModal}
             address={this.props.cart.shipping_address} 

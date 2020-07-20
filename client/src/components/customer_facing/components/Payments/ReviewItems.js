@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateCart } from "../../../../utils/API"
-import AddressDisplay from "../../../admin/shared/AddressDisplay"
+import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
@@ -91,7 +91,7 @@ class ReviewItems extends Component {
           </div>
 
           <h3>Billing Address</h3>
-          <AddressDisplay 
+          <AddressDisplayEdit 
             showEditIndicator={this.showEditIndicator} 
             showEditModal={this.showEditModal}
             address={this.props.cart.billing_address} 
@@ -100,7 +100,7 @@ class ReviewItems extends Component {
           />
 
           <h3>Shipping Address</h3>
-          <AddressDisplay 
+          <AddressDisplayEdit 
             showEditIndicator={this.showEditIndicator} 
             showEditModal={this.showEditModal}
             address={this.props.cart.shipping_address} 

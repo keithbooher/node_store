@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import LineItem from "../../shared/LineItem"
 import { Link } from "react-router-dom"
 
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { getCategoryProducts } from "../../../../utils/API";
 import ProductCard from '../../components/ProductCard'
 import { capitalizeFirsts } from '../../../../utils/helperFunctions'
@@ -23,7 +24,11 @@ class Category extends Component  {
   }
   renderProductCards() {
     return this.state.products.reverse().map(product => {
-      return <ProductCard product={product} category_path_name={this.props.match.params.category}/>
+      return <ProductCard 
+                product={product} 
+                category_path_name={this.props.match.params.category}
+                user={this.props.auth}
+              />
     })
   }
   async getProducts() {
@@ -56,4 +61,9 @@ class Category extends Component  {
   }
 }
 
-export default Category
+
+function mapStateToProps({ auth }) {
+  return { auth }
+}
+
+export default connect(mapStateToProps, null)(Category)

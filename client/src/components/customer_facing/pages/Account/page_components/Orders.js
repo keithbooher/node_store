@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import { getUsersOrders } from "../../../../../utils/API"
-import LineItem from "../../../../shared/LineItem"
+import LeaveReview from "../../../../shared/LeaveReview"
 import PageChanger from "../../../../shared/PageChanger"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -34,16 +34,27 @@ class Orders extends Component {
   }
 
   setOrder(order) {
-    this.setState({ 
-      chosen_order: order._id,
-    })
+    if (order._id === this.state.chosen_order) {
+      this.setState({ chosen_order: null })
+    } else {
+      this.setState({ chosen_order: order._id })
+    }
   }
 
   orderData(order) {
     var date = order.date_placed.split("T")[0]
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>{order.shipment.line_items.map((line_item) => <LineItem order_id={order._id} line_item={line_item} />)}</div>
+        <div>
+          {order.shipment && order.shipment.line_items.map((line_item) => {
+            return (
+              <div className="flex">
+                <div>{line_item.product_name}</div>
+                <LeaveReview order_id={order._id} line_item={line_item} />
+              </div>
+            )
+          })}
+        </div>
         <div>Total: ${order.total}</div>
         <div>Date Place: {date}</div>
       </div>

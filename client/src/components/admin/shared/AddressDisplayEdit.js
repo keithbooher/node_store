@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 
-const AddressDisplay = ({ address, showEditIndicator, propertyToEdit, showEditModal, bill_or_ship }) => {
+const AddressDisplayEdit = ({ address, showEditIndicator, propertyToEdit, showEditModal, bill_or_ship }) => {
   // logic stuff up here
 
   // TO DO
@@ -103,4 +103,4 @@ const AddressDisplay = ({ address, showEditIndicator, propertyToEdit, showEditMo
   )
 }
 
-export default AddressDisplay
+export default AddressDisplayEdit

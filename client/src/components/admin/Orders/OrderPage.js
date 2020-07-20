@@ -11,7 +11,7 @@ import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helperFunctions"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
-import AddressDisplay from "../shared/AddressDisplay"
+import AddressDisplayEdit from "../shared/AddressDisplayEdit"
 import "./order.scss"
 class OrderPage extends Component {
   constructor(props) {
@@ -175,7 +175,7 @@ class OrderPage extends Component {
                 <div>
                   <h4>Shipping Address</h4>
                   <div style={{ marginLeft: "1em" }}>
-                    <AddressDisplay 
+                    <AddressDisplayEdit 
                       showEditIndicator={this.showEditIndicator} 
                       showEditModal={this.showEditModal}
                       address={order.shipment.shipping_address} 
@@ -187,7 +187,7 @@ class OrderPage extends Component {
                 <div>
                   <h4>Billing Address</h4>
                   <div style={{ marginLeft: "1em" }}>
-                    <AddressDisplay 
+                    <AddressDisplayEdit 
                       showEditIndicator={this.showEditIndicator} 
                       showEditModal={this.showEditModal}
                       address={order.shipment.billing_address} 

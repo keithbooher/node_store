@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Form from "./Form"
+import FormModal from "./Form/FormModal"
 import { updatedFormFields } from "../../utils/helperFunctions"
 import { checkIfReviewExists, submitReview, updateReview } from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../utils/validations"
-class LineItem extends Component {
+class LeaveReview extends Component {
   constructor(props) {
     super()
     this.fields = [
@@ -36,8 +36,7 @@ class LineItem extends Component {
     this.setState({ show_review: !this.state.show_review, submitted: false })
   }
 
-  submitReview(e) {
-    e.preventDefault()
+  submitReview() {
     const form_values = this.props.form[`line_item_${this.props.line_item._id}_review_form`].values
     const line_item = this.props.line_item
     const review = {
@@ -52,8 +51,7 @@ class LineItem extends Component {
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
 
-  submitReviewUpdate(e) {
-    e.preventDefault()
+  submitReviewUpdate() {
     const form_values = this.props.form[`line_item_${this.props.line_item._id}_review_form`].values
     let review = this.state.reviewed
     review.description = form_values.description
@@ -71,15 +69,15 @@ class LineItem extends Component {
     return (
     <div>
       <div className="flex">
-        <div>{item.product_name}</div>
         <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
+        {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       </div>
-      {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       {this.state.show_review ?
         <div>
-          <Form 
+          <FormModal 
             onSubmit={this.state.reviewed !== "" ? this.submitReviewUpdate : this.submitReview }
             submitButtonText={"Submit"}
+            cancel={() => this.setState({ show_review: false })}
             formFields={this.fields} 
             form={`line_item_${item._id}_review_form`}
             initialValues={this.state.reviewed === "" ? {} : this.review_initial_values()}
@@ -96,4 +94,4 @@ function mapStateToProps({ form, auth }) {
   return { form, auth }
 }
 
-export default connect(mapStateToProps, null)(LineItem)
+export default connect(mapStateToProps, null)(LeaveReview)

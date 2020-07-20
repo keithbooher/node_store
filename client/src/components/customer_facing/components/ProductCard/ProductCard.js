@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons"
-import { NumberPicker } from 'react-widgets/lib/NumberPicker'
+import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import 'react-widgets/dist/css/react-widgets.css'
 import './productCard.css.scss'
 
@@ -12,6 +11,7 @@ class ProductCard extends Component {
   constructor(props) {
     super()
     this.setQuantity = this.setQuantity.bind(this)
+    this.checkInventoryCount = this.checkInventoryCount.bind(this)
     this.state = {
       quantity: 1
     }
@@ -86,8 +86,48 @@ class ProductCard extends Component {
     //////
   }
 
-  setQuantity(e) {
+  setQuantity(direction) {
+    let quantity
+    if(direction === "up") {
+      quantity = this.state.quantity + 1
+    } else {
+      quantity = this.state.quantity - 1
+    }
+    
+    if (quantity > this.props.product.inventory_count || quantity < 1) {
+      return
+    }
+    this.setState({ quantity })
+  }
+
+  checkInventoryCount(e) {
+    let value = e.target.value
+    if (value > this.props.product.inventory_count) {
+      value = this.props.product.inventory_count
+      this.setState({ quantity: value })
+    }
+    if (value === "") {
+      value = 1
+      this.setState({ quantity: value })
+    }
+  }
+
+  onChangeInput(e) {
     this.setState({ quantity: e.target.value })
+  }
+
+  preventAlpha(e) {
+    if (!this.isNumber(e)) {
+      e.preventDefault();
+    }
+  }
+
+  isNumber(e) {
+    var charCode = e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
   }
 
   render() {
@@ -109,7 +149,13 @@ class ProductCard extends Component {
               <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>
             </div>
             <div>
-              <input style={{ marginRight: "5px", width: "60px" }} className="inline" type="number" onChange={this.setQuantity} defaultValue={1} min="1" max={product.inventory_count}/>
+              <div className="flex">
+                <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
+                <div className="flex flex_column">
+                  <FontAwesomeIcon onClick={() => this.setQuantity("up")} icon={faChevronUp} />
+                  <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faChevronDown} />
+                </div>
+              </div>
               <button className="inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
             </div>
           </div>
