@@ -82,12 +82,12 @@ module.exports = app => {
     let direction = req.params.direction
     let reviews
     if (last_review_id === 'none') {
-      reviews = await Review.find({ _user_id: user_id }).sort({_id:-1}).limit(2)
+      reviews = await Review.find({ _user_id: user_id }).sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
-        reviews = await Review.find({_id: {$lt: last_review_id}, _user_id: user_id}).sort({_id:-1}).limit(2)
+        reviews = await Review.find({_id: {$lt: last_review_id}, _user_id: user_id}).sort({_id:-1}).limit(10)
       } else {
-        reviews = await Review.find({_id: {$gt: last_review_id}, _user_id: user_id}).limit(2)
+        reviews = await Review.find({_id: {$gt: last_review_id}, _user_id: user_id}).limit(10)
         reviews = reviews.reverse()
       }
     }

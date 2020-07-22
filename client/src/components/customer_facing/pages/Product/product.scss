@@ -1,0 +1,54 @@
+#reviews_Container {
+
+}
+
+#more_reviews {
+
+}
+
+
+
+
+
+
+
+
+
+.show_reviews {
+  height: auto;
+}
+
+.hide_reviews {
+  height: 450px;
+  overflow: hidden;
+
+}
+
+.show_reviews_message {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX((-50%));
+  color: black;
+  width: 80%;
+  text-align: center;
+  z-index: 10;
+  align-items: center;
+}
+
+.hide_reviews_message {
+  display: none;
+}
+
+.hide_cover_reviews {
+  display: none;
+}
+
+.show_cover_reviews {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background-image: linear-gradient(transparent, lightgrey 95%);
+}

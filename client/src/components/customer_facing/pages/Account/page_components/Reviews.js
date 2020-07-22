@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUsersReviews, getOrder } from "../../../../../utils/API"
+import { getUsersReviews, getOrder, lastUserReview } from "../../../../../utils/API"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import PageChanger from "../../../../shared/PageChanger"
 
@@ -14,21 +14,24 @@ class Reviews extends Component {
       order: null,
       page_number: 1,
       line_item_id: null,
-      retry: 0
+      retry: 0,
+      last_review: null
     }
   }
   
   async componentDidMount() {
     if (this.props.auth) {
       const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
-      this.setState({ reviews: reviews.data })
+      const lastReview = await lastUserReview(this.props.auth._id)
+      this.setState({ reviews: reviews.data, last_review: lastReview.data })
     }
   }
   
   async componentDidUpdate() {
     if (this.state.reviews.length === 0 && this.state.retry < 3) {
+      const lastReview = await lastUserReview(this.props.auth._id)
       const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
-      this.setState({ reviews: reviews.data, retry: this.state.retry + 1 })
+      this.setState({ reviews: reviews.data, retry: this.state.retry + 1, last_review: lastReview.data })
     }
   }
 
@@ -58,7 +61,7 @@ class Reviews extends Component {
           <div>First Name: {review.first_name}</div>
           <div>Rating: {review.rating}</div>
           <div>description: {review.description}</div>
-          <div>line_item: {review.line_item.product_name}</div>
+          {review.line_item && <div>line_item: {review.line_item.product_name}</div>}
           <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>
           {this.state.order !== null ?
             this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id? 
@@ -75,6 +78,13 @@ class Reviews extends Component {
   }
 
   render() {
+    let lastPossibleItem = false
+    if (this.state.reviews.length > 0 && this.state.last_review) {
+      if (this.state.reviews[this.state.reviews.length - 1]._id === this.state.last_review._id) {
+        lastPossibleItem = true
+      }
+    }
+    console.log(this.state)
     return (
       <div>
         {this.state.reviews.length !== 0 ?
@@ -84,7 +94,12 @@ class Reviews extends Component {
         : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
 
 
-        <PageChanger page_number={this.state.page_number} list_items={this.state.reviews} requestMore={this.changePage} />
+        <PageChanger 
+          page_number={this.state.page_number} 
+          list_items={this.state.reviews} 
+          requestMore={this.changePage}
+          lastPossibleItem={lastPossibleItem} 
+        />
       </div>
     )
   }

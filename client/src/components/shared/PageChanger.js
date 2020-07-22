@@ -28,9 +28,9 @@ class PageChanger extends Component {
       false
     return (
       <div className="flex">
-        <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "black" }} className="bare_button">Previous</button>
+        <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
         <div className="font-size-1-3">{this.props.page_number}</div>
-        <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "black" }} className="bare_button">Next</button>
+        <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
       </div>
     )
   }

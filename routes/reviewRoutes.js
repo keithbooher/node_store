@@ -19,9 +19,10 @@ module.exports = app => {
     res.send(updated_review)
   })
 
-  app.get('/api/review/product/last_review/:product_id', async (req, res) => {  
-    const _product_id = req.params.product_id
-    const review = await Review.findOne({ _product_id })
+  app.get('/api/review/user/last_review/:user_id', async (req, res) => {  
+    const _user_id = req.params.user_id
+    const review = await Review.findOne({ _user_id })
+    console.log(review)
     res.send(review)
   })
 
@@ -35,9 +36,12 @@ module.exports = app => {
     const product_id = req.params.product_id
     const direction = req.params.direction
     const last_review_id = req.params.last_review_id
-    let reviews = await Review.find({ _product_id: product_id, approved: true })
+    console.log(product_id)
+    console.log(direction)
+    console.log(last_review_id)
+    let reviews
     if (last_review_id === 'none') {
-      reviews = await Review.find({ approved: true }).sort({_id:-1}).limit(10)
+      reviews = await Review.find({ _product_id: product_id, approved: true }).sort({_id:-1}).limit(10)
     } else {
       if (direction === "next") {
         reviews = await Review.find({_id: {$lt: last_review_id}, _product_id: product_id, approved: true}).sort({_id:-1}).limit(10)
@@ -46,6 +50,7 @@ module.exports = app => {
         reviews = reviews.reverse()
       }
     }
+    // console.log(reviews)
     res.send(reviews)
   })
 

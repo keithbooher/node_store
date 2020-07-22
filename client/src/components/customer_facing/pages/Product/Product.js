@@ -10,7 +10,8 @@ import Form from "../../../shared/Form"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import { reset } from "redux-form"
 import PageChanger from "../../../shared/PageChanger"
-
+import Modal from "../../../shared/Modal"
+import "./product.scss"
 class Product extends Component  {
   constructor(props) {
     super()
@@ -20,6 +21,7 @@ class Product extends Component  {
     this.checkInventoryCount = this.checkInventoryCount.bind(this)
     this.submitReviewForm = this.submitReviewForm.bind(this)
     this.changePage = this.changePage.bind(this)
+    this.showReviews = this.showReviews.bind(this)
 
     this.state = {
         product: null,
@@ -27,7 +29,8 @@ class Product extends Component  {
         reviews: [],
         thanksModal: false,
         page_number: 1,
-        last_review: null
+        last_review: null,
+        showMoreReviews: false
     }
   }
   async componentDidMount() {
@@ -173,8 +176,11 @@ class Product extends Component  {
     this.setState({ reviews, page_number: this.state.page_number + page_increment })
   }
 
+  showReviews() {
+    this.setState({ showMoreReviews: !this.state.showMoreReviews })
+  }
+
   render() {
-    console.log(this.props)
     let product = this.state.product
     let lastPossibleItem = false
     if (this.state.reviews.length > 0 && this.state.last_review) {
@@ -218,15 +224,21 @@ class Product extends Component  {
               </div>
               <div>
                 <h2>Reviews</h2>
-                <div>A bunch of reviews</div>
-                {this.state.reviews.map((review, index) => {
-                  return (
-                    <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
-                      <h4>Rating: {review.rating}<div style={{ fontSize: "12px" }}>{review.first_name}</div></h4>
-                      <p>{review.description}</p>
-                    </div>
-                  )
-                })}
+                <div id="reviews_Container" className={`relative ${this.state.showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                  {this.state.reviews.map((review, index) => {
+                    return (
+                      <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
+                        <h4>Rating: {review.rating}<div style={{ fontSize: "12px" }}>{review.first_name}</div></h4>
+                        <p>{review.description}</p>
+                      </div>
+                    )
+                  })}
+                  <div onClick={this.showReviews} id="more_reviews" className={`flex flex_column  ${this.state.showMoreReviews ? `hide_reviews_message` : `show_reviews_message`}`}>
+                    <h3 className="magrin-bottom-none">More Reviews</h3>
+                    <FontAwesomeIcon style={{ fontSize: "25px" }} icon={faChevronDown} />
+                  </div>
+                  <div className={this.state.showMoreReviews ? `hide_cover_reviews` : `show_cover_reviews`}></div>
+                </div>
                 <PageChanger 
                   page_number={this.state.page_number} 
                   list_items={this.state.reviews} 
@@ -248,6 +260,13 @@ class Product extends Component  {
                     />
                   </>
                 : "Sign in to leave a review"}
+                {this.state.thanksModal && 
+                  <Modal cancel={() => this.setState({ thanksModal: false })} >
+                    <h2>Thanks for submitting your review!</h2>
+                    <h3>We value your feedback</h3>
+                    <button onClick={() => this.setState({ thanksModal: false })}>Okay</button>
+                  </Modal>
+                }
               </div>
             </div>
           </div>
