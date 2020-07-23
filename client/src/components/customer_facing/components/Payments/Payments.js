@@ -6,7 +6,7 @@ import { createOrder, createShipment, updateCart, checkInventory } from '../../.
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
-import OutOfStock from "./OutOfStock"
+import LowInventory from "../../../shared/LowInventory"
 import ReviewItems from "./ReviewItems"
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
@@ -155,6 +155,8 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
 
   }
 
+  const out_of_stock_title = "Sorry, these products are now low on stock and their quantities have been updated to reflect the most current available inventory count"
+
   return (
     <>
       {auth && <ReviewItems cart={cart} customer={auth} />}
@@ -169,7 +171,15 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       >
         <button className="btn margin-s-v">Pay For Order</button>
       </StripeCheckout>
-      {outOfStockMessage && <OutOfStock cart={cart} out_of_stock_items={outOfStockMessage} />}
+      {outOfStockMessage && 
+        <LowInventory 
+          adjust={true} 
+          title={out_of_stock_title} 
+          cart={cart} 
+          out_of_stock_items={outOfStockMessage} 
+          cancel={() => setOutOfStock(null)}
+        />
+      }
   </>
   )
 

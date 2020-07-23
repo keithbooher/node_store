@@ -4,7 +4,7 @@ import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFun
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
-import 'react-widgets/dist/css/react-widgets.css'
+import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
 
 class ProductCard extends Component {
@@ -13,15 +13,17 @@ class ProductCard extends Component {
     this.setQuantity = this.setQuantity.bind(this)
     this.checkInventoryCount = this.checkInventoryCount.bind(this)
     this.state = {
-      quantity: 1
+      quantity: 1,
+      exceededInventory: null
     }
   }
 
   addToCart() {
     let product = this.props.product
-    let cart = this.props.cart
+    let cart = {...this.props.cart}
     const quantity = this.state.quantity
     const user_id = this.props.user._id
+    let exceededInventory = false
 
     let sub_total, create_boolean
 
@@ -55,12 +57,26 @@ class ProductCard extends Component {
         }
       }
 
-      // IF FOUND, SIMPLY UPDATE THE LINE ITEM QUANTITY. OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
+      // IF FOUND, SIMPLY UPDATE THE LINE ITEM QUANTITY. 
+      // Also, check to see if this exceeds current inventory
+      // OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
       if(found === true) {
-        cart.line_items.forEach((line_item) => {
+        cart.line_items = cart.line_items.map((line_item) => {
           if(product._id === line_item._product_id) {
-            line_item.quantity += quantity
+            const sum = line_item.quantity + quantity
+            if (sum > this.props.product.inventory_count) {
+              exceededInventory = {
+                inventory_count: this.props.product.inventory_count,
+                quantity_added: quantity,
+                current_line_item_quantity: line_item.quantity,
+                difference: this.props.product.inventory_count - line_item.quantity
+              }
+              line_item.quantity = this.props.product.inventory_count
+            } else {
+              line_item.quantity += quantity
+            }
           }
+          return line_item
         })
       } else {
         let line_item = {
@@ -82,6 +98,9 @@ class ProductCard extends Component {
       this.props.createCart(cart)
     } else {
       this.props.updateCart(cart)
+    }
+    if (exceededInventory) {
+      this.setState({ exceededInventory })
     }
     //////
   }
@@ -113,7 +132,14 @@ class ProductCard extends Component {
   }
 
   onChangeInput(e) {
-    this.setState({ quantity: e.target.value })
+    console.log(e.target.value)
+    console.log(parseInt(e.target.value))
+    let value = parseInt(e.target.value)
+
+    if (e.target.value === "") {
+      value = ""
+    }
+    this.setState({ quantity: value })
   }
 
   preventAlpha(e) {
@@ -131,6 +157,7 @@ class ProductCard extends Component {
   }
 
   render() {
+    console.log(this.state.quantity)
     let product = this.props.product
     let category_path_name = this.props.category_path_name
     return (
@@ -160,6 +187,18 @@ class ProductCard extends Component {
             </div>
           </div>
         : <img className="loadingGif" src={loadingGif} /> }
+
+        {this.state.exceededInventory && 
+          <Modal cancel={() => this.setState({ exceededInventory: false })}>
+            <div>
+              You tried to add {this.state.exceededInventory.quantity_added} 
+              but that exceeds the current inventory stock of {this.state.exceededInventory.inventory_count}
+            </div>
+            <div>
+              Therefore, {this.state.exceededInventory.difference} {this.props.product.name}{this.state.exceededInventory.difference > 1 && "'s"} were added.
+            </div>
+          </Modal>
+        }
     </>
     )
   }

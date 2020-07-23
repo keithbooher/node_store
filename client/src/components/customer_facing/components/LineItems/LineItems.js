@@ -5,33 +5,52 @@ import { calculateSubtotal } from '../../../../utils/helperFunctions'
 import { updateCart } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
-
+import { checkInventory } from "../../../../utils/API"
+import LowInventory from "../../../shared/LowInventory"
 class LineItems extends Component {
   constructor(props) {
     super()
     this.removeProduct = this.removeProduct.bind(this)
     this.alterLineItemQuantity = this.alterLineItemQuantity.bind(this)
-    this.state = {}
+    this.state = {
+      inventory_limit: false
+    }
   }
 
-  alterLineItemQuantity(incoming_line_item, operator) {
+  async alterLineItemQuantity(incoming_line_item, operator) {
     const cart = this.props.cart
+    let items = cart.line_items
 
-    cart.line_items.forEach((line_item) => {
+    items.forEach(async (line_item) => {
       if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
-        line_item.quantity += 1
+        let item = {...line_item}
+        item.quantity += 1
+        // CHECK IF NEW QUANTITY IS WITHIN STOCK LIMIT
+        // IF NOT LET THEM KNOW THEY HIT LIMIT
+        let { data } = await checkInventory([item])
+        let out_of_stock = data.filter((oos_item) => oos_item !== null)
+        console.log(out_of_stock)
+        if (out_of_stock.length > 0) {
+          console.log('here')
+          this.setState({ inventory_limit: [line_item] })
+          return
+        }
       } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
         line_item.quantity += -1
       }
     })
 
-    let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
-    cart.line_items = removed_zero_quantity_items
     
-    let sub_total = calculateSubtotal(cart)
+    console.log(cart.line_items)
+    if (this.state.inventory_limit !== false) return
 
-    cart.total = sub_total * .08
-    this.props.updateCart(cart)
+    // let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
+    // cart.line_items = removed_zero_quantity_items
+    
+    // let sub_total = calculateSubtotal(cart)
+
+    // cart.total = sub_total * .08
+    // this.props.updateCart(cart)
   }
 
   removeProduct(incoming_line_item) {
@@ -50,11 +69,9 @@ class LineItems extends Component {
     this.props.updateCart(cart)
   }
 
-  displayLineItems() {
-    return 
-  }
-
   render() {
+    console.log(this.state)
+    let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     return (
       <>
         {this.props.cart && 
@@ -83,6 +100,15 @@ class LineItems extends Component {
                   </div>
 
                 </div>
+
+                {this.state.inventory_limit &&
+                  <LowInventory 
+                    title={low_inventory_message} 
+                    cart={this.props.cart} 
+                    out_of_stock_items={this.state.inventory_limit} 
+                    cancel={() => this.setState({ inventory_limit: false })}
+                  />
+                }
 
               </li>
             )
