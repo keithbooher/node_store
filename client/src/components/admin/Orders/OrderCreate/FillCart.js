@@ -128,7 +128,7 @@ class FillCart extends Component {
       quantity = this.state.quantity - 1
     }
     
-    if (quantity > product.inventory_count || quantity < 1) {
+    if (!product.backorderable && quantity > product.inventory_count || quantity < 1) {
       return
     }
     this.setState({ quantity })
@@ -187,7 +187,7 @@ class FillCart extends Component {
             <>
               <h2>Product Found</h2>
               <h3>{this.state.result.name}</h3>
-              {!this.state.result.backorderable && <p>On hand: {this.state.result.inventory_count}</p>}
+              {!this.state.result.backorderable ? <p>On hand: {this.state.result.inventory_count}</p> : <p>backorderable</p>}
               <div className="flex">
                 <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e, this.state.result)} style={{ width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
                 <div className="flex flex_column margin-s-h">
@@ -198,6 +198,8 @@ class FillCart extends Component {
               </div>
             </>
           }
+
+          {this.state.result === "" && <h2>No product found, check for typos</h2>}
 
           {this.state.line_items.length > 0 &&
             <>
