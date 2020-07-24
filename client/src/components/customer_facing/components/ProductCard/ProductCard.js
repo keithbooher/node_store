@@ -64,7 +64,7 @@ class ProductCard extends Component {
         cart.line_items = cart.line_items.map((line_item) => {
           if(product._id === line_item._product_id) {
             const sum = line_item.quantity + quantity
-            if (sum > this.props.product.inventory_count) {
+            if (!this.props.product.backorderable && sum > this.props.product.inventory_count) {
               exceededInventory = {
                 inventory_count: this.props.product.inventory_count,
                 quantity_added: quantity,
@@ -132,8 +132,6 @@ class ProductCard extends Component {
   }
 
   onChangeInput(e) {
-    console.log(e.target.value)
-    console.log(parseInt(e.target.value))
     let value = parseInt(e.target.value)
 
     if (e.target.value === "") {
@@ -157,7 +155,6 @@ class ProductCard extends Component {
   }
 
   render() {
-    console.log(this.state.quantity)
     let product = this.props.product
     let category_path_name = this.props.category_path_name
     return (
@@ -190,13 +187,13 @@ class ProductCard extends Component {
 
         {this.state.exceededInventory && 
           <Modal cancel={() => this.setState({ exceededInventory: false })}>
-            <div>
-              You tried to add {this.state.exceededInventory.quantity_added} 
-              but that exceeds the current inventory stock of {this.state.exceededInventory.inventory_count}
-            </div>
-            <div>
+            <h3>
+              You tried to add {this.state.exceededInventory.quantity_added} but that exceeds the current inventory stock of {this.state.exceededInventory.inventory_count}.
+            </h3>
+            <h3>
               Therefore, {this.state.exceededInventory.difference} {this.props.product.name}{this.state.exceededInventory.difference > 1 && "'s"} were added.
-            </div>
+            </h3>
+            <button onClick={() => this.setState({ exceededInventory: false })}>Okay</button>
           </Modal>
         }
     </>

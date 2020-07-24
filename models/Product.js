@@ -42,6 +42,10 @@ const productSchema = new Schema({
   home_promotion:  {
     type: Boolean,
     default: false
+  },
+  backorderable: {
+    type: Boolean,
+    default: false
   }
 })
 

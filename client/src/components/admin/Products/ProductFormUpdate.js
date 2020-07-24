@@ -3,7 +3,7 @@ import { updateProduct, getAllCategories, getProductInfo } from '../../../utils/
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimesCircle, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -243,6 +243,9 @@ class ProductForm extends Component {
             </div>
             <div>
               Home Page Promotion: {this.state.product.home_promotion ? <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEye} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEyeSlash} /> }
+            </div>
+            <div>
+              Backorderable: {this.state.product.backorderable ? <FontAwesomeIcon onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)} icon={faCheck} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)} icon={faTimes} /> }
             </div>
 
             {

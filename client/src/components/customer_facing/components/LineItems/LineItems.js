@@ -18,39 +18,36 @@ class LineItems extends Component {
   }
 
   async alterLineItemQuantity(incoming_line_item, operator) {
-    const cart = this.props.cart
+    let cart = {...this.props.cart}
     let items = cart.line_items
 
-    items.forEach(async (line_item) => {
+    await Promise.all(items.map(async (line_item) => {
+      let item = {...line_item}
       if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
-        let item = {...line_item}
         item.quantity += 1
-        // CHECK IF NEW QUANTITY IS WITHIN STOCK LIMIT
-        // IF NOT LET THEM KNOW THEY HIT LIMIT
         let { data } = await checkInventory([item])
         let out_of_stock = data.filter((oos_item) => oos_item !== null)
-        console.log(out_of_stock)
         if (out_of_stock.length > 0) {
-          console.log('here')
-          this.setState({ inventory_limit: [line_item] })
+          this.setState({ inventory_limit: [item] })
           return
         }
       } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
-        line_item.quantity += -1
+        item.quantity += -1
       }
+      return item
+    })).then((values) => {
+      cart.line_items = values
     })
 
-    
-    console.log(cart.line_items)
     if (this.state.inventory_limit !== false) return
 
-    // let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
-    // cart.line_items = removed_zero_quantity_items
+    let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
+    cart.line_items = removed_zero_quantity_items
     
-    // let sub_total = calculateSubtotal(cart)
+    let sub_total = calculateSubtotal(cart)
 
-    // cart.total = sub_total * .08
-    // this.props.updateCart(cart)
+    cart.total = sub_total * .08
+    this.props.updateCart(cart)
   }
 
   removeProduct(incoming_line_item) {

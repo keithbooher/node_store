@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "../../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyname, createCart, updateCart } from "../../../../utils/API"
+import { getProductbyname, createCart, updateCart, checkInventory } from "../../../../utils/API"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch, faTrash, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 class FillCart extends Component {
@@ -14,7 +14,8 @@ class FillCart extends Component {
     this.state = {
       line_items: [],
       result: null,
-      update: false
+      update: false,
+      quantity: 1
     }
   }
 
@@ -38,7 +39,7 @@ class FillCart extends Component {
     let already_in_array = false
     line_items.forEach(item => {
       if( item._product_id === product._id) { 
-        item.quantity += 1
+        item.quantity += this.state.quantity
         already_in_array = true
       }
     });
@@ -50,7 +51,7 @@ class FillCart extends Component {
         product_name: product.name,
         image: product.image,
         _product_id: product._id,
-        quantity: 1,
+        quantity: this.state.quantity,
         product_price: product.price
       }
       line_items.push(line_item)
@@ -64,20 +65,24 @@ class FillCart extends Component {
     this.setState({ line_items })
   }
 
-  adjustLineItemQuantity(item, up_or_down) {
+  async adjustLineItemQuantity(item, up_or_down) {
     let line_items = this.state.line_items
     
-    line_items.map((line_item) => {
+    await Promise.all(line_items.map(async (line_item) => {
       if (line_item._product_id === item._product_id) {
         if (up_or_down === "down") {
-          console.log(line_item)
           line_item.quantity = line_item.quantity - 1
         } else {
-          console.log(line_item)
           line_item.quantity = line_item.quantity + 1
+          let { data } = await checkInventory([line_item])
+          let out_of_stock = data.filter((oos_item) => oos_item !== null)
+          if (out_of_stock.length > 0) {
+            line_item.quantity = line_item.quantity - 1
+          }
         }
       }
-    })
+      return line_item
+    }))
     line_items = line_items.filter((line_item) => line_item.quantity !== 0)
     this.setState({ line_items })
   }
@@ -115,6 +120,55 @@ class FillCart extends Component {
     this.props.refProp.current.scrollTo(0, 0);
   }
 
+  setQuantity(direction, product) {
+    let quantity
+    if(direction === "up") {
+      quantity = this.state.quantity + 1
+    } else {
+      quantity = this.state.quantity - 1
+    }
+    
+    if (quantity > product.inventory_count || quantity < 1) {
+      return
+    }
+    this.setState({ quantity })
+  }
+
+  checkInventoryCount(e, product) {
+    let value = e.target.value
+    if (value > product.inventory_count) {
+      value = product.inventory_count
+      this.setState({ quantity: value })
+    }
+    if (value === "") {
+      value = 1
+      this.setState({ quantity: value })
+    }
+  }
+
+  onChangeInput(e) {
+    let value = parseInt(e.target.value)
+
+    if (e.target.value === "") {
+      value = ""
+    }
+    this.setState({ quantity: value })
+  }
+
+  preventAlpha(e) {
+    if (!this.isNumber(e)) {
+      e.preventDefault();
+    }
+  }
+
+  isNumber(e) {
+    var charCode = e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+  }
+
   render() {
     return (
       <div style={{ marginTop: "30px" }}>
@@ -133,7 +187,15 @@ class FillCart extends Component {
             <>
               <h2>Product Found</h2>
               <h3>{this.state.result.name}</h3>
-              <button onClick={() => this.addToLineItems(this.state.result)}>Add to cart</button>
+              {!this.state.result.backorderable && <p>On hand: {this.state.result.inventory_count}</p>}
+              <div className="flex">
+                <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e, this.state.result)} style={{ width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
+                <div className="flex flex_column margin-s-h">
+                  <FontAwesomeIcon onClick={() => this.setQuantity("up", this.state.result)} icon={faCaretUp} />
+                  <FontAwesomeIcon onClick={() => this.setQuantity("down", this.state.result)} icon={faCaretDown} />
+                </div>
+                <button onClick={() => this.addToLineItems(this.state.result)}>Add to cart</button>
+              </div>
             </>
           }
 

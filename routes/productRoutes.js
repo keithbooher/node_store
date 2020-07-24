@@ -72,7 +72,7 @@ module.exports = app => {
 
   const checkProduct = async (line_item) => {
     const product = await Product.findOne({ _id: line_item._product_id })
-    if (parseInt(product.inventory_count) < line_item.quantity) {
+    if (!product.backorderable && parseInt(product.inventory_count) < line_item.quantity) {
       line_item.inventory_count = parseInt(product.inventory_count)
       return line_item
     }
