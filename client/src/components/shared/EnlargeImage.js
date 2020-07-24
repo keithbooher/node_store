@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Modal from "./Modal"
 import { Link } from "react-router-dom"
+import { dispatchEnlargeImage } from "../../actions"
 
 class EnlargeImage extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class EnlargeImage extends Component {
 
 
   render() {
+    console.log(this.props)
 
     const image_style = {
       height: "auto",
@@ -27,12 +30,11 @@ class EnlargeImage extends Component {
     }
 
     return (
-      <Modal cancel={this.props.cancel} >
-        <img style={image_style} src={this.props.image} />
+      <Modal cancel={() => this.props.dispatchEnlargeImage(null)} >
+        <img onClick={() => this.props.dispatchEnlargeImage(null)} style={image_style} src={this.props.image} />
         <div className="flex">
-
-          <button onClick={this.props.cancel} className="margin-s"><Link to={this.props.path}>Go to Product</Link></button>
-          <button onClick={this.props.cancel} className="margin-s">Done</button>
+          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s"><Link to={this.props.path}>Go to Product</Link></button>
+          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s">Done</button>
         </div>
       </Modal>
 
@@ -40,4 +42,11 @@ class EnlargeImage extends Component {
   }
 }
 
-export default EnlargeImage
+
+function mapStateToProps({ enlarge }) {
+  return { enlarge }
+}
+
+const actions = { dispatchEnlargeImage }
+
+export default connect(mapStateToProps, actions)(EnlargeImage)

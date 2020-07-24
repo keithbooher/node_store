@@ -40,7 +40,7 @@ class Cart extends Component {
 
   render() {
     return (
-    <div className="relative">
+    <div>
       <div ref={this.dropRef} className="h-100">
         <CartLength expandCart={this.expandCart}  />
       </div>
@@ -48,7 +48,7 @@ class Cart extends Component {
       {this.state.showCart && 
         <div>
           <ul ref={node => this.node = node} className="expandedCart">
-            <LineItems />
+            <LineItems expandCart={this.expandCart} />
             <div onClick={this.expandCart} >
               <Link className="header_list_item clickable" to="/checkout">Checkout</Link>
             </div>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-
 import Home from '../../customer_facing/pages/Home'
 import Product from '../../customer_facing/pages/Product'
 import Category from '../../customer_facing/pages/Category'
@@ -11,6 +10,9 @@ import Header from '../../customer_facing/components/Header'
 import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
+import EnlargeImage from "../../shared/EnlargeImage"
+import { dispatchEnlargeImage } from "../../../actions"
+
 import "./customer.scss"
 
 
@@ -35,6 +37,7 @@ class CustomerFacing extends Component {
         sidebar_class = ""
         break;
     }
+    console.log(this.props)
     return (
       <div className="customer_container">
 
@@ -53,14 +56,17 @@ class CustomerFacing extends Component {
           </div>
         </div>
 
+        {this.props.enlarge && <EnlargeImage cancel={() => this.setState({ enlargeImage: null })} image={this.props.enlarge.image} path={this.props.enlarge.path} />}  
+
       </div>
     )
   }
 }
 
 
-function mapStateToProps({ sidebar }) {
-  return { sidebar }
+function mapStateToProps({ sidebar, enlarge }) {
+  return { sidebar, enlarge }
 }
+
 
 export default connect(mapStateToProps, null)(CustomerFacing)

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
 import { calculateSubtotal } from '../../../../utils/helperFunctions'
-import { updateCart } from "../../../../actions"
+import { updateCart, dispatchEnlargeImage } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"
 import { checkInventory } from "../../../../utils/API"
@@ -67,8 +67,11 @@ class LineItems extends Component {
     this.props.updateCart(cart)
   }
 
+  enlargeImage(image, path) {
+    this.props.dispatchEnlargeImage({ image, path })
+  }
+
   render() {
-    console.log(this.state)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     return (
       <>
@@ -81,11 +84,11 @@ class LineItems extends Component {
 
                   <div className="flex">
                     <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" }}>
-                      <img className="nice_image margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
+                      <img onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} className="nice_image margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
                     </div>
 
                     <div className="flex flex_column padding-s">
-                      <h2 className="margin-top-none color-black line_item_name"><Link to={line_item.product_path}>{line_item.product_name}</Link></h2>
+                      <h2 className="margin-top-none color-black line_item_name"><Link onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h2>
                       <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
                         <div style={{ fontSize: "23px", marginTop: "-5px", marginRight: "5px", fontWeight: 700 }} className="color-black line_item_quantity">x{line_item.quantity}</div>
                         <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
@@ -127,10 +130,10 @@ class LineItems extends Component {
   }
 }
 
-function mapStateToProps({ cart }) {
-  return { cart }
+function mapStateToProps({ cart, enlargeImage }) {
+  return { cart, enlargeImage }
 }
 
-const actions = { updateCart }
+const actions = { updateCart, dispatchEnlargeImage }
 
 export default connect(mapStateToProps, actions)(LineItems)

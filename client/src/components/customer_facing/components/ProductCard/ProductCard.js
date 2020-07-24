@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
@@ -6,7 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
-import EnlargeImage from '../../../shared/EnlargeImage';
+import { dispatchEnlargeImage } from "../../../../actions"
+
 class ProductCard extends Component {
   constructor(props) {
     super()
@@ -26,6 +28,9 @@ class ProductCard extends Component {
     const user_id = this.props.user._id
     let exceededInventory = false
 
+    let product_path_name = product.path_name
+    console.log(product)
+
     let sub_total, create_boolean
 
     if (this.props.cart == null) {
@@ -38,7 +43,8 @@ class ProductCard extends Component {
             image: product.image,
             _product_id: product._id,
             quantity: quantity,
-            product_price: product.price
+            product_price: product.price,
+            product_path: `/shop/${product.categories[0].path_name}/${product_path_name}`
           }
         ],
         _user_id: user_id,
@@ -86,7 +92,7 @@ class ProductCard extends Component {
           _product_id: product._id,
           quantity: quantity,
           product_price: product.price,
-          product_path: `/shop/${product.categories[0].path_name}/${product.path_name}`
+          product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general"}/${product_path_name}`
         }
         cart.line_items.push(line_item)
       }
@@ -157,7 +163,7 @@ class ProductCard extends Component {
   }
 
   enlargeImage(product, category_path_name) {
-    this.setState({ enlargeImage: { image: product.image, path: `/shop/${category_path_name}/${product.path_name}`} })
+    this.props.dispatchEnlargeImage({ image: product.image, path: `/shop/${category_path_name}/${product.path_name}`})
   }
 
   render() {
@@ -202,11 +208,12 @@ class ProductCard extends Component {
             <button onClick={() => this.setState({ exceededInventory: false })}>Okay</button>
           </Modal>
         }
-
-        {this.state.enlargeImage && <EnlargeImage cancel={() => this.setState({ enlargeImage: null })} image={this.state.enlargeImage.image} path={this.state.enlargeImage.path} />}
     </>
     )
   }
 }
 
-export default ProductCard
+
+const actions = { dispatchEnlargeImage }
+
+export default connect(null, actions)(ProductCard)
