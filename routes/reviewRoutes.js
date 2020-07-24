@@ -26,6 +26,13 @@ module.exports = app => {
     res.send(review)
   })
 
+  app.get('/api/review/product/last_review/:product_id', async (req, res) => {  
+    const _product_id = req.params.product_id
+    const review = await Review.findOne({ _product_id })
+    console.log(review)
+    res.send(review)
+  })
+
   app.get('/api/review/check_exists/:line_item_id', requireLogin, async (req, res) => {  
     const line_item_id = req.params.line_item_id
     const review = await Review.findOne({ "line_item._id": line_item_id })

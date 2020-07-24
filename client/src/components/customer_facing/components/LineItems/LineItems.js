@@ -4,9 +4,10 @@ import './line_item.css.scss'
 import { calculateSubtotal } from '../../../../utils/helperFunctions'
 import { updateCart } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"
 import { checkInventory } from "../../../../utils/API"
 import LowInventory from "../../../shared/LowInventory"
+import { Link } from "react-router-dom"
 class LineItems extends Component {
   constructor(props) {
     super()
@@ -74,23 +75,33 @@ class LineItems extends Component {
         {this.props.cart && 
           this.props.cart.line_items.map((line_item) => {
             return (
-              <li className="line_item padding-s ">
+              <li className="divider line_item padding-s ">
 
                 <div className="line_item_sub_container">
 
                   <div className="flex">
-                    <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
-                      <FontAwesomeIcon icon={faPlus} />
-                    </i>
-                    <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
-                      <FontAwesomeIcon icon={faMinus} />
-                    </i>
+                    <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" }}>
+                      <img className="nice_image margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
+                    </div>
+
+                    <div className="flex flex_column padding-s">
+                      <h2 className="margin-top-none color-black line_item_name"><Link to={line_item.product_path}>{line_item.product_name}</Link></h2>
+                      <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
+                        <div style={{ fontSize: "23px", marginTop: "-5px", marginRight: "5px", fontWeight: 700 }} className="color-black line_item_quantity">x{line_item.quantity}</div>
+                        <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
+                          <FontAwesomeIcon icon={faPlus} />
+                        </i>
+                        <div className="inline" style={{ fontSize: "19px", marginLeft: "-5px", marginRight: "-5px" }}>/</div>
+                        <i style={{ marginTop: "3px" }} className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
+                          <FontAwesomeIcon icon={faMinus} />
+                        </i>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="color-black line_item_name">{line_item.product_name}</div>
-                  <div className="color-black line_item_quantity">x{line_item.quantity}</div>
 
-                  <div>
+
+                  <div className="absolute" style={{ top: "0px", right: "0px" }}>
                     <i className="color-black" onClick={() => this.removeProduct(line_item)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </i>

@@ -52,7 +52,8 @@ class FillCart extends Component {
         image: product.image,
         _product_id: product._id,
         quantity: this.state.quantity,
-        product_price: product.price
+        product_price: product.price,
+        product_path: `/shop/${product.categories[0].path_name}/${product.path_name}`
       }
       line_items.push(line_item)
     } 

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
-
+import EnlargeImage from '../../../shared/EnlargeImage';
 class ProductCard extends Component {
   constructor(props) {
     super()
@@ -14,7 +14,8 @@ class ProductCard extends Component {
     this.checkInventoryCount = this.checkInventoryCount.bind(this)
     this.state = {
       quantity: 1,
-      exceededInventory: null
+      exceededInventory: null,
+      enlargeImage: null
     }
   }
 
@@ -84,7 +85,8 @@ class ProductCard extends Component {
           image: product.image,
           _product_id: product._id,
           quantity: quantity,
-          product_price: product.price
+          product_price: product.price,
+          product_path: `/shop/${product.categories[0].path_name}/${product.path_name}`
         }
         cart.line_items.push(line_item)
       }
@@ -154,6 +156,10 @@ class ProductCard extends Component {
     return true;
   }
 
+  enlargeImage(product, category_path_name) {
+    this.setState({ enlargeImage: { image: product.image, path: `/shop/${category_path_name}/${product.path_name}`} })
+  }
+
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
@@ -167,10 +173,10 @@ class ProductCard extends Component {
                 <h2 className="inline card-title margin-s-h"><Link className="inline" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
               <div className="flex flex_column justify-center background-color-black card_image_container">
-                <img className="margin-auto-h card_image" src={product.image} />
+                <img onClick={() => this.enlargeImage(this.props.product, category_path_name)} className="margin-auto-h card_image" src={product.image} />
               </div>
               <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
-              <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>
+              {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>}
             </div>
             <div className="flex">
               <div className="flex">
@@ -196,6 +202,8 @@ class ProductCard extends Component {
             <button onClick={() => this.setState({ exceededInventory: false })}>Okay</button>
           </Modal>
         }
+
+        {this.state.enlargeImage && <EnlargeImage cancel={() => this.setState({ enlargeImage: null })} image={this.state.enlargeImage.image} path={this.state.enlargeImage.path} />}
     </>
     )
   }

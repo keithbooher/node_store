@@ -40,7 +40,7 @@ class Product extends Component  {
       right: 0,
       bottom: 0,
       backgroundColor: "#4242428a",
-      zIndex: 10
+      zIndex: 25
     }
 
     const style_inner = {
@@ -51,7 +51,7 @@ class Product extends Component  {
       width: isMobile ? "90%" : "30em",
       height: "auto",
       padding: "3em",
-      zIndex: 20
+      zIndex: 30
     }
 
     return (

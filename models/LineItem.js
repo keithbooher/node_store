@@ -6,7 +6,8 @@ const lineItemSchema = new Schema({
   image: String,
   _product_id: String,
   quantity: Number,
-  product_price: Number
+  product_price: Number,
+  product_path: String
 })
 
 module.exports = lineItemSchema

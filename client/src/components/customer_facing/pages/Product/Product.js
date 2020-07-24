@@ -200,7 +200,7 @@ class Product extends Component  {
             <div className="padding-s">
               <div className="flex flex_column">
                 <h1 className="margin-v-none">${product.price}</h1>
-                <div className="margin-s">In Stock: {product.inventory_count}</div>
+                {!product.backorderable && <div className="margin-s">In Stock: {product.inventory_count}</div>}
               </div>
               <div className="flex">
                 <div className="flex">
