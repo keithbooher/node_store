@@ -28,7 +28,14 @@ class ShippingOptions extends Component {
       shipping_method: this.state.shipping_method.name,
       rate: this.state.chosen_rate.name
     }
-    cart.total += this.state.chosen_rate.effector
+    let sub_total = cart.sub_total
+    let shipping = cart.chosen_rate.cost
+    let tax = (sub_total + shipping) * .08
+
+
+    cart.tax = tax
+    cart.sub_total = sub_total
+    cart.total = sub_total + shipping + tax
     const { data } = await updateCart(cart)
 
     let state = {

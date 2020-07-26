@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Form from "../../../shared/Form"
 import { reset } from "redux-form"
 import { getProductbyname, createCart, updateCart, checkInventory } from "../../../../utils/API"
+import { formatMoney } from "../../../../utils/helperFunctions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch, faTrash, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 class FillCart extends Component {
@@ -88,18 +89,36 @@ class FillCart extends Component {
     this.setState({ line_items })
   }
 
-  renderTotal() {
-    let total = 0
+  renderSubTotal() {
+    let sub_total = 0
     this.state.line_items.forEach((item) => {
-      total = total + (item.product_price * item.quantity)
+      sub_total = sub_total + (item.product_price * item.quantity)
     })
-    return total
+    return formatMoney(sub_total)
   }
+
+  renderTax() {
+    let sub_total = this.renderSubTotal()
+    let shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
+    let tax = (sub_total + shipping) * .08
+    return formatMoney(tax)
+  }
+
+  renderTotal() {
+    let sub_total = this.renderSubTotal()
+    let tax = this.renderTax()
+    let shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
+    let total = tax + sub_total + shipping
+    return formatMoney(total)
+  }
+
 
   async proceedToNextStep() {
     let cart = this.props.cart
     cart.line_items = this.state.line_items
     cart.checkout_state = "shipping"
+    cart.sub_total = this.renderSubTotal()
+    cart.tax = this.renderTax()
     cart.total = this.renderTotal()
     
 
@@ -233,7 +252,7 @@ class FillCart extends Component {
                 </div>
               </div>
               <div className="margin-s-v">
-                Total: ${this.renderTotal()}
+                Total: ${this.renderSubTotal()}
               </div>
             </>
           }

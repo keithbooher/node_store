@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import LineItems from '../LineItems'
 import './cart.css.scss'
 import CartLength from "./CartLength"
 import { Link } from 'react-router-dom'
+import { formatMoney } from '../../../../utils/helperFunctions'
 
 class Cart extends Component {
   constructor(props) {
@@ -41,16 +43,26 @@ class Cart extends Component {
   render() {
     return (
     <div>
-      <div ref={this.dropRef} className="h-100">
+      <div onClick={this.expandCart} ref={this.dropRef} className="h-100">
         <CartLength expandCart={this.expandCart}  />
       </div>
 
       {this.state.showCart && 
         <div>
           <ul ref={node => this.node = node} className="expandedCart">
-            <LineItems expandCart={this.expandCart} />
-            <div onClick={this.expandCart} >
-              <Link className="header_list_item clickable" to="/checkout">Checkout</Link>
+            <div className="flex flex_column">
+              <div id="items">
+                <LineItems cart={this.props.cart} expandCart={this.expandCart} />
+              </div>
+              <div className="flex space-between background-color-grey-5">
+                <div className="flex flex_column">
+                  <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
+                  <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
+                  {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
+                  <div>Total: ${formatMoney(this.props.cart.total)}</div>
+                </div>
+                <button onClick={this.expandCart} ><Link className="header_list_item clickable" to="/checkout">Checkout</Link></button>
+              </div>
             </div>
           </ul>
         </div>
@@ -60,6 +72,8 @@ class Cart extends Component {
   }
 }
 
+function mapStateToProps({ cart }) {
+  return { cart }
+}
 
-
-export default Cart
+export default connect(mapStateToProps, null)(Cart)

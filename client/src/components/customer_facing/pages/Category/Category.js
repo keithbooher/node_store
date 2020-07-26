@@ -6,7 +6,7 @@ import { capitalizeFirsts } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { sidebarBoolean } from "../../../../actions"
+import { sidebarBoolean, updateCart, createCart } from "../../../../actions"
 import { Link } from "react-router-dom"
 class Category extends Component  {
   constructor(props) {
@@ -19,7 +19,6 @@ class Category extends Component  {
     }
   }
   async componentDidMount() {
-    console.log('hi')
     const category_products = await getCategoryProducts(this.routeParamCategory)
     this.setState({ 
       products: category_products.data.products.reverse(), 
@@ -32,6 +31,9 @@ class Category extends Component  {
                 product={product} 
                 category_path_name={this.props.match.params.category}
                 user={this.props.auth}
+                createCart={this.props.createCart}
+                cart={this.props.cart} 
+                updateCart={this.props.updateCart}
               />
     })
   }
@@ -68,10 +70,10 @@ class Category extends Component  {
 }
 
 
-function mapStateToProps({ auth, sidebar }) {
-  return { auth, sidebar }
+function mapStateToProps({ auth, sidebar, cart }) {
+  return { auth, sidebar, cart }
 }
 
-const actions = { sidebarBoolean }
+const actions = { sidebarBoolean, updateCart, createCart }
 
 export default connect(mapStateToProps, actions)(Category)

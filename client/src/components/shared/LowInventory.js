@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { updateCart } from "../../actions"
 import mobile from "is-mobile"
 import Modal from "./Modal"
+import { calculateSubtotal, formatMoney } from '../../utils/helperFunctions'
+
 let isMobile = mobile()
 class LowInventory extends Component {
   constructor(props) {
@@ -44,6 +46,15 @@ class LowInventory extends Component {
       })
       
       cart.line_items = cart.line_items.filter((item) => item !== null)
+
+
+      let sub_total = calculateSubtotal(cart)
+      let tax = sub_total * .08
+      let shipping = cart.chosen_rate ? cart.chosen_rate.cost : 0
+
+      cart.sub_total = formatMoney(sub_total)
+      cart.tax = formatMoney(tax)
+      cart.total = formatMoney(sub_total + tax + shipping)
   
       this.props.updateCart(cart)
     }

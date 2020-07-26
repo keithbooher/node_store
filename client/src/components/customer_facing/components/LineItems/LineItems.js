@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
-import { calculateSubtotal } from '../../../../utils/helperFunctions'
+import { calculateSubtotal, formatMoney } from '../../../../utils/helperFunctions'
 import { updateCart, dispatchEnlargeImage } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"
@@ -46,8 +46,12 @@ class LineItems extends Component {
     cart.line_items = removed_zero_quantity_items
     
     let sub_total = calculateSubtotal(cart)
+    let tax = formatMoney(sub_total * .08)
 
-    cart.total = sub_total * .08
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = formatMoney(sub_total + tax)
+
     this.props.updateCart(cart)
   }
 
@@ -62,8 +66,12 @@ class LineItems extends Component {
     cart.line_items = updated_line_items
 
     let sub_total = calculateSubtotal(cart)
+    let tax = formatMoney(sub_total * .08)
 
-    cart.total = sub_total * .08
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = formatMoney(sub_total + tax)
+    
     this.props.updateCart(cart)
   }
 
@@ -72,6 +80,7 @@ class LineItems extends Component {
   }
 
   render() {
+    console.log(this.props.cart)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     return (
       <>
@@ -88,7 +97,8 @@ class LineItems extends Component {
                     </div>
 
                     <div className="flex flex_column padding-s">
-                      <h2 className="margin-top-none color-black line_item_name"><Link onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h2>
+                      <h2 className="margin-top-none margin-bottom-none color-black line_item_name"><Link className="inline" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link><div className="inline" style={{ fontSize: "14px" }}> - ${line_item.product_price}/ea</div></h2>
+                      <p>${line_item.product_price * line_item.quantity}</p>
                       <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
                         <div style={{ fontSize: "23px", marginTop: "-5px", marginRight: "5px", fontWeight: 700 }} className="color-black line_item_quantity">x{line_item.quantity}</div>
                         <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
@@ -98,17 +108,14 @@ class LineItems extends Component {
                         <i style={{ marginTop: "3px" }} className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
                           <FontAwesomeIcon icon={faMinus} />
                         </i>
+                        <i style={{ fontSize: "14px", top: "0px", right: "0px" }} className="color-black absolute" onClick={() => this.removeProduct(line_item)}>
+                          <FontAwesomeIcon icon={faTrash} />
+                        </i>
                       </div>
                     </div>
                   </div>
 
 
-
-                  <div className="absolute" style={{ top: "0px", right: "0px" }}>
-                    <i className="color-black" onClick={() => this.removeProduct(line_item)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </i>
-                  </div>
 
                 </div>
 
@@ -130,8 +137,8 @@ class LineItems extends Component {
   }
 }
 
-function mapStateToProps({ cart, enlargeImage }) {
-  return { cart, enlargeImage }
+function mapStateToProps({ enlargeImage }) {
+  return { enlargeImage }
 }
 
 const actions = { updateCart, dispatchEnlargeImage }

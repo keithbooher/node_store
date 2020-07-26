@@ -14,8 +14,9 @@ export const calculateSubtotal = (cart) => {
   cart.line_items.forEach((line_item) => {
     sub_total = sub_total + (line_item.product_price * line_item.quantity)
   })
-  return sub_total
+  return formatMoney(sub_total)
 }
+
 export const updatedFormFields = (fields, objectToPullDataFrom) => {
   let details_initial_values = {}
   fields.forEach((field) => {
@@ -23,9 +24,16 @@ export const updatedFormFields = (fields, objectToPullDataFrom) => {
   })
   return details_initial_values
 }
+
 export const productNameToPathName = (string) => {
   return string.toLowerCase().replace(/ /g,"_");
 }
+
 export const productPathNameToName = (string) => {
   return string.toLowerCase().replace(/_/g," ");
+}
+
+export const formatMoney = (money) => {
+  const number = Number(parseFloat(money))
+  return number.toFixed(2)
 }

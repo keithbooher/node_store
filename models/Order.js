@@ -3,6 +3,7 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 
 const orderSchema = new Schema({
   sub_total: Number,
+  tax: Number,
   total: Number,
   status: {
     type: String,

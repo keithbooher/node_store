@@ -53,6 +53,7 @@ class Payment extends Component {
 
     // Create Order
     let order = {
+      tax: cart.tax,
       sub_total: cart.sub_total,
       total: cart.sub_total,
       date_placed: date,

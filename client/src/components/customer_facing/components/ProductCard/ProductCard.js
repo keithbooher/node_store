@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { capitalizeFirsts, calculateSubtotal } from '../../../../utils/helperFunctions'
+import { capitalizeFirsts, calculateSubtotal, formatMoney } from '../../../../utils/helperFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
 import { dispatchEnlargeImage } from "../../../../actions"
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 class ProductCard extends Component {
   constructor(props) {
@@ -29,13 +30,11 @@ class ProductCard extends Component {
     let exceededInventory = false
 
     let product_path_name = product.path_name
-    console.log(product)
 
     let sub_total, create_boolean
 
     if (this.props.cart == null) {
       create_boolean = true
-      sub_total = product.price * .08
       cart = {
         line_items: [
           {
@@ -48,9 +47,7 @@ class ProductCard extends Component {
           }
         ],
         _user_id: user_id,
-        email: this.props.user.email,
-        sub_total: sub_total,
-        total: sub_total + product.price
+        email: this.props.user.email
       }
     } else {
       create_boolean = false
@@ -96,12 +93,17 @@ class ProductCard extends Component {
         }
         cart.line_items.push(line_item)
       }
-
-
-      sub_total = calculateSubtotal(cart)
-      cart.total = sub_total * .08
     }
+
+    sub_total = calculateSubtotal(cart)
+    let tax = sub_total * .08
+    let shipping = cart.chosen_rate ? cart.chosen_rate.cost : 0
+
+    cart.sub_total = formatMoney(sub_total)
+    cart.tax = formatMoney(tax)
+    cart.total = formatMoney(sub_total + tax + shipping)
     cart.checkout_state = "shopping"
+
     if (create_boolean === true) {
       this.props.createCart(cart)
     } else {
@@ -179,7 +181,11 @@ class ProductCard extends Component {
                 <h2 className="inline card-title margin-s-h"><Link className="inline" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
               <div className="flex flex_column justify-center background-color-black card_image_container">
-                <img onClick={() => this.enlargeImage(this.props.product, category_path_name)} className="margin-auto-h card_image" src={product.image} />
+                <LazyLoadImage
+                  src={product.image}
+                  wrapperClassName="margin-auto-h card_image"
+                  onClick={() => this.enlargeImage(this.props.product, category_path_name)}
+                />
               </div>
               <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
               {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>}

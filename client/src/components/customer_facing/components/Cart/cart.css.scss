@@ -10,7 +10,13 @@
   padding-left: 0px;
   bottom: 0px;
   background: #B8C2CC;
-  width: 17em;
+  width: 19em;
+  overflow: hidden;
+}
+
+#items {
+  max-height: 60vh;
+  overflow: scroll;
 }
 
 

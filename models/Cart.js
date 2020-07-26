@@ -28,6 +28,7 @@ const cartSchema = new Schema({
     default: null
   },
   chosen_rate: rateSchema,
+  tax: Number
 })
 
 mongoose.model('carts', cartSchema)
