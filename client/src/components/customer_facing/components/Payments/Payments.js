@@ -61,7 +61,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
     const inventoryCheck = await checkInventory(cart.line_items)
     console.log("inventory check", inventoryCheck)
 
-    if (inventoryCheck.data.length > 0) {
+    if (inventoryCheck.data.filter((item) => item !== null).length > 0) {
       // setState for low inventory error and then remove from cart
       setOutOfStock(inventoryCheck.data)
       return 
@@ -150,7 +150,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
     removeCookie("guest_cart")
 
     //make available to the checkout page and ultimately Review panel.
-    makeNewOrderAvailable(new_order.data, updated_cart.data)
+    makeNewOrderAvailable(new_order.data, updated_cart.data, new_shipment.data)
     chooseTab('review')
 
   }

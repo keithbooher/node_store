@@ -41,6 +41,10 @@ class Cart extends Component {
   }
 
   render() {
+    let shipping = 0 
+    if (this.props.cart) {
+      shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
+    }
     return (
     <div>
       <div onClick={this.expandCart} ref={this.dropRef} className="h-100">
@@ -51,18 +55,24 @@ class Cart extends Component {
         <div>
           <ul ref={node => this.node = node} className="expandedCart">
             <div className="flex flex_column">
-              <div id="items">
-                <LineItems cart={this.props.cart} expandCart={this.expandCart} />
-              </div>
-              <div className="flex space-between background-color-grey-5">
-                <div className="flex flex_column">
-                  <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
-                  <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
-                  {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
-                  <div>Total: ${formatMoney(this.props.cart.total)}</div>
-                </div>
-                <button onClick={this.expandCart} ><Link className="header_list_item clickable" to="/checkout">Checkout</Link></button>
-              </div>
+              {this.props.cart && this.props.cart.line_items.length > 0 && 
+                <>
+                  <div id="items">
+                    <LineItems cart={this.props.cart} expandCart={this.expandCart} />
+                  </div>
+
+                  <div className="flex space-between background-color-grey-5">
+                    <div className="flex flex_column">
+                      <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
+                      <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
+                      {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
+                      <div>Total: ${formatMoney(this.props.cart.total + this.props.cart.tax + shipping)}</div>
+                    </div>
+                    <button onClick={this.expandCart} ><Link className="header_list_item clickable" to="/checkout">Checkout</Link></button>
+                  </div>
+                </>
+              }
+
             </div>
           </ul>
         </div>

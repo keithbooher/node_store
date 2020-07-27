@@ -11,9 +11,9 @@ import Products from '../../admin/Products'
 import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
 import UserPage from '../../admin/Users/UserPage'
-import "./admin.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
+import "./admin.scss"
 class Admin extends Component {
   constructor(props) {
     super()

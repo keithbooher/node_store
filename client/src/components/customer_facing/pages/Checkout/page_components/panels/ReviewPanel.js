@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { convertCart } from '../../../../../../actions'
+import { orderConfirmation } from "../../../../../../utils/API"
 
 
 class ReviewPanel extends Component  {
@@ -9,6 +10,11 @@ class ReviewPanel extends Component  {
     this.state = {
 
     }
+  }
+
+  componentDidMount() {
+    orderConfirmation(this.props.new_order.email, this.props.new_order._id)
+    this.props.convertCart(null)
   }
 
   componentWillUnmount() {
