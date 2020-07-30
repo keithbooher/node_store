@@ -47,7 +47,8 @@ class ProductCard extends Component {
           }
         ],
         _user_id: user_id,
-        email: this.props.user.email
+        email: this.props.user.email,
+        created_at: new Date()
       }
     } else {
       create_boolean = false

@@ -57,7 +57,8 @@ class ChooseCustomer extends Component {
       billing_address: this.props.form.billing_admin_checkout_form.values,
       shipping_address: this.props.form.shipping_admin_checkout_form.values,
       _user_id: customer._id,
-      email
+      email,
+      line_items: []
     }
 
     const state = {

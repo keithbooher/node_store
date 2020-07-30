@@ -5,7 +5,7 @@ import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faPlusCircle, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
-import QuickView from './QuickView';
+import QuickView from './QuickView'
 import Form from "../../shared/Form"
 import { connect } from 'react-redux'
 import mobile from "is-mobile"
@@ -117,7 +117,6 @@ class Orders extends Component {
         )
       }
     })
-    console.log(options)
 
     dropDownField.options = options
 
@@ -130,6 +129,8 @@ class Orders extends Component {
     this.setState({ orders, page_number: this.state.page_number + page_increment })
   }
 
+  // TO DO
+  // MOVE THIS TO ITS OWN COMPONENT
   renderOrders() {
     return this.state.orders.map((order) => {
       return (
@@ -166,7 +167,6 @@ class Orders extends Component {
   }
 
   render() {
-    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {

@@ -11,6 +11,8 @@ import Products from '../../admin/Products'
 import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
 import UserPage from '../../admin/Users/UserPage'
+import Carts from "../../admin/Carts"
+import Cart from "../../admin/Carts/Cart"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import "./admin.scss"
@@ -78,6 +80,8 @@ class Admin extends Component {
             <Route exact path="/admin/users/:id" component={UserPage} />
             <Route path="/admin/reviews" component={Reviews} />
             <Route path="/admin/shipping" component={Shipping} />
+            <Route path="/admin/carts" component={Carts} />
+            <Route path="/admin/cart/:id" component={Cart} />
           </div>
 
         </div>

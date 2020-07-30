@@ -11,7 +11,7 @@ export const getProductbyId = (id) => {
 }
 
 // find product by path name
-export const getProductbyname = (name) => {
+export const getProductbyName = (name) => {
   return axios.get('/api/product/name/' + name)
 }
 

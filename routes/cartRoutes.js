@@ -5,7 +5,13 @@ const Cart = mongoose.model('carts')
 
 module.exports = app => {
   // GET A USERS CART
-  app.get('/api/cart/:user_id', async (req, res) => {
+  app.get('/api/cart/:id', async (req, res) => {
+    const _id = req.params.id
+    const cart = await Cart.findOne({ _id: _id, deleted_at: null })
+    res.send(cart)
+  })
+  // GET A USERS CART
+  app.get('/api/current/cart/:user_id', async (req, res) => {
     const user_id = req.params.user_id
     const cart = await Cart.findOne({ _user_id: user_id, deleted_at: null })
     res.send(cart)
@@ -96,4 +102,58 @@ module.exports = app => {
     res.send(updated_cart)
   })
 
+  app.get('/api/carts/last_order', async (req, res) => {    
+    const cart = await Cart.findOne({ deleted_at: null })
+    res.send(cart)
+  })
+
+  app.get('/api/carts/:last_cart_id/:direction/:checkout_state', requireLogin, async (req, res) => {
+    let last_cart_id = req.params.last_cart_id
+    let direction = req.params.direction
+    let checkout_state = req.params.checkout_state
+    let carts
+    if (last_cart_id === 'none') {
+
+      // making a fresh call with no beginning ID for reference
+      if (checkout_state === "all") {
+        carts = await Cart.find({})
+          .sort({_id:-1}).limit(10)
+      } else {
+        carts = await Cart.find({ checkout_state })
+          .sort({_id:-1}).limit(10)
+      }
+
+          
+    } else {
+
+      if (direction === "next") {
+
+        // if checkout_state all, dont distinguish between cart checkout_state
+        // otherwise we look for carts with specific checkout_state
+        if (checkout_state === "all") {
+          carts = await Cart.find({_id: {$lt: last_cart_id}})
+            .sort({_id:-1})
+            .limit(10)
+        } else {
+          carts = await Cart.find({_id: {$lt: last_cart_id}, checkout_state})
+            .sort({_id:-1})
+            .limit(10)
+        }
+
+      } else { // if going in the "previous" direction
+
+        // if checkout_state all, dont distinguish between cart checkout_statees
+        // otherwise we look for carts with specific checkout_statees
+        if (checkout_state === "all") {
+          carts = await Cart.find({_id: {$gt: last_cart_id}}).limit(10)
+        } else {
+          carts = await Cart.find({_id: {$gt: last_cart_id}, checkout_state}).limit(10)
+        }
+
+        carts = carts.reverse()
+
+      }
+    }
+    res.send(carts)
+  })
 }

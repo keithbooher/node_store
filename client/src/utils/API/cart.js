@@ -1,7 +1,11 @@
 import axios from "axios";
 
 export const getCurrentCart =  (user_id) => {
-  return axios.get(`/api/cart/${user_id}`)
+  return axios.get(`/api/current/cart/${user_id}`)
+}
+
+export const getCartByID =  (_id) => {
+  return axios.get(`/api/cart/${_id}`)
 }
 
 export const updateCart = (cart) => {
@@ -12,4 +16,12 @@ export const updateCart = (cart) => {
 export const createCart = (cart) => {
   const data = { cart }
   return axios.post('/api/cart/create', data) 
+}
+
+export const paginatedCarts = (direction_reference_id, direction, status) => {
+  return axios.get(`/api/carts/${direction_reference_id}/${direction}/${status}`) 
+}
+
+export const lastCart = () => {
+  return axios.get('/api/carts/last_order') 
 }

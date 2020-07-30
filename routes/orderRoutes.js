@@ -34,8 +34,8 @@ module.exports = app => {
   })
 
   app.get('/api/orders/last_order', async (req, res) => {    
-    const product = await Order.findOne({ deleted_at: null })
-    res.send(product)
+    const order = await Order.findOne({ deleted_at: null })
+    res.send(order)
   })
 
   app.get('/api/orders/:last_order_id/:direction/:status', requireLogin, async (req, res) => {
