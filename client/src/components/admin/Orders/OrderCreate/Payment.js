@@ -11,7 +11,7 @@ import FormModal from "../../../shared/Form/FormModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { Link } from 'react-router-dom'
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom"
 
 class Payment extends Component {
   constructor(props) {

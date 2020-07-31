@@ -112,6 +112,10 @@ module.exports = app => {
     let direction = req.params.direction
     let checkout_state = req.params.checkout_state
     let carts
+
+    // TO DO
+    // else if statement to catch checkout_state === (deleted || abandoned)
+
     if (last_cart_id === 'none') {
 
       // making a fresh call with no beginning ID for reference

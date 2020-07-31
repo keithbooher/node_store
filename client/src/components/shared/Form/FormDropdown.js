@@ -7,14 +7,16 @@ class FormDropdown extends Component {
   constructor(props) {
     super()
     this.default_option = props.options.find(option => option.default === true)
-
+    console.log(this.default_option)
     this.state = {
       chosen: this.default_option
     }
   }
 
   componentDidMount() {
-    this.props.change(this.default_option.redux_field, this.default_option)
+    // if (this.default_option !== undefined) {
+    //   this.props.change(this.default_option.redux_field, this.default_option)
+    // }
   }
 
   onChange(option) {

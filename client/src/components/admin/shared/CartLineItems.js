@@ -4,7 +4,7 @@ import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getProductbyName, updateCart, checkInventory } from "../../../utils/API"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch, faTrash, faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 
 
 class CartLineItems extends Component {
@@ -177,11 +177,10 @@ class CartLineItems extends Component {
           }
         </div>
 
-        {!this.state.addProduct && <button onClick={() => this.setState({ addProduct: true })}>Add Product</button>}
-
-        {this.state.addProduct && 
-          <>
-            <div>Search For Line Items to add to the cart</div>
+        {!this.state.addProduct ? 
+          <button onClick={() => this.setState({ addProduct: true })}>Add Product</button>
+        :
+          <div style={{ paddingTop: "20px" }} className="relative">
             <Form 
               onSubmit={this.handleSearchSubmit}
               submitButtonText={<FontAwesomeIcon icon={faSearch} />}
@@ -212,7 +211,9 @@ class CartLineItems extends Component {
             }
 
             {this.state.result === "" && <h3>No product found, check for typos</h3>}
-          </>
+
+            <FontAwesomeIcon className="absolute" style={{ top: "10px", right: "5px" }} onClick={() => this.setState({ addProduct: false })} icon={faTimesCircle} />
+          </div>
         }
       </div>
     )

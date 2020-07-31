@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import StripeCheckout from 'react-stripe-checkout'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyName, updateCart, checkInventory, getCartByID, getShippingMethodForCheckout } from "../../../utils/API"
+import { getProductbyName, createOrder, createShipment, updateCart, getCartByID, getShippingMethodForCheckout, updateOrder } from "../../../utils/API"
 import { formatMoney, capitalizeFirsts } from "../../../utils/helperFunctions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
@@ -11,6 +12,7 @@ import { addressFormFields, validate } from './formFields'
 import { validatePresenceOnAll } from "../../../utils/validations"
 import FormModal from "../../shared/Form/FormModal"
 import CartLineItems from '../shared/CartLineItems'
+import { handleToken } from '../../../actions'
 
 class Cart extends Component {
   constructor(props) {
@@ -34,7 +36,8 @@ class Cart extends Component {
       quantity: 1,
       addProduct: false,
       editForm: null,
-      editShipping: false
+      editShipping: false,
+      rateFields: null
     }
   }
 
@@ -44,12 +47,26 @@ class Cart extends Component {
     const shipping_method = await getShippingMethodForCheckout()
 
     const rates = shipping_method.data.shipping_rates.filter((rate) => rate.display === true)
+
+    console.log(data)
+
     const fields = rates.map((rate) => {
-      return {
-        name: rate.name,
-        value: rate.effector,
-        default: true,
-        redux_field: "shipping_rates"
+      console.log(rate.name)
+
+      if (data.chosen_rate.rate == rate.name) {
+        return {
+          name: rate.name,
+          value: rate.effector,
+          default: true,
+          redux_field: "shipping_rates"
+        }
+      } else {
+        return {
+          name: rate.name,
+          value: rate.effector,
+          default: false,
+          redux_field: "shipping_rates"
+        }
       }
     })
 
@@ -105,7 +122,7 @@ class Cart extends Component {
     let sub_total = this.renderSubTotal()
     let tax = this.renderTax()
     let shipping = this.state.cart.chosen_rate ? this.state.cart.chosen_rate.cost : 0
-    let total = tax + sub_total + shipping
+    let total = parseInt(tax) + parseInt(sub_total) + shipping
     return formatMoney(total)
   }
 
@@ -232,10 +249,22 @@ class Cart extends Component {
         shipping_method,
         rate
     }
-
     cart.chosen_rate = chosen_rate
+    let fields = this.state.rateFields[0].options.map((rateField) => {
+      if (rateField.name === rate) {
+        rateField.default = true
+        return rateField
+      } else {
+        rateField.default = false
+        return rateField
+      }
+    })
+
+    let formRates = this.state.rateFields
+    formRates.options = fields
+
     const { data } = await updateCart(cart)
-    this.setState({ cart: data, editShipping: false })
+    this.setState({ cart: data, editShipping: false, rateFields: formRates })
   }
 
   async submitGuestEmail() {
@@ -247,15 +276,69 @@ class Cart extends Component {
     this.setState({ cart: data })
   }
 
+  async finalize(token) {
+    await handleToken(token)
+    // TO DO
+    // IF HANDLING ABOVE TOKEN FAILS ^
+
+    // TO DO
+    // handle if the addresses used where past addresses and if not, add them to the users list of addresses
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    let cart = this.state.cart
+    cart.checkout_state = 'complete'
+    cart.deleted_at = today
+    cart.converted = true
+
+    let updated_cart = await updateCart(cart)
+
+    // Create Order
+    let order = {
+      tax: cart.tax,
+      sub_total: cart.sub_total,
+      total: cart.sub_total,
+      date_placed: date,
+      _user_id: cart._user_id,
+      email: cart.email,
+      payment: token
+    }
+    const new_order = await createOrder(order)
+
+    // Make shipment
+    let shipment = {
+      billing_address: cart.billing_address,
+      shipping_address: cart.shipping_address,
+      chosen_rate: {
+        cost: cart.chosen_rate.cost,
+        shipping_method: cart.chosen_rate.shipping_method,
+        shipping_rate: cart.chosen_rate.rate
+      },
+      status: 'pending',
+      date_shipped: null,
+      line_items: cart.line_items,
+      _user_id: cart._user_id
+    }
+    const new_shipment = await createShipment(shipment)
+
+    // update order with shipment asynchronously
+    let updated_order = new_order.data
+    updated_order.shipment = new_shipment.data._id
+    updateOrder(updated_order)
+
+    this.props.history.push(`/admin/orders/${new_order.data._id}`)
+  }
+
+
   render() {
-    console.log(this.state.cart)
+    let cart = this.state.cart
     return (
       <div style={{ marginTop: "30px" }}>
-        {this.state.cart &&
+        {cart &&
           <>
             <h1 style={{ textDecoration: "underline"}}> Cart</h1>
 
-            {!this.state.cart.email ?
+            {!cart.email ?
               <div>
                 <Form 
                   onSubmit={this.submitGuestEmail}
@@ -268,22 +351,22 @@ class Cart extends Component {
                 />
               </div>
             :
-              <h2>Email: {this.state.cart.email}</h2>
+              <h2>Email: {cart.email}</h2>
             }
 
             <CartLineItems
-              cart={this.state.cart}
+              cart={cart}
               addToLineItems={this.addToLineItems}
               removeLineItem={this.removeLineItem}
               adjustLineItemQuantity={this.adjustLineItemQuantity}
             />
 
             <h2>Billing Address</h2>
-            {this.state.cart.billing_address ? 
+            {cart.billing_address ? 
               <AddressDisplayEdit 
                 showEditIndicator={this.showEditIndicator} 
                 showEditModal={this.showEditModal}
-                address={this.state.cart.billing_address} 
+                address={cart.billing_address} 
                 bill_or_ship={"billing"} 
                 propertyToEdit={this.state.propertyToEdit}
               />
@@ -298,11 +381,11 @@ class Cart extends Component {
             }
 
             <h2>Shipping Address</h2>
-            {this.state.cart.shipping_address ? 
+            {cart.shipping_address ? 
               <AddressDisplayEdit 
                 showEditIndicator={this.showEditIndicator} 
                 showEditModal={this.showEditModal}
-                address={this.state.cart.shipping_address} 
+                address={cart.shipping_address} 
                 bill_or_ship={"shipping"} 
                 propertyToEdit={this.state.propertyToEdit}
               />
@@ -318,13 +401,12 @@ class Cart extends Component {
 
 
             <h2>Shipping</h2>
-            {this.state.cart.chosen_rate ?
+            {cart.chosen_rate ?
               <div>
-                <h4 className="margin-bottom-none">Selected Shipping: {this.state.cart.chosen_rate.rate}</h4>
-                <h4 className="margin-v-none">Cost: ${this.state.cart.chosen_rate.cost}</h4>
+                <h4 className="margin-bottom-none">Selected Shipping: {cart.chosen_rate.rate}</h4>
                 <h4 onClick={() => this.setState({ editShipping: true })} className="margin-top-none">Edit Shipping<FontAwesomeIcon icon={faEdit} /></h4>
               </div> 
-            : !this.state.cart.chosen_rate &&
+            : !cart.chosen_rate &&
               <div>
                 <h3>Choose Shipping Method</h3>
                 <div>
@@ -338,12 +420,14 @@ class Cart extends Component {
               </div>
             }
 
-          {this.state.editShipping &&
+          {this.state.editShipping && this.state.rateFields &&
             <div>
               <h3>Choose Shipping Method</h3>
               <div>
                 <Form 
                   onChange={this.shippingMethodSelection}
+                  submitButton={<div/>}
+                  cancel={() => this.setState({ editShipping: false })}
                   submitButtonText={"Select Shipping Method"}
                   formFields={this.state.rateFields}
                   form='shipping_method_selection_form'
@@ -356,11 +440,26 @@ class Cart extends Component {
               Sub Total: ${this.renderSubTotal()}
             </div>
             <div className="margin-s-v">
+              Shipping: ${cart.chosen_rate.cost}            </div>
+            <div className="margin-s-v">
               Tax: ${this.renderTax()}
             </div>
             <div className="margin-s-v">
               Total: ${this.renderTotal()}
             </div>
+            { cart.billing_address && cart.shipping_address && cart.chosen_rate && cart.line_items.length > 0 &&
+              <StripeCheckout
+              name="Node Store"
+              description='Purchase your order at ______' 
+              panelLabel="Purchase"
+              amount={cart.total * 100}
+              token={token => this.finalize(token)}
+              stripeKey={process.env.REACT_APP_STRIPE_KEY}
+              email={this.state.cart.email}
+            >
+              <button>Convert Cart To Order</button>
+            </StripeCheckout>
+            }
           </>
         }
 
@@ -380,6 +479,7 @@ class Cart extends Component {
               />
             </div>
         }
+
       </div>
     )
   }
