@@ -79,22 +79,42 @@ module.exports = app => {
     return
   }
 
-  app.get('/api/products/all/:last_product_id/:direction', async (req, res) => {   
+  app.get('/api/products/all/:last_product_id/:direction/:category', async (req, res) => {   
     let last_product_id = req.params.last_product_id
     let direction = req.params.direction
+    let category = req.params.category
     let products
-    if (last_product_id === 'none') {
-      products = await Product.find({ deleted_at: null }).sort({_id:-1}).limit(10)
-    } else {
-      if (direction === "next") {
-        products = await Product.find({_id: {$lt: last_product_id}, deleted_at: null}).sort({_id:-1}).limit(10)
-      } else if (direction === "from_here") {
-        products = await Product.find({_id: {$lte: last_product_id}, deleted_at: null}).sort({_id:-1}).limit(10)
-      }else {
-        products = await Product.find({_id: {$gt: last_product_id}, deleted_at: null}).limit(10)
-        products = products.reverse()
+
+    if (category === "none" || category === "None") {
+      if (last_product_id === 'none') {
+        products = await Product.find({ deleted_at: null }).sort({_id:-1}).limit(10)
+      } else {
+        if (direction === "next") {
+          products = await Product.find({_id: {$lt: last_product_id}, deleted_at: null}).sort({_id:-1}).limit(10)
+        } else if (direction === "from_here") {
+          products = await Product.find({_id: {$lte: last_product_id}, deleted_at: null}).sort({_id:-1}).limit(10)
+        }else {
+          products = await Product.find({_id: {$gt: last_product_id}, deleted_at: null}).limit(10)
+          products = products.reverse()
+        }
       }
+
+    } else {
+      if (last_product_id === 'none') {
+        products = await Product.find({ deleted_at: null, categories: category }).sort({_id:-1}).limit(10)
+      } else {
+        if (direction === "next") {
+          products = await Product.find({_id: {$lt: last_product_id}, deleted_at: null, categories: category }).sort({_id:-1}).limit(10)
+        } else if (direction === "from_here") {
+          products = await Product.find({_id: {$lte: last_product_id}, deleted_at: null, categories: category }).sort({_id:-1}).limit(10)
+        }else {
+          products = await Product.find({_id: {$gt: last_product_id}, deleted_at: null, categories: category }).limit(10)
+          products = products.reverse()
+        }
+      }
+
     }
+
     res.send(products)
   })
 

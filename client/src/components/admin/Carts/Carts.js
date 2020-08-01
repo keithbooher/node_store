@@ -115,7 +115,6 @@ class Carts extends Component {
   }
 
   render() {
-    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.carts.length > 0 && this.state.last_cart) {
       if (this.state.carts[this.state.carts.length - 1]._id === this.state.last_cart._id) {
@@ -163,7 +162,6 @@ class Carts extends Component {
 }
 
 const RenderReviews = ({carts}) => {
-  console.log(carts)
   return carts.map((cart) => {
     return (
       <tr className="background-color-grey-7 margin-xs-v">

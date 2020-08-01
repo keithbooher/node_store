@@ -53,7 +53,7 @@ class Cart extends Component {
     const fields = rates.map((rate) => {
       console.log(rate.name)
 
-      if (data.chosen_rate.rate == rate.name) {
+      if (data.chosen_rate && data.chosen_rate.rate === rate.name) {
         return {
           name: rate.name,
           value: rate.effector,
@@ -108,21 +108,21 @@ class Cart extends Component {
     this.state.cart.line_items.forEach((item) => {
       sub_total = sub_total + (item.product_price * item.quantity)
     })
-    return formatMoney(sub_total)
+    return parseFloat(formatMoney(sub_total))
   }
 
   renderTax() {
     let sub_total = this.renderSubTotal()
     let shipping = this.state.cart.chosen_rate ? this.state.cart.chosen_rate.cost : 0
     let tax = (sub_total + shipping) * .08
-    return formatMoney(tax)
+    return parseFloat(formatMoney(tax))
   }
 
   renderTotal() {
     let sub_total = this.renderSubTotal()
     let tax = this.renderTax()
     let shipping = this.state.cart.chosen_rate ? this.state.cart.chosen_rate.cost : 0
-    let total = parseInt(tax) + parseInt(sub_total) + shipping
+    let total = parseFloat(tax) + parseFloat(sub_total) + shipping
     return formatMoney(total)
   }
 
@@ -440,7 +440,7 @@ class Cart extends Component {
               Sub Total: ${this.renderSubTotal()}
             </div>
             <div className="margin-s-v">
-              Shipping: ${cart.chosen_rate.cost}            </div>
+              Shipping: ${cart.chosen_rate ? cart.chosen_rate.cost : 0}            </div>
             <div className="margin-s-v">
               Tax: ${this.renderTax()}
             </div>

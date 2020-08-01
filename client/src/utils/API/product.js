@@ -23,8 +23,8 @@ export const homeProducts = () => {
   return axios.get('/api/products/home_promotion')
 }
 
-export const paginatedProducts = (last_product_id, direction) => {
-  return axios.get('/api/products/all/' + last_product_id + "/" + direction)
+export const paginatedProducts = (last_product_id, direction, category) => {
+  return axios.get('/api/products/all/' + last_product_id + "/" + direction + "/" + category)
 }
 
 export const createProduct = (new_product) => {

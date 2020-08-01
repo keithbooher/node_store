@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastProduct } from '../../../utils/API'
+import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,12 +13,29 @@ class ProductList extends Component {
   constructor(props) {
     super()
     this.getAllProducts = this.getAllProducts.bind(this)
+    this.filterProductsByCategory = this.filterProductsByCategory.bind(this)
     this.changePage = this.changePage.bind(this)
     this.state = {
       products: [],
       page_number: 1,
       chosen_product: null,
-      last_product: null
+      last_product: null,
+      categoryFilter: "none",
+      dropDownField:[
+        { 
+          label: "Filter", 
+          name: "category_filter", 
+          typeOfComponent: "dropdown",
+          options: [
+            {
+              default: true,
+              value: "None",
+              name: "None",
+              redux_field: "category_filter"
+            }
+          ]
+        }
+      ]
     }
   }
   
@@ -40,19 +57,42 @@ class ProductList extends Component {
       products = await getProductbyId(path).then(res => res.data)
       products = [products]
     } else {
-      products = await paginatedProducts("none", "none").then(res => res.data)
+      products = await paginatedProducts("none", "none", this.state.categoryFilter).then(res => res.data)
     }
 
     let last_product = await lastProduct().then(res => res.data)
 
-    this.setState({ products, chosen_product, last_product})
+    let categories = await getAllCategories()
+
+    let dropdown = this.state.dropDownField[0]
+    
+    dropdown.options = categories.data.map((category) => {
+      return ({
+        default: false,
+        value: category._id,
+        name: category.name,
+        redux_field: "category_filter"
+      })
+    })
+
+    const none = {
+      default: true,
+      value: "None",
+      name: "None",
+      redux_field: "category_filter"
+    }
+
+    dropdown.options.push(none)
+    dropdown.options = dropdown.options.reverse()
+
+    this.setState({ products, chosen_product, last_product, dropDownField: [dropdown]  })
   }
 
   async deleteProduct(product) {
     const prod = product
     prod.deleted_at = Date.now()
     const delete_product = await updateProduct(prod)
-    let products = await paginatedProducts(this.state.products[0]._id, "from_here").then(res => res.data)
+    let products = await paginatedProducts(this.state.products[0]._id, "from_here", this.state.categoryFilter).then(res => res.data)
     let last_product = await lastProduct().then(res => res.data)
     this.setState({ products, chosen_product: null, last_product})
   }
@@ -100,14 +140,13 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
-    let products = await paginatedProducts("none", "none").then(res => res.data)
+    let products = await paginatedProducts("none", "none", "none").then(res => res.data)
     this.setState({ products, page_number: 1 })
     this.props.dispatch(reset("product_search_form"))
   }
 
   async handleSearchSubmit() {
     const search_by_product_name = this.props.form['product_search_form'].values
-    console.log(search_by_product_name)
     let product
     if (search_by_product_name === undefined) {
       this.getAllProducts()
@@ -120,8 +159,14 @@ class ProductList extends Component {
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const products = await paginatedProducts(direction_reference_id, direction).then(res => res.data)
+    const products = await paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
     this.setState({ products, page_number: this.state.page_number + page_increment  })
+  }
+
+  async filterProductsByCategory() {
+    const dropwdown_values = this.props.form['category_filter_dropdown'].values.category_filter.value
+    const { data } = await paginatedProducts("none", "none", dropwdown_values)
+    this.setState({ categoryFilter: dropwdown_values, products: data })
   }
 
   render() {
@@ -131,12 +176,17 @@ class ProductList extends Component {
         lastPossibleItem = true
       }
     }
+    console.log(this.state)
     return (
       <>
-        <div className="flex space-evenly" style={{ marginLeft: "10px" }}>
-          <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All Products</button></Link>
-          <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
-        </div>
+        <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
+
+        <Form
+          submitButton={<div/>}
+          onChange={this.filterProductsByCategory}
+          formFields={this.state.dropDownField}
+          form='category_filter_dropdown'
+        />
 
         <Form 
           onSubmit={(e) => this.handleSearchSubmit(e)}
@@ -145,7 +195,9 @@ class ProductList extends Component {
           formFields={productSearchField}
           form='product_search_form'
         />
-        {this.state.products.length !== 0 ? this.renderProducts() : <img className="loadingGif" src={loadingGif} /> }
+        <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
+        {this.state.products.length !== 0 ? this.renderProducts() : "No Products Found" }
+        {this.state.products  === null && <img className="loadingGif" src={loadingGif} /> }
         <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </>
     )
