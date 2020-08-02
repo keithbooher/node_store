@@ -22,6 +22,10 @@ class CustomerFacing extends Component {
     this.state = {admin: null}
   }
 
+  async componentDidMount() {
+    
+  }
+
   render() {
     let sidebar_class
     switch (this.props.sidebar) {

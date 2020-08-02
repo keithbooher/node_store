@@ -189,7 +189,7 @@ class ProductCard extends Component {
                 />
               </div>
               <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
-              {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count}</div>}
+              {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
             </div>
             <div className="flex">
               <div className="flex">
@@ -223,4 +223,10 @@ class ProductCard extends Component {
 
 const actions = { dispatchEnlargeImage }
 
-export default connect(null, actions)(ProductCard)
+
+function mapStateToProps({ zeroInventory }) {
+  return { zeroInventory }
+}
+
+
+export default connect(mapStateToProps, actions)(ProductCard)

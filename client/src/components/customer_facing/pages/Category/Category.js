@@ -26,6 +26,7 @@ class Category extends Component  {
     })
   }
   renderProductCards() {
+    // filter products that have 0 inventory IF store zero-inventory rule is true
     return this.state.products.map(product => {
       return <ProductCard 
                 product={product} 
@@ -47,7 +48,6 @@ class Category extends Component  {
   }
   
   render() {
-    console.log(this.props)
     if(this.props.match.params.category !== this.state.current_cat) {
       this.getProducts()
     }

@@ -1,5 +1,22 @@
 # node_store
 
+# Seed necessecities
+
+## Initial user - store owner
+-  admin status
+## One Mock Category
+-  
+## One Mock Product
+-  
+## Store settings
+- if 0 inventory and not backorderable - to show or not to show?
+  This boolean needs to be created when the store is created
+## Shipping Methods
+- Flat rate
+- By weight
+- Fedex
+
+
 
 ## this is what our form API looks like
       <div>

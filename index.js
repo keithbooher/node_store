@@ -13,6 +13,7 @@ require('./models/Order')
 require('./models/Review')
 require('./models/Shipment')
 require('./models/ShippingMethod')
+require('./models/StoreSetting')
 
 require('./services/passport')
 
@@ -45,6 +46,8 @@ require('./routes/cartRoutes')(app)
 require('./routes/shipmentRoutes')(app)
 require('./routes/shippingMethodRoutes')(app)
 require('./routes/mailRoutes')(app)
+require('./routes/mailRoutes')(app)
+require('./routes/storeSettingRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

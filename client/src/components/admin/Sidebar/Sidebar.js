@@ -33,6 +33,7 @@ class Sidebar extends Component {
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" exact to="/admin/reviews">Reviews</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" exact to="/admin/shipping/methods">Shipping</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" exact to="/admin/carts">Carts</NavLink>
+        <NavLink onClick={this.props.setSidebar} activeClassName="color-white" exact to="/admin/store-settings">Store Settings</NavLink>
       </div>
     )
   }
