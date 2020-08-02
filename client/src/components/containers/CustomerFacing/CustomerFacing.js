@@ -11,7 +11,7 @@ import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
 import EnlargeImage from "../../shared/EnlargeImage"
-import { dispatchEnlargeImage } from "../../../actions"
+import { zeroInventorySettingCheck } from "../../../actions"
 
 import "./customer.scss"
 
@@ -19,11 +19,14 @@ import "./customer.scss"
 class CustomerFacing extends Component {
   constructor(props) {
     super()
-    this.state = {admin: null}
+    this.state = {
+      admin: null,
+
+    }
   }
 
   async componentDidMount() {
-    
+    await this.props.zeroInventorySettingCheck()
   }
 
   render() {
@@ -68,9 +71,9 @@ class CustomerFacing extends Component {
 }
 
 
-function mapStateToProps({ sidebar, enlarge }) {
+function mapStateToProps({ sidebar, enlarge  }) {
   return { sidebar, enlarge }
 }
 
 
-export default connect(mapStateToProps, null)(CustomerFacing)
+export default connect(mapStateToProps, {zeroInventorySettingCheck})(CustomerFacing)

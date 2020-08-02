@@ -19,9 +19,10 @@ module.exports = app => {
   })
 
   app.get('/api/product_hiding/setting', requireLogin, adminRequired, async (req, res) => {  
-    let setting = await StoreSetting.findOne({ _id : 1 })
+    let setting = await StoreSetting.findOne({ name : "Hide Out Of Stock" })
     res.send(setting)    
   })
+  
 
 
   // // Create Store Setting

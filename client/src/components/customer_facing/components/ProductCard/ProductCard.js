@@ -124,7 +124,7 @@ class ProductCard extends Component {
       quantity = this.state.quantity - 1
     }
     
-    if (quantity > this.props.product.inventory_count || quantity < 1) {
+    if (!this.props.product.backorderable && quantity > this.props.product.inventory_count || quantity < 1) {
       return
     }
     this.setState({ quantity })
