@@ -15,8 +15,7 @@ const CategoryForm = ({
   setShowCreateInput,
   setCategories }) => {
 
-  const handleCreateCategoryCreate = async (e, parent_category) => {
-    e.preventDefault()
+  const handleCreateCategoryCreate = async (parent_category) => {
     const create_category_form_values = form['create_category_form'].values
     let new_category = {}
     new_category["name"] = create_category_form_values.name
@@ -56,7 +55,7 @@ const CategoryForm = ({
   return (
     <div style={{ marginLeft: '20px' }}>
       <Form 
-        onSubmit={(e) => handleCreateCategoryCreate(e, category)}
+        onSubmit={() => handleCreateCategoryCreate(category)}
         submitButtonText={"Create A Subcategory"}
         formFields={field}
         form='create_category_form'

@@ -18,7 +18,7 @@ class Orders extends Component {
     this.changePage = this.changePage.bind(this)
     this.changeOrderTab = this.changeOrderTab.bind(this)
     this.state = {
-      orders: [],
+      orders: null,
       page_number: 1,
       chosen_order: null,
       last_order: null,
@@ -168,7 +168,7 @@ class Orders extends Component {
 
   render() {
     let lastPossibleItem = false
-    if (this.state.orders.length > 0 && this.state.last_order) {
+    if (this.state.orders && this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {
         lastPossibleItem = true
       }
@@ -202,15 +202,20 @@ class Orders extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
+            {this.state.orders !== null ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
           </tbody>
         </table>
-        <PageChanger 
-          page_number={this.state.page_number} 
-          list_items={this.state.orders} 
-          requestMore={this.changePage} 
-          lastPossibleItem={lastPossibleItem} 
-        />
+        <div>
+          <h2>{this.state.orders && this.state.orders.length === 0 && "There are no orders"}</h2>
+        </div>
+        {this.state.orders &&
+          <PageChanger 
+            page_number={this.state.page_number} 
+            list_items={this.state.orders} 
+            requestMore={this.changePage} 
+            lastPossibleItem={lastPossibleItem} 
+          />
+        }
       </div>
     )
   }

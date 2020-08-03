@@ -94,8 +94,8 @@ class AddressPanel extends Component  {
     if (this.props.auth._id !== "000000000000000000000000") {
       return (
         <>
-          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" hideCreate={true} />    
-          <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" hideCreate={true} />    
+          {this.props.auth.billing_address.length > 0 && <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="billing_address" hideCreate={true} />}
+          {this.props.auth.shipping_address.length > 0 && <AddressCard actionBox={ this.choosePreExistingAddress } bill_or_ship="shipping_address" hideCreate={true} />}
         </>
       )
     }

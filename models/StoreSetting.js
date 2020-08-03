@@ -5,7 +5,8 @@ const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Sch
 const storeSettingSchema = new Schema({
   name: String,
   description: String,
-  boolean: Boolean
+  boolean: Boolean,
+  internal_name: String
 })
 
 

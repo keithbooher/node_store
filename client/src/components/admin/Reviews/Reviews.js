@@ -11,7 +11,7 @@ class Reviews extends Component {
     this.changePage = this.changePage.bind(this)
     this.approve = this.approve.bind(this)
     this.state = {
-      reviews: [],
+      reviews: null,
       review: null,
       order: null,
       page_number: 1,
@@ -114,7 +114,6 @@ class Reviews extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div  style={{ marginTop: "30px" }}>
         <div className="flex space-evenly">
@@ -131,14 +130,17 @@ class Reviews extends Component {
           </div>
         </div>
 
-        {this.state.reviews.length !== 0 ?
+        {this.state.reviews !== null ?
           <div className="flex flex_column">
             {this.renderReviews()}
           </div>
         : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
 
+        <h2>{this.state.reviews && this.state.reviews.length === 0 && "There are no reviews"}</h2>
 
-        <PageChanger page_number={this.state.page_number} list_items={this.state.reviews} requestMore={this.changePage} />
+
+
+        {this.state.reviews && <PageChanger page_number={this.state.page_number} list_items={this.state.reviews} requestMore={this.changePage} />}
       </div>
     )
   }

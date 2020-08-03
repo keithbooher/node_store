@@ -11,6 +11,13 @@
 ## Store settings
 - if 0 inventory and not backorderable - to show or not to show?
   This boolean needs to be created when the store is created
+  {
+    name:"Hide Out Of Stock",
+    boolean: true,
+    description:"Hide Product If Zero Quantity And Not Backorderable"
+    ,
+    internal_name: "hide_zero"
+  }
 ## Shipping Methods
 - Flat rate
 - By weight

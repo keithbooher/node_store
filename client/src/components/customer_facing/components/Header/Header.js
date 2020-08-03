@@ -31,6 +31,13 @@ class Header extends Component {
     root.removeEventListener('scroll', () => this.scrollTracker(self, root))
   }
 
+  componentDidUpdate() {
+    if (this.props.showCart && this.state.scrollClass !== "scrolling_up_nav") {  
+      let scrollClass = "scrolling_up_nav"
+      this.setState({ scrollClass })
+    }
+  }
+
   scrollTracker(self, root) {
     let scrollClass
     if (root.scrollTop < 15 && self.state.offsetTop > root.scrollTop) {  
@@ -47,7 +54,7 @@ class Header extends Component {
       scrollClass = "scrolling_up_nav"
     } else {
       // apply regular stylings
-      scrollClass = "top_of_page_nav"
+      scrollClass = "scrolling_up_nav"
     }
     self.setState({ offsetTop: root.scrollTop, scrollClass })
   }
@@ -56,6 +63,7 @@ class Header extends Component {
     this.props.sidebarBoolean(!this.props.sidebar)
   }
   render() {
+
     return (
     <div className={`${this.state.scrollClass} nav header_container`}>
       <div className="header_container flex space-between theme-nav-background-color">
@@ -73,8 +81,8 @@ class Header extends Component {
 }
 
 
-function mapStateToProps({ sidebar }) {
-  return { sidebar }
+function mapStateToProps({ sidebar, showCart }) {
+  return { sidebar, showCart }
 }
 
 const actions = { sidebarBoolean }

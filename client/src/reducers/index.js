@@ -3,7 +3,8 @@ import authReducer from './authReducer'
 import cartReducer from './cartReducer'
 import sidebarReducer from './sidebarReducer'
 import enlargeReducer from './enlargeReducer'
-import ZeroInventoryReducer from './zeroInventorySettingReducer'
+import zeroInventoryReducer from './zeroInventorySettingReducer'
+import showCartReducer from './showCartReducer'
 import { reducer as reduxForm } from 'redux-form'
 
 
@@ -13,5 +14,6 @@ export default combineReducers({
   form: reduxForm,
   sidebar: sidebarReducer,
   enlarge: enlargeReducer,
-  zeroInventory: ZeroInventoryReducer,
+  zeroInventory: zeroInventoryReducer,
+  showCart: showCartReducer,
 })

@@ -74,6 +74,7 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
         await convertGuestCart(guest_cart_id, user._id)
         removeCookie('guest_cart')
       } else {
+        console.log('4')
         // User is signed in and no cart in cookies
         await usersCart(user._id)
       }

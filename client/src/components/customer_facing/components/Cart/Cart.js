@@ -5,6 +5,7 @@ import './cart.css.scss'
 import CartLength from "./CartLength"
 import { Link } from 'react-router-dom'
 import { formatMoney } from '../../../../utils/helperFunctions'
+import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
 
 class Cart extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class Cart extends Component {
     document.removeEventListener('mousedown', this.handleClickOutside);
   }
 
+
   handleClickOutside(e) {
     if(e.target === this.dropRef.current || e.target.tagName === "svg" || e.target.tagName === "path") {
       return
@@ -37,6 +39,7 @@ class Cart extends Component {
   }
   
   expandCart() {
+    this.props.showCartAction(false)
     this.setState({ showCart: !this.state.showCart})
   }
 
@@ -45,6 +48,11 @@ class Cart extends Component {
     if (this.props.cart) {
       shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
     }
+
+    if (!this.state.showCart && this.props.showCart) {
+      this.setState({ showCart: true })
+    }
+
     return (
     <div>
       <div onClick={this.expandCart} ref={this.dropRef} className="h-100">
@@ -82,8 +90,10 @@ class Cart extends Component {
   }
 }
 
-function mapStateToProps({ cart }) {
-  return { cart }
+function mapStateToProps({ cart, showCart }) {
+  return { cart, showCart }
 }
 
-export default connect(mapStateToProps, null)(Cart)
+const actions = { dispatchEnlargeImage, showCartAction }
+
+export default connect(mapStateToProps, actions)(Cart)

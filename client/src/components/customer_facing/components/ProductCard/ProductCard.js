@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
-import { dispatchEnlargeImage } from "../../../../actions"
+import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 class ProductCard extends Component {
@@ -113,6 +113,8 @@ class ProductCard extends Component {
     if (exceededInventory) {
       this.setState({ exceededInventory })
     }
+
+    this.props.showCartAction(true)
     //////
   }
 
@@ -221,7 +223,7 @@ class ProductCard extends Component {
 }
 
 
-const actions = { dispatchEnlargeImage }
+const actions = { dispatchEnlargeImage, showCartAction }
 
 
 function mapStateToProps({ zeroInventory }) {

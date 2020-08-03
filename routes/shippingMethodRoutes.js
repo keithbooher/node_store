@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 const ShippingMethod = mongoose.model('shippingMethods')
 
 module.exports = app => {
@@ -15,9 +17,19 @@ module.exports = app => {
     let shippingMethod = await ShippingMethod.findOne({ internal_name })
     res.send(shippingMethod)
   })
-  app.put('/api/shipping_method/update', async (req, res) => {
+  app.put('/api/shipping_method/update', requireLogin, adminRequired, async (req, res) => {
     let shipping_method = req.body.shipping_method
     let shippingMethod = await ShippingMethod.findOneAndUpdate({ _id: shipping_method._id }, shipping_method, {new: true})
     res.send(shippingMethod)
+  })
+  app.post('/api/shipping_method/create', requireLogin, adminRequired, async (req, res) => {
+    let shipping_method = req.body.shipping_method
+    const new_shipping_method = new ShippingMethod(shipping_method)
+    try {
+      await new_shipping_method.save()
+      res.send(new_shipping_method)
+    } catch (err) {
+      res.status(422).send(err)
+    }
   })
 }

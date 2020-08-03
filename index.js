@@ -48,6 +48,7 @@ require('./routes/shippingMethodRoutes')(app)
 require('./routes/mailRoutes')(app)
 require('./routes/mailRoutes')(app)
 require('./routes/storeSettingRoutes')(app)
+require('./routes/storeCreationRoutes')(app)
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
