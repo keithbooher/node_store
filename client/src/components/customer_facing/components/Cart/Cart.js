@@ -76,7 +76,7 @@ class Cart extends Component {
                       {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
                       <div>Total: ${formatMoney(this.props.cart.total + this.props.cart.tax + shipping)}</div>
                     </div>
-                    <button onClick={this.expandCart} ><Link className="header_list_item clickable" to="/checkout">Checkout</Link></button>
+                    <button onClick={this.expandCart} ><Link onClick={this.expandCart} className="header_list_item clickable" to="/checkout">Checkout</Link></button>
                   </div>
                 </>
               }

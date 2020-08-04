@@ -37,4 +37,10 @@
 .content_subcontainer {
   overflow: scroll;
   min-width: 100%;
+  min-height: 100vh;
+}
+
+
+.customer_container {
+  min-height: 100vh;
 }

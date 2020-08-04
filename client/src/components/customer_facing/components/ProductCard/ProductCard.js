@@ -29,6 +29,8 @@ class ProductCard extends Component {
     const user_id = this.props.user._id
     let exceededInventory = false
 
+    console.log(this.props.user)
+
     let product_path_name = product.path_name
 
     let sub_total, create_boolean
@@ -99,6 +101,8 @@ class ProductCard extends Component {
     sub_total = calculateSubtotal(cart)
     let tax = sub_total * .08
     let shipping = cart.chosen_rate ? cart.chosen_rate.cost : 0
+
+    cart.email = this.props.user.email
 
     cart.sub_total = formatMoney(sub_total)
     cart.tax = formatMoney(tax)

@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom"
-
+import Modal from "../../../shared/Modal"
 class Payment extends Component {
   constructor(props) {
     super()
@@ -35,7 +35,9 @@ class Payment extends Component {
   }
 
   async finalize(token) {
-    await handleToken(token)
+    if (token !== "offline") {
+      await handleToken(token)
+    }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
 
@@ -188,8 +190,20 @@ class Payment extends Component {
           stripeKey={process.env.REACT_APP_STRIPE_KEY}
           email={this.props.customer.email}
         >
-          <button className="btn margin-s-v">Pay For Order</button>
+          <button className="btn margin-s-v">Pay With Credit Card</button>
         </StripeCheckout>
+
+        <button onClick={() => this.setState({ offLinePayment: true })} >Pay Offline / 3rd party</button>
+
+        {this.state.offLinePayment && 
+          <Modal>
+            <div>
+              <h2>Are you sure you want to accept payment through another service?</h2>
+              <button onClick={() => this.finalize("offline")}>Yes</button>
+              <button onClick={() => this.setState({ offLinePayment: false })}>No, cancel</button>
+            </div>
+          </Modal>
+        }
 
         {
           this.state.editForm && 

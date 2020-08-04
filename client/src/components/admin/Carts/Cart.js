@@ -13,6 +13,7 @@ import { validatePresenceOnAll } from "../../../utils/validations"
 import FormModal from "../../shared/Form/FormModal"
 import CartLineItems from '../shared/CartLineItems'
 import { handleToken } from '../../../actions'
+import Modal from "../../shared/Modal"
 
 class Cart extends Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class Cart extends Component {
       addProduct: false,
       editForm: null,
       editShipping: false,
-      rateFields: null
+      rateFields: null,
+      convert: false
     }
   }
 
@@ -48,11 +50,7 @@ class Cart extends Component {
 
     const rates = shipping_method.data.shipping_rates.filter((rate) => rate.display === true)
 
-    console.log(data)
-
     const fields = rates.map((rate) => {
-      console.log(rate.name)
-
       if (data.chosen_rate && data.chosen_rate.rate === rate.name) {
         return {
           name: rate.name,
@@ -277,7 +275,9 @@ class Cart extends Component {
   }
 
   async finalize(token) {
-    await handleToken(token)
+    if (token !== "offline") {
+      await handleToken(token)
+    }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
 
@@ -332,11 +332,14 @@ class Cart extends Component {
 
   render() {
     let cart = this.state.cart
+
     return (
       <div style={{ marginTop: "30px" }}>
         {cart &&
           <>
             <h1 style={{ textDecoration: "underline"}}> Cart</h1>
+
+            {cart.checkout_state === "complete" && <h2>Status: Complete</h2>}
 
             {!cart.email ?
               <div>
@@ -448,17 +451,24 @@ class Cart extends Component {
               Total: ${this.renderTotal()}
             </div>
             { cart.billing_address && cart.shipping_address && cart.chosen_rate && cart.line_items.length > 0 &&
-              <StripeCheckout
-              name="Node Store"
-              description='Purchase your order at ______' 
-              panelLabel="Purchase"
-              amount={cart.total * 100}
-              token={token => this.finalize(token)}
-              stripeKey={process.env.REACT_APP_STRIPE_KEY}
-              email={this.state.cart.email}
-            >
-              <button>Convert Cart To Order</button>
-            </StripeCheckout>
+              <button onClick={() => this.setState({ convert: true })}>Convert Cart To Order</button>
+            }
+
+            {this.state.convert &&
+              <Modal cancel={() => this.setState({ convert: false }) }>
+                <StripeCheckout
+                  name="Node Store"
+                  description='Purchase your order at ______' 
+                  panelLabel="Purchase"
+                  amount={cart.total * 100}
+                  token={token => this.finalize(token)}
+                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
+                  email={this.state.cart.email}
+                >
+                  <button>Pay With Credit Card</button>
+                </StripeCheckout>
+                <button onClick={() => this.finalize("offline")}>Pay Offline / 3rd party service</button>
+              </Modal>
             }
           </>
         }

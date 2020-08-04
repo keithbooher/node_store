@@ -62,6 +62,12 @@ class Carts extends Component {
             },
             {
               default: false,
+              value: "complete",
+              name: "complete",
+              redux_field: "cart_status"
+            },
+            {
+              default: false,
               value: "all",
               name: "all",
               redux_field: "cart_status"
@@ -115,6 +121,7 @@ class Carts extends Component {
   }
 
   render() {
+    console.log(this.state.carts)
     let lastPossibleItem = false
     if (this.state.carts.length > 0 && this.state.last_cart) {
       if (this.state.carts[this.state.carts.length - 1]._id === this.state.last_cart._id) {

@@ -117,11 +117,11 @@ class OrderPage extends Component {
 
   render() {
     let order = this.state.order
-
+    console.log(order)
     return (
       <div>
         {
-          this.state.order !== null ?
+          this.state.order ?
             <>
               <div className="relative" style={{ marginTop: "2em" }}>
                 <Link className="absolute" style={{ left: "0px" }} to="/admin/orders"><FontAwesomeIcon icon={faArrowLeft}/></Link>
@@ -150,10 +150,16 @@ class OrderPage extends Component {
               <h4>Line Items</h4>
               <div className="flex flex-wrap">
                 {order.shipment.line_items.map((item) => {
+                  let path
+                  if (item.product_path) {
+                    path = item.product_path.split("/").pop()
+                  } else {
+                    path ="undefined"
+                  }
                   return (
                     <div className="margin-s-h">
                       <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
-                      <div>Product name: {item.product_name}</div>
+                      <div>Product name: {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
                       <div>product price: ${item.product_price}</div>
                       <div>quantity: {item.quantity}</div>
                       <div>item total: ${item.quantity * item.product_price}</div>

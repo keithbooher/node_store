@@ -51,7 +51,7 @@ module.exports = app => {
   // GET A USERS CART
   app.get('/api/cart/:id', async (req, res) => {
     const _id = req.params.id
-    const cart = await Cart.findOne({ _id: _id, deleted_at: null })
+    const cart = await Cart.findOne({ _id: _id })
     res.send(cart)
   })
   // GET A USERS CART
@@ -190,7 +190,7 @@ module.exports = app => {
             .sort({_id:-1})
             .limit(10)
         } else {
-          carts = await Cart.find({_id: {$lt: last_cart_id}, checkout_state, deleted_at: null})
+          carts = await Cart.find({_id: {$lt: last_cart_id}, checkout_state})
             .sort({_id:-1})
             .limit(10)
         }
@@ -204,7 +204,7 @@ module.exports = app => {
         } else if (checkout_state === "deleted") {
             carts = await Cart.find({_id: {$gt: last_cart_id}, deleted_at: { $ne: null }}).limit(10)
         } else {
-          carts = await Cart.find({_id: {$gt: last_cart_id}, checkout_state, deleted_at: null}).limit(10)
+          carts = await Cart.find({_id: {$gt: last_cart_id}, checkout_state}).limit(10)
         }
 
         carts = carts.reverse()

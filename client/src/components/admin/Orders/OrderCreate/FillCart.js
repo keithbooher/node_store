@@ -11,6 +11,7 @@ class FillCart extends Component {
     this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
     this.addToLineItems = this.addToLineItems.bind(this)
     this.proceedToNextStep = this.proceedToNextStep.bind(this)
+    this.adjustLineItemQuantity = this.adjustLineItemQuantity.bind(this)
     this.state = {
       line_items: [],
       result: null,
