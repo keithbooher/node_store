@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { updateProduct, getAllCategories, getProductInfo } from '../../../utils/API'
+import { updateProduct, getAllCategories, getProductByPathName } from '../../../utils/API'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -36,7 +36,7 @@ class ProductForm extends Component {
 
     const split_paths = window.location.pathname.split( '/' )
     const product_path_name = split_paths[split_paths.length - 1]
-    let { data } = await getProductInfo(product_path_name)
+    let { data } = await getProductByPathName(product_path_name)
 
     if (!data.dimensions) {
       data.dimensions = {
@@ -75,9 +75,8 @@ class ProductForm extends Component {
   async handleCategoryUpdate() {
     const category_values = this.props.form['update_product_category_form'].values
     let update_product_info = this.state.product
-    category_values.NaN.forEach((cat) => {
-      update_product_info.categories.push(cat._id)
-    })
+    update_product_info.categories = category_values.NaN.map((cat) => cat._id)
+
     let { data } = await updateProduct(update_product_info)
     this.props.dispatch(reset("update_product_category_form"))
     this.setState({ product: data })
@@ -159,6 +158,15 @@ class ProductForm extends Component {
             </div>
             <div className="relative">
               Path Name: {this.state.product.path_name}
+            </div>
+            <div className="relative">
+              Sku: <a className="inline" onClick={() => this.showEditIndicator("sku")}>{this.state.product.sku ? this.state.product.sku : "N/A"}</a>
+              {this.state.propertyToEdit && this.state.propertyToEdit === "sku" && 
+                  <FontAwesomeIcon 
+                    icon={faEdit} 
+                    onClick={() => this.showEditModal("sku")} 
+                  />
+                }
             </div>
             <div className="relative">
               Description: <a className="inline" onClick={() => this.showEditIndicator("description")}>{this.state.product.description ? this.state.product.description : "N/A"}</a>

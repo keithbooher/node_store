@@ -3,6 +3,7 @@ import _ from 'lodash'
 export const productFields = [
   { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
   { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
+  { label: 'Sku', name: 'sku', noValueError: 'You must provide an sku' },
   { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
   { label: 'Short Description', name: 'short_description', noValueError: 'You must provide an address' },
   { label: 'Inventory Count', name: 'inventory_count', noValueError: 'You must provide an address' },
@@ -22,7 +23,7 @@ export const categoryField = [
 ]
 
 export const productSearchField = [
-  { label: 'Search For Product By Name', name: 'search_bar', noValueError: 'You must provide an address' },
+  { label: 'Search For Product By Name Or Sku', name: 'search_bar', noValueError: 'You must provide an address' },
 ]
 // FOR INJECTING ***CATEGORY*** DATA
 

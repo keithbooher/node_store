@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Home from '../../customer_facing/pages/Home'
 import Product from '../../customer_facing/pages/Product'
@@ -11,6 +11,7 @@ import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
 import EnlargeImage from "../../shared/EnlargeImage"
+import Four04Page from "../../shared/Four04Page"
 import { zeroInventorySettingCheck } from "../../../actions"
 
 import "./customer.scss"
@@ -53,13 +54,16 @@ class CustomerFacing extends Component {
         <div className={`content_subcontainer ${sidebar_class}`}>
           <Header setCartCookie={this.props.setCartCookie} />
           <div id="body_content_container" className="padding-s">
-            <Route exact path="/" component={Home} />
-            <Route exact path="/shop/:category" component={Category} />
-            <Route exact path="/shop/:category/:product" component={Product} />
-            <Route exact path="/checkout" component={Checkout} />
-            <Route path="/account" component={Account} />
-            <Route path="/order/:id" component={OrderPage} />
-            <Route path="/faq" component={FAQ} />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/shop/:category" component={Category} />
+              <Route exact path="/shop/:category/:product" component={Product} />
+              <Route exact path="/checkout" component={Checkout} />
+              <Route path="/account" component={Account} />
+              <Route path="/order/:id" component={OrderPage} />
+              <Route path="/faq" component={FAQ} />
+              <Route component={Four04Page} />
+            </Switch>
           </div>
         </div>
 

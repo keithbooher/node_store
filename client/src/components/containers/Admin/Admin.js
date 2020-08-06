@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Sidebar from '../../admin/Sidebar/Sidebar'
 import AdminDashboard from '../../admin/AdminDashboard'
 import Categories from '../../admin/Categories'
@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import "./admin.scss"
 import UpdateRelatedProducts from '../../admin/Products/UpdateRelatedProducts';
+import Four04Page from "../../shared/Four04Page"
+
 class Admin extends Component {
   constructor(props) {
     super()
@@ -71,21 +73,24 @@ class Admin extends Component {
         <div ref={this.myRef} className={`relative color-black h-100 overflow-scroll`} style={{ backgroundColor: "#F1F5F8"  }}>
           <div className="padding-s h-100">
             <FontAwesomeIcon id="sidebar_bars" className={`${content_class}`} onClick={this.sidebar} style={{ position: "fixed", top: "5px", left: "5px" }} icon={faBars} />
-            <Route exact path="/admin" component={AdminDashboard} />
-            <Route exact path="/admin/orders" component={Orders} />
-            <Route exact path="/admin/orders/:id" component={OrderPage} />
-            <Route exact path="/admin/order/create" component={() => <OrderCreate refProp={this.myRef} />} />
-            <Route exact path="/admin/product/related_products/:product_id" component={UpdateRelatedProducts} />
-            <Route path="/admin/products" component={Products} />
-            <Route exact path="/admin/categories" component={Categories} />
-            {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
-            <Route exact path="/admin/users" component={Users} />
-            <Route exact path="/admin/users/:id" component={UserPage} />
-            <Route path="/admin/reviews" component={Reviews} />
-            <Route path="/admin/shipping" component={Shipping} />
-            <Route path="/admin/carts" component={Carts} />
-            <Route path="/admin/cart/:id" component={Cart} />
-            <Route path="/admin/store-settings" component={StoreSettings} />
+            <Switch>
+              <Route exact path="/admin" component={AdminDashboard} />
+              <Route exact path="/admin/orders" component={Orders} />
+              <Route exact path="/admin/orders/:id" component={OrderPage} />
+              <Route exact path="/admin/order/create" component={() => <OrderCreate refProp={this.myRef} />} />
+              <Route exact path="/admin/product/related_products/:product_id" component={UpdateRelatedProducts} />
+              <Route path="/admin/products" component={Products} />
+              <Route exact path="/admin/categories" component={Categories} />
+              {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 
+              <Route exact path="/admin/users" component={Users} />
+              <Route exact path="/admin/users/:id" component={UserPage} />
+              <Route path="/admin/reviews" component={Reviews} />
+              <Route path="/admin/shipping" component={Shipping} />
+              <Route path="/admin/carts" component={Carts} />
+              <Route path="/admin/cart/:id" component={Cart} />
+              <Route path="/admin/store-settings" component={StoreSettings} />
+              <Route component={Four04Page} />
+            </Switch>
           </div>
 
         </div>

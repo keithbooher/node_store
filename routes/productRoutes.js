@@ -30,6 +30,16 @@ module.exports = app => {
     res.send(products)
   })
 
+  app.post('/api/product/search', async (req, res) => {    
+    let search_term = req.body.term
+    const products_by_name = await Product.find({ name: search_term }).populate({path: "categories"})
+    const products_by_sku = await Product.find({ sku: search_term }).populate({path: "categories"})
+
+    let products = [...products_by_name, ...products_by_sku]
+
+    res.send(products[0])
+  })
+
   app.get('/api/product/by_path_name/:path_name', async (req, res) => {    
     const product = await Product.findOne({ path_name: req.params.path_name }).populate({path: "categories"})
     res.send(product)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { paginatedProducts, getProductbyId, getProductInfo, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
+import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -152,7 +152,7 @@ class ProductList extends Component {
       this.getAllProducts()
       return
     } else {
-      product = [await getProductInfo(search_by_product_name.search_bar).then(res => res.data)]
+      product = [await searchProduct(search_by_product_name.search_bar).then(res => res.data)]
     }
 
     this.setState({ products: product, chosen_product: product._id })

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { getProductbyId, paginatedProducts, getProductInfo, getAllCategories, updateProduct, lastProductByCategory } from '../../../utils/API'
+import { getProductbyId, paginatedProducts, searchProduct, getAllCategories, updateProduct, lastProductByCategory } from '../../../utils/API'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch, faPlusCircle, faArrowCircleLeft, faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons"
@@ -91,7 +91,7 @@ class UpdateRelatedProducts extends Component {
       this.getAllProducts()
       return
     } else {
-      queried_products = [await getProductInfo(search_by_product_name.search_bar).then(res => res.data)]
+      queried_products = [await searchProduct(search_by_product_name.search_bar).then(res => res.data)]
     }
 
     this.setState({ queried_products })
@@ -192,7 +192,7 @@ class UpdateRelatedProducts extends Component {
           submitButtonText={<FontAwesomeIcon icon={faSearch} />}
           searchButton={true}
           formFields={[
-            { label: 'Search For Product By Name', name: 'search_bar', noValueError: 'You must provide an address' },
+            { label: 'Search For Product By Name Or Sku', name: 'search_bar', noValueError: 'You must provide an address' },
           ]}
           form='product_search_form'
         />

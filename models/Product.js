@@ -6,6 +6,7 @@ const productSchema = new Schema({
   name: String,
   // NEVER EVER EVER EVER CHANGE PATH NAME
   path_name: String,
+  sku: String,
   short_description: {
     type: String,
     default: ""
