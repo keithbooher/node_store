@@ -17,6 +17,7 @@ import StoreSettings from "../../admin/StoreSettings "
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import "./admin.scss"
+import UpdateRelatedProducts from '../../admin/Products/UpdateRelatedProducts';
 class Admin extends Component {
   constructor(props) {
     super()
@@ -74,6 +75,7 @@ class Admin extends Component {
             <Route exact path="/admin/orders" component={Orders} />
             <Route exact path="/admin/orders/:id" component={OrderPage} />
             <Route exact path="/admin/order/create" component={() => <OrderCreate refProp={this.myRef} />} />
+            <Route exact path="/admin/product/related_products/:product_id" component={UpdateRelatedProducts} />
             <Route path="/admin/products" component={Products} />
             <Route exact path="/admin/categories" component={Categories} />
             {/* <Route exact path="/admin/categories/edit/:id" component={EditCategory} /> Not needed right now, not enough attributes to warrant its own page */} 

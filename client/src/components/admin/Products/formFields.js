@@ -48,14 +48,16 @@ export const injectCategoryDataIntoFormFields = (categories, product, create_or_
 
   // if updating, lets set the product's assigned categories' default attribute to true for the tree form field
   if (product !== null) {
-    product.categories.forEach((state_product_category) => {
-      // working with category field
-      options.forEach((option_cat) => {
-        if (option_cat._id === state_product_category._id) {
-          option_cat.default = true
-        }
-      })
-    }) 
+    if (product.categories.filter((item) => item !== null ).filter((item) => item !== undefined ).length > 0) {
+      product.categories.forEach((state_product_category) => {
+        // working with category field
+        options.forEach((option_cat) => {
+          if (option_cat._id === state_product_category._id) {
+            option_cat.default = true
+          }
+        })
+      }) 
+    }
   }
 
   // finally, putting the built options in the field.options

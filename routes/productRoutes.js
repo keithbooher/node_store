@@ -19,7 +19,7 @@ module.exports = app => {
 
   app.put('/api/product/update', requireLogin, adminRequired, async (req, res) => {  
     const product = req.body.product
-    let updated_product = await Product.findOneAndUpdate({ _id: product._id }, product, {new: true})
+    let updated_product = await Product.findOneAndUpdate({ _id: product._id }, product, {new: true}).populate({path: "related_products"})
     res.send(updated_product)    
   })
 
@@ -36,7 +36,7 @@ module.exports = app => {
   })
 
   app.get('/api/product/:id', async (req, res) => {    
-    const product = await Product.findOne({ _id: req.params.id }).populate({path: "categories"})
+    const product = await Product.findOne({ _id: req.params.id }).populate({path: "categories"}).populate({path: "related_products"})
     res.send(product)
   })
 
@@ -54,6 +54,16 @@ module.exports = app => {
 
   app.get('/api/products/last_product', async (req, res) => {    
     const product = await Product.findOne({ deleted_at: null })
+    res.send(product)
+  })
+
+  app.post('/api/products/last_product/by_category', async (req, res) => { 
+    let product 
+    if (req.body.category === "all" || req.body.category === "None") {
+      product = await Product.findOne({ deleted_at: null })
+    } else {
+      product = await Product.findOne({ deleted_at: null, categories: req.body.category })
+    }
     res.send(product)
   })
 
@@ -85,7 +95,7 @@ module.exports = app => {
     let category = req.params.category
     let products
 
-    if (category === "none" || category === "None") {
+    if (category === "none" || category === "None" || category === "all" || category === "All") {
       if (last_product_id === 'none') {
         products = await Product.find({ deleted_at: null }).sort({_id:-1}).limit(10)
       } else {

@@ -3,7 +3,7 @@ import { updateProduct, getAllCategories, getProductInfo } from '../../../utils/
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -132,7 +132,11 @@ class ProductForm extends Component {
       <>
        {this.state.categories.length > 0 ?
           <>
-            <Link to="/admin/products"><FontAwesomeIcon icon={faArrowAltCircleLeft} />Back to products</Link>
+            <div>
+              <Link to="/admin/products"><FontAwesomeIcon icon={faArrowAltCircleLeft} /> Back to products</Link>
+              <Link to={`/admin/product/related_products/${this.state.product._id}`}><FontAwesomeIcon icon={faArrowAltCircleRight} /> Update Related Products</Link>
+
+            </div>
 
               <img style={{ height: "200px", width: "auto" }} src={this.state.product.image ? this.state.product.image : ""} />
               <ReactFilestack
