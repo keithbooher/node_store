@@ -8,7 +8,7 @@ import { faSearch, faPlusCircle, faArrowCircleLeft, faArrowLeft, faTrash } from 
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import { Link } from 'react-router-dom'
-
+import Modal from "../../shared/Modal"
 class UpdateRelatedProducts extends Component {
   constructor(props) {
     super()
@@ -23,6 +23,7 @@ class UpdateRelatedProducts extends Component {
       page_number: 1,
       categoryFilter: "All",
       last_possible_product: null,
+      oopsModal: false,
       dropDownField:[
         { 
           label: "Category Filter", 
@@ -127,6 +128,18 @@ class UpdateRelatedProducts extends Component {
 
   async addToRelatedProducts(prod) {
     let product = this.state.product
+    let already_contained = false
+    product.related_products.forEach(related_product => {
+        if (related_product._id === prod._id) {
+          already_contained = true
+        }
+    });
+
+    if (already_contained) {
+      this.setState({ oopsModal: true })      
+      return
+    }
+
     product.related_products.push(prod._id)
     const { data } = await updateProduct(product)
 
@@ -186,6 +199,14 @@ class UpdateRelatedProducts extends Component {
 
         {this.state.queried_products && this.state.queried_products.length !== 0 ? this.renderQueriedProducts(this.state.queried_products, false) : "No Products Found" }
         {this.state.queried_products && <PageChanger page_number={this.state.page_number} list_items={this.state.queried_products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} /> }
+
+        {this.state.oopsModal &&
+          <Modal cancel={() => this.setState({ oopsModal: false })}>
+            <h3>
+              You have already selected this item to be a related product
+            </h3>
+          </Modal>
+        }
 
       </div>
     )
