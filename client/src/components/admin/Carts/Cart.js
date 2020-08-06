@@ -12,7 +12,7 @@ import { addressFormFields, validate } from './formFields'
 import { validatePresenceOnAll } from "../../../utils/validations"
 import FormModal from "../../shared/Form/FormModal"
 import CartLineItems from '../shared/CartLineItems'
-import { handleToken } from '../../../actions'
+import { handleToken } from '../../../utils/API'
 import Modal from "../../shared/Modal"
 
 class Cart extends Component {
@@ -275,8 +275,9 @@ class Cart extends Component {
   }
 
   async finalize(token) {
+    let charge = "offline"
     if (token !== "offline") {
-      await handleToken(token)
+      charge = await handleToken(token)
     }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -301,7 +302,7 @@ class Cart extends Component {
       date_placed: date,
       _user_id: cart._user_id,
       email: cart.email,
-      payment: token
+      payment: charge
     }
     const new_order = await createOrder(order)
 

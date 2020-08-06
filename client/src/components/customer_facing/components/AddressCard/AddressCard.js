@@ -7,7 +7,7 @@ import { reset } from 'redux-form'
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 import { useEmblaCarousel } from 'embla-carousel/react'
 
-const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm }) => {
+const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser }) => {
   const [checked_box, set_checked_box] = useState(null)
   const [EmblaCarouselReact, embla] = useEmblaCarousel({ loop: false, inViewThreshold: 1 })
   const [refresh, setRefresh] = useState(false)
@@ -65,7 +65,7 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
   }
 
   const deleteAddress = (address) => {
-    let user = auth
+    let user = auth ? auth : fedUser
     let address_to_be_deleted = address
     let new_bill = user.billing_address.filter(address => address_to_be_deleted._id !== address._id)
     let new_ship = user.shipping_address.filter(address => address_to_be_deleted._id !== address._id)
@@ -97,6 +97,13 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
 
   console.log(embla)
 
+  let user
+  if (auth) {
+    user = auth
+  } else {
+    user = fedUser
+  }
+
   return (
     <div style={{ position: 'relative' }}>
       {/* delete icon */}
@@ -111,7 +118,7 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
 
             <EmblaCarouselReact>
               <div className="flex">
-                {auth && auth[bill_or_ship] && auth[bill_or_ship].map((address) => {
+                {user && user[bill_or_ship] && user[bill_or_ship].map((address) => {
                 return <div data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
                         <div>first name: {address.first_name ? address.first_name : "" }</div>
                         <div>last name: {address.last_name ? address.first_name : "" }</div>

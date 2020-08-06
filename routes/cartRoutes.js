@@ -72,7 +72,6 @@ module.exports = app => {
 
   // create cart fro admin
   app.post('/api/cart/create', async (req, res) => {  
-    console.log("here")
     const incoming_cart = req.body.cart
     const cart = new Cart(incoming_cart)
     try {

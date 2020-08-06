@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { paginatedOrders, lastOrder } from "../../../utils/API"
+import { paginatedOrders, lastOrder, searchOrders } from "../../../utils/API"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faPlusCircle, faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faPlusCircle, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView'
 import Form from "../../shared/Form"
 import { connect } from 'react-redux'
 import mobile from "is-mobile"
+import { reset } from "redux-form"
+
 
 let isMobile = mobile()
 
@@ -55,8 +57,8 @@ class Orders extends Component {
             },
             {
               default: false,
-              value: "returned",
-              name: "returned",
+              value: "refunded",
+              name: "refunded",
               redux_field: "order_status"
             },
             {
@@ -73,9 +75,22 @@ class Orders extends Component {
   }
   
   async componentDidMount() {
-    const orders = await paginatedOrders("none", "none", "pending").then(res => res.data)
+    const orders = await paginatedOrders("none", "none", "pending", "none").then(res => res.data)
     const last_order = await lastOrder().then(res => res.data)
     this.setState({ orders, last_order })
+  }
+
+  async handleSearchSubmit() {
+    const search_for_order = this.props.form['order_search_form'].values && this.props.form['order_search_form'].values.search_bar
+    let status_filter = !search_for_order ? "all" : this.state.status_filter
+
+    let orders
+    if (!search_for_order) {
+      orders = await paginatedOrders("none", "none", status_filter, "none")
+    } else {
+      orders = await paginatedOrders("none", "none", status_filter, search_for_order)
+    }
+    this.setState({ orders: orders.data, page_number: 1, status_filter })
   }
 
   // figuring out which hidden order tab to show when selected
@@ -95,37 +110,17 @@ class Orders extends Component {
   }
 
   async changeOrderTab() {
-    let status = this.props.form.order_status_dropdown.values.order_status.value
+    let status_filter = this.props.form.order_status_dropdown.values.order_status.value
 
-    let dropDownField = this.state.dropDownField
-    let options = dropDownField[0].options.map((option) => {
-      if (option.name === status) {
-        return (
-          {
-            default: true,
-            value: option.name,
-            name: option.name
-          }
-        )
-      } else {
-        return (
-          {
-            default: false,
-            value: option.name,
-            name: option.name
-          }
-        )
-      }
-    })
-
-    dropDownField.options = options
-
-    const orders = await paginatedOrders("none", "none", status).then(res => res.data)
-    this.setState({ orders, status_filter: status, dropDownField })
+    const orders = await paginatedOrders("none", "none", status_filter, "none").then(res => res.data)
+    this.props.dispatch(reset("order_search_form"))
+    this.setState({ orders, status_filter, page_number: 1 })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter).then(res => res.data)
+    const search_for_order = this.props.form['order_search_form'].values ? this.props.form['order_search_form'].values.search_bar : "none"
+    let search_term = !search_for_order ? "none" : search_for_order
+    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter, search_term).then(res => res.data)
     this.setState({ orders, page_number: this.state.page_number + page_increment })
   }
 
@@ -188,6 +183,13 @@ class Orders extends Component {
           </div>
         </div>
 
+        <Form 
+          onSubmit={(e) => this.handleSearchSubmit(e)}
+          submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+          searchButton={true}
+          formFields={[{ label: 'Search By Email or Number', name: 'search_bar', noValueError: 'You must provide an address' }]}
+          form='order_search_form'
+        />
 
         <br/>
         <table>

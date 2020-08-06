@@ -2,6 +2,7 @@ const requireLogin = require('../middlewares/requireLogin')
 const mongoose = require('mongoose')
 const Order = mongoose.model('orders')
 const Shipment = mongoose.model('shipments')
+var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = app => {
   app.post('/api/order/create', async (req, res) => {  
@@ -12,6 +13,23 @@ module.exports = app => {
     } catch (err) {
       res.status(422).send(err)
     }
+  })
+
+  app.post('/api/orders/search', async (req, res) => {  
+    const search_term = req.body.search_term
+    let orders = []
+    if (ObjectId.isValid(search_term)) {
+      orders = await Order.find({ _id: search_term }).populate({
+        path: "shipment",
+        model: "shipments",
+      })
+    } else {
+      orders = await Order.find({ email: search_term }).populate({
+        path: "shipment",
+        model: "shipments",
+      })
+    }
+    res.send(orders)
   })
 
   app.put('/api/order/update', requireLogin, async (req, res) => {  
@@ -38,13 +56,31 @@ module.exports = app => {
     res.send(order)
   })
 
-  app.get('/api/orders/:last_order_id/:direction/:status', requireLogin, async (req, res) => {
+  app.get('/api/orders/:last_order_id/:direction/:status/:search_term', requireLogin, async (req, res) => {
     let last_order_id = req.params.last_order_id
     let direction = req.params.direction
     let status = req.params.status
+    let search_term = req.params.search_term
     let orders
-    if (last_order_id === 'none') {
 
+    if(search_term === "none") {
+      orders = await originalOrdersRequest(last_order_id, direction, status)
+    }else if (ObjectId.isValid(search_term)) {
+      // using id
+      orders = await orderByIDRequest(search_term)
+    } else {
+      // using email
+      orders = await orderByEmailRequest(last_order_id, direction, status, search_term)
+    }
+    res.send(orders)
+
+  })
+
+
+  const originalOrdersRequest = async (last_order_id, direction, status) => {
+    let orders
+    // FIRST PAGE
+    if (last_order_id === 'none') {
       // making a fresh call with no beginning ID for reference
       if (status === "all") {
         orders = await Order.find({})
@@ -62,11 +98,9 @@ module.exports = app => {
           .sort({_id:-1}).limit(10)
       }
 
-          
     } else {
 
       if (direction === "next") {
-
         // if status all, dont distinguish between order statuses
         // otherwise we look for orders with specific statuses
         if (status === "all") {
@@ -104,9 +138,84 @@ module.exports = app => {
         }
 
         orders = orders.reverse()
-
       }
     }
-    res.send(orders)
-  })
+    return orders
+  }
+
+  const orderByIDRequest = async (search_term) => {
+    let orders = await Order.find({ _id: search_term })
+      .populate({
+        path: "shipment",
+        model: "shipments",
+      })
+    return orders
+  }
+
+  const orderByEmailRequest = async (last_order_id, direction, status, search_term) => {
+    let orders
+    // FIRST PAGE
+    if (last_order_id === 'none') {
+      // making a fresh call with no beginning ID for reference
+      if (status === "all") {
+        orders = await Order.find({ email: search_term })
+          .populate({
+            path: "shipment",
+            model: "shipments",
+          })
+          .sort({_id:-1}).limit(10)
+      } else {
+        orders = await Order.find({ status, email: search_term })
+          .populate({
+            path: "shipment",
+            model: "shipments",
+          })
+          .sort({_id:-1}).limit(10)
+      }
+
+    } else {
+
+      if (direction === "next") {
+        // if status all, dont distinguish between order statuses
+        // otherwise we look for orders with specific statuses
+        if (status === "all") {
+          orders = await Order.find({ _id: {$lt: last_order_id}, email: search_term })
+            .populate({
+              path: "shipment",
+              model: "shipments",
+            })
+            .sort({_id:-1})
+            .limit(10)
+        } else {
+          orders = await Order.find({ _id: {$lt: last_order_id}, status, email: search_term })
+            .populate({
+              path: "shipment",
+              model: "shipments",
+            })
+            .sort({_id:-1})
+            .limit(10)
+        }
+
+      } else { // if going in the "previous" direction
+
+        // if status all, dont distinguish between order statuses
+        // otherwise we look for orders with specific statuses
+        if (status === "all") {
+          orders = await Order.find({ _id: {$gt: last_order_id}, email: search_term }).populate({
+            path: "shipment",
+            model: "shipments",
+          }).limit(10)
+        } else {
+          orders = await Order.find({ _id: {$gt: last_order_id}, status, email: search_term }).populate({
+            path: "shipment",
+            model: "shipments",
+          }).limit(10)
+        }
+
+        orders = orders.reverse()
+      }
+    }
+    return orders
+  }
+
 }

@@ -21,7 +21,8 @@ const orderSchema = new Schema({
     ref: 'shipments'
   },
   admin_notes: String,
-  payment: Object
+  payment: Object,
+  refund: Object
 })
 
 mongoose.model('orders', orderSchema)

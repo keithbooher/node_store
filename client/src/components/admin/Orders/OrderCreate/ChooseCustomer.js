@@ -26,7 +26,9 @@ class ChooseCustomer extends Component {
   async handleSearchSubmit() {
     const search_for_customer = this.props.form['customer_search_form'].values
     let { data } = await getUserByEmail(search_for_customer.email)
-
+    console.log(search_for_customer)
+    console.log(data)
+    if (data === "") return
     this.setState({ chosen_customer: data })
   }
 
@@ -148,8 +150,8 @@ class ChooseCustomer extends Component {
           <div className="margin-m-v">
             {this.state.customer_type === "customer" &&
               <div>
-                <AddressCard actionBox={ this.chooseAddress } bill_or_ship="billing_address" hideCreate={true} />    
-                <AddressCard actionBox={ this.chooseAddress } bill_or_ship="shipping_address" hideCreate={true} />    
+                <AddressCard fedUser={this.state.chosen_customer} actionBox={ this.chooseAddress } bill_or_ship="billing_address" hideCreate={true} />    
+                <AddressCard fedUser={this.state.chosen_customer} actionBox={ this.chooseAddress } bill_or_ship="shipping_address" hideCreate={true} />    
               </div>
             }
 

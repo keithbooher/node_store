@@ -4,7 +4,10 @@ import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getProductbyName, updateCart, checkInventory } from "../../../utils/API"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
+import { validatePresenceOnAll } from "../../../utils/validations"
+import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import FormModal from "../../shared/Form/FormModal"
 
 
 class CartLineItems extends Component {
@@ -16,7 +19,9 @@ class CartLineItems extends Component {
       cart: props.cart,
       quantity: 1,
       addProduct: false,
-      result: null
+      result: null,
+      propertyToEdit: false,
+      editForm: false
     }
   }
   async handleSearchSubmit() {
@@ -146,9 +151,73 @@ class CartLineItems extends Component {
     }
     return true;
   }
+
+
+  async updateCartProperty(property, _id) {
+    const form_value = this.props.form['edit_item_price_form'].values[property]
+    let cart = this.props.cart
+
+    cart.line_items.map((item) => {
+      if (item._id === _id) {
+        item.product_price = form_value
+      }
+      return item
+    })
+
+    this.setState({ editForm: null, propertyToEdit: null })
+    this.props.dispatch(reset("edit_item_price_form"))
+
+    this.props.adjustCost(cart.line_items)
+  }
+
+  showEditModal(property, _id) {
+    let cart = this.props.cart
+    let price  
+    cart.line_items.forEach((item) => {
+      if (item._id === _id) {
+        price = item.product_price
+      }
+    })
+    const form_object = {
+      cart,
+      onSubmit: () => this.updateCartProperty(property, _id),
+      cancel: () => {
+        this.props.dispatch(reset("edit_item_price_form"))
+        this.setState({ editForm: null, propertyToEdit: null })
+      },
+      submitButtonText: "Update Price",
+      formFields: [
+        { label: capitalizeFirsts(property), name: property, noValueError: `You must provide a value` },
+      ],
+      form: "edit_item_price_form",
+      validation: validatePresenceOnAll,
+      initialValues: {
+          [property]: price
+        }
+    }
+    this.setState({ editForm: form_object })
+  }
+
+  showEditIndicator(property, _id) {
+    let propertyToEdit = {
+      property,
+      _id
+    }
+    this.setState({ propertyToEdit })
+  }
   
   render(){
-    console.log(this.props.cart)
+    let show_button = false
+    if (!this.state.addProduct || !this.props.cart.line_items || this.props.cart.line_items.length < 1) {
+      show_button = false
+    }
+    if (this.props.cart.line_items && this.props.cart.line_items.length > 0) {
+      show_button = true
+    }
+    if (this.state.addProduct === true) {
+      show_button = false
+    }
+    console.log(show_button)
     return (
       <div>
         <h2>Line Items</h2>
@@ -159,7 +228,15 @@ class CartLineItems extends Component {
                   <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute" style={{ right: "0px", top: "0px" }} icon={faTrash} />
                   <div><img style={{ height: "auto", width: "98%" }} src={item.image}/></div>
                   <div>{item.product_name}</div>
-                  <div>Price: ${item.product_price}</div>
+                  <div>
+                    Price: <a className="inline" onClick={() => this.showEditIndicator("product_price", item._id)} >${item.product_price}</a>
+                    {this.state.propertyToEdit && this.state.propertyToEdit.property === "product_price" &&
+                      <FontAwesomeIcon 
+                        icon={faEdit} 
+                        onClick={() => this.showEditModal("product_price", item._id)} 
+                      />
+                    }
+                  </div>
                   <div>
                     Quantity: {item.quantity}
                     <FontAwesomeIcon 
@@ -177,7 +254,7 @@ class CartLineItems extends Component {
           }
         </div>
 
-        {!this.state.addProduct ? 
+        {show_button ? 
           <button onClick={() => this.setState({ addProduct: true })}>Add Product</button>
         :
           <div style={{ paddingTop: "20px" }} className="relative">
@@ -214,6 +291,23 @@ class CartLineItems extends Component {
 
             <FontAwesomeIcon className="absolute" style={{ top: "10px", right: "5px" }} onClick={() => this.setState({ addProduct: false })} icon={faTimesCircle} />
           </div>
+        }
+
+
+        {
+          this.state.editForm && 
+            <div>
+              <FormModal
+                onSubmit={this.state.editForm.onSubmit}
+                cancel={this.state.editForm.cancel}
+                submitButtonText={this.state.editForm.submitButtonText}
+                formFields={this.state.editForm.formFields}
+                form={this.state.editForm.form}
+                validation={this.state.editForm.validation}
+                title={"Updating Product Price"}
+                initialValues={this.state.editForm.initialValues}
+              />
+            </div>
         }
       </div>
     )

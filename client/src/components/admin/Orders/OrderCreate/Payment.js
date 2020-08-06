@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import StripeCheckout from 'react-stripe-checkout'
-import { updateCart, createOrder, createShipment, updateOrder } from "../../../../utils/API"
-import { handleToken } from '../../../../actions'
+import { updateCart, createOrder, createShipment, updateOrder, handleToken } from "../../../../utils/API"
 import AddressDisplayEdit from "../../shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
@@ -35,8 +34,9 @@ class Payment extends Component {
   }
 
   async finalize(token) {
+    let charge = "offline"
     if (token !== "offline") {
-      await handleToken(token)
+      charge = await handleToken(token)
     }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -61,7 +61,7 @@ class Payment extends Component {
       date_placed: date,
       _user_id: cart._user_id,
       email: this.props.customer.email ? this.props.customer.email : cart.email,
-      payment: token
+      payment: charge.data
     }
     const new_order = await createOrder(order)
 
@@ -84,7 +84,7 @@ class Payment extends Component {
     // update order with shipment asynchronously
     let updated_order = new_order.data
     updated_order.shipment = new_shipment.data._id
-    updateOrder(updated_order)
+    await updateOrder(updated_order)
 
     let state = {
       cart: updated_cart.data,

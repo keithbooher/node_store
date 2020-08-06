@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
-import { convertCart, updateUser, handleToken } from '../../../../actions'
-import { createOrder, createShipment, updateCart, checkInventory } from '../../../../utils/API'
+import { convertCart, updateUser } from '../../../../actions'
+import { createOrder, createShipment, updateCart, checkInventory, handleToken } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
@@ -67,7 +67,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       return 
     }
 
-    await handleToken(token)
+    let charge = await handleToken(token)
 
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -138,7 +138,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       date_placed: date,
       _user_id: cart._user_id,
       email: auth.email ? auth.email : cart.email,
-      payment: token
+      payment: charge.data
     }
     const new_order = await createOrder(order)
 

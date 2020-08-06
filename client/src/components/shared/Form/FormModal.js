@@ -4,7 +4,6 @@ import Modal from "../Modal"
 class FormModal extends Component {
   constructor(props) {
     super()
-
     this.state = {
 
     }

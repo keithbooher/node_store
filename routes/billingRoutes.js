@@ -10,7 +10,15 @@ module.exports = app => {
       description: '$5 for 5 credits',
       source: req.body.id
     })
-    // dont even really need to send the charge. Just doing it bc right now i think lol.
     res.send(charge)
+  })
+  app.post('/api/stripe/refund', async (req, res) => {    
+    let charge = req.body.charge
+    await stripe.refunds.create(
+      {charge: charge.id},
+      function(err, refund) {
+        res.send(refund)
+      }
+    );
   })
 }

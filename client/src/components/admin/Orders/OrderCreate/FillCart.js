@@ -12,6 +12,7 @@ class FillCart extends Component {
     this.addToLineItems = this.addToLineItems.bind(this)
     this.proceedToNextStep = this.proceedToNextStep.bind(this)
     this.adjustLineItemQuantity = this.adjustLineItemQuantity.bind(this)
+    this.adjustLineItemCost = this.adjustLineItemCost.bind(this)
     this.state = {
       line_items: [],
       result: null,
@@ -144,6 +145,10 @@ class FillCart extends Component {
     return true;
   }
 
+  adjustLineItemCost(line_items){
+    this.setState({ line_items })
+  }
+
   render() {
     return (
       <div style={{ marginTop: "30px" }}>
@@ -153,6 +158,7 @@ class FillCart extends Component {
           addToLineItems={this.addToLineItems}
           removeLineItem={this.removeLineItem}
           adjustLineItemQuantity={this.adjustLineItemQuantity}
+          adjustCost={this.adjustLineItemCost}
         />
 
         <div className="margin-s-v">

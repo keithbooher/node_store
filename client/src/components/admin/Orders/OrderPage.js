@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getOrder, updateShipment, updateOrder } from "../../../utils/API"
+import { getOrder, updateShipment, updateOrder, handleRefund } from "../../../utils/API"
 import { Link } from "react-router-dom"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import Form from "../../shared/Form"
@@ -11,6 +11,7 @@ import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helperFunctions"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
+import Modal from "../../shared/Modal"
 import AddressDisplayEdit from "../shared/AddressDisplayEdit"
 import "./order.scss"
 class OrderPage extends Component {
@@ -20,10 +21,12 @@ class OrderPage extends Component {
     this.showEditIndicator = this.showEditIndicator.bind(this)
     this.showEditModal = this.showEditModal.bind(this)
     this.handleNoteSubmission = this.handleNoteSubmission.bind(this)
+    this.handleRefund = this.handleRefund.bind(this)
     this.state = {
       order: null,
       propertyToEdit: null,
-      editForm: null
+      editForm: null,
+      refundModal: false
     }
   }
   
@@ -115,9 +118,27 @@ class OrderPage extends Component {
     this.setState({ order: data })
   }
 
+  async handleRefundOffline(){
+    let order = this.state.order
+    order.status = "refunded"
+    order.refund = {refund: "Offline"}
+    let { data } = await updateOrder(order)
+    this.setState({ order: data, refundModal: false })
+    // make sure nothing can be changed at this point
+  }
+
+  async handleRefund(){
+    const refund = await handleRefund(this.state.order.payment)
+    let order = this.state.order
+    order.status = "refunded"
+    order.refund = refund.data
+    let { data } = await updateOrder(order)
+    this.setState({ order: data, refundModal: false })
+    // make sure nothing can be changed at this point
+  }
+
   render() {
     let order = this.state.order
-    console.log(order)
     return (
       <div>
         {
@@ -135,6 +156,8 @@ class OrderPage extends Component {
               <div>Date Placed: {order.date_placed}</div>
               <div>Total: {order.total}</div>
 
+              <button onClick={() => this.setState({ refundModal: true })}>Start a return</button>
+
               <Form 
                 onSubmit={this.handleNoteSubmission}
                 submitButtonText={"Update Notes"}
@@ -150,12 +173,7 @@ class OrderPage extends Component {
               <h4>Line Items</h4>
               <div className="flex flex-wrap">
                 {order.shipment.line_items.map((item) => {
-                  let path
-                  if (item.product_path) {
-                    path = item.product_path.split("/").pop()
-                  } else {
-                    path ="undefined"
-                  }
+                  let path = item.product_path ? item.product_path.split("/").pop() : "undefined"
                   return (
                     <div className="margin-s-h">
                       <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
@@ -212,12 +230,14 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <Form 
-                onSubmit={(e) => this.updateShipmentStatus(e)}
-                submitButtonText={"update shipment statues"}
-                formFields={this.createFormFields()}
-                form='update_shipment_status_form'
-              />
+              {order.status !== "refunded" && 
+                <Form 
+                  onSubmit={(e) => this.updateShipmentStatus(e)}
+                  submitButtonText={"update shipment statues"}
+                  formFields={this.createFormFields()}
+                  form='update_shipment_status_form'
+                />
+              }
             </>
           : <img className="loadingGif" src={loadingGif} />
         }
@@ -236,6 +256,14 @@ class OrderPage extends Component {
                 initialValues={this.state.editForm.initialValues}
               />
             </div>
+        }
+
+        {
+          this.state.refundModal && 
+            <Modal cancel={() => this.setState({ refundModal: false })}>
+              <button onClick={this.handleRefundOffline}>Handle Refund Offline</button>
+              <button onClick={this.handleRefund}>Refund Through Stripe</button>
+            </Modal>
         }
 
       </div>
