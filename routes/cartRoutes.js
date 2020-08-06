@@ -98,6 +98,7 @@ module.exports = app => {
   app.put('/api/cart/convert-to-member-cart', async (req, res) => {  
     const guest_cart_id = req.body.guest_cart_id
     const _user_id = req.body.user_id
+    const email = req.body.email
 
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
@@ -106,7 +107,7 @@ module.exports = app => {
     let delete_previous_cart = await Cart.findOneAndUpdate({ _user_id: mongoose.Types.ObjectId(_user_id), deleted_at: null  }, { deleted_at: date }, {new: true})
 
     // assign the new cart the customer is working with to them now
-    let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { _user_id }, {new: true})
+    let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { _user_id, email }, {new: true})
 
     res.send(updated_cart)
   })

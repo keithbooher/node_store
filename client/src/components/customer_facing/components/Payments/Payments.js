@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
 import { convertCart, updateUser } from '../../../../actions'
-import { createOrder, createShipment, updateCart, checkInventory, handleToken } from '../../../../utils/API'
+import { createOrder, createShipment, updateCart, checkInventory, handleToken as handyTok } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
@@ -67,7 +67,7 @@ const Payments = ({ handleToken, auth, cart, updateUser, makeNewOrderAvailable, 
       return 
     }
 
-    let charge = await handleToken(token)
+    const charge = await handyTok(token)
 
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -189,7 +189,7 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { reset, convertCart, updateUser, handleToken }
+const actions = { reset, convertCart, updateUser }
 
 export default connect(mapStateToProps, actions)(Payments)
 

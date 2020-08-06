@@ -18,10 +18,11 @@ export const createGuestCart = () => async dispatch => {
   return res.data
 }
 
-export const convertGuestCart = (guest_cart_id, user_id) => async dispatch => {
+export const convertGuestCart = (guest_cart_id, user_id, email) => async dispatch => {
   const data = {
     guest_cart_id,
-    user_id
+    user_id,
+    email
   }
   let res = await axios.put(`/api/cart/convert-to-member-cart`, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })

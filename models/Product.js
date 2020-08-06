@@ -46,7 +46,11 @@ const productSchema = new Schema({
   backorderable: {
     type: Boolean,
     default: false
-  }
+  },
+  related_products: [{
+    type: Schema.Types.ObjectId,
+    ref: 'products'
+  }]
 })
 
 mongoose.model('products', productSchema)

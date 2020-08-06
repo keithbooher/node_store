@@ -172,7 +172,7 @@ class OrderPage extends Component {
         
               <h4>Line Items</h4>
               <div className="flex flex-wrap">
-                {order.shipment.line_items.map((item) => {
+                {order.shipment.line_items && order.shipment.line_items.map((item) => {
                   let path = item.product_path ? item.product_path.split("/").pop() : "undefined"
                   return (
                     <div className="margin-s-h">

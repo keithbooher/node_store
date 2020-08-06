@@ -30,6 +30,7 @@ class Cart extends Component {
     this.shippingMethodSelection = this.shippingMethodSelection.bind(this)
     this.submitGuestEmail = this.submitGuestEmail.bind(this)
     this.adjustLineItemQuantity = this.adjustLineItemQuantity.bind(this)
+    this.adjustLineItemCost = this.adjustLineItemCost.bind(this)
 
     this.state = {
       cart: null,
@@ -331,6 +332,14 @@ class Cart extends Component {
   }
 
 
+  async adjustLineItemCost(line_items){
+    let cart = this.state.cart
+    cart.line_items = line_items
+    let { data } = await updateCart(cart)
+
+    this.setState({ cart: data })
+  }
+
   render() {
     let cart = this.state.cart
 
@@ -363,6 +372,7 @@ class Cart extends Component {
               addToLineItems={this.addToLineItems}
               removeLineItem={this.removeLineItem}
               adjustLineItemQuantity={this.adjustLineItemQuantity}
+              adjustCost={this.adjustLineItemCost}
             />
 
             <h2>Billing Address</h2>
@@ -415,8 +425,8 @@ class Cart extends Component {
                 <h3>Choose Shipping Method</h3>
                 <div>
                   <Form 
+                    submitButton={<div/>}
                     onChange={this.shippingMethodSelection}
-                    submitButtonText={"Select Shipping Method"}
                     formFields={this.state.rateFields}
                     form='shipping_method_selection_form'
                   />
@@ -432,7 +442,6 @@ class Cart extends Component {
                   onChange={this.shippingMethodSelection}
                   submitButton={<div/>}
                   cancel={() => this.setState({ editShipping: false })}
-                  submitButtonText={"Select Shipping Method"}
                   formFields={this.state.rateFields}
                   form='shipping_method_selection_form'
                 />

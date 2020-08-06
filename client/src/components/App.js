@@ -71,7 +71,7 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
         // User is signed in but had an open guest cart
         // convert guest cart to this user's cart
         const guest_cart_id = cookies.guest_cart
-        await convertGuestCart(guest_cart_id, user._id)
+        await convertGuestCart(guest_cart_id, user._id, user.email)
         removeCookie('guest_cart')
       } else {
         console.log('4')

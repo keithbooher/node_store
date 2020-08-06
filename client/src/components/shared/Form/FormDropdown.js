@@ -18,11 +18,11 @@ class FormDropdown extends Component {
     this.setState({ chosen: default_option })
   }
 
-  componentUpdteMount() {
-    let default_option = this.props.options.find(option => option.default === true)
+  // componentUpdateMount() {
+  //   let default_option = this.props.options.find(option => option.default === true)
 
-    this.setState({ chosen: default_option })
-  }
+  //   this.setState({ chosen: default_option })
+  // }
 
   onChange(option) {
     this.setState({ chosen: option.value })
