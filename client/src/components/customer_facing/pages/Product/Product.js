@@ -16,7 +16,7 @@ import { withRouter } from "react-router"
 import Carousel from "../../../shared/Carousel"
 import "./product.scss"
 
-const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match }) =>  {
+const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match, history }) =>  {
 
   const [product, setProduct] = useState(null)
   const [quantity, setQuantity] = useState(1)
@@ -28,18 +28,23 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
 
   
   useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await getProductByPathName(match.params.product)
-      const get_reviews = await getProductsReviews(data._id, "none", "none").then(req => req.data)
-      const get_last_review = await lastReview(data._id).then(res => res.data)
-  
-      setProduct(data)
-      setReviews(get_reviews)
-      setLastReview(get_last_review)
-    };
     fetchData();
   }, [])
 
+  useEffect(() => {
+    fetchData();
+    document.getElementById('root').scrollTo(0, 0);
+  }, [match.params.product])
+
+  const fetchData = async () => {
+    const { data } = await getProductByPathName(match.params.product)
+    const get_reviews = await getProductsReviews(data._id, "none", "none").then(req => req.data)
+    const get_last_review = await lastReview(data._id).then(res => res.data)
+
+    setProduct(data)
+    setReviews(get_reviews)
+    setLastReview(get_last_review)
+  };
 
   const addToCart = () => {
     let _product = product
@@ -209,7 +214,6 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
   } else if (reviews.length === 0) {
     review_container_style = { height: "auto" }
   }
-
   return (
     <div>
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
@@ -235,15 +239,17 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
               <button className="margin-s inline" onClick={addToCart.bind(this)}>Add To Cart</button>
             </div>
             <p>{product.description}</p>
-            <div>
-              <h3 className="margin-bottom-none">Specs</h3>
-              <div className="padding-s">
-                <div>Height: {product.dimensions.height}</div>
-                <div>Width: {product.dimensions.width}</div>
-                <div>Depth: {product.dimensions.depth}</div>
-                <div>Weight: {product.weight}</div>
+            {product.dimensions && 
+              <div>
+                <h3 className="margin-bottom-none">Specs</h3>
+                <div className="padding-s">
+                  <div>Height: {product.dimensions.height}</div>
+                  <div>Width: {product.dimensions.width}</div>
+                  <div>Depth: {product.dimensions.depth}</div>
+                  <div>Weight: {product.weight}</div>
+                </div>
               </div>
-            </div>
+            }
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
