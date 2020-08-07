@@ -11,7 +11,6 @@ import { validatePresenceOnAll } from "../../../../utils/validations"
 import { reset } from "redux-form"
 import PageChanger from "../../../shared/PageChanger"
 import Modal from "../../../shared/Modal"
-import { useEmblaCarousel } from 'embla-carousel/react'
 import ProductCard from "../../components/ProductCard"
 import { withRouter } from "react-router"
 import Carousel from "../../../shared/Carousel"
@@ -107,7 +106,6 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
     } else {
       updateCart(_cart)
     }
-    //////
   }
 
   const _setQuantity = (direction) => {
@@ -198,12 +196,18 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
       })
   }
 
-
   let lastPossibleItem = false
   if (reviews.length > 0 && last_review) {
     if (reviews[reviews.length - 1]._id === last_review._id) {
       lastPossibleItem = true
     }
+  }
+
+  let review_container_style
+  if (reviews.length < 4 && reviews.length > 0 || reviews.length > 3) {
+    review_container_style = { height: "450px" }
+  } else if (reviews.length === 0) {
+    review_container_style = { height: "auto" }
   }
 
   return (
@@ -242,21 +246,29 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match 
             </div>
             <div>
               <h2>Reviews</h2>
-              <div id="reviews_Container" className={`relative ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
-                {reviews.map((review, index) => {
-                  return (
-                    <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
-                      <h4>Rating: {review.rating}<div style={{ fontSize: "12px" }}>{review.first_name}</div></h4>
-                      <p>{review.description}</p>
-                    </div>
-                  )
-                })}
-                <div onClick={showReviews} id="more_reviews" className={`flex flex_column  ${showMoreReviews ? `hide_reviews_message` : `show_reviews_message`}`}>
-                  <h3 className="magrin-bottom-none">More Reviews</h3>
-                  <FontAwesomeIcon style={{ fontSize: "25px" }} icon={faChevronDown} />
+              {reviews.length !== 0 ? 
+                <div id="reviews_container" style={{ maxHeight: "450px" }} className={`relative overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                  {reviews.map((review, index) => {
+                    return (
+                      <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
+                        <h4>Rating: {review.rating}<div style={{ fontSize: "12px" }}>{review.first_name}</div></h4>
+                        <p>{review.description}</p>
+                      </div>
+                    )
+                  })}
+                  {reviews.length > 3 &&
+                    <>
+                      <div onClick={showReviews} id="more_reviews" className={`flex flex_column  ${showMoreReviews ? `hide_reviews_message` : `show_reviews_message`}`}>
+                        <h3 className="magrin-bottom-none">More Reviews</h3>
+                        <FontAwesomeIcon style={{ fontSize: "25px" }} icon={faChevronDown} />
+                      </div>
+                      <div style={review_container_style} className={showMoreReviews ? `hide_cover_reviews` : `show_cover_reviews`}></div>
+                    </>
+                  }
                 </div>
-                <div className={showMoreReviews ? `hide_cover_reviews` : `show_cover_reviews`}></div>
-              </div>
+              :
+                <h4>There are no reviews for this product yet</h4>  
+              }
               <PageChanger 
                 page_number={page_number} 
                 list_items={reviews} 

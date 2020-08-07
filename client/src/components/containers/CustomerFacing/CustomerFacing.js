@@ -45,12 +45,9 @@ class CustomerFacing extends Component {
         sidebar_class = ""
         break;
     }
-    console.log(this.props)
     return (
       <div className="customer_container">
-
         <Sidebar />
-
         <div className={`content_subcontainer ${sidebar_class}`}>
           <Header setCartCookie={this.props.setCartCookie} />
           <div id="body_content_container" className="padding-s">
