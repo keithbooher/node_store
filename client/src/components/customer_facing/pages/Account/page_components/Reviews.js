@@ -1,21 +1,35 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getUsersReviews, getOrder, lastUserReview } from "../../../../../utils/API"
+import { getUsersReviews, getOrder, lastUserReview, updateReview } from "../../../../../utils/API"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import PageChanger from "../../../../shared/PageChanger"
+import StarRatings from 'react-star-ratings'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { validatePresenceOnAll } from "../../../../../utils/validations"
+import { updatedFormFields } from "../../../../../utils/helperFunctions"
+import FormModal from "../../../../shared/Form/FormModal"
 
 class Reviews extends Component {
   constructor(props) {
     super()
     this.getOrder = this.getOrder.bind(this)
     this.changePage = this.changePage.bind(this)
+    this.submitReviewUpdate = this.submitReviewUpdate.bind(this)
+
+    this.fields = [
+      { label: "rating", field_class: "line_item_rating_input", name: "rating", typeOfComponent: "star-choice", noValueError: `` },
+      { label: "description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
+    ]
+
     this.state = {
       reviews: [],
       order: null,
       page_number: 1,
       line_item_id: null,
       retry: 0,
-      last_review: null
+      last_review: null,
+      editForm: null
     }
   }
   
@@ -57,9 +71,20 @@ class Reviews extends Component {
   renderReviews() {
     return this.state.reviews.map((review) => {
       return (
-        <div className="border margin-m-v">
+        <div className="relative border margin-m-v">
+          <FontAwesomeIcon className="absolute" style={{ top: "2px", right: "2px" }} icon={faEdit} onClick={() => this.setState({ editForm: review })} />
           <div>First Name: {review.first_name}</div>
-          <div>Rating: {review.rating}</div>
+          <div className="flex align-items-center">
+            <div>Rating: </div>
+            <StarRatings
+              rating={review.rating}
+              starRatedColor="blue"
+              numberOfStars={5}
+              name='rating'
+              starDimension="15px"
+              starSpacing="1px"
+            />
+          </div>
           <div>description: {review.description}</div>
           {review.line_item && <div>line_item: {review.line_item.product_name}</div>}
           <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>
@@ -75,6 +100,20 @@ class Reviews extends Component {
         </div>
       )
     })
+  }
+
+  async submitReviewUpdate() {
+    const form_values = this.props.form[`review_edit_form`].values
+    let review = this.state.editForm
+    review.description = form_values.description
+    review.rating = form_values.rating
+    await updateReview(review)
+    const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
+    this.setState({ editForm: null, reviews: reviews.data, })
+  }
+
+  review_initial_values() {
+    return updatedFormFields(this.fields, this.state.editForm)
   }
 
   render() {
@@ -100,13 +139,25 @@ class Reviews extends Component {
           requestMore={this.changePage}
           lastPossibleItem={lastPossibleItem} 
         />
+
+        {this.state.editForm && 
+          <FormModal 
+            onSubmit={this.submitReviewUpdate}
+            submitButtonText={"Submit"}
+            cancel={() => this.setState({ editForm: null })}
+            formFields={this.fields} 
+            form={`review_edit_form`}
+            initialValues={this.state.reviewed === "" ? {} : this.review_initial_values()}
+            validation={validatePresenceOnAll}
+          />
+        }
       </div>
     )
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, form }) {
+  return { auth, form }
 }
 
 export default connect(mapStateToProps, null)(Reviews)

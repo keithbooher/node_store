@@ -10,7 +10,7 @@ class LeaveReview extends Component {
   constructor(props) {
     super()
     this.fields = [
-      { label: "rating", field_class: "line_item_rating_input", name: "rating", noValueError: `` },
+      { label: "rating", field_class: "line_item_rating_input", name: "rating", typeOfComponent: "star-choice", noValueError: `` },
       { label: "description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
     ]
     this.leaveReview = this.leaveReview.bind(this)

@@ -11,6 +11,7 @@ import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
 import PhotoUpload from "./PhotoUpload"
 import "./form.scss"
+import FormStarChoice from './FormStarChoice';
 class Form extends Component {
   constructor(props) {
     super()
@@ -41,6 +42,9 @@ class Form extends Component {
           break;
         case 'photo-upload':
           component = PhotoUpload
+          break;
+        case 'star-choice':
+          component = FormStarChoice
           break;
         default:
           component = FormField

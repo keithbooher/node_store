@@ -21,8 +21,7 @@ class CustomerFacing extends Component {
   constructor(props) {
     super()
     this.state = {
-      admin: null,
-
+      admin: null
     }
   }
 

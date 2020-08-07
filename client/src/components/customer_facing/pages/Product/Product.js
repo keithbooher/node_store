@@ -5,7 +5,7 @@ import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helperFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faChevronDown, faChevronUp, faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import Form from "../../../shared/Form"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import { reset } from "redux-form"
@@ -14,6 +14,7 @@ import Modal from "../../../shared/Modal"
 import ProductCard from "../../components/ProductCard"
 import { withRouter } from "react-router"
 import Carousel from "../../../shared/Carousel"
+import StarRatings from 'react-star-ratings'
 import "./product.scss"
 
 const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match, history }) =>  {
@@ -21,6 +22,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
   const [product, setProduct] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [reviews, setReviews] = useState([])
+  const [averageRating, setAverageRating] = useState([])
   const [thanksModal, setThanksModal] = useState(false)
   const [page_number, setPageNumber] = useState(1)
   const [last_review, setLastReview] = useState(null)
@@ -28,11 +30,11 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
 
   
   useEffect(() => {
-    fetchData();
+    fetchData()
   }, [])
 
   useEffect(() => {
-    fetchData();
+    fetchData()
     document.getElementById('root').scrollTo(0, 0);
   }, [match.params.product])
 
@@ -41,10 +43,20 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
     const get_reviews = await getProductsReviews(data._id, "none", "none").then(req => req.data)
     const get_last_review = await lastReview(data._id).then(res => res.data)
 
+    let total = 0
+    let total_rating = 0
+    get_reviews.forEach((review) => {
+      total += 1
+      total_rating += review.rating
+    })
+
+    let rating_averge = total_rating / total
+    
     setProduct(data)
+    setAverageRating(rating_averge)
     setReviews(get_reviews)
     setLastReview(get_last_review)
-  };
+  }
 
   const addToCart = () => {
     let _product = product
@@ -219,7 +231,19 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
       {product && 
         <div>
-          <h1 style={{ marginTop: "10px" }}>{product.name}</h1>
+          <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
+          <div style={{ marginBottom: "20px" }}>
+            {reviews.length > 0 && averageRating &&
+              <StarRatings
+                rating={new Number(averageRating)}
+                starRatedColor="blue"
+                numberOfStars={5}
+                name='rating'
+                starDimension="15px"
+                starSpacing="1px"
+              />
+            }
+          </div>
           <div className="text-align-center">
             <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={product.image} />
           </div>
@@ -238,7 +262,8 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
               </div>
               <button className="margin-s inline" onClick={addToCart.bind(this)}>Add To Cart</button>
             </div>
-            <p>{product.description}</p>
+            <h3>Description</h3>
+            <p>{product.description ? product.description : "No Product Description"}</p>
             {product.dimensions && 
               <div>
                 <h3 className="margin-bottom-none">Specs</h3>
@@ -257,7 +282,18 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
                   {reviews.map((review, index) => {
                     return (
                       <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
-                        <h4>Rating: {review.rating}<div style={{ fontSize: "12px" }}>{review.first_name}</div></h4>
+                        <div className="flex align-items-center">
+                          <h4 style={{ marginRight: "10px" }}>Rating:</h4>
+                          {<StarRatings
+                            rating={review.rating}
+                            starRatedColor="blue"
+                            numberOfStars={5}
+                            name='rating'
+                            starDimension="15px"
+                            starSpacing="1px"
+                          />}
+                        </div>
+                        <div style={{ fontSize: "12px" }}>{review.first_name}</div>
                         <p>{review.description}</p>
                       </div>
                     )
@@ -287,7 +323,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
                   <Form 
                     onSubmit={submitReviewForm}
                     formFields={[
-                      { label: 'Rating', name: 'rating', noValueError: 'You must provide an value', value: null },
+                      { label: 'Rating', name: 'rating', typeOfComponent: "star-choice", noValueError: 'You must provide an value', value: null },
                       { label: 'Description', name: 'description', typeOfComponent: "text-area", noValueError: 'You must provide an value', value: null },
                     ]}
                     submitButtonText={"Submit Review"}                  
