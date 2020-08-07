@@ -29,8 +29,6 @@ class ProductCard extends Component {
     const user_id = this.props.user._id
     let exceededInventory = false
 
-    console.log(this.props.user)
-
     let product_path_name = product.path_name
 
     let sub_total, create_boolean
@@ -178,6 +176,7 @@ class ProductCard extends Component {
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
+    console.log(this.props.product)
     return (
       <>
         {this.props.auth !== null ? 

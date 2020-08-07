@@ -41,7 +41,7 @@ module.exports = app => {
   })
 
   app.get('/api/product/by_path_name/:path_name', async (req, res) => {    
-    const product = await Product.findOne({ path_name: req.params.path_name }).populate({path: "categories"})
+    const product = await Product.findOne({ path_name: req.params.path_name }).populate({path: "categories"}).populate({path: "related_products"})
     res.send(product)
   })
 

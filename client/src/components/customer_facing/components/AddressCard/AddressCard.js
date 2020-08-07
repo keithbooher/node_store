@@ -5,21 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash, faPlusCircle, faCaretRight, faCaretLeft} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
-import { useEmblaCarousel } from 'embla-carousel/react'
+import Carousel from "../../../shared/Carousel"
 
 const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser }) => {
   const [checked_box, set_checked_box] = useState(null)
-  const [EmblaCarouselReact, embla] = useEmblaCarousel({ loop: false, inViewThreshold: 1 })
-  const [refresh, setRefresh] = useState(false)
-
-
-  useEffect(() => {
-    if (!embla) return
-
-    embla.on('select', () => {
-      console.log(`Index is ${embla.selectedScrollSnap()}`)
-    })
-  }, [embla])
 
   const checkBox = (address) => {
     actionBox(address)
@@ -74,28 +63,26 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
     updateUser(user)
   }
 
-  const prev = () => {
-    if (!embla) {
-      return
-    }
-    if (embla.selectedScrollSnap() === -1) {
-      embla.reInit()
-    }
-    embla.scrollPrev()
+  const renderAddressCards = () => {
+    return user[bill_or_ship].map((address) => {
+      return (      
+      <div data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
+        <div>first name: {address.first_name ? address.first_name : "" }</div>
+        <div>last name: {address.last_name ? address.first_name : "" }</div>
+        <div>company: {address.company ? address.company : "" }</div>
+        <div>street address 1: {address.street_address_1 ? address.street_address_1 : "" }</div>
+        <div>street address 2: {address.street_address_2 ? address.street_address_2 : "" }</div>
+        <div>city: {address.city ? address.city : "" }</div>
+        <div>state: {address.state ? address.state : "" }</div>
+        <div>zip code: {address.zip_code ? address.zip_code : "" }</div>
+        <div>phone number: {address.phone_number ? address.phone_number : "" }</div>
+        <div>bill_or_ship: {address.bill_or_ship ? address.bill_or_ship : "" }</div>
+        <button onClick={() => deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
+        { actionBox ? <button onClick={() => checkBox(address)}>Use this address </button> : "" }
+      </div>
+      )
+    })
   }
-
-  const next = () => {
-    if (!embla) {
-      setRefresh(!refresh)
-      return
-    }
-    if (embla.selectedScrollSnap() === -1) {
-      embla.reInit()
-    }
-    embla.scrollNext()
-  }
-
-  console.log(embla)
 
   let user
   if (auth) {
@@ -109,40 +96,13 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
       {/* delete icon */}
       <div className="flex">
         {title()}
-        
       </div>
 
       <div className="flex space-evenly">
-        <FontAwesomeIcon onClick={prev} className="margin-auto-v font-size-3-0" icon={faCaretLeft} />
         <div className="w-80 relative">
-
-            <EmblaCarouselReact>
-              <div className="flex">
-                {user && user[bill_or_ship] && user[bill_or_ship].map((address) => {
-                return <div data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
-                        <div>first name: {address.first_name ? address.first_name : "" }</div>
-                        <div>last name: {address.last_name ? address.first_name : "" }</div>
-                        <div>company: {address.company ? address.company : "" }</div>
-                        <div>street address 1: {address.street_address_1 ? address.street_address_1 : "" }</div>
-                        <div>street address 2: {address.street_address_2 ? address.street_address_2 : "" }</div>
-                        <div>city: {address.city ? address.city : "" }</div>
-                        <div>state: {address.state ? address.state : "" }</div>
-                        <div>zip code: {address.zip_code ? address.zip_code : "" }</div>
-                        <div>phone number: {address.phone_number ? address.phone_number : "" }</div>
-                        <div>bill_or_ship: {address.bill_or_ship ? address.bill_or_ship : "" }</div>
-                        <button onClick={() => deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
-                        { actionBox ? <button onClick={() => checkBox(address)}>Use this address </button> : "" }
-                      </div>
-                })}
-              </div>
-            </EmblaCarouselReact>
-
+          {user && user[bill_or_ship] && <Carousel children={renderAddressCards()} />}
         </div>
-        <FontAwesomeIcon onClick={next} className="margin-auto-v font-size-3-0" icon={faCaretRight} />
       </div>
-
-
-
     </div>
   )
 }
