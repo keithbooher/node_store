@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, calculateSubtotal, formatMoney } from '../../../../utils/helperFunctions'
+import { getProductAverageRating} from '../../../../utils/API'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
@@ -9,6 +10,7 @@ import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
 import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import StarRatings from 'react-star-ratings'
 
 class ProductCard extends Component {
   constructor(props) {
@@ -18,8 +20,14 @@ class ProductCard extends Component {
     this.state = {
       quantity: 1,
       exceededInventory: null,
-      enlargeImage: null
+      enlargeImage: null,
+      averRating: null
     }
+  }
+
+  async componentDidMount() {
+    const { data } = await getProductAverageRating(this.props.product._id)
+    this.setState({ averRating: data.average })
   }
 
   addToCart() {
@@ -176,16 +184,27 @@ class ProductCard extends Component {
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
-    console.log(this.props.product)
     return (
       <>
         {this.props.auth !== null ? 
           <div className={`card margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
-              <div style={{ marginBottom: "1em" }}>
+              <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>
                 <h2 className="inline card-title margin-s-h"><Link className="inline" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
+              {this.state.averRating &&
+                <div style={{ marginBottom: "1em" }}>
+                    <StarRatings
+                      rating={this.state.averRating}
+                      starRatedColor="blue"
+                      numberOfStars={5}
+                      name='rating'
+                      starDimension="15px"
+                      starSpacing="1px"
+                    />
+                  </div>
+                }
               <div className="flex flex_column justify-center background-color-black card_image_container">
                 <LazyLoadImage
                   src={product.image}

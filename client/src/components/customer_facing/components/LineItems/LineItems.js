@@ -14,7 +14,14 @@ class LineItems extends Component {
     this.removeProduct = this.removeProduct.bind(this)
     this.alterLineItemQuantity = this.alterLineItemQuantity.bind(this)
     this.state = {
-      inventory_limit: false
+      inventory_limit: false,
+      lock: false
+    }
+  }
+
+  componentDidMount() {
+    if (window.location.pathname === "/checkout") {
+      this.setState({ lock: true })
     }
   }
 
@@ -80,8 +87,8 @@ class LineItems extends Component {
   }
 
   render() {
-    console.log(this.props.cart)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
+    let lock = this.state.lock
     return (
       <>
         {this.props.cart && 
@@ -101,14 +108,14 @@ class LineItems extends Component {
                       <p>${line_item.product_price * line_item.quantity}</p>
                       <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
                         <div style={{ fontSize: "23px", marginTop: "-5px", marginRight: "5px", fontWeight: 700 }} className="color-black line_item_quantity">x{line_item.quantity}</div>
-                        <i className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
+                        <i className={`color-black margin-s-h ${lock && "display-none"}`} onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
                           <FontAwesomeIcon icon={faPlus} />
                         </i>
-                        <div className="inline" style={{ fontSize: "19px", marginLeft: "-5px", marginRight: "-5px" }}>/</div>
-                        <i style={{ marginTop: "3px" }} className="color-black margin-s-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
+                        <div className={`inline ${lock && "display-none"}`} style={{ fontSize: "19px", marginLeft: "-5px", marginRight: "-5px" }}>/</div>
+                        <i style={{ marginTop: "3px" }} className={`color-black margin-s-h ${lock && "display-none"}`} onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
                           <FontAwesomeIcon icon={faMinus} />
                         </i>
-                        <i style={{ fontSize: "14px", top: "0px", right: "0px" }} className="color-black absolute" onClick={() => this.removeProduct(line_item)}>
+                        <i style={{ fontSize: "14px", top: "0px", right: "0px" }} className={`color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
                           <FontAwesomeIcon icon={faTrash} />
                         </i>
                       </div>

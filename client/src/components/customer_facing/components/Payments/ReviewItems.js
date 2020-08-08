@@ -7,7 +7,7 @@ import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import FormModal from "../../../shared/Form/FormModal"
 import { Link } from 'react-router-dom'
-import { withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom"
 
 class ReviewItems extends Component {
   constructor(props) {

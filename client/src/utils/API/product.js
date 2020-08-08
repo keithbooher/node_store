@@ -50,9 +50,14 @@ export const lastProduct = () => {
   return axios.get(`/api/products/last_product`)
 }
 
+export const getProductAverageRating = (_product_id) => {
+  return axios.get(`/api/product/average_rating/${_product_id}`)
+}
+
 export const checkInventory = (line_items) => {
   const data = {
     line_items
   }
   return axios.post(`/api/products/inventory_check`, data)
 }
+

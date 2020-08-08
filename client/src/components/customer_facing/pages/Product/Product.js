@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getProductByPathName, getProductsReviews, submitReview, lastReview } from "../../../../utils/API"
+import { getProductByPathName, getProductsReviews, submitReview, lastReview, getProductAverageRating } from "../../../../utils/API"
 import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helperFunctions'
@@ -42,18 +42,10 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
     const { data } = await getProductByPathName(match.params.product)
     const get_reviews = await getProductsReviews(data._id, "none", "none").then(req => req.data)
     const get_last_review = await lastReview(data._id).then(res => res.data)
-
-    let total = 0
-    let total_rating = 0
-    get_reviews.forEach((review) => {
-      total += 1
-      total_rating += review.rating
-    })
-
-    let rating_averge = total_rating / total
+    const average_rating = await getProductAverageRating(data._id).then(res => res.data)
     
     setProduct(data)
-    setAverageRating(rating_averge)
+    setAverageRating(average_rating.average)
     setReviews(get_reviews)
     setLastReview(get_last_review)
   }
