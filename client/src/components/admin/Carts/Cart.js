@@ -20,7 +20,6 @@ class Cart extends Component {
     super()
     this.routeParamID = props.match.params.id
     
-    this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
     this.addToLineItems = this.addToLineItems.bind(this)
     this.billingFormSubmit = this.billingFormSubmit.bind(this)
     this.shippingFormSubmit = this.shippingFormSubmit.bind(this)
@@ -81,12 +80,6 @@ class Cart extends Component {
     this.setState({ cart: data, rateFields: formRates  })
   }
 
-  async handleSearchSubmit() {
-    const search_for_product = this.props.form['product_order_search_form'].values
-    const { data } = await getProductbyName(search_for_product.name)
-    this.setState({ result: data })
-  }
-
   async addToLineItems(cart) {
     const { data } = await updateCart(cart)
     this.setState({ cart: data })
@@ -140,55 +133,6 @@ class Cart extends Component {
     cart.shipping_address = buildAddress(ship_addy, cart._user_id, "shipping")
     const { data } = await updateCart(cart)
     this.setState({ cart: data })
-  }
-
-  setQuantity(direction, product) {
-    let quantity
-    if(direction === "up") {
-      quantity = this.state.quantity + 1
-    } else {
-      quantity = this.state.quantity - 1
-    }
-    
-    if (direction == "up" && !product.backorderable && quantity > product.inventory_count || quantity < 1) {
-      return
-    }
-    this.setState({ quantity })
-  }
-
-  checkInventoryCount(e, product) {
-    let value = e.target.value
-    if (value > product.inventory_count) {
-      value = product.inventory_count
-      this.setState({ quantity: value })
-    }
-    if (value === "") {
-      value = 1
-      this.setState({ quantity: value })
-    }
-  }
-
-  onChangeInput(e) {
-    let value = parseInt(e.target.value)
-
-    if (e.target.value === "") {
-      value = ""
-    }
-    this.setState({ quantity: value })
-  }
-
-  preventAlpha(e) {
-    if (!this.isNumber(e)) {
-      e.preventDefault();
-    }
-  }
-
-  isNumber(e) {
-    var charCode = e.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
-    }
-    return true;
   }
 
   async updateCartProperty(address, property) {

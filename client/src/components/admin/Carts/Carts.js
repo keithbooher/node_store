@@ -4,7 +4,7 @@ import { paginatedCarts, lastCart } from "../../../utils/API"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import Form from "../../shared/Form"
 
@@ -13,11 +13,13 @@ class Carts extends Component {
     super()
     this.changePage = this.changePage.bind(this)
     this.changeCartTab = this.changeCartTab.bind(this)
+    this.handleSearchSubmit = this.handleSearchSubmit.bind(this)
     this.state = {
       carts: [],
       page_number: 1,
       last_cart: null,
       status_filter: "shopping",
+      search_term: "none",
       dropDownField: [
         { 
           label: "Filter", 
@@ -80,8 +82,9 @@ class Carts extends Component {
   }
   
   async componentDidMount() {
-    const carts = await paginatedCarts("none", "none", "shopping").then(res => res.data)
-    const last_cart = await lastCart().then(res => res.data)
+    const carts = await paginatedCarts("none", "none", "shopping", "none").then(res => res.data)
+    const last_cart = await lastCart("shopping", "none").then(res => res.data)
+    console.log(last_cart)
     this.setState({ carts, last_cart })
   }
 
@@ -111,17 +114,25 @@ class Carts extends Component {
 
     dropDownField.options = options
 
-    const carts = await paginatedCarts("none", "none", status).then(res => res.data)
-    this.setState({ carts, status_filter: status, dropDownField })
+    const carts = await paginatedCarts("none", "none", status, this.state.search_term).then(res => res.data)
+    const last_cart = await lastCart(status, this.state.search_term).then(res => res.data)
+    this.setState({ carts, status_filter: status, dropDownField, last_cart })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const carts = await paginatedCarts(direction_reference_id, direction, this.state.status_filter).then(res => res.data)
+    const carts = await paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term).then(res => res.data)
     this.setState({ carts, page_number: this.state.page_number + page_increment })
   }
 
+
+  async handleSearchSubmit() {
+    const search_for_cart = !this.props.form['cart_search_form'].values ?  "none" : this.props.form['cart_search_form'].values.search_bar
+    const { data } = await paginatedCarts("none", "none", this.state.status_filter, search_for_cart)
+    const last_cart = await lastCart(this.state.status_filter, search_for_cart).then(res => res.data)
+    this.setState({ carts: data, search_term: search_for_cart, page_number: 1, last_cart })
+  }
+
   render() {
-    console.log(this.state.carts)
     let lastPossibleItem = false
     if (this.state.carts.length > 0 && this.state.last_cart) {
       if (this.state.carts[this.state.carts.length - 1]._id === this.state.last_cart._id) {
@@ -138,6 +149,13 @@ class Carts extends Component {
               onChange={this.changeCartTab}
               formFields={this.state.dropDownField}
               form='cart_status_dropdown'
+            />
+            <Form 
+              onSubmit={this.handleSearchSubmit}
+              submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+              searchButton={true}
+              formFields={[{ label: 'Search By Email or Customer Name', name: 'search_bar', noValueError: 'You must provide an address' }]}
+              form='cart_search_form'
             />
           </div>
         </div>

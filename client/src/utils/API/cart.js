@@ -18,10 +18,10 @@ export const createCart = (cart) => {
   return axios.post('/api/cart/create', data) 
 }
 
-export const paginatedCarts = (direction_reference_id, direction, status) => {
-  return axios.get(`/api/carts/${direction_reference_id}/${direction}/${status}`) 
+export const paginatedCarts = (direction_reference_id, direction, status, search_term) => {
+  return axios.get(`/api/carts/${direction_reference_id}/${direction}/${status}/${search_term}`) 
 }
 
-export const lastCart = () => {
-  return axios.get('/api/carts/last_order') 
+export const lastCart = (status, search_term) => {
+  return axios.get(`/api/carts/last_order/${status}/${search_term}`) 
 }

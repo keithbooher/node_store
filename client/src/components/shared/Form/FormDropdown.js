@@ -14,7 +14,9 @@ class FormDropdown extends Component {
 
   componentDidMount() {
     let default_option = this.props.options.find(option => option.default === true)
-
+    if (default_option) {
+      this.props.change(default_option.redux_field, default_option)
+    }
     this.setState({ chosen: default_option })
   }
 

@@ -4,7 +4,6 @@ import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART, CREATE_GUEST_CART} from './
 // Find the current user's cart
 export const usersCart = (id) => async dispatch => {
   const res = await axios.get(`/api/current/cart/${id}`)
-  console.log(res.data)
   if (res.data === "") {
     res.data = null
   }
@@ -30,10 +29,8 @@ export const convertGuestCart = (guest_cart_id, user_id, email) => async dispatc
 }
 
 export const getGuestCart = (id) => async dispatch => {
-  console.log(id)
   let res = await axios.put(`/api/cart/guest/${id}`, {}) 
   dispatch({ type: UPDATE_CART, payload: res.data })
-  console.log(res.data)
   return res.data
 }
 

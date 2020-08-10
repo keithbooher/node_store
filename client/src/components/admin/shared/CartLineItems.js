@@ -217,7 +217,6 @@ class CartLineItems extends Component {
     if (this.state.addProduct === true) {
       show_button = false
     }
-    console.log(show_button)
     return (
       <div>
         <h2>Line Items</h2>

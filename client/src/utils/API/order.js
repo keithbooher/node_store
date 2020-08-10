@@ -22,8 +22,12 @@ export const paginatedOrders = (last_order_id, direction, status, search_term) =
     return axios.get('/api/orders/' + last_order_id + "/" + direction + "/" + status + "/" + search_term) 
 }
 
-export const lastOrder = () => {
-    return axios.get('/api/orders/last_order') 
+export const lastOrder = (user_id) => {
+    return axios.get('/api/orders/last_order/' + user_id) 
+}
+
+export const lastOrderAdmin = (status, search_term) => {
+    return axios.get('/api/orders/admin/last_order/' + status + "/" + search_term) 
 }
 
 export const searchOrders = (search_term) => {

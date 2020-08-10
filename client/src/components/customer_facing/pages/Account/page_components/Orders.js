@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import loadingGif from '../../../../../images/pizzaLoading.gif'
-import { getUsersOrders } from "../../../../../utils/API"
+import { getUsersOrders, lastOrder } from "../../../../../utils/API"
 import LeaveReview from "../../../../shared/LeaveReview"
 import PageChanger from "../../../../shared/PageChanger"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,14 +15,17 @@ class Orders extends Component {
       orders: [],
       page_number: 1,
       chosen_order: null,
-      retry: 0
+      retry: 0,
+      last_order: null
     }
   }
 
   async componentDidMount() {
     if (this.props.auth) {
       const orders = await getUsersOrders(this.props.auth._id, "none", "none")
-      this.setState({ orders: orders.data })
+      const last_order = await lastOrder(this.props.auth._id).then(res => res.data)
+
+      this.setState({ orders: orders.data, last_order })
     }
   }
 
@@ -84,10 +87,22 @@ class Orders extends Component {
   }
 
   render() {
+    console.log(this.state)
+    let lastPossibleItem = false
+    if (this.state.orders && this.state.orders.length > 0 && this.state.last_order) {
+      if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {
+        lastPossibleItem = true
+      }
+    }
     return (
       <div>
         {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
-        <PageChanger page_number={this.state.page_number} list_items={this.state.orders} requestMore={this.changePage} />
+        <PageChanger 
+          page_number={this.state.page_number} 
+          list_items={this.state.orders} 
+          requestMore={this.changePage} 
+          lastPossibleItem={lastPossibleItem}           
+          />
       </div>
     )
   }

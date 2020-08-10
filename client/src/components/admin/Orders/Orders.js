@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { paginatedOrders, lastOrder, searchOrders } from "../../../utils/API"
+import { paginatedOrders, lastOrderAdmin, searchOrders } from "../../../utils/API"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -76,7 +76,7 @@ class Orders extends Component {
   
   async componentDidMount() {
     const orders = await paginatedOrders("none", "none", "pending", "none").then(res => res.data)
-    const last_order = await lastOrder().then(res => res.data)
+    const last_order = await lastOrderAdmin("pending", "none").then(res => res.data)
     this.setState({ orders, last_order })
   }
 
@@ -85,12 +85,15 @@ class Orders extends Component {
     let status_filter = !search_for_order ? "all" : this.state.status_filter
 
     let orders
+    let last_order
     if (!search_for_order) {
       orders = await paginatedOrders("none", "none", status_filter, "none")
+      last_order = await lastOrderAdmin(status_filter, "none").then(res => res.data)
     } else {
       orders = await paginatedOrders("none", "none", status_filter, search_for_order)
+      last_order = await lastOrderAdmin(status_filter, search_for_order).then(res => res.data)
     }
-    this.setState({ orders: orders.data, page_number: 1, status_filter })
+    this.setState({ orders: orders.data, page_number: 1, status_filter, last_order })
   }
 
   // figuring out which hidden order tab to show when selected
@@ -113,15 +116,20 @@ class Orders extends Component {
     let status_filter = this.props.form.order_status_dropdown.values.order_status.value
 
     const orders = await paginatedOrders("none", "none", status_filter, "none").then(res => res.data)
+    let last_order = await lastOrderAdmin(status_filter, "none").then(res => res.data)
+
     this.props.dispatch(reset("order_search_form"))
-    this.setState({ orders, status_filter, page_number: 1 })
+    this.setState({ orders, status_filter, page_number: 1, last_order })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
     const search_for_order = this.props.form['order_search_form'].values ? this.props.form['order_search_form'].values.search_bar : "none"
     let search_term = !search_for_order ? "none" : search_for_order
+
     const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter, search_term).then(res => res.data)
-    this.setState({ orders, page_number: this.state.page_number + page_increment })
+    let last_order = await lastOrderAdmin(this.state.status_filter, search_term).then(res => res.data)
+
+    this.setState({ orders, page_number: this.state.page_number + page_increment, last_order })
   }
 
   // TO DO
@@ -162,6 +170,7 @@ class Orders extends Component {
   }
 
   render() {
+    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.orders && this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {

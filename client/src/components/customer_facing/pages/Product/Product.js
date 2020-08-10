@@ -332,9 +332,11 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
                 </Modal>
               }
             </div>
+            
             {product.related_products && product.related_products.length > 0 &&
               <div className="relative">
-                  <Carousel children={relatedProductsCards()} />
+                <h2>Related Products</h2>
+                <Carousel children={relatedProductsCards()} />
               </div>
             }
           </div>

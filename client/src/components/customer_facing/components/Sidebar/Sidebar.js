@@ -76,7 +76,7 @@ class Sidebar extends Component  {
             {this.renderCategories(null)}
           </div>
           <div className="padding-m">
-            <Link to="/faq">FAQ</Link>
+            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq">FAQ</Link>
           </div>
         </div>
       </>
