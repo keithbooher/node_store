@@ -51,8 +51,47 @@ module.exports = app => {
     res.send(order)
   })
 
-  app.get('/api/orders/last_order', async (req, res) => {    
-    const order = await Order.findOne({ deleted_at: null })
+  app.get('/api/orders/last_order/:_user_id', async (req, res) => {    
+    let _user_id = req.params._user_id
+    const order = await Order.findOne({ deleted_at: null, _user_id })
+    res.send(order)
+  })
+
+  app.get('/api/orders/admin/last_order/:status/:search_term', async (req, res) => {    
+    let status = req.params.status === "none" ? false : req.params.status === "all" ? false : req.params.status
+    let search_term = req.params.search_term === "none" ? false : req.params.search_term
+
+    let email = false
+
+    let order
+    if (search_term && search_term.split("@").length > 1) {
+      email = true
+    }
+
+    if (status && !search_term) {
+      order = await Order.findOne({ deleted_at: null, status })
+    } 
+        
+    if (status && search_term) {
+      if (email) {
+        order = await Order.findOne({ deleted_at: null, email: search_term, status })
+      } else {
+        order = await Order.findOne({ deleted_at: null, _id: search_term, status })
+      }
+    } 
+        
+    if (!status && !search_term) {
+      order = await Order.findOne({ deleted_at: null })
+    }
+
+    if (!status && search_term) {
+      if (email) {
+        order = await Order.findOne({ deleted_at: null, email: search_term })
+      } else {
+        order = await Order.findOne({ deleted_at: null, _id: search_term })
+      }
+    } 
+
     res.send(order)
   })
 

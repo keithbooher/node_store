@@ -14,6 +14,7 @@ require('./models/Review')
 require('./models/Shipment')
 require('./models/ShippingMethod')
 require('./models/StoreSetting')
+require('./models/FAQ')
 
 require('./services/passport')
 
@@ -47,6 +48,7 @@ require('./routes/shipmentRoutes')(app)
 require('./routes/shippingMethodRoutes')(app)
 require('./routes/mailRoutes')(app)
 require('./routes/mailRoutes')(app)
+require('./routes/faqRoutes')(app)
 require('./routes/storeSettingRoutes')(app)
 require('./routes/storeCreationRoutes')(app)
 

@@ -21,15 +21,29 @@ const seed = async () => {
 
 
     // make a request to make Store settings
-    let store_setting = { 
+    let hide_zero_setting = { 
       name:"Hide Out Of Stock",
-      boolean:true,
+      value: {boolean: true},
       description:"Hide Product If Zero Quantity And Not Backorderable",
       internal_name: "hide_zero"
     }
-    let store_setting_data = {store_setting}
-    await axios.post(`${keys.url}/api/store-create/store_setting/create`, store_setting_data)
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: hide_zero_setting})
 
+    let mobile_banner_setting = { 
+      name:"Mobile Banner Photo",
+      value: {image: ""},
+      description:"Photo used for mobile banner on home page",
+      internal_name: "mobile_banner_photo"
+    }
+    await axios.post(`${keys.url}/api/store-creanate/store_setting/create`, {store_setting: mobile_banner_setting})
+
+    let desktop_banner_setting = { 
+      name:"Desktop Banner Photo",
+      value: {image: ""},
+      description:"Photo used for desktop banner on home page",
+      internal_name: "desktop_banner_photo"
+    }
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: desktop_banner_setting})
 
     // make a request to make One Mock Category
     let mock_category = {

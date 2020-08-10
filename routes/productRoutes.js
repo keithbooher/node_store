@@ -1,6 +1,7 @@
 const requireLogin = require('../middlewares/requireLogin')
 const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
+const Review = mongoose.model('reviews')
 const Product = mongoose.model('products')
 
 module.exports = app => {
@@ -53,6 +54,23 @@ module.exports = app => {
   app.get('/api/product/name/:name', async (req, res) => {    
     const product = await Product.findOne({ name: req.params.name }).populate({path: "categories"})
     res.send(product)
+  })
+
+  app.get('/api/product/average_rating/:_product_id', async (req, res) => {    
+    const reviews = await Review.find({ _product_id: req.params._product_id })
+    let total_reviews = 0
+    let total_rating = 0
+
+    reviews.forEach((review) => {
+      total_rating += review.rating
+      total_reviews += 1
+    })
+
+    let average_rating = {
+      average: total_rating / total_reviews
+    }
+
+    res.status(200).send(average_rating)
   })
 
   app.get('/api/products/all/instock', async (req, res) => {    

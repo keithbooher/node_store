@@ -23,6 +23,16 @@ module.exports = app => {
     res.send(setting)    
   })
 
+  app.get('/api/setting/home_banner/desktop', requireLogin, adminRequired, async (req, res) => {  
+    let setting = await StoreSetting.findOne({ internal_name : "desktop_banner_photo" })
+    res.send(setting)    
+  })
+
+  app.get('/api/setting/home_banner/mobile', requireLogin, adminRequired, async (req, res) => {  
+    let setting = await StoreSetting.findOne({ internal_name : "mobile_banner_photo" })
+    res.send(setting)    
+  })
+
 
 
   // // Create Store Setting
