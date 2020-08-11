@@ -222,7 +222,7 @@ class Cart extends Component {
   async finalize(token) {
     let charge = "offline"
     if (token !== "offline") {
-      charge = await handleToken(token)
+      charge = await this.props.handleToken(token)
     }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -473,4 +473,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(Cart)
+const actions = { handleToken }
+
+export default connect(mapStateToProps, actions)(Cart)

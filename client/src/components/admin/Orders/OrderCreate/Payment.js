@@ -36,7 +36,7 @@ class Payment extends Component {
   async finalize(token) {
     let charge = "offline"
     if (token !== "offline") {
-      charge = await handleToken(token)
+      charge = await this.props.handleToken(token)
     }
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
@@ -229,4 +229,7 @@ class Payment extends Component {
 function mapStateToProps({ form }) {
   return { form }
 }
-export default connect(mapStateToProps, null)(withRouter(Payment))
+
+const actions = { handleToken }
+
+export default connect(mapStateToProps, actions)(withRouter(Payment))
