@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getAllFAQs } from "../../../../utils/API"
+import { connect } from 'react-redux'
 
 class FAQ extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class FAQ extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getAllFAQs()
+    let { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data })
   }
 
@@ -18,7 +19,7 @@ class FAQ extends Component {
     return (
       <div className="flex flex_column">
         <h1 className="margin-s-v">FAQ's</h1>
-        {this.state.faqs.map((faq) => {
+        {this.state.faqs && this.state.faqs.map((faq) => {
           return (
             <div className="margin-s-v">
               <h2>Q: {faq.question}</h2>
@@ -31,4 +32,6 @@ class FAQ extends Component {
   }
 }
 
-export default FAQ
+const actions = { getAllFAQs }
+
+export default connect(null, actions)(FAQ)

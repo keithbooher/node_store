@@ -7,7 +7,8 @@ import '../stylesheets/all.css.scss'
 import { withCookies, useCookies } from 'react-cookie'
 
 import Admin from './containers/Admin'
-import Customer from './containers/CustomerFacing';
+import Customer from './containers/CustomerFacing'
+import Error from "./shared/Error"
 
 import PrivateRoute from './PrivateRoute'
 
@@ -94,6 +95,7 @@ const App = ({ fetchUser, usersCart, createGuestCart, getGuestCart, convertGuest
       <PrivateRoute admin={admin} path="/admin">
         <Admin />
       </PrivateRoute>
+      <Error />
     </BrowserRouter>
   )
 

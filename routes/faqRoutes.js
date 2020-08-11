@@ -17,7 +17,6 @@ module.exports = app => {
   app.put('/api/faq/update', requireLogin, async (req, res) => {  
     const faq = req.body.faq
     let updated_faq = await FAQ.findOneAndUpdate({ _id: faq._id }, faq, {new: true})
-    console.log(updated_faq)
     res.send(updated_faq)
   })
 
@@ -28,8 +27,13 @@ module.exports = app => {
   })
 
   app.get('/api/faqs', async (req, res) => {  
-    const faqs = await FAQ.find({ deleted_at: null })
-    res.send(faqs)
+    try {
+      const faqs = await FAQ.find({ deleted_at: null })
+      res.send(faqs)
+      // throw "my error bitch"
+    } catch (err) {
+      res.status(401).send({message: err})
+    }
   })
 
 

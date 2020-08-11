@@ -143,6 +143,7 @@ class ProductCard extends Component {
   }
 
   checkInventoryCount(e) {
+    if (this.props.product.backorderable) return
     let value = e.target.value
     if (value > this.props.product.inventory_count) {
       value = this.props.product.inventory_count

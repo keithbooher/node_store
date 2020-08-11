@@ -5,6 +5,7 @@ import sidebarReducer from './sidebarReducer'
 import enlargeReducer from './enlargeReducer'
 import zeroInventoryReducer from './zeroInventorySettingReducer'
 import showCartReducer from './showCartReducer'
+import errorReducer from './errorReducer'
 import { reducer as reduxForm } from 'redux-form'
 
 
@@ -16,4 +17,5 @@ export default combineReducers({
   enlarge: enlargeReducer,
   zeroInventory: zeroInventoryReducer,
   showCart: showCartReducer,
+  error: errorReducer
 })

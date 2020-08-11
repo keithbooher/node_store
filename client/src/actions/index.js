@@ -1,4 +1,4 @@
-import { ENLARGE, SHOW_CART } from './types'
+import { ENLARGE, SHOW_CART, ERROR } from './types'
 export * from './cart_actions'
 export * from './user_actions'
 export * from './product_actions'
@@ -16,4 +16,8 @@ export const dispatchEnlargeImage = (object) => dispatch => {
 
 export const showCartAction = (boolean) => dispatch => {
   dispatch({type: SHOW_CART, payload: boolean})
+}
+
+export const errorAction = (value) => dispatch => {
+  dispatch({type: ERROR, payload: value})
 }
