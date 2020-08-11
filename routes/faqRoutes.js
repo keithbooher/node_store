@@ -7,7 +7,6 @@ module.exports = app => {
     const faq = new FAQ(req.body.faq)
     try {
       await faq.save()
-      console.log(faq)
       res.send(faq)
     } catch (err) {
       res.status(422).send(err)

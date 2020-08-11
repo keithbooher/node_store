@@ -25,7 +25,7 @@ class StoreSettings extends Component {
 
   async componentDidMount() {
     const { data } = await getAllStoreSettings()
-    const allFaqs = await getAllFAQs()
+    const allFaqs = await this.props.getAllFAQs()
     this.setState({ settings: data, faqs: allFaqs.data })
   }
 
@@ -64,14 +64,14 @@ class StoreSettings extends Component {
     update_faq.answer = faq_values.answer
     update_faq.question = faq_values.question
     await updateFAQ(update_faq)
-    const { data } = await getAllFAQs()
+    const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data, editFAQ: null })
   }
 
   async createFaq() {
     const faq_values = this.props.form['faq_create_form'].values
     await createFAQ(faq_values)
-    const { data } = await getAllFAQs()
+    const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data, createFAQ: null })
   }
 
@@ -88,7 +88,7 @@ class StoreSettings extends Component {
     const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
     faq.deleted_at = today
     await updateFAQ(faq)
-    const { data } = await getAllFAQs()
+    const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data })
 
   }
@@ -160,7 +160,7 @@ class StoreSettings extends Component {
         }
 
         <h2>FAQ's <FontAwesomeIcon onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
-        {this.state.faqs.map((faq) => {
+        {this.state.faqs && this.state.faqs.map((faq) => {
           return (
             <div className="relative">
               <h3>{faq.question}</h3>
@@ -217,4 +217,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(StoreSettings)
+const actions = { getAllFAQs }
+
+export default connect(mapStateToProps, actions)(StoreSettings)

@@ -10,6 +10,7 @@ export const getAllFAQs = () => async dispatch => {
     dispatch({ type: ERROR, payload: error.response })
     return error.response
   })
+  console.log(req)
   if (req.status === 200) {
     return req
   } else {

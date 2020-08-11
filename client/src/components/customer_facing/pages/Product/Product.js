@@ -27,6 +27,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
   const [page_number, setPageNumber] = useState(1)
   const [last_review, setLastReview] = useState(null)
   const [showMoreReviews, setShowMoreReviews] = useState(false)
+  const [insufficientStock, setInsufficient] = useState(false)
 
   
   useEffect(() => {
@@ -55,8 +56,15 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
     let _cart = cart
     const _quantity = quantity
     const user_id = auth._id
+    let insufficient = false
 
     let sub_total, create_boolean
+    
+    if (_quantity > product.inventory_count && !product.backorderable) {
+      setInsufficient(true)
+      insufficient = true
+      return
+    }
 
     if (_cart == null) {
       create_boolean = true
@@ -93,6 +101,11 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
         _cart.line_items.forEach((line_item) => {
           if(product._id === line_item._product_id) {
             line_item.quantity += _quantity
+            if (line_item.quantity > product.inventory_count && !product.backorderable) {
+              setInsufficient(true)
+              insufficient = true
+              return
+            }
           }
         })
       } else {
@@ -110,6 +123,9 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
       _cart.total = sub_total * .08
     }
     _cart.checkout_state = "shopping"
+
+    if (insufficient) return
+
     if (create_boolean === true) {
       createCart(_cart)
     } else {
@@ -131,7 +147,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
     setQuantity(_quantity)
   }
 
-  const checkInventoryCount = (e) => {
+  const checkInventoryCountInput = (e) => {
     let value = e.target.value
     if (value > product.inventory_count) {
       value = product.inventory_count
@@ -246,7 +262,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
             </div>
             <div className="flex">
               <div className="flex">
-                <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+                <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
                 <div className="flex flex_column">
                   <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
                   <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
@@ -338,6 +354,13 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
                 <h2>Related Products</h2>
                 <Carousel children={relatedProductsCards()} />
               </div>
+            }
+
+            {insufficientStock && 
+              <Modal cancel={() => setInsufficient(false)} >
+                <h2>Insufficient Stock</h2>
+                <button onClick={() => setInsufficient(false)}>Okay</button>
+              </Modal>
             }
           </div>
         </div>

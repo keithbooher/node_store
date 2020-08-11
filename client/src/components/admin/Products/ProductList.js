@@ -5,7 +5,7 @@ import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastPr
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCartArrowDown, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
@@ -171,12 +171,11 @@ class ProductList extends Component {
 
   render() {
     let lastPossibleItem = false
-    if (this.state.products.length > 0) {
+    if (this.state.products.length > 0 && this.state.last_product) {
       if (this.state.products[this.state.products.length - 1]._id === this.state.last_product._id) {
         lastPossibleItem = true
       }
     }
-    console.log(this.state)
     return (
       <>
         <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
