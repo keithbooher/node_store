@@ -15,14 +15,22 @@ module.exports = app => {
 
   app.put('/api/faq/update', requireLogin, async (req, res) => {  
     const faq = req.body.faq
-    let updated_faq = await FAQ.findOneAndUpdate({ _id: faq._id }, faq, {new: true})
-    res.send(updated_faq)
+    try {
+      let updated_faq = await FAQ.findOneAndUpdate({ _id: faq._id }, faq, {new: true})
+      res.send(updated_faq)
+    } catch (err) {
+      res.status(401).send({message: err})
+    }
   })
 
   app.get('/api/faq/:_id', async (req, res) => {  
     const _id = req.params._id
-    const faq = await FAQ.findOne({ _id })
-    res.send(faq)
+    try {
+      const faq = await FAQ.findOne({ _id })
+      res.send(faq)
+    } catch (err) {
+      res.status(401).send({message: err})
+    }
   })
 
   app.get('/api/faqs', async (req, res) => {  

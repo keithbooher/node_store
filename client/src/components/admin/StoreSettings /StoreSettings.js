@@ -63,14 +63,14 @@ class StoreSettings extends Component {
     let update_faq = this.state.editFAQ
     update_faq.answer = faq_values.answer
     update_faq.question = faq_values.question
-    await updateFAQ(update_faq)
+    await this.props.updateFAQ(update_faq)
     const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data, editFAQ: null })
   }
 
   async createFaq() {
     const faq_values = this.props.form['faq_create_form'].values
-    await createFAQ(faq_values)
+    await this.props.createFAQ(faq_values)
     const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data, createFAQ: null })
   }
@@ -87,7 +87,7 @@ class StoreSettings extends Component {
     let date = new Date()
     const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
     faq.deleted_at = today
-    await updateFAQ(faq)
+    await this.props.updateFAQ(faq)
     const { data } = await this.props.getAllFAQs()
     this.setState({ faqs: data })
 
@@ -217,6 +217,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllFAQs }
+const actions = { getAllFAQs, updateFAQ, createFAQ }
 
 export default connect(mapStateToProps, actions)(StoreSettings)
