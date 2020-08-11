@@ -76,7 +76,8 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
             image: _product.image,
             _product_id: _product._id,
             quantity: _quantity,
-            product_price: _product.price
+            product_price: _product.price,
+            product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`
           }
         ],
         _user_id: user_id,
@@ -96,17 +97,20 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
         }
       }
 
-      // IF FOUND, SIMPLY UPDATE THE LINE ITEM QUANTITY. OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
+      // IF FOUND, UPDATE THE LINE ITEM QUANTITY and check against inventory. 
+      // OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
       if(found === true) {
-        _cart.line_items.forEach((line_item) => {
+        _cart.line_items = _cart.line_items.map((line_item) => {
           if(product._id === line_item._product_id) {
-            line_item.quantity += _quantity
-            if (line_item.quantity > product.inventory_count && !product.backorderable) {
+            let total = line_item.quantity + _quantity
+            if (total > product.inventory_count && !product.backorderable) {
               setInsufficient(true)
               insufficient = true
-              return
+            } else {
+              line_item.quantity += _quantity
             }
           }
+          return line_item
         })
       } else {
         let line_item = {
@@ -114,7 +118,8 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
           image: _product.image,
           _product_id: _product._id,
           quantity: _quantity,
-          product_price: _product.price
+          product_price: _product.price,
+          product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`
         }
         _cart.line_items.push(line_item)
       }
@@ -141,7 +146,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
       _quantity = quantity - 1
     }
     
-    if (_quantity > product.inventory_count || quantity < 1) {
+    if (_quantity > product.inventory_count || _quantity < 1) {
       return
     }
     setQuantity(_quantity)
@@ -234,6 +239,7 @@ const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match,
   } else if (reviews.length === 0) {
     review_container_style = { height: "auto" }
   }
+
   return (
     <div>
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
