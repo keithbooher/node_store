@@ -20,7 +20,7 @@ class Sidebar extends Component  {
   async componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     // find all categories that have been selected to be shown to the customers
-    let categories = await getSidebarCategories()
+    let categories = await this.props.getSidebarCategories()
     this.setState({ categories: categories.data })
   }
 
@@ -90,6 +90,6 @@ function mapStateToProps({ sidebar }) {
   return { sidebar }
 }
 
-const actions = { sidebarBoolean }
+const actions = { sidebarBoolean, getSidebarCategories }
 
 export default connect(mapStateToProps, actions)(Sidebar)

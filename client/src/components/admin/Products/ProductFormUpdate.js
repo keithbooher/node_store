@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { updateProduct, getAllCategories, getProductByPathName } from '../../../utils/API'
+import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -32,7 +33,7 @@ class ProductForm extends Component {
   }
 
   async componentDidMount() {
-    let categories = await getAllCategories()
+    let categories = await this.props.getAllCategories()
 
     const split_paths = window.location.pathname.split( '/' )
     const product_path_name = split_paths[split_paths.length - 1]
@@ -67,7 +68,7 @@ class ProductForm extends Component {
     }
 
     let { data } = await updateProduct(update_product_info)
-    this.props.dispatch(reset("update_product_form"))
+    this.props.dispatchObj(reset("update_product_form"))
     this.setState({ editForm: null, propertyToEdit: null, product: data })
   }
 
@@ -78,7 +79,7 @@ class ProductForm extends Component {
     update_product_info.categories = category_values.NaN.map((cat) => cat._id)
 
     let { data } = await updateProduct(update_product_info)
-    this.props.dispatch(reset("update_product_category_form"))
+    this.props.dispatchObj(reset("update_product_category_form"))
     this.setState({ product: data })
   }
 
@@ -93,7 +94,7 @@ class ProductForm extends Component {
       product,
       onSubmit: this.handleSubmitUpdate,
       cancel: () => {
-        this.props.dispatch(reset("update_product_form"))
+        this.props.dispatchObj(reset("update_product_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Product Property",
@@ -286,4 +287,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(ProductForm)
+const actions = { getAllCategories, dispatchObj }
+
+export default connect(mapStateToProps, actions)(ProductForm)

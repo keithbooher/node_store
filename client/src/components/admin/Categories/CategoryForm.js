@@ -5,7 +5,7 @@ import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'
 import { validatePresenceOnAll } from '../../../utils/validations'
-
+import { dispatchObj } from "../../../actions"
 const CategoryForm = ({ 
   category,
   field,
@@ -13,7 +13,10 @@ const CategoryForm = ({
   dispatch,
   categories,
   setShowCreateInput,
-  setCategories }) => {
+  setCategories,
+  createCategory, 
+  updateCategory, 
+  getTopCategories }) => {
 
   const handleCreateCategoryCreate = async (parent_category) => {
     const create_category_form_values = form['create_category_form'].values
@@ -49,7 +52,7 @@ const CategoryForm = ({
     const topLevelCategories =  await getTopCategories().then(res => res.data)
     setCategories(topLevelCategories) // this has to happen first because the rerender causes bad data
     setShowCreateInput(null)
-    dispatch(reset("create_category_form"))
+    dispatchObj(reset("create_category_form"))
   }
 
   return (
@@ -71,4 +74,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(CategoryForm)
+const actions = { createCategory, updateCategory, getTopCategories, dispatchObj }
+
+export default connect(mapStateToProps, actions)(CategoryForm)

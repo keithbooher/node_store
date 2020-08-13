@@ -217,4 +217,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(UpdateRelatedProducts)
+const actions = { getAllCategories }
+
+export default connect(mapStateToProps, actions)(UpdateRelatedProducts)

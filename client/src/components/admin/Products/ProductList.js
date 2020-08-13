@@ -62,7 +62,7 @@ class ProductList extends Component {
 
     let last_product = await lastProduct().then(res => res.data)
 
-    let categories = await getAllCategories()
+    let categories = await this.props.getAllCategories()
 
     let dropdown = this.state.dropDownField[0]
     
@@ -208,4 +208,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(ProductList)
+const actions = { getAllCategories }
+
+export default connect(mapStateToProps, actions)(ProductList)

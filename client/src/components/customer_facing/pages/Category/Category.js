@@ -19,7 +19,13 @@ class Category extends Component  {
     }
   }
   async componentDidMount() {
-    const category_products = await getCategoryProducts(this.routeParamCategory)
+    const category_products = await this.props.getCategoryProducts(this.routeParamCategory)
+    if (category_products.status !== 200) {
+      category_products.data = {
+        category: null,
+        products: []
+      }
+    }
     this.setState({ 
       products: category_products.data.products.reverse(), 
       category_data: category_products.data.category 
@@ -43,7 +49,13 @@ class Category extends Component  {
     })
   }
   async getProducts() {
-    const category_products = await getCategoryProducts(this.props.match.params.category)
+    const category_products = await this.props.getCategoryProducts(this.props.match.params.category)
+    if (category_products.status !== 200) {
+      category_products.data = {
+        category: null,
+        products: []
+      }
+    }
     this.setState({ 
       products: category_products.data.products, 
       category_data: category_products.data.category,
@@ -78,6 +90,6 @@ function mapStateToProps({ auth, sidebar, cart, zeroInventory }) {
   return { auth, sidebar, cart, zeroInventory }
 }
 
-const actions = { sidebarBoolean, updateCart, createCart }
+const actions = { sidebarBoolean, updateCart, createCart, getCategoryProducts }
 
 export default connect(mapStateToProps, actions)(Category)

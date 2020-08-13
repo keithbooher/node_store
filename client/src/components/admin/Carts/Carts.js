@@ -82,8 +82,8 @@ class Carts extends Component {
   }
   
   async componentDidMount() {
-    const carts = await this.props.paginatedCarts("none", "none", "shopping", "none")
-    const last_cart = await this.props.lastCart("shopping", "none")
+    let carts = await this.props.paginatedCarts("none", "none", "shopping", "none")
+    let last_cart = await this.props.lastCart("shopping", "none")
     this.setState({ carts: carts.data, last_cart: last_cart.data })
   }
 
@@ -113,22 +113,22 @@ class Carts extends Component {
 
     dropDownField.options = options
 
-    const carts = await this.props.paginatedCarts("none", "none", status, this.state.search_term).then(res => res.data)
-    const last_cart = await this.props.lastCart(status, this.state.search_term).then(res => res.data)
-    this.setState({ carts, status_filter: status, dropDownField, last_cart })
+    let carts = await this.props.paginatedCarts("none", "none", status, this.state.search_term)
+    let last_cart = await this.props.lastCart(status, this.state.search_term)
+    this.setState({ carts: carts.data, status_filter: status, dropDownField, last_cart: last_cart.data })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const carts = await this.props.paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term).then(res => res.data)
-    this.setState({ carts, page_number: this.state.page_number + page_increment })
+    const carts = await this.props.paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term)
+    this.setState({ carts: carts.data, page_number: this.state.page_number + page_increment })
   }
 
 
   async handleSearchSubmit() {
     const search_for_cart = !this.props.form['cart_search_form'].values ?  "none" : this.props.form['cart_search_form'].values.search_bar
     const { data } = await this.props.paginatedCarts("none", "none", this.state.status_filter, search_for_cart)
-    const last_cart = await this.props.lastCart(this.state.status_filter, search_for_cart).then(res => res.data)
-    this.setState({ carts: data, search_term: search_for_cart, page_number: 1, last_cart })
+    const last_cart = await this.props.lastCart(this.state.status_filter, search_for_cart)
+    this.setState({ carts: data, search_term: search_for_cart, page_number: 1, last_cart: last_cart.data })
   }
 
   render() {

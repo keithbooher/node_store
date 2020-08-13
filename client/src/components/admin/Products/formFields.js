@@ -11,6 +11,7 @@ export const productFields = [
   { label: 'Height', name: 'height', noValueError: 'You must provide an address' },
   { label: 'Width', name: 'width', noValueError: 'You must provide an address' },
   { label: 'Depth', name: 'depth', noValueError: 'You must provide an address' },
+  { label: 'Weight', name: 'weight', noValueError: 'You must provide an address' },
   { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
   { label: 'Image', name: 'image', typeOfComponent: 'photo-upload', noValueError: 'You must provide an address' },
   { label: 'Display To Customer', name: 'display', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
@@ -87,7 +88,7 @@ export const  validate = (values, props) => {
   }
 
   if(!values["price"]) {
-    errors["inventory_count"] = "must provide a inventory count"
+    errors["price"] = "must provide a inventory count"
   }
 
   // if no errors i.e. an empty object, then we know all the values are valid.

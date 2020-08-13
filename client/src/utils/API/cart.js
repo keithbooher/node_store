@@ -59,7 +59,7 @@ export const paginatedCarts = (direction_reference_id, direction, status, search
   if (req.status === 200) {
     return req
   } else {
-    return {data: null}
+    return {data: []}
   }
 }
 

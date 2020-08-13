@@ -13,7 +13,7 @@ class ReviewPanel extends Component  {
   }
 
   componentDidMount() {
-    orderConfirmation(this.props.new_order.email, this.props.new_order._id)
+    this.props.orderConfirmation(this.props.new_order.email, this.props.new_order._id)
     this.props.convertCart(null)
   }
 
@@ -42,6 +42,6 @@ function mapStateToProps({ cart }) {
   return { cart }
 }
 
-const actions = { convertCart }
+const actions = { convertCart, orderConfirmation }
 
 export default connect(mapStateToProps, actions)(ReviewPanel)

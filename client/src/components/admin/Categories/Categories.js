@@ -14,7 +14,7 @@ import { capitalizeFirsts } from "../../../utils/helperFunctions"
 // import { useHistory } from 'react-router-dom'
 
 
-const Categories = ({ form, dispatch }) => {
+const Categories = ({ form, dispatch, getTopCategories, deleteCategory, updateCategory }) => {
   const [ categories, setCategories ] = useState([])
   const [ show_create_input, setShowCreateInput ] = useState([])
   const [ editForm, setEditForm ] = useState(null)
@@ -222,4 +222,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(Categories)
+const actions = { updateCategory, deleteCategory, getTopCategories }
+
+export default connect(mapStateToProps, actions)(Categories)

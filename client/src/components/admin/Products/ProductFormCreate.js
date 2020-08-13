@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { createProduct, getAllCategories } from '../../../utils/API'
 import { productNameToPathName } from '../../../utils/helperFunctions'
+import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -25,7 +26,7 @@ class ProductForm extends Component {
   }
 
   async componentDidMount() {
-    let { data } = await getAllCategories()
+    let { data } = await this.props.getAllCategories()
 
     this.setState({ categories: data })
   }
@@ -55,7 +56,7 @@ class ProductForm extends Component {
     }
     new_product["path_name"] = productNameToPathName(new_product.name)
     let create_product = await createProduct(new_product)
-    this.props.dispatch(reset("create_product_form"))
+    this.props.dispatchObj(reset("create_product_form"))
     if (create_product.status === 200) {
       this.props.history.push(`/admin/products/${create_product.data._id}`)
     } else {
@@ -89,4 +90,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(ProductForm)
+const actions = { getAllCategories, dispatchObj }
+
+export default connect(mapStateToProps, actions)(ProductForm)
