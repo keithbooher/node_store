@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyName, updateCart, checkInventory } from "../../../utils/API"
+import { getProductbyName, checkInventory } from "../../../utils/API"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"

@@ -44,7 +44,11 @@ class Cart extends Component {
   }
 
   async componentDidMount() {
-    let { data } = await getCartByID(this.routeParamID)
+    let { data, status } = await this.props.getCartByID(this.routeParamID)
+
+    if (status !== 200) {
+      return
+    }
 
     const shipping_method = await getShippingMethodForCheckout()
 
@@ -81,17 +85,17 @@ class Cart extends Component {
   }
 
   async addToLineItems(cart) {
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
   async removeLineItem(cart) {
-    let { data } = await updateCart(cart)
+    let { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
   async adjustLineItemQuantity(cart) {
-    let { data } = await updateCart(cart)
+    let { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
@@ -123,7 +127,7 @@ class Cart extends Component {
     let cart = this.state.cart
     const bill_addy = this.props.form.billing_admin_checkout_form.values
     cart.billing_address = buildAddress(bill_addy, cart._user_id, "billing")
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
@@ -131,7 +135,7 @@ class Cart extends Component {
     let cart = this.state.cart
     const ship_addy = this.props.form.shipping_admin_checkout_form.values
     cart.shipping_address = buildAddress(ship_addy, cart._user_id, "shipping")
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
@@ -145,7 +149,7 @@ class Cart extends Component {
       cart.billing_address = address
     }
 
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ editForm: null, propertyToEdit: null, cart: data })
     this.props.dispatch(reset("edit_cart_property_form"))
   }
@@ -206,7 +210,7 @@ class Cart extends Component {
     let formRates = this.state.rateFields
     formRates.options = fields
 
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ cart: data, editShipping: false, rateFields: formRates })
   }
 
@@ -215,7 +219,7 @@ class Cart extends Component {
     let cart = this.state.cart
     cart.email = guest_email
 
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ cart: data })
   }
 
@@ -237,7 +241,7 @@ class Cart extends Component {
     cart.deleted_at = today
     cart.converted = true
 
-    let updated_cart = await updateCart(cart)
+    let updated_cart = await this.props.updateCart(cart)
 
     // Create Order
     let order = {
@@ -279,7 +283,7 @@ class Cart extends Component {
   async adjustLineItemCost(line_items){
     let cart = this.state.cart
     cart.line_items = line_items
-    let { data } = await updateCart(cart)
+    let { data } = await this.props.updateCart(cart)
 
     this.setState({ cart: data })
   }
@@ -473,6 +477,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken }
+const actions = { handleToken, getCartByID, updateCart }
 
 export default connect(mapStateToProps, actions)(Cart)

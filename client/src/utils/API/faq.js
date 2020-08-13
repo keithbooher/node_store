@@ -34,7 +34,7 @@ export const updateFAQ = (faq) => async dispatch => {
   if (req.status === 200) {
     return req
   } else {
-    return faq
+    return { data: faq }
   }
 }
 

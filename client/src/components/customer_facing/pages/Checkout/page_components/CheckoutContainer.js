@@ -32,8 +32,13 @@ class CheckoutContainer extends Component  {
       const guest_cart_id = cookies.get('guest_cart')
       current_cart = await this.props.getGuestCart(guest_cart_id)
     } else {
-      current_cart = await getCurrentCart(this.props.current_user._id)
-      current_cart = current_cart.data
+      current_cart = await this.props.getCurrentCart(this.props.current_user._id)
+      if (current_cart.status === 200) {
+        current_cart = current_cart.data
+      } else {
+        const guest_cart_id = cookies.get('guest_cart')
+        current_cart = await this.props.getGuestCart(guest_cart_id)
+      }
     }
 
     if (current_cart.checkout_state === "shopping") {
@@ -48,7 +53,7 @@ class CheckoutContainer extends Component  {
 
   async updateCart(cart) {
     //update data base
-    const update_cart = await updateCart(cart)
+    const update_cart = await this.props.updateCart(cart)
     this.setState({ current_cart: update_cart.data, chosen_tab: update_cart.data.checkout_state  })
   }
 
@@ -146,6 +151,6 @@ class CheckoutContainer extends Component  {
 }
 
 
-const actions = { updateCart, getGuestCart }
+const actions = { updateCart, getGuestCart, getCurrentCart }
 
 export default connect(null, actions)(withCookies(CheckoutContainer))

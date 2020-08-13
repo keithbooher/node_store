@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
-import { convertCart, updateUser } from '../../../../actions'
-import { createOrder, createShipment, updateCart, checkInventory, handleToken as handyTok } from '../../../../utils/API'
+import { convertCart, updateUser, updateCart } from '../../../../actions'
+import { createOrder, createShipment, checkInventory, handleToken as handyTok } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
@@ -52,7 +52,7 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
   }
 }
 
-const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling }) => {
+const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling, updateCart }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
 
@@ -178,6 +178,7 @@ const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, cho
           cart={cart} 
           out_of_stock_items={outOfStockMessage} 
           cancel={() => setOutOfStock(null)}
+          update={(cart) => updateCart(cart)}
         />
       }
   </>
@@ -189,7 +190,7 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { reset, convertCart, updateUser, handyTok }
+const actions = { reset, convertCart, updateUser, handyTok, updateCart }
 
 export default connect(mapStateToProps, actions)(Payments)
 

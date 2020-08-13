@@ -41,6 +41,10 @@ class ProductCard extends Component {
 
     let sub_total, create_boolean
 
+    if (!cart.line_items) {
+      cart.line_items = []
+    }
+
     if (this.props.cart == null) {
       create_boolean = true
       cart = {

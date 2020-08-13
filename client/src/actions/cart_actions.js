@@ -44,7 +44,7 @@ export const updateCart = (cart) => async dispatch => {
   const data = { cart }
   let res = await axios.put('/api/cart/update/' + cart.id, data) 
   dispatch({ type: UPDATE_CART, payload: res.data })
-  return res.data
+  return res
 }
 
 export const convertCart = (cart) => async dispatch => {

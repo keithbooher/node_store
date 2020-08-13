@@ -15,9 +15,10 @@ class LowInventory extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     let cart = this.props.cart
     let out_of_stock_items = this.props.out_of_stock_items
+    console.log(out_of_stock_items)
 
     if (this.props.adjust) {
       out_of_stock_items = out_of_stock_items.filter((item) => item !== null).map((item) => {
@@ -30,7 +31,7 @@ class LowInventory extends Component {
         out_of_stock_items.forEach(oos_item => {
           if (oos_item._id === item._id && oos_item.inventory_count < 1) {
             remove = true
-          } else if (oos_item === item._id) {
+          } else if (oos_item._id === item._id) {
             item.quantity = oos_item.inventory_count
             remove = false
           } else {
@@ -56,7 +57,10 @@ class LowInventory extends Component {
       cart.tax = formatMoney(tax)
       cart.total = formatMoney(sub_total + tax + shipping)
   
-      this.props.updateCart(cart)
+      let update_cart = await this.props.updateCart(cart)
+      if (this.props.update) {
+        this.props.update(update_cart)
+      }
     }
 
   }

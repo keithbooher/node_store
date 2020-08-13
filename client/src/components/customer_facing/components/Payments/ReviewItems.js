@@ -35,7 +35,7 @@ class ReviewItems extends Component {
       cart.billing_address = address
     }
 
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.setState({ editForm: null, propertyToEdit: null })
     this.props.dispatch(reset("edit_cart_property_form"))
   }
@@ -138,4 +138,7 @@ class ReviewItems extends Component {
 function mapStateToProps({ form }) {
   return { form }
 }
-export default connect(mapStateToProps, null)(withRouter(ReviewItems))
+
+const actions = { updateCart }
+
+export default connect(mapStateToProps, actions)(withRouter(ReviewItems))

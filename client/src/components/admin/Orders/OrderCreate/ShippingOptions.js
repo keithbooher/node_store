@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from "react-redux"
 import { getShippingMethodForCheckout } from "../../../../utils/API"
 import { updateCart } from "../../../../utils/API"
 
@@ -36,7 +37,7 @@ class ShippingOptions extends Component {
     cart.tax = tax
     cart.sub_total = sub_total
     cart.total = sub_total + shipping + tax
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
 
     let state = {
       cart: data,
@@ -82,4 +83,7 @@ class ShippingOptions extends Component {
   }
 }
 
-export default ShippingOptions
+
+const actions = { updateCart }
+
+export default connect(null, actions)(ShippingOptions)

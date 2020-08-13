@@ -82,10 +82,9 @@ class Carts extends Component {
   }
   
   async componentDidMount() {
-    const carts = await paginatedCarts("none", "none", "shopping", "none").then(res => res.data)
-    const last_cart = await lastCart("shopping", "none").then(res => res.data)
-    console.log(last_cart)
-    this.setState({ carts, last_cart })
+    const carts = await this.props.paginatedCarts("none", "none", "shopping", "none")
+    const last_cart = await this.props.lastCart("shopping", "none")
+    this.setState({ carts: carts.data, last_cart: last_cart.data })
   }
 
   async changeCartTab() {
@@ -114,21 +113,21 @@ class Carts extends Component {
 
     dropDownField.options = options
 
-    const carts = await paginatedCarts("none", "none", status, this.state.search_term).then(res => res.data)
-    const last_cart = await lastCart(status, this.state.search_term).then(res => res.data)
+    const carts = await this.props.paginatedCarts("none", "none", status, this.state.search_term).then(res => res.data)
+    const last_cart = await this.props.lastCart(status, this.state.search_term).then(res => res.data)
     this.setState({ carts, status_filter: status, dropDownField, last_cart })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const carts = await paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term).then(res => res.data)
+    const carts = await this.props.paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term).then(res => res.data)
     this.setState({ carts, page_number: this.state.page_number + page_increment })
   }
 
 
   async handleSearchSubmit() {
     const search_for_cart = !this.props.form['cart_search_form'].values ?  "none" : this.props.form['cart_search_form'].values.search_bar
-    const { data } = await paginatedCarts("none", "none", this.state.status_filter, search_for_cart)
-    const last_cart = await lastCart(this.state.status_filter, search_for_cart).then(res => res.data)
+    const { data } = await this.props.paginatedCarts("none", "none", this.state.status_filter, search_for_cart)
+    const last_cart = await this.props.lastCart(this.state.status_filter, search_for_cart).then(res => res.data)
     this.setState({ carts: data, search_term: search_for_cart, page_number: 1, last_cart })
   }
 
@@ -203,4 +202,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(Carts)
+const actions = { paginatedCarts, lastCart }
+
+export default connect(mapStateToProps, actions)(Carts)

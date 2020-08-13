@@ -51,7 +51,7 @@ class Payment extends Component {
     cart.deleted_at = today
     cart.converted = true
 
-    let updated_cart = await updateCart(cart)
+    let updated_cart = await this.props.updateCart(cart)
 
     // Create Order
     let order = {
@@ -104,7 +104,7 @@ class Payment extends Component {
       cart.billing_address = address
     }
 
-    const { data } = await updateCart(cart)
+    const { data } = await this.props.updateCart(cart)
     this.props.topStateSetter({ cart: data })
     this.setState({ editForm: null, propertyToEdit: null })
     this.props.dispatch(reset("edit_cart_property_form"))
@@ -230,6 +230,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken }
+const actions = { handleToken, updateCart }
 
 export default connect(mapStateToProps, actions)(withRouter(Payment))

@@ -24,9 +24,7 @@ class Home extends Component  {
 
   async componentDidMount() {
     let { data } = await homeProducts()
-    console.log(isMobile)
     let banner_image = await homeBanner(isMobile ? "mobile" : "desktop")
-    console.log(banner_image)
     this.setState({ products: data, banner: banner_image.data })
   }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import { getProductbyName, createCart, updateCart, checkInventory } from "../../../../utils/API"
+import { dispatchObj } from "../../../../actions"
 import { formatMoney } from "../../../../utils/helperFunctions"
 import CartLineItems from '../../shared/CartLineItems'
 
@@ -81,9 +82,9 @@ class FillCart extends Component {
     // MAKE API REQUEST TO MAKE THIS AN OFFICIAL CART IN DB
     let request
     if (this.state.update) {
-      request = await updateCart(cart)
+      request = await this.props.updateCart(cart)
     } else {
-      request = await createCart(cart)
+      request = await this.props.createCart(cart)
     }
 
     let state = {
@@ -91,7 +92,7 @@ class FillCart extends Component {
       step: "shipping",
     }
     this.props.topStateSetter(state)
-    this.props.dispatch(reset("product_order_search_form"))
+    this.props.dispatchObj(reset("product_order_search_form"))
 
     this.props.refProp.current.scrollTo(0, 0);
   }
@@ -177,4 +178,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(FillCart)
+const actions = { updateCart, createCart, dispatchObj }
+
+export default connect(mapStateToProps, actions)(FillCart)
