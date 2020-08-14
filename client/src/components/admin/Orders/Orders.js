@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { paginatedOrders, lastOrderAdmin, searchOrders } from "../../../utils/API"
+import { paginatedOrders, lastOrderAdmin } from "../../../utils/API"
+import { dispatchObj } from "../../../actions"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -75,8 +76,8 @@ class Orders extends Component {
   }
   
   async componentDidMount() {
-    const orders = await paginatedOrders("none", "none", "pending", "none").then(res => res.data)
-    const last_order = await lastOrderAdmin("pending", "none").then(res => res.data)
+    const orders = await this.props.paginatedOrders("none", "none", "pending", "none").then(res => res.data)
+    const last_order = await this.props.lastOrderAdmin("pending", "none").then(res => res.data)
     this.setState({ orders, last_order })
   }
 
@@ -87,11 +88,11 @@ class Orders extends Component {
     let orders
     let last_order
     if (!search_for_order) {
-      orders = await paginatedOrders("none", "none", status_filter, "none")
-      last_order = await lastOrderAdmin(status_filter, "none").then(res => res.data)
+      orders = await this.props.paginatedOrders("none", "none", status_filter, "none")
+      last_order = await this.props.lastOrderAdmin(status_filter, "none").then(res => res.data)
     } else {
-      orders = await paginatedOrders("none", "none", status_filter, search_for_order)
-      last_order = await lastOrderAdmin(status_filter, search_for_order).then(res => res.data)
+      orders = await this.props.paginatedOrders("none", "none", status_filter, search_for_order)
+      last_order = await this.props.lastOrderAdmin(status_filter, search_for_order).then(res => res.data)
     }
     this.setState({ orders: orders.data, page_number: 1, status_filter, last_order })
   }
@@ -115,10 +116,10 @@ class Orders extends Component {
   async changeOrderTab() {
     let status_filter = this.props.form.order_status_dropdown.values.order_status.value
 
-    const orders = await paginatedOrders("none", "none", status_filter, "none").then(res => res.data)
-    let last_order = await lastOrderAdmin(status_filter, "none").then(res => res.data)
+    const orders = await this.props.paginatedOrders("none", "none", status_filter, "none").then(res => res.data)
+    let last_order = await this.props.lastOrderAdmin(status_filter, "none").then(res => res.data)
 
-    this.props.dispatch(reset("order_search_form"))
+    this.props.dispatchObj(reset("order_search_form"))
     this.setState({ orders, status_filter, page_number: 1, last_order })
   }
 
@@ -126,8 +127,8 @@ class Orders extends Component {
     const search_for_order = this.props.form['order_search_form'].values ? this.props.form['order_search_form'].values.search_bar : "none"
     let search_term = !search_for_order ? "none" : search_for_order
 
-    const orders = await paginatedOrders(direction_reference_id, direction, this.state.status_filter, search_term).then(res => res.data)
-    let last_order = await lastOrderAdmin(this.state.status_filter, search_term).then(res => res.data)
+    const orders = await this.props.paginatedOrders(direction_reference_id, direction, this.state.status_filter, search_term).then(res => res.data)
+    let last_order = await this.props.lastOrderAdmin(this.state.status_filter, search_term).then(res => res.data)
 
     this.setState({ orders, page_number: this.state.page_number + page_increment, last_order })
   }
@@ -237,4 +238,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(Orders)
+const actions = { paginatedOrders, lastOrderAdmin, dispatchObj }
+
+export default connect(mapStateToProps, actions)(Orders)

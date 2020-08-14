@@ -22,8 +22,8 @@ class Orders extends Component {
 
   async componentDidMount() {
     if (this.props.auth) {
-      const orders = await getUsersOrders(this.props.auth._id, "none", "none")
-      const last_order = await lastOrder(this.props.auth._id).then(res => res.data)
+      const orders = await this.props.getUsersOrders(this.props.auth._id, "none", "none")
+      const last_order = await this.props.lastOrder(this.props.auth._id).then(res => res.data)
 
       this.setState({ orders: orders.data, last_order })
     }
@@ -31,7 +31,7 @@ class Orders extends Component {
 
   async componentDidUpdate() {
     if (this.state.orders.length === 0 && this.state.retry < 3) {
-      const orders = await getUsersOrders(this.props.auth._id, "none", "none")
+      const orders = await this.props.getUsersOrders(this.props.auth._id, "none", "none")
       this.setState({ orders: orders.data, retry: this.state.retry + 1 })
     }
   }
@@ -65,7 +65,7 @@ class Orders extends Component {
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const orders = await getUsersOrders(this.props.auth._id, direction_reference_id, direction)
+    const orders = await this.props.getUsersOrders(this.props.auth._id, direction_reference_id, direction)
     this.setState({ orders: orders.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -112,4 +112,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-export default connect(mapStateToProps, null)(Orders)
+const actions = { getUsersOrders, lastOrder }
+
+export default connect(mapStateToProps, actions)(Orders)

@@ -54,11 +54,11 @@ class Reviews extends Component {
       if (this.state.order._id === order_id && this.state.line_item_id === line_item_id) {
         this.setState({ order: null, line_item_id: null })
       } else {
-        const order = await getOrder(order_id)
+        const order = await this.props.getOrder(order_id)
         this.setState({ order: order.data, line_item_id: line_item_id })
       }
     } else {
-      const order = await getOrder(order_id)
+      const order = await this.props.getOrder(order_id)
       this.setState({ order: order.data, line_item_id: line_item_id })
     }
   }
@@ -160,4 +160,6 @@ function mapStateToProps({ auth, form }) {
   return { auth, form }
 }
 
-export default connect(mapStateToProps, null)(Reviews)
+const actions = { getOrder }
+
+export default connect(mapStateToProps, actions)(Reviews)

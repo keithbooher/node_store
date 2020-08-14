@@ -63,7 +63,7 @@ class Payment extends Component {
       email: this.props.customer.email ? this.props.customer.email : cart.email,
       payment: charge.data
     }
-    const new_order = await createOrder(order)
+    const new_order = await this.props.createOrder(order)
 
     // Make shipment
     let shipment = {
@@ -84,7 +84,7 @@ class Payment extends Component {
     // update order with shipment asynchronously
     let updated_order = new_order.data
     updated_order.shipment = new_shipment.data._id
-    await updateOrder(updated_order)
+    await this.props.updateOrder(updated_order)
 
     let state = {
       cart: updated_cart.data,
@@ -230,6 +230,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken, updateCart }
+const actions = { handleToken, updateCart, createOrder, updateOrder }
 
 export default connect(mapStateToProps, actions)(withRouter(Payment))

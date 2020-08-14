@@ -253,7 +253,7 @@ class Cart extends Component {
       email: cart.email,
       payment: charge
     }
-    const new_order = await createOrder(order)
+    const new_order = await this.props.createOrder(order)
 
     // Make shipment
     let shipment = {
@@ -274,7 +274,7 @@ class Cart extends Component {
     // update order with shipment asynchronously
     let updated_order = new_order.data
     updated_order.shipment = new_shipment.data._id
-    updateOrder(updated_order)
+    await this.props.updateOrder(updated_order)
 
     this.props.history.push(`/admin/orders/${new_order.data._id}`)
   }
@@ -477,6 +477,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken, getCartByID, updateCart }
+const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder }
 
 export default connect(mapStateToProps, actions)(Cart)

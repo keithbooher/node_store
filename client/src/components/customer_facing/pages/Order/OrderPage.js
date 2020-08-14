@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { getOrder } from "../../../../utils/API"
 import { Link } from "react-router-dom"
 import LeaveReview from "../../../shared/LeaveReview"
@@ -14,7 +15,7 @@ class OrderPage extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getOrder(this.routeParamOrderId)
+    const { data } = await this.props.getOrder(this.routeParamOrderId)
 
     this.setState({ order: data })
   }
@@ -57,4 +58,7 @@ class OrderPage extends Component {
   }
 }
 
-export default OrderPage
+
+const actions = { getOrder }
+
+export default connect(null, actions)(OrderPage)

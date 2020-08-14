@@ -8,7 +8,6 @@ module.exports = app => {
   // change to post route for when admins are creating categories
   app.post('/api/category/create', requireLogin, adminRequired, async (req, res) => {  
     const category = req.body.category
-    
     const new_category = new Category(category)
 
     try {

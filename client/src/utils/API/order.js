@@ -1,36 +1,89 @@
-import axios from "axios";
+import axios from "axios"
+import { ERROR } from '../../actions/types'
 
-export const createOrder = (order) => {
+export const createOrder = (order) => async dispatch => {
     const data = { order }
-    return axios.post('/api/order/create', data)
+    let req = await axios.post('/api/order/create', data).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: order}
+    }
 }
 
-export const updateOrder = (order) => {
+export const updateOrder = (order) => async dispatch => {
     const data = { order }
-    return axios.put('/api/order/update', data)
+    let req = await axios.put('/api/order/update', data).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: order}
+    }
 }
 
-export const getUsersOrders = (user_id, last_order_id, direction) => {
-    return axios.get('/api/user/orders/' + user_id + "/" + last_order_id + "/" + direction) 
+export const getUsersOrders = (user_id, last_order_id, direction) => async dispatch => {
+    let req = await axios.get('/api/user/orders/' + user_id + "/" + last_order_id + "/" + direction).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: []}
+    }
 }
 
-export const getOrder = (order_id) => {
-    return axios.get(`/api/order/${order_id}`) 
+export const getOrder = (order_id) => async dispatch => {
+    let req = await axios.get(`/api/order/${order_id}`).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: null}
+    }
 }
 
-export const paginatedOrders = (last_order_id, direction, status, search_term) => {
-    return axios.get('/api/orders/' + last_order_id + "/" + direction + "/" + status + "/" + search_term) 
+export const paginatedOrders = (last_order_id, direction, status, search_term) => async dispatch => {
+    let req = await axios.get('/api/orders/' + last_order_id + "/" + direction + "/" + status + "/" + search_term).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: []}
+    }
 }
 
-export const lastOrder = (user_id) => {
-    return axios.get('/api/orders/last_order/' + user_id) 
+export const lastOrder = (user_id) => async dispatch => {
+    let req = await axios.get('/api/orders/last_order/' + user_id).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: null}
+    }
 }
 
-export const lastOrderAdmin = (status, search_term) => {
-    return axios.get('/api/orders/admin/last_order/' + status + "/" + search_term) 
-}
-
-export const searchOrders = (search_term) => {
-    return axios.post('/api/orders/search', {search_term}) 
+export const lastOrderAdmin = (status, search_term) => async dispatch => {
+    let req = await axios.get('/api/orders/admin/last_order/' + status + "/" + search_term).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: null}
+    }
 }
 

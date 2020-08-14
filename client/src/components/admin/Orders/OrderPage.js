@@ -31,7 +31,7 @@ class OrderPage extends Component {
   }
   
   async componentDidMount() {
-    let order = await getOrder(this.order_id).then(res => res.data)
+    let order = await this.props.getOrder(this.order_id).then(res => res.data)
     this.setState({ order })
   }
 
@@ -50,7 +50,7 @@ class OrderPage extends Component {
     let shipment = this.state.order.shipment
     shipment.status = chosenStatus
     await updateShipment(shipment)
-    let order = await getOrder(this.order_id).then(res => res.data)
+    let order = await this.props.getOrder(this.order_id).then(res => res.data)
     this.setState({ order })
   }
 
@@ -105,7 +105,7 @@ class OrderPage extends Component {
 
     await updateShipment(shipment)
 
-    let { data } = await getOrder(this.order_id)
+    let { data } = await this.props.getOrder(this.order_id)
     this.props.dispatch(reset("edit_shipping_property_form"))
     this.setState({ order: data, editForm: null, propertyToEdit: null })
   }
@@ -114,7 +114,7 @@ class OrderPage extends Component {
     const form_value = this.props.form['admin_order_notes_form'].values.admin_notes
     let order = this.state.order
     order.admin_notes = form_value
-    let { data } = await updateOrder(order)
+    let { data } = await this.props.updateOrder(order)
     this.setState({ order: data })
   }
 
@@ -122,7 +122,7 @@ class OrderPage extends Component {
     let order = this.state.order
     order.status = "refunded"
     order.refund = {refund: "Offline"}
-    let { data } = await updateOrder(order)
+    let { data } = await this.props.updateOrder(order)
     this.setState({ order: data, refundModal: false })
     // make sure nothing can be changed at this point
   }
@@ -132,7 +132,7 @@ class OrderPage extends Component {
     let order = this.state.order
     order.status = "refunded"
     order.refund = refund.data
-    let { data } = await updateOrder(order)
+    let { data } = await this.props.updateOrder(order)
     this.setState({ order: data, refundModal: false })
     // make sure nothing can be changed at this point
   }
@@ -276,4 +276,7 @@ class OrderPage extends Component {
 function mapStateToProps({ form }) {
   return { form }
 }
-export default connect(mapStateToProps, null)(OrderPage)
+
+const actions = { updateOrder, getOrder }
+
+export default connect(mapStateToProps, actions)(OrderPage)

@@ -52,7 +52,7 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
   }
 }
 
-const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling, updateCart }) => {
+const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, chooseTab, preExistingShipping, preExistingBilling, updateCart, createOrder }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
 
@@ -190,7 +190,7 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { reset, convertCart, updateUser, handyTok, updateCart }
+const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder }
 
 export default connect(mapStateToProps, actions)(Payments)
 
