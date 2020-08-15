@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getProductbyName, checkInventory } from "../../../utils/API"
+import { dispatchObj } from "../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
@@ -26,7 +27,7 @@ class CartLineItems extends Component {
   }
   async handleSearchSubmit() {
     const search_for_product = this.props.form['product_order_search_form'].values
-    const { data } = await getProductbyName(search_for_product.name)
+    const { data } = await this.props.getProductbyName(search_for_product.name)
     this.setState({ result: data })
   }
 
@@ -60,7 +61,7 @@ class CartLineItems extends Component {
 
     cart.line_items = line_items
 
-    this.props.dispatch(reset("product_order_search_form"))
+    this.props.dispatchObj(reset("product_order_search_form"))
 
     this.props.addToLineItems(cart)
 
@@ -85,7 +86,7 @@ class CartLineItems extends Component {
           line_item.quantity = line_item.quantity - 1
         } else {
           line_item.quantity = line_item.quantity + 1
-          let { data } = await checkInventory([line_item])
+          let { data } = await this.props.checkInventory([line_item])
           let out_of_stock = data.filter((oos_item) => oos_item !== null)
           if (out_of_stock.length > 0) {
             line_item.quantity = line_item.quantity - 1
@@ -165,7 +166,7 @@ class CartLineItems extends Component {
     })
 
     this.setState({ editForm: null, propertyToEdit: null })
-    this.props.dispatch(reset("edit_item_price_form"))
+    this.props.dispatchObj(reset("edit_item_price_form"))
 
     this.props.adjustCost(cart.line_items)
   }
@@ -182,7 +183,7 @@ class CartLineItems extends Component {
       cart,
       onSubmit: () => this.updateCartProperty(property, _id),
       cancel: () => {
-        this.props.dispatch(reset("edit_item_price_form"))
+        this.props.dispatchObj(reset("edit_item_price_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Price",
@@ -317,4 +318,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(CartLineItems)
+const actions = { getProductbyName, checkInventory, dispatchObj }
+
+export default connect(mapStateToProps, actions)(CartLineItems)

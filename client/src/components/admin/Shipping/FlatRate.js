@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getShippingMethod, updateShippingMethod } from '../../../utils/API'
+import { dispatchObj } from '../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faTimesCircle, faCircle, faTrash, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
 import FormModal from "../../shared/Form/FormModal"
@@ -46,7 +47,7 @@ class FlatRate extends Component {
     }
     shippingMethod.shipping_rates.push(new_rate)
     const { data } = await updateShippingMethod(shippingMethod)
-    this.props.dispatch(reset('flat_rate_form'))
+    this.props.dispatchObj(reset('flat_rate_form'))
     this.setState({ rateForm: !this.state.rateForm, shippingMethod: data  })
   }
 
@@ -55,7 +56,7 @@ class FlatRate extends Component {
   }
 
   cancelForm(form_name) {
-    this.props.dispatch(reset(form_name))
+    this.props.dispatchObj(reset(form_name))
     this.setState({ rateForm: !this.state.rateForm })
   }
 
@@ -105,7 +106,7 @@ class FlatRate extends Component {
     });
 
     const { data } = await updateShippingMethod(shippingMethod)
-    this.props.dispatch(reset("edit_rate_property_form"))
+    this.props.dispatchObj(reset("edit_rate_property_form"))
     this.setState({ editForm: null, shippingMethod: data })
   }
 
@@ -114,7 +115,7 @@ class FlatRate extends Component {
       rate,
       onSubmit: () => this.updateRateProperty(rate, property),
       cancel: () => {
-        this.props.dispatch(reset("edit_rate_property_form"))
+        this.props.dispatchObj(reset("edit_rate_property_form"))
         this.setState({ editForm: null })
       },
       submitButtonText: "Update Rate Property",
@@ -275,4 +276,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(FlatRate)
+const actions = { dispatchObj }
+
+export default connect(mapStateToProps, actions)(FlatRate)

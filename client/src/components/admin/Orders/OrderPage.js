@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getOrder, updateShipment, updateOrder, handleRefund } from "../../../utils/API"
+import { dispatchObj } from "../../../actions"
 import { Link } from "react-router-dom"
 import loadingGif from '../../../images/pizzaLoading.gif'
 import Form from "../../shared/Form"
@@ -77,7 +78,7 @@ class OrderPage extends Component {
       address,
       onSubmit: () => this.updateShipmentProperty(address, property),
       cancel: () => {
-        this.props.dispatch(reset("edit_shipping_property_form"))
+        this.props.dispatchObj(reset("edit_shipping_property_form"))
         this.setState({ editForm: null })
       },
       submitButtonText: "Update Shipping Property",
@@ -106,7 +107,7 @@ class OrderPage extends Component {
     await updateShipment(shipment)
 
     let { data } = await this.props.getOrder(this.order_id)
-    this.props.dispatch(reset("edit_shipping_property_form"))
+    this.props.dispatchObj(reset("edit_shipping_property_form"))
     this.setState({ order: data, editForm: null, propertyToEdit: null })
   }
 
@@ -277,6 +278,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateOrder, getOrder }
+const actions = { updateOrder, getOrder, dispatchObj }
 
 export default connect(mapStateToProps, actions)(OrderPage)

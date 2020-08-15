@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { updateCart } from "../../../../utils/API"
+import { dispatchObj } from "../../../../actions"
 import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
@@ -37,7 +38,7 @@ class ReviewItems extends Component {
 
     const { data } = await this.props.updateCart(cart)
     this.setState({ editForm: null, propertyToEdit: null })
-    this.props.dispatch(reset("edit_cart_property_form"))
+    this.props.dispatchObj(reset("edit_cart_property_form"))
   }
 
   showEditModal(property, address) {
@@ -45,7 +46,7 @@ class ReviewItems extends Component {
       address,
       onSubmit: () => this.updateCartProperty(address, property),
       cancel: () => {
-        this.props.dispatch(reset("edit_cart_property_form"))
+        this.props.dispatchObj(reset("edit_cart_property_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Shipping Property",
@@ -139,6 +140,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateCart }
+const actions = { updateCart, dispatchObj }
 
 export default connect(mapStateToProps, actions)(withRouter(ReviewItems))

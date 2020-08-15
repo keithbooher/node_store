@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
 import { getProductbyId, paginatedProducts, searchProduct, getAllCategories, updateProduct, lastProductByCategory } from '../../../utils/API'
+import { dispatchObj } from '../../../actions'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch, faPlusCircle, faArrowCircleLeft, faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons"
@@ -43,7 +44,7 @@ class UpdateRelatedProducts extends Component {
   }
 
   async componentDidMount() {
-    let { data } = await getProductbyId(this.routeParamID)
+    let { data } = await this.props.getProductbyId(this.routeParamID)
 
     let categories = await getAllCategories()
 
@@ -68,9 +69,9 @@ class UpdateRelatedProducts extends Component {
     dropdown.options.push(none)
     dropdown.options = dropdown.options.reverse()
 
-    let queried_products = await paginatedProducts("none", "none", "none").then(res => res.data)
+    let queried_products = await this.props.paginatedProducts("none", "none", "none").then(res => res.data)
 
-    let last_possible_product = await lastProductByCategory("all").then(res => res.data)
+    let last_possible_product = await this.props.lastProductByCategory("all").then(res => res.data)
 
 
     this.setState({ product: data, dropDownField: [dropdown], queried_products, last_possible_product })
@@ -78,10 +79,10 @@ class UpdateRelatedProducts extends Component {
   
 
   async getAllProducts() {
-    let queried_products = await paginatedProducts("none", "none", "none").then(res => res.data)
-    let last_possible_product = await lastProductByCategory("all").then(res => res.data)
+    let queried_products = await this.props.paginatedProducts("none", "none", "none").then(res => res.data)
+    let last_possible_product = await this.props.lastProductByCategory("all").then(res => res.data)
     this.setState({ queried_products, page_number: 1, last_possible_product })
-    this.props.dispatch(reset("product_search_form"))
+    this.props.dispatchObj(reset("product_search_form"))
   }
 
   async handleSearchSubmit() {
@@ -91,21 +92,21 @@ class UpdateRelatedProducts extends Component {
       this.getAllProducts()
       return
     } else {
-      queried_products = [await searchProduct(search_by_product_name.search_bar).then(res => res.data)]
+      queried_products = [await this.props.searchProduct(search_by_product_name.search_bar).then(res => res.data)]
     }
 
     this.setState({ queried_products })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const queried_products = await paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
+    const queried_products = await this.props.paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
     this.setState({ queried_products, page_number: this.state.page_number + page_increment  })
   }
 
   async filterProductsByCategory() {
     const dropwdown_values = this.props.form['category_filter_dropdown'].values.category_filter.value
-    const { data } = await paginatedProducts("none", "none", dropwdown_values)
-    let last_possible_product = await lastProductByCategory(dropwdown_values).then(res => res.data)
+    const { data } = await this.props.paginatedProducts("none", "none", dropwdown_values)
+    let last_possible_product = await this.props.lastProductByCategory(dropwdown_values).then(res => res.data)
     this.setState({ categoryFilter: dropwdown_values, queried_products: data, last_possible_product })
   }
 
@@ -141,7 +142,7 @@ class UpdateRelatedProducts extends Component {
     }
 
     product.related_products.push(prod._id)
-    const { data } = await updateProduct(product)
+    const { data } = await this.props.updateProduct(product)
 
     let queried_products = this.state.queried_products.filter((queried_product) => queried_product._id !== prod._id)
   
@@ -157,7 +158,7 @@ class UpdateRelatedProducts extends Component {
       return rel_product._id
     }).filter((rel_product) => rel_product !== undefined)
 
-    const { data } = await updateProduct(product)
+    const { data } = await this.props.updateProduct(product)
 
     this.setState({ product: data })
   }
@@ -217,6 +218,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllCategories }
+const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProductByCategory, dispatchObj }
 
 export default connect(mapStateToProps, actions)(UpdateRelatedProducts)

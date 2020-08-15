@@ -37,7 +37,7 @@ class ProductForm extends Component {
 
     const split_paths = window.location.pathname.split( '/' )
     const product_path_name = split_paths[split_paths.length - 1]
-    let { data } = await getProductByPathName(product_path_name)
+    let { data } = await this.props.getProductByPathName(product_path_name)
 
     if (!data.dimensions) {
       data.dimensions = {
@@ -67,7 +67,7 @@ class ProductForm extends Component {
       }
     }
 
-    let { data } = await updateProduct(update_product_info)
+    let { data } = await this.props.updateProduct(update_product_info)
     this.props.dispatchObj(reset("update_product_form"))
     this.setState({ editForm: null, propertyToEdit: null, product: data })
   }
@@ -78,7 +78,7 @@ class ProductForm extends Component {
     let update_product_info = this.state.product
     update_product_info.categories = category_values.NaN.map((cat) => cat._id)
 
-    let { data } = await updateProduct(update_product_info)
+    let { data } = await this.props.updateProduct(update_product_info)
     this.props.dispatchObj(reset("update_product_category_form"))
     this.setState({ product: data })
   }
@@ -114,14 +114,14 @@ class ProductForm extends Component {
     let product = this.state.product
     const src = fsData.filesUploaded[0].url
     product.image = src
-    let { data } = await updateProduct(product)
+    let { data } = await this.props.updateProduct(product)
     this.setState({ product: data })
   }
 
   async changeBoolean(property, boolean) {
     let product = this.state.product
     product[property] = boolean
-    let { data } = await updateProduct(product)
+    let { data } = await this.props.updateProduct(product)
     this.setState({ product: data })
   }
 
@@ -287,6 +287,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllCategories, dispatchObj }
+const actions = { getAllCategories, dispatchObj, getProductByPathName, updateProduct }
 
 export default connect(mapStateToProps, actions)(ProductForm)

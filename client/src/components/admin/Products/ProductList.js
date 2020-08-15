@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
 import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
+import { dispatchObj } from '../../../actions'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -54,13 +55,13 @@ class ProductList extends Component {
     let chosen_product = null
     if (path !== "products") {
       chosen_product = path
-      products = await getProductbyId(path).then(res => res.data)
+      products = await this.props.getProductbyId(path).then(res => res.data)
       products = [products]
     } else {
-      products = await paginatedProducts("none", "none", this.state.categoryFilter).then(res => res.data)
+      products = await this.props.paginatedProducts("none", "none", this.state.categoryFilter).then(res => res.data)
     }
 
-    let last_product = await lastProduct().then(res => res.data)
+    let last_product = await this.props.lastProduct().then(res => res.data)
 
     let categories = await this.props.getAllCategories()
 
@@ -91,9 +92,9 @@ class ProductList extends Component {
   async deleteProduct(product) {
     const prod = product
     prod.deleted_at = Date.now()
-    const delete_product = await updateProduct(prod)
-    let products = await paginatedProducts(this.state.products[0]._id, "from_here", this.state.categoryFilter).then(res => res.data)
-    let last_product = await lastProduct().then(res => res.data)
+    const delete_product = await this.props.updateProduct(prod)
+    let products = await this.props.paginatedProducts(this.state.products[0]._id, "from_here", this.state.categoryFilter).then(res => res.data)
+    let last_product = await this.props.lastProduct().then(res => res.data)
     this.setState({ products, chosen_product: null, last_product})
   }
 
@@ -140,9 +141,9 @@ class ProductList extends Component {
   }
 
   async getAllProducts() {
-    let products = await paginatedProducts("none", "none", "none").then(res => res.data)
+    let products = await this.props.paginatedProducts("none", "none", "none").then(res => res.data)
     this.setState({ products, page_number: 1 })
-    this.props.dispatch(reset("product_search_form"))
+    this.props.dispatchObj(reset("product_search_form"))
   }
 
   async handleSearchSubmit() {
@@ -152,26 +153,26 @@ class ProductList extends Component {
       this.getAllProducts()
       return
     } else {
-      product = [await searchProduct(search_by_product_name.search_bar).then(res => res.data)]
+      product = [await this.props.searchProduct(search_by_product_name.search_bar).then(res => res.data)]
     }
 
     this.setState({ products: product, chosen_product: product._id })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const products = await paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
+    const products = await this.props.paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
     this.setState({ products, page_number: this.state.page_number + page_increment  })
   }
 
   async filterProductsByCategory() {
     const dropwdown_values = this.props.form['category_filter_dropdown'].values.category_filter.value
-    const { data } = await paginatedProducts("none", "none", dropwdown_values)
+    const { data } = await this.props.paginatedProducts("none", "none", dropwdown_values)
     this.setState({ categoryFilter: dropwdown_values, products: data })
   }
 
   render() {
     let lastPossibleItem = false
-    if (this.state.products.length > 0 && this.state.last_product) {
+    if (this.state.last_product && this.state.products.length > 0) {
       if (this.state.products[this.state.products.length - 1]._id === this.state.last_product._id) {
         lastPossibleItem = true
       }
@@ -208,6 +209,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllCategories }
+const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProduct, dispatchObj }
 
 export default connect(mapStateToProps, actions)(ProductList)

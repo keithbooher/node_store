@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
+import { dispatchObj } from '../../../actions'
 import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
@@ -135,7 +136,7 @@ const Categories = ({ form, dispatch, getTopCategories, deleteCategory, updateCa
       category,
       onSubmit: editCategory,
       cancel: () => {
-        dispatch(reset("edit_category_form"))
+        dispatchObj(reset("edit_category_form"))
         setEditForm(null)
       },
       submitButtonText: "Update Category",
@@ -222,6 +223,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateCategory, deleteCategory, getTopCategories }
+const actions = { updateCategory, deleteCategory, getTopCategories, dispatchObj }
 
 export default connect(mapStateToProps, actions)(Categories)

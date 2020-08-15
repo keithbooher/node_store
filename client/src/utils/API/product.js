@@ -1,63 +1,156 @@
-import axios from "axios";
+import axios from "axios"
+import { ERROR } from '../../actions/types'
 
 // find product by path name
-export const getProductByPathName = (path_name) => {
-  return axios.get('/api/product/by_path_name/' + path_name)
+export const getProductByPathName = (path_name) => async dispatch => {
+  let req = await axios.get('/api/product/by_path_name/' + path_name).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
 // find product by path name
-export const getProductbyId = (id) => {
-  return axios.get('/api/product/' + id)
+export const getProductbyId = (id) => async dispatch => {
+  let req = await axios.get('/api/product/' + id).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
 // find product by path name
-export const searchProduct = (term) => {
-  return axios.post('/api/product/search', { term } )
+export const searchProduct = (term) => async dispatch => {
+  let req = await axios.post('/api/product/search', { term } ).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: term}
+  }
 }
 
 // find product by path name
-export const getProductbyName = (name) => {
-  return axios.get('/api/product/name/' + name)
+export const getProductbyName = (name) => async dispatch => {
+  let req = await axios.get('/api/product/name/' + name).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const allInStockProducts = () => {
-  return axios.get('/api/products/all/instock')
+export const homeProducts = () => async dispatch => {
+  let req = await axios.get('/api/products/home_promotion').catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: []}
+  }
 }
 
-export const homeProducts = () => {
-  return axios.get('/api/products/home_promotion')
+export const paginatedProducts = (last_product_id, direction, category) => async dispatch => {
+  let req = await axios.get('/api/products/all/' + last_product_id + "/" + direction + "/" + category).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: []}
+  }
 }
 
-export const paginatedProducts = (last_product_id, direction, category) => {
-  return axios.get('/api/products/all/' + last_product_id + "/" + direction + "/" + category)
-}
-
-export const createProduct = (new_product) => {
+export const createProduct = (new_product) => async dispatch => {
   const data = { new_product }
-  return axios.post('/api/product/create', data)
+  let req = await axios.post('/api/product/create', data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const updateProduct = (product) => {
+export const updateProduct = (product) => async dispatch => {
   const data = { product }
-  return axios.put(`/api/product/update`, data)
+  let req = await axios.put(`/api/product/update`, data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const lastProductByCategory = (category) => {
-  return axios.post(`/api/products/last_product/by_category`, { category })
+export const lastProductByCategory = (category) => async dispatch => {
+  let req = await axios.post(`/api/products/last_product/by_category`, { category }).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const lastProduct = () => {
-  return axios.get(`/api/products/last_product`)
+export const lastProduct = () => async dispatch => {
+  let req = await axios.get(`/api/products/last_product`).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const getProductAverageRating = (_product_id) => {
-  return axios.get(`/api/product/average_rating/${_product_id}`)
+export const getProductAverageRating = (_product_id) => async dispatch => {
+  let req = await axios.get(`/api/product/average_rating/${_product_id}`).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 
-export const checkInventory = (line_items) => {
+export const checkInventory = (line_items) => async dispatch => {
   const data = {
     line_items
   }
-  return axios.post(`/api/products/inventory_check`, data)
+  let req = await axios.post(`/api/products/inventory_check`, data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
 }
 

@@ -55,7 +55,7 @@ class ProductForm extends Component {
       }
     }
     new_product["path_name"] = productNameToPathName(new_product.name)
-    let create_product = await createProduct(new_product)
+    let create_product = await this.props.createProduct(new_product)
     this.props.dispatchObj(reset("create_product_form"))
     if (create_product.status === 200) {
       this.props.history.push(`/admin/products/${create_product.data._id}`)
@@ -90,6 +90,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllCategories, dispatchObj }
+const actions = { getAllCategories, dispatchObj, createProduct }
 
 export default connect(mapStateToProps, actions)(ProductForm)

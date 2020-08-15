@@ -6,6 +6,7 @@ import AddressDisplayEdit from "../../shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helperFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
+import { dispatchObj } from "../../../../actions"
 import FormModal from "../../../shared/Form/FormModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
@@ -107,7 +108,7 @@ class Payment extends Component {
     const { data } = await this.props.updateCart(cart)
     this.props.topStateSetter({ cart: data })
     this.setState({ editForm: null, propertyToEdit: null })
-    this.props.dispatch(reset("edit_cart_property_form"))
+    this.props.dispatchObj(reset("edit_cart_property_form"))
   }
 
   showEditModal(property, address) {
@@ -115,7 +116,7 @@ class Payment extends Component {
       address,
       onSubmit: () => this.updateCartProperty(address, property),
       cancel: () => {
-        this.props.dispatch(reset("edit_cart_property_form"))
+        this.props.dispatchObj(reset("edit_cart_property_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Shipping Property",
@@ -230,6 +231,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken, updateCart, createOrder, updateOrder }
+const actions = { handleToken, updateCart, createOrder, updateOrder, dispatchObj }
 
 export default connect(mapStateToProps, actions)(withRouter(Payment))

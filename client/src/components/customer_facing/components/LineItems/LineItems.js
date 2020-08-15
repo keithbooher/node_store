@@ -33,7 +33,7 @@ class LineItems extends Component {
       let item = {...line_item}
       if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
         item.quantity += 1
-        let { data } = await checkInventory([item])
+        let { data } = await this.props.checkInventory([item])
         let out_of_stock = data.filter((oos_item) => oos_item !== null)
         if (out_of_stock.length > 0) {
           this.setState({ inventory_limit: [item] })
@@ -148,6 +148,6 @@ function mapStateToProps({ enlargeImage }) {
   return { enlargeImage }
 }
 
-const actions = { updateCart, dispatchEnlargeImage }
+const actions = { updateCart, dispatchEnlargeImage, checkInventory }
 
 export default connect(mapStateToProps, actions)(LineItems)

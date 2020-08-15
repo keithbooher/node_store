@@ -58,7 +58,7 @@ const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, cho
 
   const someFunction = async (token) => {
     // First check if products are still available to buy
-    const inventoryCheck = await checkInventory(cart.line_items)
+    const inventoryCheck = await this.props.checkInventory(cart.line_items)
     console.log("inventory check", inventoryCheck)
 
     if (inventoryCheck.data.filter((item) => item !== null).length > 0) {

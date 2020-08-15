@@ -17,7 +17,7 @@ import Carousel from "../../../shared/Carousel"
 import StarRatings from 'react-star-ratings'
 import "./product.scss"
 
-const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match, history }) =>  {
+const Product = ({ auth, cart, createCart, updateCart, form, dispatchObj, match, history, getProductAverageRating, getProductByPathName }) =>  {
 
   const [product, setProduct] = useState(null)
   const [quantity, setQuantity] = useState(1)
@@ -380,7 +380,7 @@ function mapStateToProps({ cart, auth, form }) {
   return { cart, auth, form }
 }
 
-const actions = {updateCart, createCart, dispatchObj}
+const actions = { updateCart, createCart, dispatchObj, getProductByPathName, getProductAverageRating }
 
 
 export default connect(mapStateToProps, actions)(withRouter(Product))

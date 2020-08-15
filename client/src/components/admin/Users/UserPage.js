@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getUser, updateUser } from "../../../utils/API"
+import { dispatchObj } from "../../../actions"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
@@ -32,7 +33,7 @@ class Users extends Component {
     }
 
     const { data } = await updateUser(user)
-    this.props.dispatch(reset("edit_user_property_form"))
+    this.props.dispatchObj(reset("edit_user_property_form"))
     this.setState({ user: data, editForm: null })
   }
 
@@ -46,7 +47,7 @@ class Users extends Component {
     const form_object = {
       onSubmit: () => this.updateUserProperty(property),
       cancel: () => {
-        this.props.dispatch(reset("edit_user_property_form"))
+        this.props.dispatchObj(reset("edit_user_property_form"))
         this.setState({ editForm: null })
       },
       submitButtonText: "Update User Property",
@@ -98,4 +99,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(Users)
+const actions = { dispatchObj }
+
+export default connect(mapStateToProps, actions)(Users)

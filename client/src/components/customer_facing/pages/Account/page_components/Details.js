@@ -4,7 +4,7 @@ import Form from '../../../../shared/Form/Form'
 import { capitalizeFirsts } from "../../../../../utils/helperFunctions"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import notAvailable from '../../../../../images/no-image-available.jpg'
-import { updateUser } from "../../../../../actions"
+import { updateUser, dispatchObj } from "../../../../../actions"
 import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import FormModal from "../../../../shared/Form/FormModal"
@@ -51,7 +51,7 @@ class Details extends Component {
       user,
       onSubmit: () => this.handleSubmit(property),
       cancel: () => {
-        this.props.dispatch(reset("update_user_form"))
+        this.props.dispatchObj(reset("update_user_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update User Property",
@@ -131,6 +131,6 @@ function mapStateToProps({ auth, form }) {
   return { auth, form }
 }
 
-const actions = { updateUser }
+const actions = { updateUser, dispatchObj }
 
 export default connect(mapStateToProps, actions)(Details)

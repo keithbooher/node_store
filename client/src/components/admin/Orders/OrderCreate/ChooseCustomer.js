@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getUserByEmail } from "../../../../utils/API"
+import { dispatchObj } from "../../../../actions"
 import Form from "../../../shared/Form"
 import { connect } from 'react-redux'
 import { reset } from "redux-form"
@@ -70,9 +71,9 @@ class ChooseCustomer extends Component {
     }
 
     this.props.topStateSetter(state)
-    this.props.dispatch(reset("billing_admin_checkout_form"))
-    this.props.dispatch(reset("shipping_admin_checkout_form"))
-    this.props.dispatch(reset("guest_email_admin_checkout_form"))
+    this.props.dispatchObj(reset("billing_admin_checkout_form"))
+    this.props.dispatchObj(reset("shipping_admin_checkout_form"))
+    this.props.dispatchObj(reset("guest_email_admin_checkout_form"))
 
     this.props.refProp.current.scrollTo(0, 0);
 
@@ -204,4 +205,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-export default connect(mapStateToProps, null)(ChooseCustomer)
+const actions = { dispatchObj }
+
+export default connect(mapStateToProps, actions)(ChooseCustomer)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form"
-import { getProductbyName, createCart, updateCart, checkInventory } from "../../../../utils/API"
+import { getProductbyName, createCart, updateCart } from "../../../../utils/API"
 import { dispatchObj } from "../../../../actions"
 import { formatMoney } from "../../../../utils/helperFunctions"
 import CartLineItems from '../../shared/CartLineItems'
@@ -30,7 +30,7 @@ class FillCart extends Component {
 
   async handleSearchSubmit() {
     const search_for_product = this.props.form['product_order_search_form'].values
-    const { data } = await getProductbyName(search_for_product.name)
+    const { data } = await this.props.getProductbyName(search_for_product.name)
     this.setState({ result: data })
   }
 
@@ -178,6 +178,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateCart, createCart, dispatchObj }
+const actions = { updateCart, createCart, dispatchObj, getProductbyName }
 
 export default connect(mapStateToProps, actions)(FillCart)

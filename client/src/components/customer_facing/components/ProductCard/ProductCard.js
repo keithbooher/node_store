@@ -26,7 +26,7 @@ class ProductCard extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getProductAverageRating(this.props.product._id)
+    const { data } = await this.props.getProductAverageRating(this.props.product._id)
     this.setState({ averRating: data.average })
   }
 
@@ -249,13 +249,10 @@ class ProductCard extends Component {
   }
 }
 
-
-const actions = { dispatchEnlargeImage, showCartAction }
-
-
 function mapStateToProps({ zeroInventory }) {
   return { zeroInventory }
 }
 
+const actions = { dispatchEnlargeImage, showCartAction, getProductAverageRating }
 
 export default connect(mapStateToProps, actions)(ProductCard)

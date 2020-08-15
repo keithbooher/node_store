@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import StripeCheckout from 'react-stripe-checkout'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
-import { getProductbyName, createOrder, createShipment, updateCart, getCartByID, getShippingMethodForCheckout, updateOrder } from "../../../utils/API"
+import { createOrder, createShipment, updateCart, getCartByID, getShippingMethodForCheckout, updateOrder } from "../../../utils/API"
 import { formatMoney, capitalizeFirsts } from "../../../utils/helperFunctions"
+import { dispatchObj } from "../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import AddressDisplayEdit from "../../admin/shared/AddressDisplayEdit"
@@ -151,7 +152,7 @@ class Cart extends Component {
 
     const { data } = await this.props.updateCart(cart)
     this.setState({ editForm: null, propertyToEdit: null, cart: data })
-    this.props.dispatch(reset("edit_cart_property_form"))
+    this.props.dispatchObj(reset("edit_cart_property_form"))
   }
 
   showEditModal(property, address) {
@@ -159,7 +160,7 @@ class Cart extends Component {
       address,
       onSubmit: () => this.updateCartProperty(address, property),
       cancel: () => {
-        this.props.dispatch(reset("edit_cart_property_form"))
+        this.props.dispatchObj(reset("edit_cart_property_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Shipping Property",

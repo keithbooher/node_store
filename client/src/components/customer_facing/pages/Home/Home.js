@@ -23,7 +23,7 @@ class Home extends Component  {
   }
 
   async componentDidMount() {
-    let { data } = await homeProducts()
+    let { data } = await this.props.homeProducts()
     let banner_image = await homeBanner(isMobile ? "mobile" : "desktop")
     this.setState({ products: data, banner: banner_image.data })
   }
@@ -68,4 +68,6 @@ function mapStateToProps({ auth, cart }) {
   return { auth, cart }
 }
 
-export default connect(mapStateToProps, {updateCart, createCart})(Home)
+const actions = { updateCart, createCart, homeProducts }
+
+export default connect(mapStateToProps, actions)(Home)
