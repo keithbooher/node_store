@@ -35,16 +35,16 @@ class Reviews extends Component {
   
   async componentDidMount() {
     if (this.props.auth) {
-      const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
-      const lastReview = await lastUserReview(this.props.auth._id)
+      const reviews = await this.props.getUsersReviews(this.props.auth._id, "none", "none")
+      const lastReview = await this.props.lastUserReview(this.props.auth._id)
       this.setState({ reviews: reviews.data, last_review: lastReview.data })
     }
   }
   
   async componentDidUpdate() {
     if (this.state.reviews.length === 0 && this.state.retry < 3) {
-      const lastReview = await lastUserReview(this.props.auth._id)
-      const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
+      const lastReview = await this.props.lastUserReview(this.props.auth._id)
+      const reviews = await this.props.getUsersReviews(this.props.auth._id, "none", "none")
       this.setState({ reviews: reviews.data, retry: this.state.retry + 1, last_review: lastReview.data })
     }
   }
@@ -64,7 +64,7 @@ class Reviews extends Component {
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const reviews = await getUsersReviews(this.props.auth._id, direction_reference_id, direction)
+    const reviews = await this.props.getUsersReviews(this.props.auth._id, direction_reference_id, direction)
     this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -107,8 +107,8 @@ class Reviews extends Component {
     let review = this.state.editForm
     review.description = form_values.description
     review.rating = form_values.rating
-    await updateReview(review)
-    const reviews = await getUsersReviews(this.props.auth._id, "none", "none")
+    await this.props.updateReview(review)
+    const reviews = await this.props.getUsersReviews(this.props.auth._id, "none", "none")
     this.setState({ editForm: null, reviews: reviews.data, })
   }
 
@@ -160,6 +160,6 @@ function mapStateToProps({ auth, form }) {
   return { auth, form }
 }
 
-const actions = { getOrder }
+const actions = { getOrder, updateReview, getUsersReviews, lastUserReview }
 
 export default connect(mapStateToProps, actions)(Reviews)

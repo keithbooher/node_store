@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Form from '../../../../shared/Form/Form'
 import { capitalizeFirsts } from "../../../../../utils/helperFunctions"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import notAvailable from '../../../../../images/no-image-available.jpg'

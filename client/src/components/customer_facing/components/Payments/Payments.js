@@ -128,7 +128,7 @@ const Payments = ({ handyTok, auth, cart, updateUser, makeNewOrderAvailable, cho
       line_items: cart.line_items,
       _user_id: cart._user_id
     }
-    const new_shipment = await createShipment(shipment)
+    const new_shipment = await this.props.createShipment(shipment)
 
     // Create Order
     let order = {
@@ -190,7 +190,7 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder }
+const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder, createShipment }
 
 export default connect(mapStateToProps, actions)(Payments)
 

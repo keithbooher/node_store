@@ -50,7 +50,7 @@ class OrderPage extends Component {
     // change shipping status when complete manually
     let shipment = this.state.order.shipment
     shipment.status = chosenStatus
-    await updateShipment(shipment)
+    await this.props.updateShipment(shipment)
     let order = await this.props.getOrder(this.order_id).then(res => res.data)
     this.setState({ order })
   }
@@ -104,7 +104,7 @@ class OrderPage extends Component {
       shipment.billing_address = address
     }
 
-    await updateShipment(shipment)
+    await this.props.updateShipment(shipment)
 
     let { data } = await this.props.getOrder(this.order_id)
     this.props.dispatchObj(reset("edit_shipping_property_form"))
@@ -278,6 +278,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateOrder, getOrder, dispatchObj }
+const actions = { updateOrder, getOrder, dispatchObj, updateShipment }
 
 export default connect(mapStateToProps, actions)(OrderPage)

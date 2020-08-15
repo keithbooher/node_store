@@ -28,7 +28,7 @@ class LeaveReview extends Component {
     // if its been reviewed, set state "reviewed"
     // use this state to show an "edit review" button instead of a "leave review" button
     // if "edit review" has been selected, then show the same form but with a function for making a put request
-    let checkIfReviewed = await checkIfReviewExists(this.props.line_item._id)
+    let checkIfReviewed = await this.props.checkIfReviewExists(this.props.line_item._id)
     this.setState({ reviewed: checkIfReviewed.data })
   }
 
@@ -51,13 +51,13 @@ class LeaveReview extends Component {
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
 
-  submitReviewUpdate() {
+  async submitReviewUpdate() {
     const form_values = this.props.form[`line_item_${this.props.line_item._id}_review_form`].values
     let review = this.state.reviewed
     review.description = form_values.description
     review.rating = form_values.rating
-    updateReview(review)
-    this.setState({ submitted: true, show_review: false, reviewed: review })
+    let { data } = await this.props.updateReview(review)
+    this.setState({ submitted: true, show_review: false, reviewed: data })
   }
 
   review_initial_values() {
@@ -94,4 +94,6 @@ function mapStateToProps({ form, auth }) {
   return { form, auth }
 }
 
-export default connect(mapStateToProps, null)(LeaveReview)
+const actions = { updateReview, checkIfReviewExists }
+
+export default connect(mapStateToProps, actions)(LeaveReview)

@@ -35,7 +35,7 @@ class Reviews extends Component {
         approval_request = "all"
         break;
     }
-    const reviews = await getAllReviews("none", "none", approval_request)
+    const reviews = await this.props.getAllReviews("none", "none", approval_request)
     this.setState({ reviews: reviews.data })
   }
 
@@ -55,7 +55,7 @@ class Reviews extends Component {
 
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const reviews = await getAllReviews(direction_reference_id, direction, "all")
+    const reviews = await this.props.getAllReviews(direction_reference_id, direction, "all")
     this.setState({ reviews: reviews.data, page_number: this.state.page_number + page_increment })
   }
 
@@ -65,7 +65,7 @@ class Reviews extends Component {
     }
 
     review.approved = approval
-    const newly_updated_review = await updateReview(review)
+    const newly_updated_review = await this.props.updateReview(review)
 
     let reviews = this.state.reviews.map((state_review) => {
       if (state_review._id === newly_updated_review._id) {
@@ -108,7 +108,7 @@ class Reviews extends Component {
 
   async getReviews(approval) {
     // get different approval levels
-    const reviews = await getAllReviews("none", "none", approval)
+    const reviews = await this.props.getAllReviews("none", "none", approval)
     console.log(reviews)
     this.setState({ reviews: reviews.data, page_number: 1 })
   }
@@ -150,6 +150,6 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-const actions = { getOrder }
+const actions = { getOrder, updateReview, getAllReviews }
 
 export default connect(mapStateToProps, actions)(Reviews)
