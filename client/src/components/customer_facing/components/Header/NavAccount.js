@@ -50,8 +50,9 @@ function mapStateToProps({ auth, cart }) {
   return { auth, cart }
 }
 
+const actions = { logoutReq }
 
-export default connect(mapStateToProps)(AccountNav)
+export default connect(mapStateToProps, actions)(AccountNav)
 
 
 

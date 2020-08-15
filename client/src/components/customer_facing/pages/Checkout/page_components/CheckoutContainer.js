@@ -7,6 +7,7 @@ import ShippingPanel from './panels/ShippingPanel'
 import { updateCart, getCurrentCart } from '../../../../../utils/API'
 import { getGuestCart } from "../../../../../actions"
 import { withCookies } from 'react-cookie'
+import { withRouter } from "react-router-dom"
 
 import './checkout.css.scss'
 
@@ -30,7 +31,11 @@ class CheckoutContainer extends Component  {
     let current_cart
     if (!this.props.current_user) {
       const guest_cart_id = cookies.get('guest_cart')
-      current_cart = await this.props.getGuestCart(guest_cart_id)
+      if (!guest_cart_id) {
+        this.props.history.push("/")
+      } else {
+        current_cart = await this.props.getGuestCart(guest_cart_id)
+      }
     } else {
       current_cart = await this.props.getCurrentCart(this.props.current_user._id)
       if (current_cart.status === 200) {
@@ -81,7 +86,7 @@ class CheckoutContainer extends Component  {
 
   
   render() {
-    console.log(this.state)
+    console.log(this.props)
     let address_boolean = false
     let shipping_boolean = false
     let payment_boolean = false
@@ -153,4 +158,4 @@ class CheckoutContainer extends Component  {
 
 const actions = { updateCart, getGuestCart, getCurrentCart }
 
-export default connect(null, actions)(withCookies(CheckoutContainer))
+export default connect(null, actions)(withRouter(withCookies(CheckoutContainer)))

@@ -26,9 +26,7 @@ class ChooseCustomer extends Component {
 
   async handleSearchSubmit() {
     const search_for_customer = this.props.form['customer_search_form'].values
-    let { data } = await getUserByEmail(search_for_customer.email)
-    console.log(search_for_customer)
-    console.log(data)
+    let { data } = await this.props.getUserByEmail(search_for_customer.email)
     if (data === "") return
     this.setState({ chosen_customer: data })
   }
@@ -205,6 +203,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { dispatchObj }
+const actions = { dispatchObj, getUserByEmail }
 
 export default connect(mapStateToProps, actions)(ChooseCustomer)

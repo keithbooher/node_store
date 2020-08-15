@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from "react-redux"
 import { getUsers, lastUser } from "../../../utils/API"
 import PageChanger from "../../shared/PageChanger"
 import { Link } from "react-router-dom"
@@ -14,13 +15,13 @@ class Users extends Component {
   }
 
   async componentDidMount() {
-    const users = await getUsers('none', 'none').then(res => res.data)
-    const { data } = await lastUser()
+    const users = await this.props.getUsers('none', 'none').then(res => res.data)
+    const { data } = await this.props.lastUser()
     this.setState({ users: users, last_user: data })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
-    const users = await getUsers(direction_reference_id, direction, this.state.status_filter).then(res => res.data)
+    const users = await this.props.getUsers(direction_reference_id, direction, this.state.status_filter).then(res => res.data)
     this.setState({ users, page_number: this.state.page_number + page_increment })
   }
 
@@ -50,4 +51,6 @@ class Users extends Component {
   }
 }
 
-export default Users
+const actions = { getUsers, lastUser }
+
+export default connect(null, actions)(Users)

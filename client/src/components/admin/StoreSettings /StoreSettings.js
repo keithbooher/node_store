@@ -24,15 +24,15 @@ class StoreSettings extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getAllStoreSettings()
+    const { data } = await this.props.getAllStoreSettings()
     const allFaqs = await this.props.getAllFAQs()
     this.setState({ settings: data, faqs: allFaqs.data })
   }
 
   async updateSettingBoolean(setting) {
     setting.boolean = !setting.boolean
-    await updateStoreSetting(setting)
-    const { data } = await getAllStoreSettings()
+    await this.props.updateStoreSetting(setting)
+    const { data } = await this.props.getAllStoreSettings()
     this.setState({ settings: data })
   }
 
@@ -40,8 +40,8 @@ class StoreSettings extends Component {
     let desktop_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "desktop_banner_photo")[0]
     const src = d.filesUploaded[0].url
     desktop_banner_setting.value.image = src
-    await updateStoreSetting(desktop_banner_setting)
-    const { data } = await getAllStoreSettings()
+    await this.props.updateStoreSetting(desktop_banner_setting)
+    const { data } = await this.props.getAllStoreSettings()
     this.setState({ settings: data })
   }
 
@@ -49,8 +49,8 @@ class StoreSettings extends Component {
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
     const src = d.filesUploaded[0].url
     mobile_banner_setting.value.image = src
-    await updateStoreSetting(mobile_banner_setting)
-    const { data } = await getAllStoreSettings()
+    await this.props.updateStoreSetting(mobile_banner_setting)
+    const { data } = await this.props.getAllStoreSettings()
     this.setState({ settings: data })
   }
 
@@ -217,6 +217,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllFAQs, updateFAQ, createFAQ }
+const actions = { getAllFAQs, updateFAQ, createFAQ, updateStoreSetting, getAllStoreSettings }
 
 export default connect(mapStateToProps, actions)(StoreSettings)

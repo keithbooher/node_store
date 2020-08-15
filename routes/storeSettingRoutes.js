@@ -7,30 +7,50 @@ const StoreSetting = mongoose.model('storeSettings')
 module.exports = app => {
 
 
-  app.put('/api/setting/update', requireLogin, adminRequired, async (req, res) => {  
-    const setting = req.body.setting
-    let updated_product = await StoreSetting.findOneAndUpdate({ _id: setting._id }, setting, {new: true})
-    res.send(updated_product)    
+  app.put('/api/setting/update', requireLogin, adminRequired, async (req, res) => {
+    try {
+      const setting = req.body.setting
+      let updated_product = await StoreSetting.findOneAndUpdate({ _id: setting._id }, setting, {new: true})
+      res.send(updated_product)   
+    } catch (err) {
+      res.status(422).send(err)
+    }
   })
 
   app.get('/api/all/settings', requireLogin, adminRequired, async (req, res) => {  
-    let settings = await StoreSetting.find({})
-    res.send(settings)    
+    try {
+      let settings = await StoreSetting.find({})
+      res.send(settings)
+    } catch (err) {
+      res.status(422).send(err)
+    } 
   })
 
   app.get('/api/product_hiding/setting', requireLogin, adminRequired, async (req, res) => {  
-    let setting = await StoreSetting.findOne({ internal_name : "hide_zero" })
-    res.send(setting)    
+    try {
+      let setting = await StoreSetting.findOne({ internal_name : "hide_zero" })
+      res.send(setting)
+    } catch (err) {
+      res.status(422).send(err)
+    }
   })
 
-  app.get('/api/setting/home_banner/desktop', async (req, res) => {  
-    let setting = await StoreSetting.findOne({ internal_name : "desktop_banner_photo" })
-    res.send(setting)    
+  app.get('/api/setting/home_banner/desktop', async (req, res) => {
+    try {
+      let setting = await StoreSetting.findOne({ internal_name : "desktop_banner_photo" })
+      res.send(setting)
+    } catch (err) {
+      res.status(422).send(err)
+    }  
   })
 
-  app.get('/api/setting/home_banner/mobile', async (req, res) => {  
-    let setting = await StoreSetting.findOne({ internal_name : "mobile_banner_photo" })
-    res.send(setting)    
+  app.get('/api/setting/home_banner/mobile', async (req, res) => {
+    try {
+      let setting = await StoreSetting.findOne({ internal_name : "mobile_banner_photo" })
+      res.send(setting)
+    } catch (err) {
+      res.status(422).send(err)
+    }
   })
 
 

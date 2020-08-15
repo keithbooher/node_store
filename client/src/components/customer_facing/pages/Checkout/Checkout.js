@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import CheckoutContainer from './page_components/CheckoutContainer'
 import { getCurrentUser } from '../../../../utils/API'
 import './checkout.css.scss'
@@ -13,8 +14,7 @@ class Checkout extends Component  {
   }
   async componentDidMount() {
     // make api request for cart and then set the state for cart (if we need it here)
-    const current_user = await getCurrentUser()
-    console.log(current_user.data)
+    const current_user = await this.props.getCurrentUser()
     this.setState({ current_user: current_user.data })
   }
   
@@ -31,4 +31,6 @@ class Checkout extends Component  {
   }
 }
 
-export default Checkout
+const actions = { getCurrentUser }
+
+export default connect(null, actions)(Checkout)

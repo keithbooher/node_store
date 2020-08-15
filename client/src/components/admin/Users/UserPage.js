@@ -18,7 +18,7 @@ class Users extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getUser(this.routeParamUserId)
+    const { data } = await this.props.getUser(this.routeParamUserId)
     this.setState({ user: data })
   }
 
@@ -32,7 +32,7 @@ class Users extends Component {
       user[property] = form_value[property]
     }
 
-    const { data } = await updateUser(user)
+    const { data } = await this.props.updateUser(user)
     this.props.dispatchObj(reset("edit_user_property_form"))
     this.setState({ user: data, editForm: null })
   }
@@ -99,6 +99,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { dispatchObj }
+const actions = { dispatchObj, getUser, updateUser }
 
 export default connect(mapStateToProps, actions)(Users)
