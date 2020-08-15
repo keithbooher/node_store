@@ -46,7 +46,7 @@ class FlatRate extends Component {
       display: false
     }
     shippingMethod.shipping_rates.push(new_rate)
-    const { data } = await updateShippingMethod(shippingMethod)
+    const { data } = await this.props.updateShippingMethod(shippingMethod)
     this.props.dispatchObj(reset('flat_rate_form'))
     this.setState({ rateForm: !this.state.rateForm, shippingMethod: data  })
   }
@@ -69,14 +69,14 @@ class FlatRate extends Component {
       }
     })
 
-    const { data } = await updateShippingMethod(shippingMethod)
+    const { data } = await this.props.updateShippingMethod(shippingMethod)
     this.setState({ shippingMethod: data })
   }
 
   async destroyRate(rate_to_remove) {
     let shippingMethod = this.state.shippingMethod
     shippingMethod.shipping_rates = shippingMethod.shipping_rates.filter((rate) => rate._id !== rate_to_remove._id)
-    const { data } = await updateShippingMethod(shippingMethod)
+    const { data } = await this.props.updateShippingMethod(shippingMethod)
     this.setState({ shippingMethod: data })
   }
 
@@ -105,7 +105,7 @@ class FlatRate extends Component {
       }
     });
 
-    const { data } = await updateShippingMethod(shippingMethod)
+    const { data } = await this.props.updateShippingMethod(shippingMethod)
     this.props.dispatchObj(reset("edit_rate_property_form"))
     this.setState({ editForm: null, shippingMethod: data })
   }
@@ -276,6 +276,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { dispatchObj, getShippingMethod }
+const actions = { dispatchObj, getShippingMethod, updateShippingMethod }
 
 export default connect(mapStateToProps, actions)(FlatRate)

@@ -10,7 +10,7 @@ const CategoryForm = ({
   category,
   field,
   form,
-  dispatch,
+  dispatchObj,
   categories,
   setShowCreateInput,
   setCategories,

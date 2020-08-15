@@ -21,7 +21,7 @@ class Carriers extends Component {
   async changeDisplay(method) {
     let shippingMethod = method
     shippingMethod.display = !shippingMethod.display
-    await updateShippingMethod(shippingMethod)
+    await this.props.updateShippingMethod(shippingMethod)
     const { data } = await this.props.getShippingMethods()
     this.setState({ shippingMethods: data })
   }
@@ -69,6 +69,6 @@ class Carriers extends Component {
   }
 }
 
-const actions = { getShippingMethods }
+const actions = { getShippingMethods, updateShippingMethod }
 
 export default connect(null, actions)(Carriers)
