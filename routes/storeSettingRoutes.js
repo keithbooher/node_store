@@ -10,8 +10,8 @@ module.exports = app => {
   app.put('/api/setting/update', requireLogin, adminRequired, async (req, res) => {
     try {
       const setting = req.body.setting
-      let updated_product = await StoreSetting.findOneAndUpdate({ _id: setting._id }, setting, {new: true})
-      res.send(updated_product)   
+      let updated_setting = await StoreSetting.findOneAndUpdate({ _id: setting._id }, setting, {new: true})
+      res.send(updated_setting)   
     } catch (err) {
       res.status(422).send(err)
     }

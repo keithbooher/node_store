@@ -30,7 +30,8 @@ class StoreSettings extends Component {
   }
 
   async updateSettingBoolean(setting) {
-    setting.boolean = !setting.boolean
+    console.log(setting)
+    setting.value.boolean = !setting.value.boolean
     await this.props.updateStoreSetting(setting)
     const { data } = await this.props.getAllStoreSettings()
     this.setState({ settings: data })
@@ -153,7 +154,7 @@ class StoreSettings extends Component {
               <h3>{hide_zero_setting.name}</h3>
               <div className="flex">
                 <div>{hide_zero_setting.description}</div>
-                <div>{hide_zero_setting.value ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faTimes} /></a>  }</div>
+                <div>{hide_zero_setting.value.boolean ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faTimes} /></a>  }</div>
               </div>
             </div>
           </div>

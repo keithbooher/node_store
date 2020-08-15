@@ -72,7 +72,7 @@ class Header extends Component {
           <Link to='/' className="margin-s-h"><h2 className="margin-none">Node Store</h2></Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>
-          <NavAccount setCartCookie={this.props.setCartCookie} />
+          <NavAccount />
         </ul>
       </div>
     </div>

@@ -5,14 +5,22 @@ import Cart from '../Cart'
 import { useHistory } from 'react-router-dom';  
 import AccountDropDown from "./Dropdown"
 import { logout as logoutReq } from "../../../../utils/API"
+import { withCookies, useCookies } from 'react-cookie'
 
 // when the user logs out we need to store their cart id in the guest_cart cookies
-const AccountNav = ({ auth, cart, setCartCookie }) => {
+const AccountNav = ({ auth, logoutReq }) => {
+  const [cookies, setCookie, removeCookie] = useCookies(['guest_cart']);
   const history = useHistory()
+
   const logout = async () => {
-    if (!cart._id) return
-    setCartCookie(cart._id)
+    // if (!cart || !cart._id) return
+    // WHY EVEN SET THE USERS CART ID TO COOKIE?
+    // WHEN THEY LOG IN THEY WILL GET THEIR CART
+    // if (cart) {
+    //   setCartCookie(cart._id)
+    // }
     await logoutReq()
+    removeCookie("guest_cart")
     history.push("/")
     window.location.reload()
   }

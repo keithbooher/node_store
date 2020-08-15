@@ -47,7 +47,7 @@ class LeaveReview extends Component {
       _user_id: this.props.auth._id,
       _order_id: this.props.order_id
     }
-    submitReview(review)
+    this.props.submitReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
 
@@ -94,6 +94,6 @@ function mapStateToProps({ form, auth }) {
   return { form, auth }
 }
 
-const actions = { updateReview, checkIfReviewExists }
+const actions = { updateReview, checkIfReviewExists, submitReview }
 
 export default connect(mapStateToProps, actions)(LeaveReview)

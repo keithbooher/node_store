@@ -77,9 +77,10 @@ module.exports = app => {
   
 
   app.get('/api/current/cart/:user_id', async (req, res) => {
-    const user_id = req.params.user_id
+    const _user_id = req.params.user_id
     try {
-      const cart = await Cart.findOne({ _user_id: user_id, deleted_at: null })
+      const cart = await Cart.findOne({ _user_id, deleted_at: null })
+      console.log(cart)
       res.send(cart)
     } catch (err) {
       res.status(422).send({message: err})
@@ -232,24 +233,24 @@ module.exports = app => {
         if (search_term === "none") {
           // making a fresh call with no beginning ID for reference
           if (checkout_state === "all") {
-            carts = await Cart.find({})
+            carts = await Cart.find({ deleted_at: null })
               .sort({_id:-1}).limit(10)
           } else if (checkout_state === "deleted") {
             carts = await Cart.find({ deleted_at: { $ne: null }, checkout_state: {$ne: "complete"} })
             .sort({_id:-1}).limit(10)
           } else {
-            carts = await Cart.find({ checkout_state })
+            carts = await Cart.find({ checkout_state, deleted_at: null })
               .sort({_id:-1}).limit(10)
           }
         } else {
           if (checkout_state === "all") {
-            carts = await Cart.find({ email: search_term })
+            carts = await Cart.find({ email: search_term, deleted_at: null })
               .sort({_id:-1}).limit(10)
           } else if (checkout_state === "deleted") {
             carts = await Cart.find({ email: search_term, checkout_state: {$ne: "complete"}, deleted_at: { $ne: null }} )
             .sort({_id:-1}).limit(10)
           } else {
-            carts = await Cart.find({ email: search_term, checkout_state })
+            carts = await Cart.find({ email: search_term, checkout_state, deleted_at: null })
               .sort({_id:-1}).limit(10)
           }
         }
@@ -265,7 +266,7 @@ module.exports = app => {
             // if checkout_state all, dont distinguish between cart checkout_state
             // otherwise we look for carts with specific checkout_state
             if (checkout_state === "all") {
-              carts = await Cart.find({_id: {$lt: last_cart_id}})
+              carts = await Cart.find({_id: {$lt: last_cart_id}, deleted_at: null})
                 .sort({_id:-1})
                 .limit(10)
             } else if (checkout_state === "deleted") {
@@ -273,7 +274,7 @@ module.exports = app => {
                 .sort({_id:-1})
                 .limit(10)
             } else {
-              carts = await Cart.find({ _id: {$lt: last_cart_id}, checkout_state })
+              carts = await Cart.find({ _id: {$lt: last_cart_id}, checkout_state, deleted_at: null })
                 .sort({_id:-1})
                 .limit(10)
             }
@@ -283,11 +284,11 @@ module.exports = app => {
             // if checkout_state all, dont distinguish between cart checkout_statees
             // otherwise we look for carts with specific checkout_statees
             if (checkout_state === "all") {
-              carts = await Cart.find({ _id: {$gt: last_cart_id }}).limit(10)
+              carts = await Cart.find({ _id: {$gt: last_cart_id, }, deleted_at: null}).limit(10)
             } else if (checkout_state === "deleted") {
                 carts = await Cart.find({ _id: {$gt: last_cart_id}, deleted_at: { $ne: null }, checkout_state: {$ne: "complete"} }).limit(10)
             } else {
-              carts = await Cart.find({ _id: {$gt: last_cart_id}, checkout_state }).limit(10)
+              carts = await Cart.find({ _id: {$gt: last_cart_id}, checkout_state, deleted_at: null }).limit(10)
             }
 
             carts = carts.reverse()
@@ -301,7 +302,7 @@ module.exports = app => {
             // if checkout_state all, dont distinguish between cart checkout_state
             // otherwise we look for carts with specific checkout_state
             if (checkout_state === "all") {
-              carts = await Cart.find({ _id: {$lt: last_cart_id }, email: search_term })
+              carts = await Cart.find({ _id: {$lt: last_cart_id }, email: search_term, deleted_at: null })
                 .sort({_id:-1})
                 .limit(10)
             } else if (checkout_state === "deleted") {
@@ -309,7 +310,7 @@ module.exports = app => {
                 .sort({_id:-1})
                 .limit(10)
             } else {
-              carts = await Cart.find({ _id: {$lt: last_cart_id}, email: search_term, checkout_state })
+              carts = await Cart.find({ _id: {$lt: last_cart_id}, email: search_term, checkout_state, deleted_at: null })
                 .sort({_id:-1})
                 .limit(10)
             }
