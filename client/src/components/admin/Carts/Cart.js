@@ -51,7 +51,7 @@ class Cart extends Component {
       return
     }
 
-    const shipping_method = await getShippingMethodForCheckout()
+    const shipping_method = await this.props.getShippingMethodForCheckout()
 
     const rates = shipping_method.data.shipping_rates.filter((rate) => rate.display === true)
 
@@ -478,6 +478,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment }
+const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout }
 
 export default connect(mapStateToProps, actions)(Cart)

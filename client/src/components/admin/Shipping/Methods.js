@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from "react-router-dom"
 import { getShippingMethods, updateShippingMethod } from "../../../utils/API"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,7 +14,7 @@ class Carriers extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getShippingMethods()
+    const { data } = await this.props.getShippingMethods()
     this.setState({ shippingMethods: data })
   }
 
@@ -21,7 +22,7 @@ class Carriers extends Component {
     let shippingMethod = method
     shippingMethod.display = !shippingMethod.display
     await updateShippingMethod(shippingMethod)
-    const { data } = await getShippingMethods()
+    const { data } = await this.props.getShippingMethods()
     this.setState({ shippingMethods: data })
   }
 
@@ -68,4 +69,6 @@ class Carriers extends Component {
   }
 }
 
-export default Carriers
+const actions = { getShippingMethods }
+
+export default connect(null, actions)(Carriers)

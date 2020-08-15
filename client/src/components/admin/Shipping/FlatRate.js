@@ -32,7 +32,7 @@ class FlatRate extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getShippingMethod('flat_rate')
+    const { data } = await this.props.getShippingMethod('flat_rate')
     this.setState({ shippingMethod: data })
   }
 
@@ -276,6 +276,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { dispatchObj }
+const actions = { dispatchObj, getShippingMethod }
 
 export default connect(mapStateToProps, actions)(FlatRate)

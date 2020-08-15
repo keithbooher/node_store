@@ -14,7 +14,7 @@ class ShippingOptions extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await getShippingMethodForCheckout()
+    const { data } = await this.props.getShippingMethodForCheckout()
     this.setState({ shipping_method: data })
   }
 
@@ -84,6 +84,6 @@ class ShippingOptions extends Component {
 }
 
 
-const actions = { updateCart }
+const actions = { updateCart, getShippingMethodForCheckout }
 
 export default connect(null, actions)(ShippingOptions)

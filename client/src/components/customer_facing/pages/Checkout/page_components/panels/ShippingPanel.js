@@ -18,7 +18,7 @@ class AddressPanel extends Component  {
 
   async componentDidMount() {    
     // api call to assign "shipping" checkout status to cart 
-    const { data } = await getShippingMethodForCheckout()
+    const { data } = await this.props.getShippingMethodForCheckout()
 
     const rates = data.shipping_rates.filter((rate) => rate.display === true)
     const fields = rates.map((rate) => {
@@ -93,6 +93,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { convertCart }
+const actions = { convertCart, getShippingMethodForCheckout }
 
 export default connect(mapStateToProps, actions)(AddressPanel)
