@@ -479,6 +479,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout }
+const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout, dispatchObj }
 
 export default connect(mapStateToProps, actions)(Cart)
