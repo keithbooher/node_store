@@ -9,7 +9,7 @@ import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { validatePresenceOnAll } from "../../../utils/validations"
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import FormModal from "../../shared/Form/FormModal"
 import ReactFilestack from "filestack-react"
 

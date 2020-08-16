@@ -4,7 +4,7 @@ import { updateUser } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash, faPlusCircle, faCaretRight, faCaretLeft} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
-import { capitalizeFirsts } from "../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import Carousel from "../../../shared/Carousel"
 
 const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser }) => {

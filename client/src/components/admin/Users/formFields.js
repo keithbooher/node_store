@@ -1,4 +1,4 @@
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helpFunctions"
 
 export const roleField = (role) => {
   return (

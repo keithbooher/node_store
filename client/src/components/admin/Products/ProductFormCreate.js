@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createProduct, getAllCategories } from '../../../utils/API'
-import { productNameToPathName } from '../../../utils/helperFunctions'
+import { productNameToPathName } from '../../../utils/helpFunctions'
 import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'

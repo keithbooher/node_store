@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getCategoryProducts } from "../../../../utils/API"
 import ProductCard from '../../components/ProductCard'
-import { capitalizeFirsts } from '../../../../utils/helperFunctions'
+import { capitalizeFirsts } from '../../../../utils/helpFunctions'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'

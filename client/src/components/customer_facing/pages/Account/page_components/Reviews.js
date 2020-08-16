@@ -7,7 +7,7 @@ import StarRatings from 'react-star-ratings'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { validatePresenceOnAll } from "../../../../../utils/validations"
-import { updatedFormFields } from "../../../../../utils/helperFunctions"
+import { updatedFormFields } from "../../../../../utils/helpFunctions"
 import FormModal from "../../../../shared/Form/FormModal"
 
 class Reviews extends Component {

@@ -7,7 +7,7 @@ import { dispatchObj } from "../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import FormModal from "../../shared/Form/FormModal"
 
 

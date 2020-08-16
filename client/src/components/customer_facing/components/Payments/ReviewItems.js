@@ -4,7 +4,7 @@ import { updateCart } from "../../../../utils/API"
 import { dispatchObj } from "../../../../actions"
 import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
-import { capitalizeFirsts } from "../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import FormModal from "../../../shared/Form/FormModal"
 import { Link } from 'react-router-dom'

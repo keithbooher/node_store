@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
-import { calculateSubtotal, formatMoney } from '../../../../utils/helperFunctions'
+import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { updateCart, dispatchEnlargeImage } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"

@@ -4,7 +4,7 @@ import StripeCheckout from 'react-stripe-checkout'
 import { updateCart, createOrder, createShipment, updateOrder, handleToken } from "../../../../utils/API"
 import AddressDisplayEdit from "../../shared/AddressDisplayEdit"
 import { reset } from "redux-form"
-import { capitalizeFirsts } from "../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import { dispatchObj } from "../../../../actions"
 import FormModal from "../../../shared/Form/FormModal"

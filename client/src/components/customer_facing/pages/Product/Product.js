@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { getProductByPathName, getProductsReviews, submitReview, lastReview, getProductAverageRating } from "../../../../utils/API"
 import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
-import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helperFunctions'
+import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import Form from "../../../shared/Form"

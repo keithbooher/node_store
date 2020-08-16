@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { capitalizeFirsts } from "../../../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../../../utils/helpFunctions"
 import loadingGif from '../../../../../images/pizzaLoading.gif'
 import notAvailable from '../../../../../images/no-image-available.jpg'
 import { updateUser, dispatchObj } from "../../../../../actions"

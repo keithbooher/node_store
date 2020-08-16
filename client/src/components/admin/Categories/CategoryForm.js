@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { productNameToPathName } from "../../../utils/helperFunctions"
+import { productNameToPathName } from "../../../utils/helpFunctions"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { getTopCategories, createCategory, updateCategory } from '../../../utils/API'

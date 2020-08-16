@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import { getProductbyName, createCart, updateCart } from "../../../../utils/API"
 import { dispatchObj } from "../../../../actions"
-import { formatMoney } from "../../../../utils/helperFunctions"
+import { formatMoney } from "../../../../utils/helpFunctions"
 import CartLineItems from '../../shared/CartLineItems'
 
 class FillCart extends Component {

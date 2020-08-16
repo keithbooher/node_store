@@ -4,7 +4,7 @@ import LineItems from '../LineItems'
 import './cart.css.scss'
 import CartLength from "./CartLength"
 import { Link } from 'react-router-dom'
-import { formatMoney } from '../../../../utils/helperFunctions'
+import { formatMoney } from '../../../../utils/helpFunctions'
 import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
 
 class Cart extends Component {

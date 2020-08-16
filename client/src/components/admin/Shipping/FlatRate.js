@@ -7,7 +7,7 @@ import { faPlusCircle, faTimesCircle, faCircle, faTrash, faEdit, faEye, faEyeSla
 import FormModal from "../../shared/Form/FormModal"
 import _ from 'lodash'
 import { reset } from "redux-form"
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import { validatePresenceOnAll } from "../../../utils/validations"
 
 

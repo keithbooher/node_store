@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { capitalizeFirsts } from "../../../utils/helperFunctions"
+import { capitalizeFirsts } from "../../../utils/helpFunctions"
 
 class TopTabs extends Component  {
   constructor(props) {

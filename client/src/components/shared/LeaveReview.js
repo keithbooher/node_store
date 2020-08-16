@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import FormModal from "./Form/FormModal"
-import { updatedFormFields } from "../../utils/helperFunctions"
+import { updatedFormFields } from "../../utils/helpFunctions"
 import { checkIfReviewExists, submitReview, updateReview } from '../../utils/API';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faCheckCircle} from "@fortawesome/free-solid-svg-icons"

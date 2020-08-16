@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
 import { addressFormFields, validate } from '../formFields'
-import { updatedFormFields } from "../../../../../../utils/helperFunctions"
+import { updatedFormFields } from "../../../../../../utils/helpFunctions"
 import AddressCard from '../../../../components/AddressCard';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"

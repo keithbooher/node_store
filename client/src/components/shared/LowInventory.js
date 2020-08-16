@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { updateCart } from "../../actions"
 import mobile from "is-mobile"
 import Modal from "./Modal"
-import { calculateSubtotal, formatMoney } from '../../utils/helperFunctions'
+import { calculateSubtotal, formatMoney } from '../../utils/helpFunctions'
 
 let isMobile = mobile()
 class LowInventory extends Component {

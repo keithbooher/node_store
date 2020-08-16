@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { capitalizeFirsts, calculateSubtotal, formatMoney } from '../../../../utils/helperFunctions'
+import { capitalizeFirsts, calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { getProductAverageRating} from '../../../../utils/API'
 import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

@@ -4,7 +4,7 @@ import StripeCheckout from 'react-stripe-checkout'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { createOrder, createShipment, updateCart, getCartByID, getShippingMethodForCheckout, updateOrder } from "../../../utils/API"
-import { formatMoney, capitalizeFirsts } from "../../../utils/helperFunctions"
+import { formatMoney, capitalizeFirsts } from "../../../utils/helpFunctions"
 import { dispatchObj } from "../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
