@@ -55,19 +55,19 @@ module.exports = app => {
 
 
 
-  // // Create Store Setting
-  // app.get('/api/store_setting/create', async (req, res) => {  
-  //   console.log("here")
-  //   let setting = {
-  //     name: "Hide Product If Zero Quantity And Not Backorderable",
-  //     boolean: false
-  //   }
-  //   const storeSetting = new StoreSetting(setting)
-  //   try {
-  //     await storeSetting.save()
-  //     res.send(storeSetting)
-  //   } catch (err) {
-  //     res.status(422).send(err)
-  //   }
-  // })
+  // Create Store Setting
+  app.get('/api/store_setting/create', async (req, res) => {  
+    console.log("here")
+    let setting = {
+      name: "Hide Product If Zero Quantity And Not Backorderable",
+      boolean: false
+    }
+    const storeSetting = new StoreSetting(setting)
+    try {
+      await storeSetting.save()
+      res.send(storeSetting)
+    } catch (err) {
+      res.status(422).send(err)
+    }
+  })
 }

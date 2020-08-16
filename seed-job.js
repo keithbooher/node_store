@@ -35,7 +35,7 @@ const seed = async () => {
       description:"Photo used for mobile banner on home page",
       internal_name: "mobile_banner_photo"
     }
-    await axios.post(`${keys.url}/api/store-creanate/store_setting/create`, {store_setting: mobile_banner_setting})
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: mobile_banner_setting})
 
     let desktop_banner_setting = { 
       name:"Desktop Banner Photo",
