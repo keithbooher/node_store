@@ -4,7 +4,7 @@ module.exports = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   mongoURI: process.env.MONGO_URI,
   cookieKey: 'redirected',
-  stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+  REACT_APP_STRIPE_KEY: process.env.REACT_APP_STRIPE_KEY,
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   sendgridKey: process.env.SENDGRID_KEY,
   url: process.env.url,
