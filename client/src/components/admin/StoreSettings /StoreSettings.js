@@ -95,7 +95,6 @@ class StoreSettings extends Component {
   }
 
   render() {
-    console.log(this.state.faqs)
     let hide_zero_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "hide_zero")[0]
     let desktop_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "desktop_banner_photo")[0]
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
