@@ -10,7 +10,8 @@ import BugsnagPluginReact from '@bugsnag/plugin-react'
 
 Bugsnag.start({
   apiKey: process.env.REACT_APP_BUG_SNAG_KEY,
-  plugins: [new BugsnagPluginReact()]
+  plugins: [new BugsnagPluginReact()],
+  enabledReleaseStages: [ 'production', 'staging' ]
 })
 
 var ErrorBoundary = Bugsnag.getPlugin('react')

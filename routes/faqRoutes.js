@@ -37,7 +37,7 @@ module.exports = app => {
     try {
       const faqs = await FAQ.find({ deleted_at: null })
       res.send(faqs)
-      // throw "my error bitch"
+      // res.status(401).send({message: "my error bitch"})
     } catch (err) {
       res.status(401).send({message: err})
     }

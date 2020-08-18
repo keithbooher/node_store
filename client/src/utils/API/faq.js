@@ -1,9 +1,11 @@
 import axios from "axios"
 import { ERROR } from '../../actions/types'
+import Bugsnag from '@bugsnag/js'
 
 export const getFAQID = (_id) => async dispatch => {
   let req = await axios.get(`/api/faq/${_id}`).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
     return error.response
   })
   if (req.status === 200) {
@@ -16,6 +18,7 @@ export const getFAQID = (_id) => async dispatch => {
 export const getAllFAQs = () => async dispatch => {
   let req = await axios.get(`/api/faqs`).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
     return error.response
   })
   if (req.status === 200) {
@@ -29,6 +32,7 @@ export const updateFAQ = (faq) => async dispatch => {
   const data = { faq }
   let req = await axios.put('/api/faq/update', data).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
     return error.response
   })
   if (req.status === 200) {
@@ -42,6 +46,7 @@ export const createFAQ = (faq) => async dispatch => {
   const data = { faq }
   let req = await axios.post('/api/faq/create', data).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
     return error.response
   })
   if (req.status === 200) {
