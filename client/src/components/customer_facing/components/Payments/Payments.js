@@ -104,6 +104,8 @@ const Payments = ({
     })
 
     let user = auth
+    // TO DO
+    // in the check address functions map through the addresses and check.
     let past_billing_used = checkPassedBillingUsed(user.billing_address, cart)
     let past_shipping_used = checkPassedShippingUsed(user.shipping_address, cart)
 

@@ -8,4 +8,5 @@ module.exports = {
   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   sendgridKey: process.env.SENDGRID_KEY,
   url: process.env.url,
+  bugsnag: process.env.EXPRESS_KEY_BUG_SNAG
 }
