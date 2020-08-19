@@ -222,9 +222,9 @@ class CartLineItems extends Component {
       <div>
         <h2>Line Items</h2>
         <div  className="flex flex-wrap space-evenly">
-          {this.props.cart.line_items.map((item) => {
+          {this.props.cart.line_items.map((item, index) => {
             return (
-                <div className="relative padding-m background-color-grey-2" style={{ flexBasis: "100%", marginTop: "10px" }}>
+                <div key={index} className="relative padding-m background-color-grey-2" style={{ flexBasis: "100%", marginTop: "10px" }}>
                   <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute" style={{ right: "0px", top: "0px" }} icon={faTrash} />
                   <div><img style={{ height: "auto", width: "98%" }} src={item.image}/></div>
                   <div>{item.product_name}</div>

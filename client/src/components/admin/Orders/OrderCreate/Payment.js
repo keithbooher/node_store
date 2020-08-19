@@ -152,9 +152,9 @@ class Payment extends Component {
 
           <h3>Line Items <FontAwesomeIcon onClick={() => this.props.topStateSetter({ step: "cart" })} icon={faEdit} /></h3>
           <div className="flex flex_column">
-            {this.props.cart.line_items.map((line_item) => {
+            {this.props.cart.line_items.map((line_item, index) => {
               return (
-                <div style={{ marginTop: "5px" }}>
+                <div key={index} style={{ marginTop: "5px" }}>
                   <div>{line_item.product_name}</div>
                   <div>Quantity: {line_item.quantity}</div>
                 </div>

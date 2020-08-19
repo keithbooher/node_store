@@ -70,9 +70,9 @@ class LowInventory extends Component {
     return (
       <Modal cancel={this.props.cancel} >
         <h3>{this.props.title}</h3>
-        {this.props.out_of_stock_items.filter((item) => item !== null).map((item) => {
+        {this.props.out_of_stock_items.filter((item) => item !== null).map((item, index) => {
           return (
-            <p style={{ fontSize: "18px" }}>{item.product_name}</p>
+            <p key={index} style={{ fontSize: "18px" }}>{item.product_name}</p>
           )
         })}
 

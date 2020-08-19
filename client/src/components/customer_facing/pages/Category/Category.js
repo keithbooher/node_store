@@ -37,8 +37,9 @@ class Category extends Component  {
     if (!this.props.zeroInventory) {
       products = products.filter((product) => product.inventory_count > 0)
     }
-    return products.map(product => {
-      return <ProductCard 
+    return products.map((product, index) => {
+      return <ProductCard
+                key={index}
                 product={product} 
                 category_path_name={this.props.match.params.category}
                 user={this.props.auth}

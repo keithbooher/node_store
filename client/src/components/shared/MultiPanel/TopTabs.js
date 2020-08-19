@@ -11,8 +11,8 @@ class TopTabs extends Component  {
   }
 
   renderTabs() {
-    return this.props.sections.map((section) => {
-      return <NavLink style={{ flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}><h3 data-tab={section} className="tab_section_header margin-none clickable">{capitalizeFirsts(section.tab)}</h3></NavLink>
+    return this.props.sections.map((section, index) => {
+      return <NavLink key={index} style={{ flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}><h3 data-tab={section} className="tab_section_header margin-none clickable">{capitalizeFirsts(section.tab)}</h3></NavLink>
     })
   }
 

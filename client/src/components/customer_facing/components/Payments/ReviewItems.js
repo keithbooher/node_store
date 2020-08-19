@@ -82,9 +82,9 @@ class ReviewItems extends Component {
 
           <h3>Line Items</h3>
           <div className="flex flex_column">
-            {this.props.cart.line_items.map((line_item) => {
+            {this.props.cart.line_items.map((line_item, index) => {
               return (
-                <div className="flex align-items-center" style={{ marginTop: "5px" }}>
+                <div key={index} className="flex align-items-center" style={{ marginTop: "5px" }}>
                   <img src={line_item.image} className="h-auto w-auto" style={{ maxHeight: "100px", maxWidth: "100px",  marginRight: "10px" }} />
                   <div>
                     <h3 className="margin-s-v">{line_item.product_name}</h3>

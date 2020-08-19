@@ -92,9 +92,9 @@ class LineItems extends Component {
     return (
       <>
         {this.props.cart && 
-          this.props.cart.line_items.map((line_item) => {
+          this.props.cart.line_items.map((line_item, index) => {
             return (
-              <li className="divider line_item padding-s ">
+              <li key={index} className="divider line_item padding-s ">
 
                 <div className="line_item_sub_container">
 

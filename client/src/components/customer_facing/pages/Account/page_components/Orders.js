@@ -49,9 +49,9 @@ class Orders extends Component {
     return  (
       <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
         <div>
-          {order.shipment && order.shipment.line_items.map((line_item) => {
+          {order.shipment && order.shipment.line_items.map((line_item, index) => {
             return (
-              <div className="flex">
+              <div key={index} className="flex">
                 <div>{line_item.product_name}</div>
                 <LeaveReview order_id={order._id} line_item={line_item} />
               </div>
@@ -70,10 +70,10 @@ class Orders extends Component {
   }
 
   renderOrders() {
-    return this.state.orders.map((order) => {
+    return this.state.orders.map((order, index) => {
       var date = order.date_placed.split("T")[0]
       return (
-        <div>
+        <div key={index}>
           <div className="flex space-between margin-xs-v padding-s" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>        
             <FontAwesomeIcon icon={faCaretDown} onClick={ () => this.setOrder(order) } />
             <div>{"..." + order._id.substr(order._id.length - 8)}</div>

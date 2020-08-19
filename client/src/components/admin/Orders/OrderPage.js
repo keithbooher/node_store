@@ -173,10 +173,10 @@ class OrderPage extends Component {
         
               <h4>Line Items</h4>
               <div className="flex flex-wrap">
-                {order.shipment.line_items && order.shipment.line_items.map((item) => {
+                {order.shipment.line_items && order.shipment.line_items.map((item, index) => {
                   let path = item.product_path ? item.product_path.split("/").pop() : "undefined"
                   return (
-                    <div className="margin-s-h">
+                    <div key={index} className="margin-s-h">
                       <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
                       <div>Product name: {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
                       <div>product price: ${item.product_price}</div>

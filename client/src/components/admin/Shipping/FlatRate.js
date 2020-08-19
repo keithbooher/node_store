@@ -179,9 +179,9 @@ class FlatRate extends Component {
 
           <div>
             <h3>Rates</h3>
-            {this.state.shippingMethod.shipping_rates.map((rate) => {
+            {this.state.shippingMethod.shipping_rates.map((rate, index) => {
               return (
-                <div className="flex flex_column padding-m background-color-grey-2 margin-s-v relative">
+                <div key={index} className="flex flex_column padding-m background-color-grey-2 margin-s-v relative">
                   <RateProperty 
                     setEditIndication={this.setEditIndication}
                     renderEditIndicator={this.renderEditIndicator}

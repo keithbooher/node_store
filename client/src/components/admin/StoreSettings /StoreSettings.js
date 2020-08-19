@@ -160,9 +160,9 @@ class StoreSettings extends Component {
         }
 
         <h2>FAQ's <FontAwesomeIcon onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
-        {this.state.faqs && this.state.faqs.map((faq) => {
+        {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (
-            <div className="relative">
+            <div key={index} className="relative">
               <h3>{faq.question}</h3>
               <div>{faq.answer}</div>
               <FontAwesomeIcon className="absolute" style={{ top: "0px", right: "20px" }} icon={faEdit} onClick={() => this.editFaqModal(faq)} />

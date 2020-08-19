@@ -186,9 +186,9 @@ class Carts extends Component {
 }
 
 const RenderReviews = ({carts}) => {
-  return carts.map((cart) => {
+  return carts.map((cart, index) => {
     return (
-      <tr className="background-color-grey-7 margin-xs-v">
+      <tr key={index} className="background-color-grey-7 margin-xs-v">
         <td>{cart.email ? cart.email : "guest"}</td>
         <td>{cart.total}</td>
         <td>{`${cart.created_at}`.split("T")[0]}</td>

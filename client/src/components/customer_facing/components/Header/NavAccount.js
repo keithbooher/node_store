@@ -39,8 +39,8 @@ const AccountNav = ({ auth, logoutReq }) => {
             return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
         default:
           return [
-            <AccountDropDown elements={renderDropDown()} />,
-            <Cart />
+            <AccountDropDown key={1} elements={renderDropDown()} />,
+            <Cart key={2} />
           ]
       }
     }

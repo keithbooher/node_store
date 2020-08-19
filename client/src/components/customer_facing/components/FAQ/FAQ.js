@@ -19,9 +19,9 @@ class FAQ extends Component {
     return (
       <div className="flex flex_column">
         <h1 className="margin-s-v">FAQ's</h1>
-        {this.state.faqs && this.state.faqs.map((faq) => {
+        {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (
-            <div className="margin-s-v">
+            <div key={index} className="margin-s-v">
               <h2>Q: {faq.question}</h2>
               <div>A: {faq.answer}</div>
             </div>

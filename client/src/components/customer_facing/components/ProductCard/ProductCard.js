@@ -192,7 +192,7 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-          <div className={`card margin-s-v ${product._id === "" && "hidden"}`}>
+          <div key={product._id} className={`card margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>

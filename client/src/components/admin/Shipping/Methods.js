@@ -32,7 +32,7 @@ class Carriers extends Component {
     return (
     <div>
       <div className="flex flex_column">
-        {this.state.shippingMethods.map((method) => {
+        {this.state.shippingMethods.map((method, index) => {
           let url
           if (method.display) {
             url = `/admin/shipping/shipping_method/${method.internal_name}`
@@ -40,7 +40,7 @@ class Carriers extends Component {
             url= '/admin/shipping/methods'
           }
           return (
-            <div className="" key={method.internal_name}>
+            <div key={index} className="" key={method.internal_name}>
               <div className="background-color-grey-2">
                 <Link to={url} className={` ${method.display && "hover"}`}>
                   <h2 className="padding-s">{method.name}</h2>

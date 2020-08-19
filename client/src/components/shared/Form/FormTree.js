@@ -56,8 +56,8 @@ class FormTree extends Component {
     return (
       <div>
         <div style={defaulted === true ? { color: "red" } : { color: "black" }} onClick={() => this.selectCat(category)}>{category.name}</div>
-        {category.sub_categories.map((sub_cat) => {
-          return <div style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
+        {category.sub_categories.map((sub_cat, index) => {
+          return <div key={index} style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
         })}
       </div>
     )
@@ -73,8 +73,8 @@ class FormTree extends Component {
     return (
       <div>
         <div style={defaulted === true ? { color: "red" } : { color: "black" }} onClick={() => this.selectCat(category)}>{category.name}</div>
-        {category.sub_categories.map((sub_cat) => {
-          return <div style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
+        {category.sub_categories.map((sub_cat, index) => {
+          return <div key={index} style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
         })}
       </div>
     )
@@ -91,9 +91,9 @@ class FormTree extends Component {
       <div>
         <label>{this.props.label}</label>
         <div style={{ margin: "10px 0px 10px 10px" }}>
-          {this.state.top_cats.map((top_cat) => {
+          {this.state.top_cats.map((top_cat, index) => {
               return (
-                <div>{this.topCat(top_cat)}</div>
+                <div key={index}>{this.topCat(top_cat)}</div>
               )
             })
           }

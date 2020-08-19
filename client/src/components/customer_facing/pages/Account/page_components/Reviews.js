@@ -69,9 +69,9 @@ class Reviews extends Component {
   }
 
   renderReviews() {
-    return this.state.reviews.map((review) => {
+    return this.state.reviews.map((review, index) => {
       return (
-        <div className="relative border margin-m-v">
+        <div key={index} className="relative border margin-m-v">
           <FontAwesomeIcon className="absolute" style={{ top: "2px", right: "2px" }} icon={faEdit} onClick={() => this.setState({ editForm: review })} />
           <div>First Name: {review.first_name}</div>
           <div className="flex align-items-center">

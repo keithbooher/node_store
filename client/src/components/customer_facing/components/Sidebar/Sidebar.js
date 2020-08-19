@@ -39,9 +39,9 @@ class Sidebar extends Component  {
     categories = categories.sort((a,b) => {
       return a.display_order - b.display_order
     })
-    return categories.map((category) => {
+    return categories.map((category, index) => {
       return (
-        <div style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "10px", maxWidth: "8em" } }>
+        <div key={index} style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "10px", maxWidth: "8em" } }>
           <div>
             <FontAwesomeIcon className="inline color-white" style={{ marginRight: "5px" }} icon={faCaretRight} />
             <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline" to={`/shop/${category.path_name}`}>{category.name}</Link>

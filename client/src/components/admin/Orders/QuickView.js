@@ -17,7 +17,7 @@ class QuickView extends Component  {
         <h4 className="margin-xs-v">User Email:</h4>
         <div className="margin-xs-h"><Link to={`/admin/users/${order._user_id}`}>{order.email}</Link></div>
         <h4 className="margin-xs-v">Line Items:</h4>
-        <div className="margin-xs-h">{order.shipment.line_items.map((line_item) => <div>{line_item.product_name}</div>)}</div>
+        <div className="margin-xs-h">{order.shipment.line_items.map((line_item, index) => <div key={index}>{line_item.product_name}</div>)}</div>
         <h4 className="margin-xs-v">Address Info:</h4>
         <div className="margin-xs-h">{order.shipment.billing_address.first_name}</div>
         <div className="margin-xs-h">{order.shipment.billing_address.last_name}</div>

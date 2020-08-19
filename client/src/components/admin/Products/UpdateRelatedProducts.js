@@ -111,9 +111,9 @@ class UpdateRelatedProducts extends Component {
   }
 
   renderQueriedProducts(products, added) {
-    return products.map((product) => {
+    return products.map((product, index) => {
       return (
-        <div className="flex space-between margin-s-v background-color-grey-3 padding-xs align-items-center">
+        <div key={index} className="flex space-between margin-s-v background-color-grey-3 padding-xs align-items-center">
           <div className="flex align-items-center" key={product._id}>
             <div className="flex justify-center" style={{ height: "50px", width: "50px"}}>
               <img src={product.image} style={{ height: "auto", width: "auto", maxHeight: "50px", maxWidth: "50px" }} />

@@ -56,7 +56,7 @@ class ShippingOptions extends Component {
           <>
             <h1>Shipping Method: {this.state.shipping_method.name}</h1>
             <h2>Shipping Rates</h2>
-            {this.state.shipping_method.shipping_rates.map((rate) => {
+            {this.state.shipping_method.shipping_rates.map((rate, index) => {
               let active = false
               if (this.state.chosen_rate && this.state.chosen_rate._id === rate._id ) {
                 active = true
@@ -66,6 +66,7 @@ class ShippingOptions extends Component {
                   style={active ? {color: "blue"} : {}} 
                   className={"padding-s margin-xs-v background-color-grey-2"} 
                   onClick={() => this.chooseRate(rate)}
+                  key={index}
                 >
                   <h2 className="padding-s">{rate.name}</h2>
                   <h3 className="padding-s">${rate.effector}</h3>

@@ -136,10 +136,10 @@ class Orders extends Component {
   // TO DO
   // MOVE THIS TO ITS OWN COMPONENT
   renderOrders() {
-    return this.state.orders.map((order) => {
+    return this.state.orders.map((order, index) => {
       return (
         <>
-          <tr className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
+          <tr key={index} className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
             <td onClick={ () => this.setOrder(order)} className="padding-xs flex justify-content-space-between quick-view">
               <a className="margin-auto-h"><FontAwesomeIcon style={{ fontSize: "20px" }} icon={faCaretDown} /></a>
             </td>

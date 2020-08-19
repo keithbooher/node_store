@@ -1,7 +1,6 @@
 import React, { Component } from 'react' 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons"
-import { Link } from 'react-router-dom'
 import "./dropdown.css.scss"
 
 class Dropdown extends Component {
@@ -43,15 +42,15 @@ class Dropdown extends Component {
   render() {
     return (
       <div className="relative">
-        <Link ref={this.dropRef} onClick={this.showAccountMenu} className="header_list_item">
-          <FontAwesomeIcon ref={this.userIconRef} icon={faUser} />
-          <FontAwesomeIcon ref={this.caratDownRef} icon={faCaretDown} />
-        </Link>
+        <a ref={this.dropRef} onClick={this.showAccountMenu} className="header_list_item flex">
+          <div className="margin-xs-h" ref={this.userIconRef}><FontAwesomeIcon icon={faUser} /></div>
+          <div ref={this.caratDownRef}><FontAwesomeIcon icon={faCaretDown} /></div>
+        </a>
         {this.state.open === true && 
           <div ref={node => this.node = node} id="cart_container" className="background-color-blue-2 color-white">
             <ul>
-              {this.props.elements.map((element) => {
-                return <li onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
+              {this.props.elements.map((element, index) => {
+                return <li key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
               })}
             </ul>
           </div>

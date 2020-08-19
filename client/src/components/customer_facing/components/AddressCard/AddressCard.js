@@ -64,9 +64,9 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
   }
 
   const renderAddressCards = () => {
-    return user[bill_or_ship].map((address) => {
+    return user[bill_or_ship].map((address, index) => {
       return (      
-      <div data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
+      <div key={index} data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
         <div>first name: {address.first_name ? address.first_name : "" }</div>
         <div>last name: {address.last_name ? address.first_name : "" }</div>
         <div>company: {address.company ? address.company : "" }</div>

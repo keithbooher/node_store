@@ -78,9 +78,9 @@ class Reviews extends Component {
   }
 
   renderReviews() {
-    return this.state.reviews.map((review) => {
+    return this.state.reviews.map((review, index) => {
       return (
-        <div className="border margin-m-v">
+        <div key={index} className="border margin-m-v">
           <div>
             <div>First Name: {review.first_name}</div>
             <div>Rating: {review.rating}</div>
