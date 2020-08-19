@@ -49,6 +49,7 @@ module.exports = app => {
 
       res.send(200)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -60,6 +61,7 @@ module.exports = app => {
       let carts = await Cart.find({ email: search_term, deleted_at: null })
       res.send(carts)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -71,6 +73,7 @@ module.exports = app => {
       const cart = await Cart.findOne({ _id: _id })
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -83,6 +86,7 @@ module.exports = app => {
       console.log(cart)
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -94,6 +98,7 @@ module.exports = app => {
       const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000", checkout_state: { $ne: "complete" } }, {new: true})
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -106,6 +111,7 @@ module.exports = app => {
       await cart.save()
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -118,6 +124,7 @@ module.exports = app => {
       await cart.save()
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -131,18 +138,15 @@ module.exports = app => {
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
 
-    // delete previously opened cart if there was one
     try {
+      // delete previously opened cart if there was one
       let delete_previous_cart = await Cart.findOneAndUpdate({ _user_id: mongoose.Types.ObjectId(_user_id), deleted_at: null  }, { deleted_at: date }, {new: true})
-    } catch (err) {
-      res.status(422).send({message: err})
-    }
 
-    try {
       // assign the new cart the customer is working with to them now
       let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { _user_id, email }, {new: true})
       res.send(updated_cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -170,6 +174,7 @@ module.exports = app => {
       await cart.save()
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -181,6 +186,7 @@ module.exports = app => {
       let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
       res.send(updated_cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -213,6 +219,7 @@ module.exports = app => {
   
       res.send(cart)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })
@@ -335,6 +342,7 @@ module.exports = app => {
       }
       res.send(carts)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send({message: err})
     }
   })

@@ -9,6 +9,7 @@ module.exports = app => {
       await review.save()
       res.send(review)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -18,6 +19,7 @@ module.exports = app => {
       let updated_review = await Review.findOneAndUpdate({ _id: review._id }, review, {new: true})
       res.send(updated_review) 
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -28,6 +30,7 @@ module.exports = app => {
       const review = await Review.findOne({ _user_id })
       res.send(review) 
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -38,6 +41,7 @@ module.exports = app => {
       const review = await Review.findOne({ _product_id })
       res.send(review)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -48,6 +52,7 @@ module.exports = app => {
       const review = await Review.findOne({ "line_item._id": line_item_id })
       res.send(review)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -70,6 +75,7 @@ module.exports = app => {
       // console.log(reviews)
       res.send(reviews)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -125,6 +131,7 @@ module.exports = app => {
       }
       res.send(reviews)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

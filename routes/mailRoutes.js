@@ -22,6 +22,7 @@ module.exports = app => {
       sgMail.send(msg)
       res.send(200)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

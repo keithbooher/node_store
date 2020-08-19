@@ -16,6 +16,7 @@ module.exports = app => {
 
       res.send(shipment)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -25,6 +26,7 @@ module.exports = app => {
       let quantity = -1 * parseInt(item.quantity)
       await Product.findOneAndUpdate({ _id: item._product_id }, { $inc: { inventory_count: quantity } }, {new: true})  
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }
@@ -35,6 +37,7 @@ module.exports = app => {
       let updated_shipment = await Shipment.findOneAndUpdate({ _id: shipment._id }, shipment, {new: true})
       res.send(updated_shipment)  
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

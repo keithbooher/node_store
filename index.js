@@ -4,6 +4,8 @@ const cookieSession = require('cookie-session')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 const keys = require('./config/keys')
+var Bugsnag = require('@bugsnag/js')
+var BugsnagPluginExpress = require('@bugsnag/plugin-express')
 
 require('./models/User')
 require('./models/Category')
@@ -22,9 +24,19 @@ mongoose.connect(keys.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
-});
+})
+
+Bugsnag.start({
+  apiKey: keys.EXPRESS_KEY_BUG_SNAG,
+  plugins: [BugsnagPluginExpress],
+  enabledReleaseStages: [ 'production', 'staging' ]
+})
+
+var bugSnagMiddleware = Bugsnag.getPlugin('express')
 
 const app = express()
+
+app.use(bugSnagMiddleware.requestHandler)
 
 app.use(bodyParser.json())
 app.use(
@@ -33,6 +45,7 @@ app.use(
     keys: [keys.cookieKey]
   })
 )
+
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -63,6 +76,8 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
 }
+
+app.use(bugSnagMiddleware.errorHandler)
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)

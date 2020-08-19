@@ -14,6 +14,7 @@ module.exports = app => {
       await product.save()
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -24,6 +25,7 @@ module.exports = app => {
       let updated_product = await Product.findOneAndUpdate({ _id: product._id }, product, {new: true}).populate({path: "related_products"})
       res.send(updated_product)    
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -35,6 +37,7 @@ module.exports = app => {
       })
       res.send(products) 
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -49,6 +52,7 @@ module.exports = app => {
   
       res.send(products[0])
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -67,6 +71,7 @@ module.exports = app => {
       const product = await Product.findOne({ _id: req.params.id }).populate({path: "categories"}).populate({path: "related_products"})
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -76,6 +81,7 @@ module.exports = app => {
       const product = await Product.findOne({ name: req.params.name }).populate({path: "categories"})
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -97,6 +103,7 @@ module.exports = app => {
   
       res.status(200).send(average_rating)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -108,6 +115,7 @@ module.exports = app => {
       })
       res.send(products)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -117,6 +125,7 @@ module.exports = app => {
       const product = await Product.findOne({ deleted_at: null })
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -131,6 +140,7 @@ module.exports = app => {
       }
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -142,6 +152,7 @@ module.exports = app => {
         res.send(data)
       })
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -152,6 +163,7 @@ module.exports = app => {
         return checkProduct(line_item)
       }))
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }
@@ -165,6 +177,7 @@ module.exports = app => {
       }
       return
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }
@@ -208,6 +221,7 @@ module.exports = app => {
   
       res.send(products)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

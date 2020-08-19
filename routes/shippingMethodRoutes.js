@@ -9,6 +9,7 @@ module.exports = app => {
       let shippingMethods = await ShippingMethod.find({ deleted_at: null })
       res.send(shippingMethods)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -17,6 +18,7 @@ module.exports = app => {
       let shippingMethods = await ShippingMethod.findOne({ deleted_at: null, display: true })
       res.send(shippingMethods)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -26,6 +28,7 @@ module.exports = app => {
       let shippingMethod = await ShippingMethod.findOne({ internal_name })
       res.send(shippingMethod)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -35,6 +38,7 @@ module.exports = app => {
       let shippingMethod = await ShippingMethod.findOneAndUpdate({ _id: shipping_method._id }, shipping_method, {new: true})
       res.send(shippingMethod)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -45,6 +49,7 @@ module.exports = app => {
       await new_shipping_method.save()
       res.send(new_shipping_method)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@bugsnag/js": "^7.3.0",
     "@bugsnag/plugin-express": "^7.3.0",
     "@sendgrid/mail": "^7.2.3",
     "axios": "^0.19.2",

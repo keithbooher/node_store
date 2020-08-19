@@ -12,6 +12,7 @@ module.exports = app => {
       const user = await User.findOne({ email })
       res.send(user) 
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -21,6 +22,7 @@ module.exports = app => {
       const user = await User.findOne({ deleted_at: null })
       res.send(user)
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -32,6 +34,7 @@ module.exports = app => {
       user = await User.findOne({_id: user_id})
       res.send(user)
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -54,6 +57,7 @@ module.exports = app => {
   
       res.send(users)
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -64,6 +68,7 @@ module.exports = app => {
       let updated_user = await User.findOneAndUpdate({ _id: user._id }, user, {new: true})
       res.send(updated_user)
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -95,6 +100,7 @@ module.exports = app => {
       }
       res.send(orders)
     } catch (err) {
+      req.bugsnag.notify(err) 
       res.status(422).send(err)
     }
   })
@@ -118,6 +124,7 @@ module.exports = app => {
       }
       res.send(reviews)
     } catch (err) {
+      req.bugsnag.notify(err)       
       res.status(422).send(err)
     }
   })

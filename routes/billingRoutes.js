@@ -13,6 +13,7 @@ module.exports = app => {
       })
       res.send(charge)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -26,6 +27,7 @@ module.exports = app => {
         }
       )
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

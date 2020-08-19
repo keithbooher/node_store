@@ -13,6 +13,7 @@ module.exports = app => {
       await new_shipping_method.save()
       res.send(new_shipping_method)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -25,6 +26,7 @@ module.exports = app => {
       await new_setting.save()
       res.send(new_setting)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     } 
   })
@@ -38,6 +40,7 @@ module.exports = app => {
       await new_category.save()
       res.send(new_category)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -50,6 +53,7 @@ module.exports = app => {
       await product.save()
       res.send(product)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })

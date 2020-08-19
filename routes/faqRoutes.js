@@ -9,6 +9,7 @@ module.exports = app => {
       await faq.save()
       res.send(faq)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -19,6 +20,7 @@ module.exports = app => {
       let updated_faq = await FAQ.findOneAndUpdate({ _id: faq._id }, faq, {new: true})
       res.send(updated_faq)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(401).send({message: err})
     }
   })
@@ -29,6 +31,7 @@ module.exports = app => {
       const faq = await FAQ.findOne({ _id })
       res.send(faq)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(401).send({message: err})
     }
   })
@@ -39,6 +42,7 @@ module.exports = app => {
       res.send(faqs)
       // res.status(401).send({message: "my error bitch"})
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(401).send({message: err})
     }
   })

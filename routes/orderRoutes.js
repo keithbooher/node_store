@@ -10,6 +10,7 @@ module.exports = app => {
       await order.save()
       res.send(order)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -31,6 +32,7 @@ module.exports = app => {
       }
       res.send(orders)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -44,6 +46,7 @@ module.exports = app => {
       })
       res.send(updated_order)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -57,6 +60,7 @@ module.exports = app => {
       })
       res.send(order)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -67,6 +71,7 @@ module.exports = app => {
       const order = await Order.findOne({ deleted_at: null, _user_id })
       res.send(order)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -109,6 +114,7 @@ module.exports = app => {
   
       res.send(order)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -131,6 +137,7 @@ module.exports = app => {
       }
       res.send(orders)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -203,6 +210,7 @@ module.exports = app => {
       }
       return orders
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }
@@ -216,6 +224,7 @@ module.exports = app => {
       })
     return orders
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }
@@ -286,6 +295,7 @@ module.exports = app => {
       }
       return orders
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   }

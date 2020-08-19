@@ -14,6 +14,7 @@ module.exports = app => {
       await new_category.save()
       res.send(new_category)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -24,6 +25,7 @@ module.exports = app => {
       let updated_category = await Category.findOneAndUpdate({ _id: category._id }, category, {new: true})
       res.send(updated_category)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -71,6 +73,7 @@ module.exports = app => {
   
       res.send(categories)   
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     } 
   })
@@ -86,6 +89,7 @@ module.exports = app => {
   
       res.send(data)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -115,6 +119,7 @@ module.exports = app => {
   
       res.send(categories)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -144,6 +149,7 @@ module.exports = app => {
   
       res.send(categories)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
@@ -176,6 +182,7 @@ module.exports = app => {
       })
       res.send(categories)
     } catch (err) {
+      req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
