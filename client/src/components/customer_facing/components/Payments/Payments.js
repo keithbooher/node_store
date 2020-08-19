@@ -12,6 +12,7 @@ import ReviewItems from "./ReviewItems"
 const checkPassedBillingUsed = (bill_addy, cart) => {
   // Check if any of the customers past billing addresses match the one thats submitted
   // If it matches then, we set the variable to true and prevent updating the user's address records
+  let boolean = false
   for (const address of bill_addy) {
     if (
         address.first_name === cart.billing_address.first_name
@@ -23,16 +24,17 @@ const checkPassedBillingUsed = (bill_addy, cart) => {
         && address.zip_code === cart.billing_address.zip_code
         && address.phone_number === cart.billing_address.phone_number
         && address._user_id === cart.billing_address._user_id
+        && address.country === cart.billing_address.country
         ) {
-      return true
-    } else {
-      return false
+      boolean = true
     }
   }
+  return boolean
 }
 const checkPassedShippingUsed = (ship_addy, cart) => {
   // Check if any of the customers past shipping addresses match the one thats submitted
   // If it matches then, we set the variable to true and prevent updating the user's address records
+  let boolean = false  
   for (const address of ship_addy) {
     if (
       address.first_name === cart.shipping_address.first_name
@@ -45,11 +47,10 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
       && address.phone_number === cart.shipping_address.phone_number
       && address._user_id === cart.shipping_address._user_id
       ) {
-      return true
-    } else {
-      return false
+        boolean = true
     }
   }
+  return boolean
 }
 
 const Payments = ({ 

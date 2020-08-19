@@ -17,12 +17,15 @@ class CheckoutContainer extends Component  {
     this.chooseTab = this.chooseTab.bind(this)
     this.makeNewOrderAvailable = this.makeNewOrderAvailable.bind(this)
     this.updateCart = this.updateCart.bind(this)
+    this.setPreExistingAddress = this.setPreExistingAddress.bind(this)
     
     this.state = {
       chosen_tab: 'address',
       new_order: null,
       new_shipment: null,
-      current_cart: null
+      current_cart: null,
+      preExistingShipping: false,
+      preExistingBilling: false
     }
   }
 
@@ -70,6 +73,14 @@ class CheckoutContainer extends Component  {
     this.setState({ new_order: order, chosen_tab: "review", current_cart: cart, new_shipment: shipment })
   }
 
+  setPreExistingAddress(address) {
+    if (address.bill_or_ship === "billing") {
+      this.setState({ preExistingBilling: !this.state.preExistingBilling })
+    } else {
+      this.setState({ preExistingShipping: !this.state.preExistingShipping })
+    }
+  }
+
   paramterChooseTab(chosen_tab) {
     if (chosen_tab === "shipping") {
       if (this.state.current_cart.shipping_address && this.state.current_cart.billing_address) {
@@ -115,6 +126,7 @@ class CheckoutContainer extends Component  {
             chooseTab={this.chooseTab}
             chosen_tab={this.state.chosen_tab} 
             updateCart={this.updateCart}
+            setPreExistingAddress={this.setPreExistingAddress}
             />
         : ""}
 
@@ -133,7 +145,6 @@ class CheckoutContainer extends Component  {
             cart={this.state.current_cart}
             makeNewOrderAvailable={this.makeNewOrderAvailable} 
             chooseTab={this.chooseTab} 
-            chosen_tab={this.state.chosen_tab} 
             preExistingShipping={this.state.preExistingShipping}
             preExistingBilling={this.state.preExistingBilling}
             updateCart={this.updateCart}

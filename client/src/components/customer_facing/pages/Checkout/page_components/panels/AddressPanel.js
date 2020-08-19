@@ -38,10 +38,12 @@ class AddressPanel extends Component  {
       const ship_addy = this.props.form.shipping_checkout_form.values
       cart_instance.shipping_address = buildAddress(ship_addy, cart_instance._user_id, "shipping")
       this.setState({ shipping_form_submit: true })
+      this.props.setPreExistingAddress({ bill_or_ship: "shipping" })
     } else  {
       const bill_addy = this.props.form.billing_checkout_form.values
       cart_instance.billing_address = buildAddress(bill_addy, cart_instance._user_id, "billing")
       this.setState({ billing_form_submit: true })
+      this.props.setPreExistingAddress({ bill_or_ship: "billing" })
     }
     this.props.updateCart(cart_instance)
   }
@@ -73,14 +75,17 @@ class AddressPanel extends Component  {
       cart_instance.shipping_address = address
       this.setState({ shipping_card_chosen: !this.state.shipping_card_chosen })
     }
+    this.props.setPreExistingAddress(address)
     this.props.updateCart(cart_instance)
   }
 
   editSubmittedForm(bill_or_ship) {
     if(bill_or_ship === "bill") {
       this.setState({ billing_form_submit: false, billing_card_chosen: false })
+      this.props.setPreExistingAddress({ bill_or_ship: "billing" })
     } else {
       this.setState({ shipping_form_submit: false, shipping_card_chosen: false })
+      this.props.setPreExistingAddress({ bill_or_ship: "shipping" })
     }
   }
 
