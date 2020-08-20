@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { getProductAverageRating} from '../../../../utils/API'
-import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faChevronUp, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
 import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
@@ -231,7 +230,7 @@ class ProductCard extends Component {
               <button className="margin-s-h inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
             </div>
           </div>
-        : <img className="loadingGif" src={loadingGif} /> }
+        : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
 
         {this.state.exceededInventory && 
           <Modal cancel={() => this.setState({ exceededInventory: false })}>

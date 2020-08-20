@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getUsersReviews, getOrder, lastUserReview, updateReview } from "../../../../../utils/API"
-import loadingGif from '../../../../../images/pizzaLoading.gif'
 import PageChanger from "../../../../shared/PageChanger"
 import StarRatings from 'react-star-ratings'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import { updatedFormFields } from "../../../../../utils/helpFunctions"
 import FormModal from "../../../../shared/Form/FormModal"
@@ -130,7 +129,7 @@ class Reviews extends Component {
           <div className="flex flex_column">
             {this.renderReviews()}
           </div>
-        : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
+        : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} /> }
 
 
         <PageChanger 

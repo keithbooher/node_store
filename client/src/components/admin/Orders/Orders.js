@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { paginatedOrders, lastOrderAdmin } from "../../../utils/API"
 import { dispatchObj } from "../../../actions"
-import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faPlusCircle, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faPlusCircle, faCaretDown, faSearch, faSpider, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import QuickView from './QuickView'
 import Form from "../../shared/Form"
@@ -214,7 +213,7 @@ class Orders extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.orders !== null ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
+            {this.state.orders !== null ? this.renderOrders() : <FontAwesomeIcon className="loadingGif" icon={faSpinner} />}
           </tbody>
         </table>
         <div>

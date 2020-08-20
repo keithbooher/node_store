@@ -49,10 +49,6 @@ class Cart extends Component {
       shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
     }
 
-    // if (!this.state.showCart && this.props.showCart) {
-    //   this.setState({ showCart: true })
-    // }
-
     return (
     <div>
       <div onClick={this.expandCart} ref={this.dropRef} className="h-100">

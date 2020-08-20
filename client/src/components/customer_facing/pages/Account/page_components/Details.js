@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { capitalizeFirsts } from "../../../../../utils/helpFunctions"
-import loadingGif from '../../../../../images/pizzaLoading.gif'
 import notAvailable from '../../../../../images/no-image-available.jpg'
 import { updateUser, dispatchObj } from "../../../../../actions"
 import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import FormModal from "../../../../shared/Form/FormModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { reset } from "redux-form"
 
 class Details extends Component {
@@ -119,7 +118,7 @@ class Details extends Component {
                 </div>
             }
           </>
-          : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} />
+          : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} />
         }
       </div>
     )

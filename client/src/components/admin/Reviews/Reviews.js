@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAllReviews, getOrder, updateReview } from "../../../utils/API"
-import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 class Reviews extends Component {
   constructor(props) {
     super()
@@ -134,7 +135,7 @@ class Reviews extends Component {
           <div className="flex flex_column">
             {this.renderReviews()}
           </div>
-        : <img className="loadingGif loadingGifCenterScreen" src={loadingGif} /> }
+        : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} /> }
 
         <h2>{this.state.reviews && this.state.reviews.length === 0 && "There are no reviews"}</h2>
 

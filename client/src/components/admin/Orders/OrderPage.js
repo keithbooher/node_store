@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { getOrder, updateShipment, updateOrder, handleRefund } from "../../../utils/API"
 import { dispatchObj } from "../../../actions"
 import { Link } from "react-router-dom"
-import loadingGif from '../../../images/pizzaLoading.gif'
 import Form from "../../shared/Form"
 import  { shippingStatusDropDown }  from "./formFeilds"  
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import { reset } from "redux-form"
@@ -240,7 +239,7 @@ class OrderPage extends Component {
                 />
               }
             </>
-          : <img className="loadingGif" src={loadingGif} />
+          : <FontAwesomeIcon className="loadingGif" icon={faSpinner} />
         }
 
         {

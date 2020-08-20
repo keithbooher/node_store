@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
-import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { createField, createSubField } from "./formFields"
 import CategoryForm from "./CategoryForm"
 import { validatePresenceOnAll } from "../../../utils/validations"
@@ -198,7 +197,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
       {categories.length !== 0 ? 
         renderCategories(null)
-      : <img className="loadingGif" src={loadingGif} /> }
+      : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
 
       {editForm &&
         <div>

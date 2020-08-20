@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { reset } from "redux-form";
 import { getProductbyId, paginatedProducts, searchProduct, getAllCategories, updateProduct, lastProductByCategory } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
-import loadingGif from '../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearch, faPlusCircle, faArrowCircleLeft, faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons"
 import Form from "../../shared/Form"

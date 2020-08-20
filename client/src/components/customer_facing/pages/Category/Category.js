@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { getCategoryProducts } from "../../../../utils/API"
 import ProductCard from '../../components/ProductCard'
 import { capitalizeFirsts } from '../../../../utils/helpFunctions'
-import loadingGif from '../../../../images/pizzaLoading.gif'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { sidebarBoolean, updateCart, createCart } from "../../../../actions"
 import { Link } from "react-router-dom"
 class Category extends Component  {
@@ -72,7 +71,7 @@ class Category extends Component  {
       <div>
         { this.state.products !== null ?
           <>
-            <Link className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</Link>
+            <a className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
             <h1 style={{ marginTop: "0px" }}>
               {capitalizeFirsts(this.state.category_data.name)}
             </h1>
@@ -80,7 +79,7 @@ class Category extends Component  {
               {this.renderProductCards()}
             </div>
           </>
-       : <img className="loadingGif" src={loadingGif} /> }
+       : <FontAwesomeIcon icon={faSpinner} className="loadingGif" /> }
       </div>
     )
   }

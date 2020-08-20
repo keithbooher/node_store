@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import loadingGif from '../../../../../images/pizzaLoading.gif'
 import { getUsersOrders, lastOrder } from "../../../../../utils/API"
 import LeaveReview from "../../../../shared/LeaveReview"
 import PageChanger from "../../../../shared/PageChanger"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faExternalLinkAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom"
 class Orders extends Component {
   constructor(props) {
@@ -96,7 +95,7 @@ class Orders extends Component {
     }
     return (
       <div>
-        {this.state.orders.length !== 0 ? this.renderOrders() : <img className="loadingGif" src={loadingGif} /> }
+        {this.state.orders.length !== 0 ? this.renderOrders() : <FontAwesomeIcon icon={faSpinner} className="loadingGif" /> }
         <PageChanger 
           page_number={this.state.page_number} 
           list_items={this.state.orders} 

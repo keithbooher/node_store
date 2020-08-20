@@ -46,7 +46,6 @@ class Cart extends Component {
 
   async componentDidMount() {
     let { data, status } = await this.props.getCartByID(this.routeParamID)
-    console.log(data)
 
     if (status !== 200) {
       return

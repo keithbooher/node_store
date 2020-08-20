@@ -133,7 +133,7 @@ module.exports = app => {
   app.post('/api/products/last_product/by_category', async (req, res) => { 
     try {
       let product 
-      if (req.body.category === "all" || req.body.category === "None") {
+      if (req.body.category === "all" || req.body.category === "none") {
         product = await Product.findOne({ deleted_at: null })
       } else {
         product = await Product.findOne({ deleted_at: null, categories: req.body.category })

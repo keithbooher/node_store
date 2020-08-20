@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { paginatedCarts, lastCart } from "../../../utils/API"
-import loadingGif from '../../../images/pizzaLoading.gif'
 import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
 import Form from "../../shared/Form"
 
@@ -171,7 +170,7 @@ class Carts extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.carts.length !== 0 ? <RenderReviews carts={this.state.carts} /> : <img className="loadingGif" src={loadingGif} /> }
+            {this.state.carts.length !== 0 ? <RenderReviews carts={this.state.carts} /> : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
           </tbody>
         </table>
         <PageChanger 

@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import { reset } from "redux-form";
 import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
-import loadingGif from '../../../images/pizzaLoading.gif'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
@@ -78,12 +77,20 @@ class ProductList extends Component {
 
     const none = {
       default: true,
-      value: "None",
-      name: "None",
+      value: "none",
+      name: "none",
+      redux_field: "category_filter"
+    }
+
+    const all = {
+      default: true,
+      value: "all",
+      name: "all",
       redux_field: "category_filter"
     }
 
     dropdown.options.push(none)
+    dropdown.options.push(all)
     dropdown.options = dropdown.options.reverse()
 
     this.setState({ products, chosen_product, last_product, dropDownField: [dropdown]  })
@@ -92,9 +99,14 @@ class ProductList extends Component {
   async deleteProduct(product) {
     const prod = product
     prod.deleted_at = Date.now()
-    const delete_product = await this.props.updateProduct(prod)
+    await this.props.updateProduct(prod)
     let products = await this.props.paginatedProducts(this.state.products[0]._id, "from_here", this.state.categoryFilter).then(res => res.data)
-    let last_product = await this.props.lastProduct().then(res => res.data)
+    let last_product
+    if (this.state.category_filter === "all" || this.state.category_filter === "none") {
+      last_product = await this.props.lastProduct().then(res => res.data)
+    } else {
+      last_product = await this.props.lastProductByCategory().then(res => res.data)
+    }
     this.setState({ products, chosen_product: null, last_product})
   }
 
@@ -142,7 +154,8 @@ class ProductList extends Component {
 
   async getAllProducts() {
     let products = await this.props.paginatedProducts("none", "none", "none").then(res => res.data)
-    this.setState({ products, page_number: 1 })
+    let last_product = await this.props.lastProduct().then(res => res.data)
+    this.setState({ products, page_number: 1, last_product })
     this.props.dispatchObj(reset("product_search_form"))
   }
 
@@ -161,13 +174,25 @@ class ProductList extends Component {
 
   async changePage(direction_reference_id, direction, page_increment) {
     const products = await this.props.paginatedProducts(direction_reference_id, direction, this.state.categoryFilter).then(res => res.data)
-    this.setState({ products, page_number: this.state.page_number + page_increment  })
+    let last_product
+    if (this.state.category_filter === "all" || this.state.category_filter === "none") {
+      last_product = await this.props.lastProduct().then(res => res.data)
+    } else {
+      last_product = await this.props.lastProductByCategory().then(res => res.data)
+    }
+    this.setState({ products, page_number: this.state.page_number + page_increment, last_product })
   }
 
   async filterProductsByCategory() {
     const dropwdown_values = this.props.form['category_filter_dropdown'].values.category_filter.value
     const { data } = await this.props.paginatedProducts("none", "none", dropwdown_values)
-    this.setState({ categoryFilter: dropwdown_values, products: data })
+    let last_product
+    if (this.state.category_filter === "all" || this.state.category_filter === "none") {
+      last_product = await this.props.lastProduct().then(res => res.data)
+    } else {
+      last_product = await this.props.lastProductByCategory().then(res => res.data)
+    }
+    this.setState({ categoryFilter: dropwdown_values, products: data, last_product })
   }
 
   render() {
@@ -197,7 +222,7 @@ class ProductList extends Component {
         />
         <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
         {this.state.products.length !== 0 ? this.renderProducts() : "No Products Found" }
-        {this.state.products  === null && <img className="loadingGif" src={loadingGif} /> }
+        {this.state.products  === null && <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
         <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </>
     )

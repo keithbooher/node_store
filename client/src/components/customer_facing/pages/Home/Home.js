@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import ProductCard from '../../components/ProductCard'
 import { updateCart, createCart } from '../../../../actions'
 import { homeProducts, homeBanner } from '../../../../utils/API'
-import loadingGif from '../../../../images/pizzaLoading.gif'
 import mobile from "is-mobile"
 import './home.css.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 
 let isMobile = mobile()
@@ -52,7 +53,7 @@ class Home extends Component  {
           {this.state.banner ?
             <img className="w-auto h-auto" style={isMobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
           :
-            <img className="loadingGif" src={loadingGif} />
+            <FontAwesomeIcon icon={faSpinner} className="loadingGif" />
           }
         </div>
         <div className="flex flex-wrap space-evenly home_product_container">
