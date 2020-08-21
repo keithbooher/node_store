@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form";
-import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastProduct, getAllCategories } from '../../../utils/API'
+import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastProduct, getAllCategories, lastProductByCategory } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -234,6 +234,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProduct, dispatchObj }
+const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProduct, dispatchObj, lastProductByCategory }
 
 export default connect(mapStateToProps, actions)(ProductList)

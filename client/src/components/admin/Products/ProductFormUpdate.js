@@ -188,6 +188,33 @@ class ProductForm extends Component {
                 }
             </div>
             <div className="relative">
+              Meta Title: <a className="inline" onClick={() => this.showEditIndicator("meta_title")}>{this.state.product.meta_title ? this.state.product.meta_title : "N/A"}</a>
+              {this.state.propertyToEdit && this.state.propertyToEdit === "meta_title" && 
+                  <FontAwesomeIcon 
+                    icon={faEdit} 
+                    onClick={() => this.showEditModal("meta_title")} 
+                  />
+                }
+            </div>
+            <div className="relative">
+              Meta Description: <a className="inline" onClick={() => this.showEditIndicator("meta_description")}>{this.state.product.meta_description ? this.state.product.meta_description : "N/A"}</a>
+              {this.state.propertyToEdit && this.state.propertyToEdit === "meta_description" && 
+                  <FontAwesomeIcon 
+                    icon={faEdit} 
+                    onClick={() => this.showEditModal("meta_description")} 
+                  />
+                }
+            </div>
+            <div className="relative">
+              Meta Keywords: <a className="inline" onClick={() => this.showEditIndicator("meta_keywords")}>{this.state.product.meta_keywords ? this.state.product.meta_keywords : "N/A"}</a>
+              {this.state.propertyToEdit && this.state.propertyToEdit === "meta_keywords" && 
+                  <FontAwesomeIcon 
+                    icon={faEdit} 
+                    onClick={() => this.showEditModal("meta_keywords")} 
+                  />
+                }
+            </div>
+            <div className="relative">
               Inventory Count: <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "inventory_count" && 
                   <FontAwesomeIcon 

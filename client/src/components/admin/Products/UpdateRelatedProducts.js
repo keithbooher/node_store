@@ -32,7 +32,7 @@ class UpdateRelatedProducts extends Component {
           options: [
             {
               default: true,
-              value: "All",
+              value: "all",
               name: "All",
               redux_field: "category_filter"
             }
@@ -45,7 +45,7 @@ class UpdateRelatedProducts extends Component {
   async componentDidMount() {
     let { data } = await this.props.getProductbyId(this.routeParamID)
 
-    let categories = await getAllCategories()
+    let categories = await this.props.getAllCategories()
 
     let dropdown = this.state.dropDownField[0]
     
@@ -60,7 +60,7 @@ class UpdateRelatedProducts extends Component {
 
     const none = {
       default: true,
-      value: "All",
+      value: "all",
       name: "All",
       redux_field: "category_filter"
     }

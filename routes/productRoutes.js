@@ -130,7 +130,7 @@ module.exports = app => {
     }
   })
 
-  app.post('/api/products/last_product/by_category', async (req, res) => { 
+  app.post('/api/products/last_product/by_category', async (req, res) => {
     try {
       let product 
       if (req.body.category === "all" || req.body.category === "none") {

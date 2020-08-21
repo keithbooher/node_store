@@ -61,7 +61,7 @@ class Cart extends Component {
         <div>
           <ul ref={node => this.node = node} className="expandedCart">
             <div className="flex flex_column">
-              <Link to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link>
+              <Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
                 <>
                   <div id="items">
@@ -73,7 +73,7 @@ class Cart extends Component {
                       <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
                       <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
                       {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
-                      <div>Total: ${formatMoney(this.props.cart.total + this.props.cart.tax + shipping)}</div>
+                      <div>Total: ${formatMoney(this.props.cart.total)}</div>
                     </div>
                     <button onClick={this.expandCart} ><Link onClick={this.expandCart} className="header_list_item clickable" to="/checkout">Checkout</Link></button>
                   </div>

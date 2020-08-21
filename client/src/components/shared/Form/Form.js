@@ -10,6 +10,7 @@ import FormCheckbox from './FormCheckbox'
 import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
 import PhotoUpload from "./PhotoUpload"
+import NumberField from "./NumberField"
 import "./form.scss"
 import FormStarChoice from './FormStarChoice';
 class Form extends Component {
@@ -19,7 +20,7 @@ class Form extends Component {
   }
   
   renderFields() {
-    return _.map(this.props.formFields, ({ label, name, typeOfComponent="text", options, display, field_class }) => {
+    return _.map(this.props.formFields, ({ label, name, typeOfComponent="text", autofocus, options, display, field_class }) => {
       let component
       switch (typeOfComponent) {
         case 'check-box':
@@ -46,6 +47,9 @@ class Form extends Component {
         case 'star-choice':
           component = FormStarChoice
           break;
+        case 'number':
+          component = NumberField
+          break;
         default:
           component = FormField
       }
@@ -61,6 +65,7 @@ class Form extends Component {
                 change={this.props.change}
                 display={display}
                 searchButton={this.props.searchButton}
+                autofocus={autofocus}
               />
     })
   }

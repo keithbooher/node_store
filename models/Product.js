@@ -51,7 +51,10 @@ const productSchema = new Schema({
   related_products: [{
     type: Schema.Types.ObjectId,
     ref: 'products'
-  }]
+  }],
+  meta_title: String,
+  meta_description: String,
+  meta_keywords: String
 })
 
 mongoose.model('products', productSchema)
