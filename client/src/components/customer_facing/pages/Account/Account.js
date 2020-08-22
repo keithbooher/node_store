@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import MultiPanel from '../../../shared/MultiPanel/MultiPanel'
 import Details from './page_components/Details'
-import Addresses from './page_components/Addresses'
 import Orders from './page_components/Orders'
 import Reviews from './page_components/Reviews'
 import MetaTags from 'react-meta-tags'
@@ -25,7 +24,6 @@ class Account extends Component  {
   render() {
     const sections = [
       {tab: "details", path: "/account/details"},
-      {tab: "addresses", path: "/account/addresses"},
       {tab: "orders", path: "/account/orders"},
       {tab: "reviews", path: "/account/reviews"}
     ]
@@ -40,7 +38,6 @@ class Account extends Component  {
         <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
           <div>
             <Route exact path="/account/details" component={Details} />
-            <Route exact path="/account/addresses" component={Addresses} />
             <Route exact path="/account/orders" component={Orders} />
             <Route exact path="/account/reviews" component={Reviews} />
           </div>

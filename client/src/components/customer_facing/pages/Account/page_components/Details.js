@@ -7,16 +7,20 @@ import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import FormModal from "../../../../shared/Form/FormModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faSpinner, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
+import AddressCard from '../../../components/AddressCard'
+import NewAddress from './NewAddress'
 import { reset } from "redux-form"
 
 class Details extends Component {
   constructor(props) {
     super()
     this.finishUploading = this.finishUploading.bind(this)
+    this.showAddressForm = this.showAddressForm.bind(this)
     this.state = {
       editForm: null,
-      propertyToEdit: null
+      propertyToEdit: null,
+      showAddressForm: null
     }
   }
 
@@ -66,24 +70,16 @@ class Details extends Component {
   }
 
 
+  showAddressForm(bill_or_ship) {
+    this.setState({ showAddressForm: bill_or_ship })
+  }
+
   render() {
     return (
       <div>
         { this.props.auth ?
           <>
             <h4>Email: {this.props.auth.email}</h4>
-            <div>
-              <img style={{ height: "200px", width: "auto" }} src={this.props.auth.photo === null ? notAvailable : this.props.auth.photo} />
-              <ReactFilestack
-                apikey={process.env.REACT_APP_FILESTACK_API}
-                customRender={({ onPick }) => (
-                  <div>
-                    <button onClick={onPick}>Upload image</button>
-                  </div>
-                )}
-                onSuccess={this.finishUploading}
-              />
-            </div>
             <div className="relative">
               First Name: <a className="inline" onClick={() => this.showEditIndicator("first_name")}>{this.props.auth.first_name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "first_name" && 
@@ -102,6 +98,30 @@ class Details extends Component {
                   />
                 }
             </div>
+
+
+            {this.state.showAddressForm &&
+              <FontAwesomeIcon 
+                className="hover"
+                onClick={() => this.showAddressForm(null)} 
+                icon={faTimesCircle}
+                style={{ marginBottom: "-40px" }}
+              />
+            }
+            {this.state.showAddressForm === null ?
+              <div>
+                <AddressCard showForm={this.showAddressForm} bill_or_ship="billing_address" />    
+                <AddressCard showForm={this.showAddressForm} bill_or_ship="shipping_address" />    
+              </div>
+            : ""}
+            
+            {this.state.showAddressForm === "billing_address" && 
+              <NewAddress showForm={this.showAddressForm} bill_or_ship={"billing"} />
+            }
+            {this.state.showAddressForm === "shipping_address" && 
+              <NewAddress showForm={this.showAddressForm} bill_or_ship={"shipping"} />
+            }
+
             {
               this.state.editForm && 
                 <div>

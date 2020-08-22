@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Form from '../../../../../shared/Form'
-import { addressFields, validate } from '../formFields'
-import { updateUser } from '../../../../../../actions'
+import Form from '../../../../shared/Form'
+import { addressFields, validate } from './formFields'
+import { updateUser } from '../../../../../actions'
 import {reset} from 'redux-form'
-import { capitalizeFirsts } from "../../../../../../utils/helpFunctions"
+import { capitalizeFirsts } from "../../../../../utils/helpFunctions"
 
 class NewBillAddress extends Component {
   constructor(props) {
