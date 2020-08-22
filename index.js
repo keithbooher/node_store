@@ -6,6 +6,8 @@ const bodyParser = require('body-parser')
 const keys = require('./config/keys')
 var Bugsnag = require('@bugsnag/js')
 var BugsnagPluginExpress = require('@bugsnag/plugin-express')
+const expressAttack = require('express-attack')
+const requestIp = require('request-ip')
 
 require('./models/User')
 require('./models/Category')
@@ -48,6 +50,21 @@ app.use(
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+function throttleByIp(req) {
+  const clientIp = requestIp.getClientIp(req)
+  return {
+    key: clientIp,
+    limit: 50,
+    period: 60
+  }
+}
+// throttle request when given IP hit 50 times over 60 seconds
+app.use(
+  expressAttack({
+    throttles: [throttleByIp]
+  })
+)
 
 require('./routes/authRoutes')(app)
 require('./routes/userRoutes')(app)
