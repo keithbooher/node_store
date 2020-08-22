@@ -55,7 +55,7 @@ function throttleByIp(req) {
   const clientIp = requestIp.getClientIp(req)
   return {
     key: clientIp,
-    limit: 50,
+    limit: 30,
     period: 60
   }
 }
