@@ -40,7 +40,7 @@ class Header extends Component {
 
   scrollTracker(self, root) {
     let scrollClass
-    if (root.scrollTop < 50 && self.state.offsetTop > root.scrollTop) {  
+    if (root.scrollTop < 50 && self.state.offsetTop > root.scrollTop || root.scrollTop < 50 && self.state.offsetTop < root.scrollTop) {  
       // if getting really close to the top, assign relative positioning
       scrollClass = "top_of_page_nav"
     }else if (root.scrollTop >= 50 && self.state.offsetTop < root.scrollTop) {
