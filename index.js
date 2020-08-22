@@ -56,7 +56,7 @@ function throttleByIp(req) {
   return {
     key: clientIp,
     limit: 50,
-    period: 60
+    period: 300
   }
 }
 // throttle request when given IP hit 50 times over 60 seconds
