@@ -56,7 +56,6 @@ const CustomerFacing = ({
 
   const [offsetTop, setOffSetTop] = useState(0)
   const [scrollClass, setScrollClass] = useState("top_of_page_nav")
-  console.log(scrollClass)
   const scrollTracker = (root) => {
     let scroll_class = "top_of_page_nav"
     if (root.scrollTop < 50 && offsetTop > root.scrollTop || root.scrollTop < 50 && offsetTop < root.scrollTop) {  

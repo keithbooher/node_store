@@ -55,11 +55,11 @@ function throttleByIp(req) {
   const clientIp = requestIp.getClientIp(req)
   return {
     key: clientIp,
-    limit: 30,
+    limit: 90,
     period: 60
   }
 }
-// throttle request when given IP hit 50 times over 60 seconds
+// throttle request when given IP hits 90 times over 60 seconds
 app.use(
   expressAttack({
     throttles: [throttleByIp]
