@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Home from '../../customer_facing/pages/Home'
@@ -36,7 +36,16 @@ const CustomerFacing = ({
   useEffect(() => {
     settingCheck()
     getCart()
+
+    const root = document.getElementById("root")
+    root.addEventListener('scroll', () => scrollTracker(root))
+    
     window.cookies = cookies
+
+    return () => {
+      const root = document.getElementById("root")
+      root.removeEventListener('scroll', () => scrollTracker(root))
+    }
   }, [])
 
   useEffect(() => {
@@ -44,6 +53,31 @@ const CustomerFacing = ({
     window.cart = cart
   }, [cart])
 
+
+  const [offsetTop, setOffSetTop] = useState(0)
+  const [scrollClass, setScrollClass] = useState("top_of_page_nav")
+  console.log(scrollClass)
+  const scrollTracker = (root) => {
+    let scroll_class = "top_of_page_nav"
+    if (root.scrollTop < 50 && offsetTop > root.scrollTop || root.scrollTop < 50 && offsetTop < root.scrollTop) {  
+      // if getting really close to the top, assign relative positioning
+      scroll_class = "top_of_page_nav"
+    }else if (root.scrollTop >= 50 && offsetTop < root.scrollTop) {
+      // hide nav if scrolling down
+      // but only after its left the screen
+      // fixed position top: -50px
+      scroll_class = "scrolling_down_nav"
+    } else if (root.scrollTop >= 50 && offsetTop > root.scrollTop) {
+      // show nav if scrolling up
+      // fixed position top: 0
+      scroll_class = "scrolling_up_nav"
+    } else {
+      // apply regular stylings
+      scroll_class = "top_of_page_nav"
+    }
+    setScrollClass(scroll_class)
+    setOffSetTop(root.scrollTop)
+  }
 
   const settingCheck = async () => {
     return await zeroInventorySettingCheck()
@@ -97,7 +131,7 @@ const CustomerFacing = ({
   }
 
   return (
-    <div className="customer_container">
+    <div className="customer_container" style={scrollClass !== "top_of_page_nav" ? { marginTop: "50px" } : { marginTop: "0px" }}>
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />
