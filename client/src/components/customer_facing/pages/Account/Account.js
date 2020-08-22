@@ -5,6 +5,7 @@ import Details from './page_components/Details'
 import Addresses from './page_components/Addresses'
 import Orders from './page_components/Orders'
 import Reviews from './page_components/Reviews'
+import MetaTags from 'react-meta-tags'
 import './account.scss'
 class Account extends Component  {
   constructor(props) {
@@ -30,6 +31,11 @@ class Account extends Component  {
     ]
     return (
       <div>
+        <MetaTags>
+          <title>Node Store Account Info</title>
+          <meta name="description" content="Adjust and review your user information and purchase history" />
+          <meta name="keywords" content="" />
+        </MetaTags>
         <h1 style={{ textAlign: 'center' }}>Account</h1>
         <MultiPanel chosen_tab={this.state.chosen_tab} chooseTab={this.chooseTab} sections={sections}>
           <div>

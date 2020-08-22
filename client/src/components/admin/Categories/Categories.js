@@ -3,7 +3,7 @@ import { getTopCategories, updateCategory, deleteCategory } from '../../../utils
 import { dispatchObj } from '../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons"
-import { createField, createSubField } from "./formFields"
+import { catFields, createSubField } from "./formFields"
 import CategoryForm from "./CategoryForm"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { connect } from 'react-redux'
@@ -139,20 +139,27 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
         setEditForm(null)
       },
       submitButtonText: "Update Category",
-      formFields: [
-        { label: "Name", name: "name", noValueError: `You must provide a value` },
-      ],
+      formFields: catFields,
       form: "edit_category_form",
       validation: validatePresenceOnAll,
       initialValues: {
-          name: category["name"]
+          name: category["name"],
+          meta_title: category["meta_title"],
+          meta_description: category["meta_description"],
+          meta_keywords: category["meta_keywords"],
         }
     }
     setEditForm(form_object)
   }
 
   const editCategory = async (form_data, categoryToEdit) => {
-    categoryToEdit.name = form_data['edit_category_form'].values.name
+    let form_values = form_data['edit_category_form'].values
+
+    categoryToEdit.name = form_values.name
+    categoryToEdit.meta_title = form_values.meta_title
+    categoryToEdit.meta_description = form_values.meta_description
+    categoryToEdit.meta_keywords = form_values.meta_keywords
+
     await updateCategory(categoryToEdit)
     const { data } =  await getTopCategories()
     setCategories(data)
@@ -187,7 +194,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
         {show_create_input === "top" ? 
             <CategoryForm
               category={null}
-              field={createField} 
+              field={catFields} 
               categories={categories}
               setShowCreateInput={setShowCreateInput}
               setCategories={setCategories}

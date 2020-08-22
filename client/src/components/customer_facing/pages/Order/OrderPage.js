@@ -4,6 +4,8 @@ import { getOrder } from "../../../../utils/API"
 import { Link } from "react-router-dom"
 import LeaveReview from "../../../shared/LeaveReview"
 import AddressDisplay from "../../../shared/AddressDisplay"
+import MetaTags from 'react-meta-tags'
+
 class OrderPage extends Component {
   constructor(props) {
     super()
@@ -25,6 +27,11 @@ class OrderPage extends Component {
 
     return (
       <div>
+        <MetaTags>
+          <title>Node Store Order Review</title>
+          <meta name="description" content="Review a past order" />
+          <meta name="keywords" content="" />
+        </MetaTags>
         {order &&
           <>
             <div>Order ID: {order._id}</div>

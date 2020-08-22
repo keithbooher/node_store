@@ -22,7 +22,7 @@ const CategoryForm = ({
     const create_category_form_values = form['create_category_form'].values
     let new_category = {}
     new_category["name"] = create_category_form_values.name
-    new_category["path_name"] = productNameToPathName(create_category_form_values.name)
+    new_category["path_name"] = productNameToPathName(create_category_form_values.name) // generalize this helper function name
 
     let display_order
     if (parent_category !== null) {
@@ -34,18 +34,17 @@ const CategoryForm = ({
     }
     new_category["display_order"] = display_order
 
-    const create_category = await createCategory(new_category).then(res => res.data)
+    new_category["meta_title"] = create_category_form_values.meta_title ? create_category_form_values.meta_title : ""
+    new_category["meta_description"] = create_category_form_values.meta_description ? create_category_form_values.meta_description : ""
+    new_category["meta_keywords"] = create_category_form_values.meta_keywords ? create_category_form_values.meta_keywords : ""
 
-    // TO DO
-    // do something if create_category.status !== 200
+    const create_category = await createCategory(new_category).then(res => res.data)
 
     if (parent_category !== null) {
       // if not a top category
       // then add the newly created category to the parent's list of subcategories
       parent_category.sub_categories.push(create_category._id)
       const updated_parent_category = await updateCategory(parent_category)
-      // TO DO
-      // if updated_parent_category.status !== 200 flag error
     } 
 
     // get all categories again

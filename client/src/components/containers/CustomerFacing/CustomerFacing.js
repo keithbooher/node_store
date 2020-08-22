@@ -10,7 +10,7 @@ import Header from '../../customer_facing/components/Header'
 import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
-import CartPage from "../../customer_facing/components/CartPage"
+import CartPage from "../../customer_facing/pages/CartPage"
 import EnlargeImage from "../../shared/EnlargeImage"
 import Four04Page from "../../shared/Four04Page"
 import { zeroInventorySettingCheck, usersCart, createGuestCart, getGuestCart, convertGuestCart } from "../../../actions"

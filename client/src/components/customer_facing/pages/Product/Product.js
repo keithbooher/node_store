@@ -15,6 +15,7 @@ import ProductCard from "../../components/ProductCard"
 import { withRouter } from "react-router"
 import Carousel from "../../../shared/Carousel"
 import StarRatings from 'react-star-ratings'
+import MetaTags from 'react-meta-tags'
 import "./product.scss"
 
 const Product = ({ 
@@ -256,6 +257,16 @@ const Product = ({
 
   return (
     <div>
+      <MetaTags>
+        {product &&
+          <>
+            <title>{product.meta_title}</title>
+            <meta name="description" content={product.meta_description} />
+            <meta name="keywords" content={product.meta_keywords} />
+          </>
+        }
+      </MetaTags>
+
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
       {product && 
         <div>

@@ -16,7 +16,10 @@ const categorySchema = new Schema({
   display: {
     type: Boolean,
     default: true
-  }
+  },
+  meta_title: String,
+  meta_description: String,
+  meta_keywords: String
 })
 
 mongoose.model('categorys', categorySchema)

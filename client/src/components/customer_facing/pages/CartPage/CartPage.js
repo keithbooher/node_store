@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner, faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import LineItems from "./LineItems"
 import { formatMoney } from '../../../../utils/helpFunctions'
+import MetaTags from 'react-meta-tags'
 
 class CartPage extends Component {
   constructor(props) {
@@ -30,6 +31,11 @@ class CartPage extends Component {
 
     return (
       <div >
+        <MetaTags>
+          <title>Node Store Cart</title>
+          <meta name="description" content="Review your cart" />
+          <meta name="keywords" content="" />
+        </MetaTags>
         {this.props.cart ?
           <>
             <Link to="/checkout">Go to checkout <FontAwesomeIcon icon={faArrowRight} /></Link>

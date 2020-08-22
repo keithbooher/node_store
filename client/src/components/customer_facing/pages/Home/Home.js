@@ -5,9 +5,9 @@ import { updateCart, createCart } from '../../../../actions'
 import { homeProducts, homeBanner } from '../../../../utils/API'
 import mobile from "is-mobile"
 import './home.css.scss'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import MetaTags from 'react-meta-tags'
 
 let isMobile = mobile()
 
@@ -48,6 +48,13 @@ class Home extends Component  {
   render() {
     return (
       <div>
+        <MetaTags>
+          <title>Node Store</title>
+          <meta name="description" content="Some description." />
+          <meta property="og:title" content="MyApp" />
+          <meta property="og:image" content="path/to/image.jpg" />
+        </MetaTags>
+
         <h1>Node Store</h1>
         <div className="text-align-center margin-l-v">
           {this.state.banner ?

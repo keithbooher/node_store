@@ -19,6 +19,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons"
 import "./admin.scss"
 import UpdateRelatedProducts from '../../admin/Products/UpdateRelatedProducts';
 import Four04Page from "../../shared/Four04Page"
+import MetaTags from 'react-meta-tags'
 
 class Admin extends Component {
   constructor(props) {
@@ -66,6 +67,11 @@ class Admin extends Component {
 
     return (
       <div id="admin_container" className={`${container_class}`}>
+        <MetaTags>
+          <title>Node Store Admin</title>
+          <meta name="description" content="Take control of your store" />
+          <meta name="keywords" content="" />
+        </MetaTags>
         <div className={`relative border padding-s admin_sidebar ${sidebar_class}`} style={{ backgroundColor: '#22292F' }}>
           <Sidebar setSidebar={this.sidebar} sidebar={this.state.sidebar} />
         </div>

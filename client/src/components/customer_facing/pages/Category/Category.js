@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { sidebarBoolean, updateCart, createCart } from "../../../../actions"
 import { Link } from "react-router-dom"
+import MetaTags from 'react-meta-tags'
+
 class Category extends Component  {
   constructor(props) {
     super()
@@ -69,6 +71,16 @@ class Category extends Component  {
     }
     return (
       <div>
+        <MetaTags>
+          {this.state.category_data &&
+            <>
+              <title>{this.state.category_data.meta_title}</title>
+              <meta name="description" content={this.state.category_data.meta_description} />
+              <meta name="keywords" content={this.state.category_data.meta_keywords} />
+            </>
+          }
+        </MetaTags>
+
         { this.state.products !== null ?
           <>
             <a className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>

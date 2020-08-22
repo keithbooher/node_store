@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import CheckoutContainer from './page_components/CheckoutContainer'
 import { getCurrentUser } from '../../../../utils/API'
+import MetaTags from 'react-meta-tags'
 import './checkout.css.scss'
 // pull from actions. create action to make request for adding product-data to the cart
 
@@ -22,6 +23,11 @@ class Checkout extends Component  {
     // Need to render a side container showing the contents of the cart 
     return (
       <div>
+        <MetaTags>
+          <title>Node Store Checkout</title>
+          <meta name="description" content="Finalize your purchase here" />
+          <meta name="keywords" content="" />
+        </MetaTags>
         <h1 style={{ textAlign: 'center' }}>Node Store Checkout</h1>
         {this.state.current_user !== null ? 
           <CheckoutContainer current_user={this.state.current_user} />
