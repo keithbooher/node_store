@@ -7,7 +7,7 @@ import { reset } from 'redux-form'
 import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import Carousel from "../../../shared/Carousel"
 
-const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser }) => {
+const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser, updateUser }) => {
   const [checked_box, set_checked_box] = useState(null)
 
   const checkBox = (address) => {
@@ -98,11 +98,15 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
         {title()}
       </div>
 
-      <div className="flex space-evenly">
-        <div className="w-80 relative">
-          {user && user[bill_or_ship] && <Carousel children={renderAddressCards()} />}
+      {user && user[bill_or_ship] && user[bill_or_ship].length > 0 ?
+        <div className="flex space-evenly">
+          <div className="w-80 relative">
+            {user && user[bill_or_ship] && <Carousel children={renderAddressCards()} />}
+          </div>
         </div>
-      </div>
+      : ""}
+
+
     </div>
   )
 }
