@@ -2,20 +2,27 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
 import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
-import { updateCart, dispatchEnlargeImage } from "../../../../actions"
+import { updateCart, dispatchEnlargeImage, dispatchObj } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"
 import { checkInventory } from "../../../../utils/API"
 import LowInventory from "../../../shared/LowInventory"
 import { Link } from "react-router-dom"
+import Form from "../../../shared/Form"
+import Modal from "../../../shared/Modal"
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { reset } from "redux-form"
+
 class LineItems extends Component {
   constructor(props) {
     super()
     this.removeProduct = this.removeProduct.bind(this)
     this.alterLineItemQuantity = this.alterLineItemQuantity.bind(this)
+    this.submitQuantity = this.submitQuantity.bind(this)
     this.state = {
       inventory_limit: false,
-      lock: false
+      lock: false,
+      showModal: false
     }
   }
 
@@ -87,6 +94,22 @@ class LineItems extends Component {
     this.props.dispatchEnlargeImage({ image, path })
   }
 
+  submitQuantity() {
+    const quantity_value = this.props.form['change_line_item_quantity_form'].values.quantity
+    let cart = {...this.props.cart}
+    cart.line_items.map((item) => {
+      if (item._id === this.state.showModal._id) {
+        item.quantity = quantity_value
+        return item
+      } else {
+        return item
+      }
+    })
+    this.props.updateCart(cart)
+    this.props.dispatchObj(reset("change_line_item_quantity_form"))
+    this.setState({ showModal: false })
+  }
+
   render() {
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     let lock = this.state.lock
@@ -95,7 +118,7 @@ class LineItems extends Component {
         {this.props.cart && 
           this.props.cart.line_items.map((line_item, index) => {
             return (
-              <li key={index} className="divider line_item padding-s ">
+              <li key={index} className="divider line_item">
 
                 <div className="line_item_sub_container">
 
@@ -108,14 +131,22 @@ class LineItems extends Component {
                       <h2 className="margin-top-none margin-bottom-none color-black line_item_name"><Link className="inline" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link><div className="inline" style={{ fontSize: "14px" }}> - ${line_item.product_price}/ea</div></h2>
                       <p>${line_item.product_price * line_item.quantity}</p>
                       <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
-                        <div style={{ fontSize: "23px", marginTop: "-5px", marginRight: "5px", fontWeight: 700 }} className="color-black line_item_quantity">x{line_item.quantity}</div>
-                        <i className={`color-black margin-s-h ${lock && "display-none"}`} onClick={() => this.alterLineItemQuantity(line_item, 'addition')}>
-                          <FontAwesomeIcon icon={faPlus} />
-                        </i>
-                        <div className={`inline ${lock && "display-none"}`} style={{ fontSize: "19px", marginLeft: "-5px", marginRight: "-5px" }}>/</div>
-                        <i style={{ marginTop: "3px" }} className={`color-black margin-s-h ${lock && "display-none"}`} onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')}>
-                          <FontAwesomeIcon icon={faMinus} />
-                        </i>
+
+
+
+                        <div className="flex align-items-center">
+                          <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                          <input 
+                            onChange={(e) => console.log(e)} 
+                            onFocus={() => this.setState({ showModal: line_item })} 
+                            value={line_item.quantity} 
+                            style={{ width: "50px" }}
+                          />
+                          <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                        </div>
+
+
+
                         <i style={{ fontSize: "14px", top: "0px", right: "0px" }} className={`color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
                           <FontAwesomeIcon icon={faTrash} />
                         </i>
@@ -136,6 +167,24 @@ class LineItems extends Component {
                   />
                 }
 
+                {this.state.showModal &&
+                  <Modal cancel={() => this.setState({ showModal: false })}>
+                    <LazyLoadImage
+                      style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}
+                      src={this.state.showModal.image}
+                    />
+                    <Form
+                      onSubmit={this.submitQuantity}
+                      submitButton={<button>Done</button>}
+                      cancel={() => this.setState({ showModal: false })}
+                      onChange={this.changeCartTab}
+                      formFields={[{ label: `Update ${this.state.showModal.product_name} quantity`, name: 'quantity', typeOfComponent: "number", autofocus: true, noValueError: 'You must provide an quantity' }]}
+                      form='change_line_item_quantity_form'
+                      initialValues={{ quantity: this.state.showModal.quantity }}
+                    />
+                  </Modal>
+                }
+
               </li>
             )
           })
@@ -145,10 +194,10 @@ class LineItems extends Component {
   }
 }
 
-function mapStateToProps({ enlargeImage }) {
-  return { enlargeImage }
+function mapStateToProps({ enlargeImage, form, cart }) {
+  return { enlargeImage, form, cart }
 }
 
-const actions = { updateCart, dispatchEnlargeImage, checkInventory }
+const actions = { updateCart, dispatchEnlargeImage, checkInventory, dispatchObj }
 
 export default connect(mapStateToProps, actions)(LineItems)

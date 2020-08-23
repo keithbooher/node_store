@@ -64,7 +64,16 @@ class LineItems extends Component {
 
   submitQuantity() {
     const quantity_value = this.props.form['change_line_item_quantity_form'].values.quantity
-    console.log(quantity_value)
+    let cart = {...this.props.cart}
+    cart.line_items.map((item) => {
+      if (item._id === this.state.showModal._id) {
+        item.quantity = quantity_value
+        return item
+      } else {
+        return item
+      }
+    })
+    this.props.updateCart(cart)
     this.props.dispatchObj(reset("change_line_item_quantity_form"))
     this.setState({ showModal: false })
   }

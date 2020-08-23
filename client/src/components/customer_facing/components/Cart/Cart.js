@@ -53,32 +53,28 @@ class Cart extends Component {
     return (
     <div>
       <div onClick={this.expandCart} ref={this.dropRef} className="h-100">
-        <CartLength expandCart={this.expandCart}  />
+        <CartLength  />
       </div>
 
       {this.props.showCart && 
         <div>
           <ul ref={node => this.node = node} className="expandedCart st-nav-dropdown-background-color border-radius-bottom">
-            <div className="flex flex_column">
+            <div className="flex flex_column padding-s">
               <Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
-                <>
-                  <div id="items">
-                    <LineItems cart={this.props.cart} expandCart={this.expandCart} />
-                  </div>
-
-                  <div className="flex space-between background-color-grey-5">
-                    <div className="flex flex_column">
-                      <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
-                      <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
-                      {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
-                      <div>Total: ${formatMoney(this.props.cart.total)}</div>
-                    </div>
-                    <button onClick={this.expandCart} ><Link onClick={this.expandCart} className="header_list_item clickable" to="/checkout">Checkout</Link></button>
-                  </div>
-                </>
+                <div id="items">
+                  <LineItems cart={this.props.cart} expandCart={this.expandCart} />
+                </div>
               }
-
+            </div>
+            <div className="flex space-between background-color-grey-5 padding-s">
+              <div className="flex flex_column">
+                <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
+                <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
+                {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
+                <div>Total: ${formatMoney(this.props.cart.total)}</div>
+              </div>
+              <button onClick={this.expandCart} ><Link onClick={this.expandCart} className="header_list_item clickable" to="/checkout">Checkout</Link></button>
             </div>
           </ul>
         </div>

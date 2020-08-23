@@ -56,7 +56,7 @@ class Product extends Component  {
 
     return (
       <div id="outer" ref={this.outerRef} style={ style_outer }>
-        <div id="inner" ref={this.ref} className="theme-nav-background-color color-white" style={ style_inner }>
+        <div id="inner" ref={this.ref} className="theme-modal-background-color border-radius-s color-white" style={ style_inner }>
           {this.props.children}
         </div>
       </div>

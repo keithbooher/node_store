@@ -5,7 +5,7 @@ import NavAccount from './NavAccount'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import './header.scss'
-import { sidebarBoolean, showHeaderAction } from "../../../../actions"
+import { sidebarBoolean, showHeaderAction, showCartAction } from "../../../../actions"
 
 
 class Header extends Component {
@@ -41,6 +41,9 @@ class Header extends Component {
       // but only after its left the screen
       // fixed position top: -50px
       scrollClass = "scrolling_down_nav"
+      if (this.props.showCart) {
+        this.props.showCartAction(false)
+      }
     } else if (self.state.offsetTop > root.scrollTop) {
       // show nav if scrolling up
       // fixed position top: 0
@@ -79,6 +82,6 @@ function mapStateToProps({ sidebar, showCart, showHeader }) {
   return { sidebar, showCart, showHeader }
 }
 
-const actions = { sidebarBoolean, showHeaderAction }
+const actions = { sidebarBoolean, showHeaderAction, showCartAction }
 
 export default connect(mapStateToProps, actions)(Header)
