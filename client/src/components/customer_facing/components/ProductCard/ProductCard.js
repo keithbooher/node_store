@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faChevronDown, faChevronUp, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import Modal from "../../../shared/Modal"
 import './productCard.css.scss'
-import { dispatchEnlargeImage, showCartAction } from "../../../../actions"
+import { dispatchEnlargeImage, showCartAction, showHeaderAction } from "../../../../actions"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import StarRatings from 'react-star-ratings'
 
@@ -128,7 +128,7 @@ class ProductCard extends Component {
     }
 
     this.props.showCartAction(true)
-    //////
+    this.props.showHeaderAction("scrolling_up_nav")
   }
 
   setQuantity(direction) {
@@ -191,7 +191,7 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-          <div key={product._id} className={`card margin-s-v ${product._id === "" && "hidden"}`}>
+          <div key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background w-90 margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>
@@ -209,7 +209,7 @@ class ProductCard extends Component {
                     />
                   </div>
                 }
-              <div className="flex flex_column justify-center background-color-black card_image_container">
+              <div className="border-radius-s flex flex_column justify-center background-color-black card_image_container">
                 <LazyLoadImage
                   src={product.image}
                   wrapperClassName="margin-auto-h card_image"
@@ -252,6 +252,6 @@ function mapStateToProps({ zeroInventory }) {
   return { zeroInventory }
 }
 
-const actions = { dispatchEnlargeImage, showCartAction, getProductAverageRating }
+const actions = { dispatchEnlargeImage, showCartAction, getProductAverageRating, showHeaderAction }
 
 export default connect(mapStateToProps, actions)(ProductCard)

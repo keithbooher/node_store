@@ -5,7 +5,7 @@ import NavAccount from './NavAccount'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import './header.scss'
-import { sidebarBoolean } from "../../../../actions"
+import { sidebarBoolean, showHeaderAction } from "../../../../actions"
 
 
 class Header extends Component {
@@ -31,13 +31,6 @@ class Header extends Component {
     root.removeEventListener('scroll', () => this.scrollTracker(self, root))
   }
 
-  componentDidUpdate() {
-    if (this.props.showCart && this.state.scrollClass !== "scrolling_up_nav") {  
-      let scrollClass = "scrolling_up_nav"
-      this.setState({ scrollClass })
-    }
-  }
-
   scrollTracker(self, root) {
     let scrollClass
     if (root.scrollTop < 50 && self.state.offsetTop > root.scrollTop || root.scrollTop < 50 && self.state.offsetTop < root.scrollTop) {  
@@ -56,7 +49,8 @@ class Header extends Component {
       // apply regular stylings
       scrollClass = "scrolling_up_nav"
     }
-    self.setState({ offsetTop: root.scrollTop, scrollClass })
+    self.setState({ offsetTop: root.scrollTop })
+    this.props.showHeaderAction(scrollClass)
   }
 
   sidebar() {
@@ -65,7 +59,7 @@ class Header extends Component {
   render() {
 
     return (
-    <div className={`${this.state.scrollClass} nav header_container`}>
+    <div className={`${this.props.showHeader} nav header_container`}>
       <div className="header_container flex space-between theme-nav-background-color">
         <div className="header_container flex justify-center align-items-center">
           <FontAwesomeIcon id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
@@ -81,10 +75,10 @@ class Header extends Component {
 }
 
 
-function mapStateToProps({ sidebar, showCart }) {
-  return { sidebar, showCart }
+function mapStateToProps({ sidebar, showCart, showHeader }) {
+  return { sidebar, showCart, showHeader }
 }
 
-const actions = { sidebarBoolean }
+const actions = { sidebarBoolean, showHeaderAction }
 
 export default connect(mapStateToProps, actions)(Header)

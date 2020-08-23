@@ -1,6 +1,8 @@
 import React, { Component } from 'react' 
+import { connect } from 'react-redux'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { showCartAction } from "../../../../../actions"
 import "./dropdown.css.scss"
 
 class Dropdown extends Component {
@@ -36,6 +38,7 @@ class Dropdown extends Component {
   }
   
   showAccountMenu() {
+    this.props.showCartAction(false)    
     this.setState({ open: !this.state.open })
   }
 
@@ -47,7 +50,7 @@ class Dropdown extends Component {
           <div ref={this.caratDownRef}><FontAwesomeIcon icon={faCaretDown} /></div>
         </a>
         {this.state.open === true && 
-          <div ref={node => this.node = node} id="cart_container" className="background-color-blue-2 color-white">
+          <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom st-nav-dropdown-background-color color-white">
             <ul>
               {this.props.elements.map((element, index) => {
                 return <li key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
@@ -62,5 +65,11 @@ class Dropdown extends Component {
   }
 }
 
-export default Dropdown
+function mapStateToProps({ showCart }) {
+  return { showCart }
+}
+
+const actions = { showCartAction }
+
+export default connect(mapStateToProps, actions)(Dropdown)
 

@@ -101,7 +101,7 @@ class LineItems extends Component {
 
                   <div className="flex">
                     <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" }}>
-                      <img onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} className="nice_image margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
+                      <img onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
                     </div>
 
                     <div className="flex flex_column padding-s">

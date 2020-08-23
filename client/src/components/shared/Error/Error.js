@@ -17,7 +17,7 @@ class Error extends Component  {
       setTimeout(function(){ self.props.errorAction(null) }, 6000);
     }
     return (
-      <div className={`fixed radius-xs background-color-red-4 padding-s ${ !this.props.error ? "opacity-0 z-hide" : "fade-out" }`} style={{ bottom: "5px", left: "5px" }}>
+      <div className={`fixed border-radius-xs background-color-red-4 padding-s ${ !this.props.error ? "opacity-0 z-hide" : "fade-out" }`} style={{ bottom: "5px", left: "5px" }}>
         <h3>{this.props.error && this.props.error.statusText}</h3>
       </div>
     )

@@ -1,20 +1,12 @@
 .card {
   // style like amazon mobile
   padding: 20px 15px;
-  border-radius: 1.5px;
-  background-color: #2b2b2b;
-  width: 90%;
   margin: .5em auto;
   @media screen and (min-width: 550px) {
     // convert to cards at this width (starting to get into tablet zone i think)
     padding: 20px;
     flex-basis: 15em;
-    border-radius: 1.5px;
-    background-color: #2b2b2b;
   }
-}
-.card:hover {
-  background-color: #2b2b2b;
 }
 
 .card-title {

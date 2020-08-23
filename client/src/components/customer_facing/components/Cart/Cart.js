@@ -35,14 +35,13 @@ class Cart extends Component {
   handleClickOutside(e) {
     if(e.target === this.dropRef.current || e.target.tagName === "svg" || e.target.tagName === "path") {
       return
-    } else if (this.state.showCart === true && !this.node.contains(e.target)) {
+    } else if (this.props.showCart === true && !this.node.contains(e.target)) {
       this.expandCart()
     }
   }
   
   expandCart() {
-    this.props.showCartAction(false)
-    this.setState({ showCart: !this.state.showCart})
+    this.props.showCartAction(!this.props.showCart)
   }
 
   render() {
@@ -57,9 +56,9 @@ class Cart extends Component {
         <CartLength expandCart={this.expandCart}  />
       </div>
 
-      {this.state.showCart && 
+      {this.props.showCart && 
         <div>
-          <ul ref={node => this.node = node} className="expandedCart">
+          <ul ref={node => this.node = node} className="expandedCart st-nav-dropdown-background-color border-radius-bottom">
             <div className="flex flex_column">
               <Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
