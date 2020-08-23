@@ -1,4 +1,5 @@
 const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
 const Order = mongoose.model('orders')
 var ObjectId = require('mongoose').Types.ObjectId;
@@ -15,29 +16,7 @@ module.exports = app => {
     }
   })
 
-  app.post('/api/orders/search', async (req, res) => {  
-    try {
-      const search_term = req.body.search_term
-      let orders = []
-      if (ObjectId.isValid(search_term)) {
-        orders = await Order.find({ _id: search_term }).populate({
-          path: "shipment",
-          model: "shipments",
-        })
-      } else {
-        orders = await Order.find({ email: search_term }).populate({
-          path: "shipment",
-          model: "shipments",
-        })
-      }
-      res.send(orders)
-    } catch (err) {
-      req.bugsnag.notify(err)
-      res.status(422).send(err)
-    }
-  })
-
-  app.put('/api/order/update', requireLogin, async (req, res) => {  
+  app.put('/api/order/update', requireLogin, adminRequired, async (req, res) => {  
     try {
       let order = req.body.order
       let updated_order = await Order.findOneAndUpdate({ _id: order._id }, order, {new: true}).populate({
@@ -65,7 +44,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/orders/last_order/:_user_id', async (req, res) => {    
+  app.get('/api/orders/last_order/:_user_id', requireLogin, async (req, res) => {    
     try {
       let _user_id = req.params._user_id
       const order = await Order.findOne({ deleted_at: null, _user_id })
@@ -76,7 +55,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/orders/admin/last_order/:status/:search_term', async (req, res) => {
+  app.get('/api/orders/admin/last_order/:status/:search_term', requireLogin, adminRequired, async (req, res) => {
     try {
       let status = req.params.status === "none" ? false : req.params.status === "all" ? false : req.params.status
       let search_term = req.params.search_term === "none" ? false : req.params.search_term
@@ -119,7 +98,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/orders/:last_order_id/:direction/:status/:search_term', requireLogin, async (req, res) => {
+  app.get('/api/orders/:last_order_id/:direction/:status/:search_term', requireLogin, adminRequired, async (req, res) => {
     let last_order_id = req.params.last_order_id
     let direction = req.params.direction
     let status = req.params.status

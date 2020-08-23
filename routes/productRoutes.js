@@ -42,7 +42,7 @@ module.exports = app => {
     }
   })
 
-  app.post('/api/product/search', async (req, res) => {    
+  app.post('/api/product/search', requireLogin, adminRequired, async (req, res) => {    
     try {
       let search_term = req.body.term
       const products_by_name = await Product.find({ name: search_term }).populate({path: "categories"})
@@ -66,7 +66,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/product/:id', async (req, res) => {    
+  app.get('/api/product/:id', requireLogin, adminRequired, async (req, res) => {    
     try {
       const product = await Product.findOne({ _id: req.params.id }).populate({path: "categories"}).populate({path: "related_products"})
       res.send(product)
@@ -76,7 +76,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/product/name/:name', async (req, res) => {    
+  app.get('/api/product/name/:name', requireLogin, adminRequired, async (req, res) => {    
     try {
       const product = await Product.findOne({ name: req.params.name }).populate({path: "categories"})
       res.send(product)
@@ -108,19 +108,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/products/all/instock', async (req, res) => {    
-    try {
-      const products = await Product.find({ inventory_count: {$gte: 1}, display: true}).populate({
-        path: 'categories'
-      })
-      res.send(products)
-    } catch (err) {
-      req.bugsnag.notify(err)
-      res.status(422).send(err)
-    }
-  })
-
-  app.get('/api/products/last_product', async (req, res) => {    
+  app.get('/api/products/last_product', requireLogin, adminRequired, async (req, res) => {    
     try {
       const product = await Product.findOne({ deleted_at: null })
       res.send(product)
@@ -130,7 +118,7 @@ module.exports = app => {
     }
   })
 
-  app.post('/api/products/last_product/by_category', async (req, res) => {
+  app.post('/api/products/last_product/by_category', requireLogin, adminRequired, async (req, res) => {
     try {
       let product 
       if (req.body.category === "all" || req.body.category === "none") {
@@ -182,7 +170,7 @@ module.exports = app => {
     }
   }
 
-  app.get('/api/products/all/:last_product_id/:direction/:category', async (req, res) => {   
+  app.get('/api/products/all/:last_product_id/:direction/:category', requireLogin, adminRequired, async (req, res) => {   
     try {
       let last_product_id = req.params.last_product_id
       let direction = req.params.direction

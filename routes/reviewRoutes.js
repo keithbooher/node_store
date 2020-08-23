@@ -1,4 +1,5 @@
 const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
 const Review = mongoose.model('reviews')
 
@@ -24,7 +25,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/review/user/last_review/:user_id', async (req, res) => {
+  app.get('/api/review/user/last_review/:user_id', requireLogin, async (req, res) => {
     try {
       const _user_id = req.params.user_id
       const review = await Review.findOne({ _user_id })
@@ -56,7 +57,7 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
-  app.get('/api/reviews/product/:product_id/:direction/:last_review_id', requireLogin, async (req, res) => {  
+  app.get('/api/reviews/product/:product_id/:direction/:last_review_id', async (req, res) => {  
     try {
       const product_id = req.params.product_id
       const direction = req.params.direction
@@ -82,7 +83,7 @@ module.exports = app => {
 
 
 
-  app.get('/api/reviews/:last_review_id/:direction/:approval', requireLogin, async (req, res) => {
+  app.get('/api/reviews/:last_review_id/:direction/:approval', requireLogin, adminRequired, async (req, res) => {
     try {
       let last_review_id = req.params.last_review_id
       let direction = req.params.direction

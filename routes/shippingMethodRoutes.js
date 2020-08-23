@@ -4,7 +4,7 @@ const adminRequired = require('../middlewares/adminRequired')
 const ShippingMethod = mongoose.model('shippingMethods')
 
 module.exports = app => {
-  app.get('/api/shipping_methods', async (req, res) => {
+  app.get('/api/shipping_methods', requireLogin, adminRequired, async (req, res) => {
     try {
       let shippingMethods = await ShippingMethod.find({ deleted_at: null })
       res.send(shippingMethods)

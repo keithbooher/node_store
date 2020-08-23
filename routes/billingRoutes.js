@@ -1,6 +1,6 @@
 const keys = require('../config/keys')
 const stripe = require('stripe')(keys.stripeSecretKey)
-const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 
 module.exports = app => {
   app.post('/api/stripe', async (req, res) => {    
@@ -17,7 +17,7 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
-  app.post('/api/stripe/refund', async (req, res) => {    
+  app.post('/api/stripe/refund', adminRequired, async (req, res) => {    
     try {
       let charge = req.body.charge
       await stripe.refunds.create(

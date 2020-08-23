@@ -1,4 +1,5 @@
 const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
 const User = mongoose.model('users')
 const Order = mongoose.model('orders')
@@ -6,7 +7,7 @@ const Review = mongoose.model('reviews')
 
 module.exports = app => {
   
-  app.post('/api/user/email', async (req, res) => {
+  app.post('/api/user/email', requireLogin, adminRequired, async (req, res) => {
     try {
       const email = req.body.email
       const user = await User.findOne({ email })
@@ -17,7 +18,7 @@ module.exports = app => {
     }
   })
   
-  app.get('/api/users/last_user', async (req, res) => {    
+  app.get('/api/users/last_user', requireLogin, adminRequired, async (req, res) => {    
     try {
       const user = await User.findOne({ deleted_at: null })
       res.send(user)
@@ -27,7 +28,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/users/:user_id', async (req, res) => {    
+  app.get('/api/users/:user_id', requireLogin, adminRequired, async (req, res) => {    
     try {
       let user_id = req.params.user_id
       let user
@@ -39,7 +40,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/users/:last_user_id/:direction', async (req, res) => {  
+  app.get('/api/users/:last_user_id/:direction', requireLogin, adminRequired, async (req, res) => {  
     try {
       let direction = req.params.direction
       let last_user_id = req.params.last_user_id

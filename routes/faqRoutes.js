@@ -1,9 +1,10 @@
 const requireLogin = require('../middlewares/requireLogin')
+const adminRequired = require('../middlewares/adminRequired')
 const mongoose = require('mongoose')
 const FAQ = mongoose.model('faqs')
 
 module.exports = app => {
-  app.post('/api/faq/create', requireLogin, async (req, res) => {  
+  app.post('/api/faq/create', requireLogin, adminRequired, async (req, res) => {  
     const faq = new FAQ(req.body.faq)
     try {
       await faq.save()
@@ -14,7 +15,7 @@ module.exports = app => {
     }
   })
 
-  app.put('/api/faq/update', requireLogin, async (req, res) => {  
+  app.put('/api/faq/update', requireLogin, adminRequired, async (req, res) => {  
     const faq = req.body.faq
     try {
       let updated_faq = await FAQ.findOneAndUpdate({ _id: faq._id }, faq, {new: true})

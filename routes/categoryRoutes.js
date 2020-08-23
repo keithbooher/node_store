@@ -94,7 +94,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/categories', async (req, res) => {  
+  app.get('/api/categories', requireLogin, adminRequired, async (req, res) => {  
     try {
       const categories = await Category.find({ deleted_at: null }).populate({
         path: "sub_categories",
@@ -124,7 +124,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/categories/top', async (req, res) => {
+  app.get('/api/categories/top', requireLogin, adminRequired, async (req, res) => {
     try {
       const categories = await Category.find({ nest_level: 0, deleted_at: null }).populate({
         path: "sub_categories",

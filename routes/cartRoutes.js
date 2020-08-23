@@ -53,21 +53,9 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
-    
-  // Search for carts by email
-  app.post("/api/cart/search", async (req, res) => {
-    let search_term = req.body.search_term
-    try {
-      let carts = await Cart.find({ email: search_term, deleted_at: null })
-      res.send(carts)
-    } catch (err) {
-      req.bugsnag.notify(err)
-      res.status(422).send({message: err})
-    }
-  })
 
   // GET A USERS CART
-  app.get('/api/cart/:id', async (req, res) => {
+  app.get('/api/cart/:id', requireLogin, adminRequired, async (req, res) => {
     const _id = req.params.id
     try {
       const cart = await Cart.findOne({ _id: _id })
@@ -83,7 +71,6 @@ module.exports = app => {
     const _user_id = req.params.user_id
     try {
       const cart = await Cart.findOne({ _user_id, deleted_at: null })
-      console.log(cart)
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -104,7 +91,7 @@ module.exports = app => {
   })
 
   // create cart fro admin
-  app.post('/api/cart/create', async (req, res) => {  
+  app.post('/api/cart/create', requireLogin, adminRequired, async (req, res) => {  
     const incoming_cart = req.body.cart
     const cart = new Cart(incoming_cart)
     try {
@@ -191,7 +178,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/carts/last_order/:checkout_state/:search_term', async (req, res) => {
+  app.get('/api/carts/last_order/:checkout_state/:search_term', requireLogin, adminRequired, async (req, res) => {
     let checkout_state = req.params.checkout_state === "none" ? false : req.params.checkout_state === "all" ? false : req.params.checkout_state
     let search_term = req.params.search_term === "none" ? false : req.params.search_term
     let cart
@@ -224,7 +211,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/carts/:last_cart_id/:direction/:checkout_state/:search_term', requireLogin, async (req, res) => {
+  app.get('/api/carts/:last_cart_id/:direction/:checkout_state/:search_term', requireLogin, adminRequired, async (req, res) => {
     let last_cart_id = req.params.last_cart_id
     let direction = req.params.direction
     let checkout_state = req.params.checkout_state

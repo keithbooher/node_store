@@ -31,7 +31,7 @@ module.exports = app => {
     }
   }
 
-  app.put('/api/shipment/update', async (req, res) => {  
+  app.put('/api/shipment/update', requireLogin, adminRequired, async (req, res) => {  
     try {
       const shipment = req.body.shipment
       let updated_shipment = await Shipment.findOneAndUpdate({ _id: shipment._id }, shipment, {new: true})
