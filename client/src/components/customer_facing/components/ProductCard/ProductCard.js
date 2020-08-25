@@ -191,7 +191,7 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-          <div key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background w-90 margin-s-v ${product._id === "" && "hidden"}`}>
+          <div style={{ margin: "0px 10px" }} key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background ${this.props.related_product ? "" : "w-90"} ${this.props.related_product && "related_product"} margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>
@@ -216,7 +216,7 @@ class ProductCard extends Component {
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />
               </div>
-              <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>
+              {!this.props.related_product && <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>}
               {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
             </div>
             <div className="flex">

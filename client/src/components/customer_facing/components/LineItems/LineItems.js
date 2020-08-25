@@ -118,7 +118,7 @@ class LineItems extends Component {
         {this.props.cart && 
           this.props.cart.line_items.map((line_item, index) => {
             return (
-              <li key={index} className="divider line_item">
+              <li key={index} className="divider line_item flex align-items-center relative" style={{ minHeight: "150px" }}>
 
                 <div className="line_item_sub_container">
 
@@ -128,12 +128,11 @@ class LineItems extends Component {
                     </div>
 
                     <div className="flex flex_column padding-s">
-                      <h2 className="margin-top-none margin-bottom-none color-black line_item_name"><Link className="inline" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link><div className="inline" style={{ fontSize: "14px" }}> - ${line_item.product_price}/ea</div></h2>
-                      <p>${line_item.product_price * line_item.quantity}</p>
-                      <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex color-black margin-auto-v">
+                      <h3 className="margin-top-none margin-bottom-none line_item_name"><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                      <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex flex_column color-black margin-auto-v">
 
 
-
+                        <div className="small-text">${line_item.product_price}/ea</div>
                         <div className="flex align-items-center">
                           <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                           <input 
@@ -145,18 +144,14 @@ class LineItems extends Component {
                           <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                         </div>
 
-
-
-                        <i style={{ fontSize: "14px", top: "0px", right: "0px" }} className={`color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
-                          <FontAwesomeIcon icon={faTrash} />
-                        </i>
+                        <div>${line_item.product_price * line_item.quantity}</div>
                       </div>
                     </div>
                   </div>
-
-
-
                 </div>
+                <i style={{ fontSize: "14px", top: "5px", right: "5px" }} className={`color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                </i>
 
                 {this.state.inventory_limit &&
                   <LowInventory 

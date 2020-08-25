@@ -2,11 +2,16 @@
   // style like amazon mobile
   padding: 20px 15px;
   margin: .5em auto;
+  min-width: 280px;
   @media screen and (min-width: 550px) {
     // convert to cards at this width (starting to get into tablet zone i think)
     padding: 20px;
     flex-basis: 15em;
   }
+}
+
+.related_product {
+  min-height: 450px;
 }
 
 .card-title {

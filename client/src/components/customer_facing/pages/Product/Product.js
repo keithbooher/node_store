@@ -235,6 +235,7 @@ const Product = ({
               product={related_product} 
               cart={cart} 
               category_path_name={product.categories.length > 0 ? product.categories[0].path_name : ""} 
+              related_product={true}
             />
           </div>
         )
@@ -286,7 +287,7 @@ const Product = ({
           <div className="text-align-center">
             <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={product.image} />
           </div>
-          <div className="padding-s">
+          <div >
             <div className="flex flex_column">
               <h1 className="margin-v-none">${product.price}</h1>
               {!product.backorderable && <div className="margin-s">In Stock: {product.inventory_count}</div>}

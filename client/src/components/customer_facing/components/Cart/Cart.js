@@ -58,16 +58,16 @@ class Cart extends Component {
 
       {this.props.showCart && 
         <div>
-          <ul ref={node => this.node = node} className="expandedCart st-nav-dropdown-background-color border-radius-bottom">
-            <div className="flex flex_column padding-s">
-              <Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link>
+          <ul ref={node => this.node = node} className="expandedCart st-border-color st-nav-dropdown-background-color border-radius-bottom">
+            <div className="flex flex_column">
+              <div className="padding-s-h font-size-1-2 theme-background-3" style={{ paddingBottom: ".5em" }}><Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link></div>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
-                <div id="items">
+                <div id="items" className="padding-xs">
                   <LineItems cart={this.props.cart} expandCart={this.expandCart} />
                 </div>
               }
             </div>
-            <div className="flex space-between background-color-grey-5 padding-s">
+            <div className="flex space-between theme-background-3 padding-s">
               <div className="flex flex_column">
                 <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
                 <div>Tax: ${formatMoney(this.props.cart.tax)}</div>

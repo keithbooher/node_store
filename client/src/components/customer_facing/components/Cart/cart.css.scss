@@ -6,9 +6,13 @@
 .expandedCart {
   position: absolute;
   right: 0px;
+  top: 50px;
   padding-left: 0px;
   width: 18em;
   overflow: hidden;
+  z-index: 10;
+  border-left: solid 1px;
+  border-bottom: solid 1px;
 }
 
 #items {

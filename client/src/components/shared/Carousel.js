@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons'
 
 const EmblaCarousel = ({children}) => {
-  const [EmblaCarouselReact, embla] = useEmblaCarousel({ loop: false })
+  const [EmblaCarouselReact, embla] = useEmblaCarousel({ loop: false, inViewThreshold: 1.2 })
   const [refresh, setRefresh] = useState(false)
 
   useEffect(() => {
@@ -36,8 +36,8 @@ const EmblaCarousel = ({children}) => {
 
 
   return (
-    <div className="flex space-between">
-      <FontAwesomeIcon onClick={prev} className="margin-auto-v font-size-3-0" icon={faCaretLeft} />
+    <div className="flex space-between relative">
+      <FontAwesomeIcon style={{ color: "#e4e3e3", top: "50%", left: "0px", transform: "translateY(-50%)" }} onClick={prev} className="absolute z-10 margin-auto-v font-size-3-0" icon={faCaretLeft} />
       <EmblaCarouselReact>
         <div style={{ display: 'flex' }}>
           {children.map((child) => {
@@ -45,8 +45,7 @@ const EmblaCarousel = ({children}) => {
           })}
         </div>
       </EmblaCarouselReact>
-      <FontAwesomeIcon onClick={next} className="margin-auto-v font-size-3-0" icon={faCaretRight} />
-
+      <FontAwesomeIcon style={{ color: "#e4e3e3", top: "50%", right: "0px", transform: "translateY(-50%)" }} onClick={next} className="absolute z-10 margin-auto-v font-size-3-0" icon={faCaretRight} />
     </div>
   )
 }
