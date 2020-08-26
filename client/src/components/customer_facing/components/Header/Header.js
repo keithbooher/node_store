@@ -61,7 +61,6 @@ class Header extends Component {
     this.props.showCartAction(false)
   }
   render() {
-    console.log(this.props.showHeader)
     return (
     <div className={`${this.props.showHeader} nav header_container`}>
       <div className="header_container flex space-between theme-background-3">

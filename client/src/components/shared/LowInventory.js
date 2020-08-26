@@ -49,14 +49,14 @@ class LowInventory extends Component {
       cart.line_items = cart.line_items.filter((item) => item !== null)
 
 
-      let sub_total = calculateSubtotal(cart)
-      let tax = sub_total * .08
-      let shipping = cart.chosen_rate ? cart.chosen_rate.cost : 0
-
-      cart.sub_total = formatMoney(sub_total)
-      cart.tax = formatMoney(tax)
-      cart.total = formatMoney(sub_total + tax + shipping)
+      let sub_total = Number(calculateSubtotal(cart))
+      let tax = Number(sub_total * .08)
+      let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
   
+      cart.sub_total = sub_total
+      cart.tax = tax
+      cart.total = Number(sub_total + tax + shipping)
+
       let update_cart = await this.props.updateCart(cart)
       if (this.props.update) {
         this.props.update(update_cart)

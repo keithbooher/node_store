@@ -139,8 +139,14 @@ const Product = ({
         _cart.line_items.push(line_item)
       }
 
-      sub_total = calculateSubtotal(_cart)
-      _cart.total = sub_total * .08
+      sub_total = Number(calculateSubtotal(_cart))
+      let tax = Number(sub_total * .08)
+      let shipping = Number(_cart.chosen_rate ? _cart.chosen_rate.cost : 0)
+  
+      _cart.sub_total = sub_total
+      _cart.tax = tax
+      _cart.total = Number(sub_total + tax + shipping)
+
     }
     _cart.checkout_state = "shopping"
 
@@ -302,6 +308,7 @@ const Product = ({
               </div>
               <button className="margin-s inline" onClick={addToCart.bind(this)}>Add To Cart</button>
             </div>
+            <hr/>
             <h3>Description</h3>
             <p>{product.description ? product.description : "No Product Description"}</p>
             {product.dimensions && 
@@ -315,6 +322,7 @@ const Product = ({
                 </div>
               </div>
             }
+            <hr/>
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
@@ -349,7 +357,7 @@ const Product = ({
                   }
                 </div>
               :
-                <h4>There are no reviews for this product yet</h4>  
+                <h4 style={{ marginBottom: "20px" }} className="padding-s border-radius-s st-border w-90 margin-auto-h">There are no reviews for this product yet</h4>  
               }
               <PageChanger 
                 page_number={page_number} 
@@ -380,7 +388,9 @@ const Product = ({
                 </Modal>
               }
             </div>
-            
+
+            <hr className="margin-l-v"/>
+
             {product.related_products && product.related_products.length > 0 &&
               <div className="relative">
                 <h2>Related Products</h2>

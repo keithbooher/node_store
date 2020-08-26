@@ -66,19 +66,23 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
   const renderAddressCards = () => {
     return user[bill_or_ship].map((address, index) => {
       return (      
-      <div key={index} data-address-id={address._id} style={ check_highlight(address) ? { backgroundColor: "rgba(1,1,1,0.5)" } :  {}} className="address_card_container">
-        <div>first name: {address.first_name ? address.first_name : "" }</div>
-        <div>last name: {address.last_name ? address.first_name : "" }</div>
-        <div>company: {address.company ? address.company : "" }</div>
-        <div>street address 1: {address.street_address_1 ? address.street_address_1 : "" }</div>
-        <div>street address 2: {address.street_address_2 ? address.street_address_2 : "" }</div>
-        <div>city: {address.city ? address.city : "" }</div>
-        <div>state: {address.state ? address.state : "" }</div>
-        <div>zip code: {address.zip_code ? address.zip_code : "" }</div>
-        <div>phone number: {address.phone_number ? address.phone_number : "" }</div>
-        <div>bill_or_ship: {address.bill_or_ship ? address.bill_or_ship : "" }</div>
-        <button onClick={() => deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
-        { actionBox ? <button onClick={() => checkBox(address)}>Use this address </button> : "" }
+      <div 
+        key={index} 
+        data-address-id={address._id} 
+        style={ check_highlight(address) ? { backgroundColor: "rgb(160 169 212)" } :  {}} 
+        className="address_card_container padding-s-h padding-s-bottom padding-l-top color-black border-radius-s theme-background-4 relative"
+      >
+        <div className="margin-xs-v"><span className="bold">First Name:</span> {address.first_name ? address.first_name : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Last Name:</span> {address.last_name ? address.first_name : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Company:</span> {address.company ? address.company : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Street Address 1:</span> {address.street_address_1 ? address.street_address_1 : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Street Address 2:</span> {address.street_address_2 ? address.street_address_2 : "" }</div>
+        <div className="margin-xs-v"><span className="bold">City:</span> {address.city ? address.city : "" }</div>
+        <div className="margin-xs-v"><span className="bold">State:</span> {address.state ? address.state : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Zip Code:</span> {address.zip_code ? address.zip_code : "" }</div>
+        <div className="margin-xs-v"><span className="bold">Phone Number:</span> {address.phone_number ? address.phone_number : "" }</div>
+        <button className="absolute" style={{ top: "3px", right: "3px" }} onClick={() => deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
+        { actionBox ? <button style={{ marginTop: '10px' }} onClick={() => checkBox(address)}>Use this address </button> : "" }
       </div>
       )
     })
@@ -93,14 +97,13 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
 
   return (
     <div style={{ position: 'relative' }}>
-      {/* delete icon */}
       <div className="flex">
         {title()}
       </div>
 
       {user && user[bill_or_ship] && user[bill_or_ship].length > 0 ?
         <div className="flex space-evenly">
-          <div className="w-80 relative">
+          <div className="w-100 relative">
             {user && user[bill_or_ship] && <Carousel children={renderAddressCards()} />}
           </div>
         </div>

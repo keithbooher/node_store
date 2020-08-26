@@ -80,12 +80,14 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
-    let sub_total = calculateSubtotal(cart)
-    let tax = formatMoney(sub_total * .08)
+    let sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
     cart.tax = tax
-    cart.total = formatMoney(sub_total + tax)
+    cart.total = Number(sub_total + tax + shipping)
+    cart.checkout_state = "shopping"
     
     this.props.updateCart(cart)
   }
@@ -105,6 +107,16 @@ class LineItems extends Component {
         return item
       }
     })
+
+    let sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = Number(sub_total + tax + shipping)
+    cart.checkout_state = "shopping"
+    
     this.props.updateCart(cart)
     this.props.dispatchObj(reset("change_line_item_quantity_form"))
     this.setState({ showModal: false })

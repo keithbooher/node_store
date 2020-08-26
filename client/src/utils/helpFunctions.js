@@ -25,6 +25,25 @@ export const updatedFormFields = (fields, objectToPullDataFrom) => {
   return details_initial_values
 }
 
+export const updatedAddressFormFields = (fields, address) => {
+  let details_initial_values = {}
+  if (address.bill_or_ship === "shipping") {
+    fields.forEach((field) => {
+      if (field.name) {
+        details_initial_values[field.name] = address[field.name.split("_shipping")[0]]
+      }
+    })
+  } else {
+    fields.forEach((field) => {
+      if (field.name) {
+        details_initial_values[field.name] = address[field.name.split("_billing")[0]]
+      }
+    })
+  }
+
+  return details_initial_values
+}
+
 export const productNameToPathName = (string) => {
   return string.toLowerCase().replace(/ /g,"_");
 }

@@ -22,7 +22,7 @@ export default ({ input, field_class, label, searchButton, autofocus, meta: { er
     <div className={`formField ${searchButton ? "w-90" : "" }`}>
       <label>{label}</label>
       <input autoFocus={autofocus} onKeyDown={(e) => preventAlpha(e)} className={field_class} value={input.value} {...input} style={{ marginBottom: '5px' }} />
-      <div className="red-text" style={{ marginBottom: '20px' }}>
+      <div className="color-red-5" style={{ marginBottom: '20px' }}>
         {touched && error}
       </div>
       {/* THIS IS THE SAME AS ABOVE {!touched ? "" : error} */}

@@ -9,6 +9,7 @@ import { validatePresenceOnAll } from "../../../../utils/validations"
 import FormModal from "../../../shared/Form/FormModal"
 import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom"
+import { formatMoney } from '../../../../utils/helpFunctions'
 
 class ReviewItems extends Component {
   constructor(props) {
@@ -85,7 +86,9 @@ class ReviewItems extends Component {
             {this.props.cart.line_items.map((line_item, index) => {
               return (
                 <div key={index} className="flex align-items-center" style={{ marginTop: "5px" }}>
-                  <img src={line_item.image} className="h-auto w-auto" style={{ maxHeight: "100px", maxWidth: "100px",  marginRight: "10px" }} />
+                  <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px",  marginRight: "10px" }}>
+                    <img className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
+                  </div>
                   <div>
                     <h3 className="margin-s-v">{line_item.product_name}</h3>
                     <div>Quantity: {line_item.quantity}</div>
@@ -112,6 +115,13 @@ class ReviewItems extends Component {
             bill_or_ship={"shipping"} 
             propertyToEdit={this.state.propertyToEdit}
           />
+
+          <div className="flex flex_column">
+            <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
+            <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
+            <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
+            <div>Total: ${formatMoney(this.props.cart.total)}</div>
+          </div>
 
         </div>
 

@@ -58,6 +58,7 @@ class LineItems extends Component {
     cart.sub_total = sub_total
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
+    cart.checkout_state = "shopping"
 
     await this.props.updateCart(cart)
   }
@@ -73,6 +74,7 @@ class LineItems extends Component {
         return item
       }
     })
+    cart.checkout_state = "shopping"
     this.props.updateCart(cart)
     this.props.dispatchObj(reset("change_line_item_quantity_form"))
     this.setState({ showModal: false })

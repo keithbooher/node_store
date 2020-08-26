@@ -107,16 +107,18 @@ class ProductCard extends Component {
       }
     }
 
-    sub_total = calculateSubtotal(cart)
-    let tax = sub_total * .08
-    let shipping = cart.chosen_rate ? cart.chosen_rate.cost : 0
+    
+    sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = Number(sub_total + tax + shipping)
+    cart.checkout_state = "shopping"
+    
     cart.email = this.props.user.email
 
-    cart.sub_total = formatMoney(sub_total)
-    cart.tax = formatMoney(tax)
-    cart.total = formatMoney(sub_total + tax + shipping)
-    cart.checkout_state = "shopping"
 
     if (create_boolean === true) {
       this.props.createCart(cart)
@@ -188,10 +190,11 @@ class ProductCard extends Component {
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
+    console.log(this.props.related_product)
     return (
       <>
         {this.props.auth !== null ? 
-          <div style={{ margin: "0px 10px" }} key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background ${this.props.related_product ? "" : "w-90"} ${this.props.related_product && "related_product"} margin-s-v ${product._id === "" && "hidden"}`}>
+          <div style={this.props.related_product ? { margin: "0px 10px", minWidth: "280px" } : {} } key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background ${this.props.related_product ? "" : "w-90"} ${this.props.related_product && "related_product"} margin-s-v ${product._id === "" && "hidden"}`}>
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${product.price}</div>

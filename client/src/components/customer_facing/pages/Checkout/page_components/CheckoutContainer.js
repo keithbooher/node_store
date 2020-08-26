@@ -97,7 +97,7 @@ class CheckoutContainer extends Component  {
 
   
   render() {
-    console.log(this.props)
+    console.log(this.state.current_cart)
     let address_boolean = false
     let shipping_boolean = false
     let payment_boolean = false

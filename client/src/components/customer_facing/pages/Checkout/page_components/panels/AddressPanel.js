@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import _ from "lodash"
 import Form from '../../../../../shared/Form/Form'
-import { addressFormFields, validate } from '../formFields'
-import { updatedFormFields } from "../../../../../../utils/helpFunctions"
+import { shippingAddressFormFields, billingAddressFormFields, validate } from '../formFields'
+import { updatedAddressFormFields } from "../../../../../../utils/helpFunctions"
 import AddressCard from '../../../../components/AddressCard';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
@@ -51,7 +51,7 @@ class AddressPanel extends Component  {
   billing_initial_values() {
     let billing_initial_values = this.props.form.billing_checkout_form ? this.props.form.billing_checkout_form.values : {} 
     if (this.props.cart.billing_address) {
-      billing_initial_values = updatedFormFields(addressFormFields, this.props.cart.billing_address)
+      billing_initial_values = updatedAddressFormFields(billingAddressFormFields, this.props.cart.billing_address)
     }
     return billing_initial_values
   }
@@ -59,7 +59,7 @@ class AddressPanel extends Component  {
   shipping_initial_values() {
     let shipping_initial_values = this.props.form.shipping_checkout_form ? this.props.form.shipping_checkout_form.values : {}
     if (this.props.cart.shipping_address) {
-      shipping_initial_values = updatedFormFields(addressFormFields, this.props.cart.shipping_address)
+      shipping_initial_values = updatedAddressFormFields(shippingAddressFormFields, this.props.cart.shipping_address)
     }
     return shipping_initial_values
   }
@@ -141,7 +141,7 @@ class AddressPanel extends Component  {
                 { this.state.billing_card_chosen === true || this.state.billing_form_submit === true ? 
                     <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("bill")}>
                       <h2>Edit Billing</h2>
-                      <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faEdit} />
+                      <FontAwesomeIcon style={{ fontSize: "40px" }} icon={faEdit} />
                     </div>
                   :
                     <>
@@ -149,7 +149,7 @@ class AddressPanel extends Component  {
                       <Form 
                         onSubmit={() => this.handleFormSubmit("billing")} 
                         submitButtonText={"Submit"}
-                        formFields={addressFormFields} 
+                        formFields={billingAddressFormFields} 
                         form={"billing_checkout_form"}
                         initialValues={this.billing_initial_values()}
                         validation={validate}
@@ -163,7 +163,7 @@ class AddressPanel extends Component  {
                 { this.state.shipping_card_chosen === true || this.state.shipping_form_submit === true ? 
                     <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("ship")}>
                       <h2>Edit Shipping</h2>
-                      <FontAwesomeIcon style={{ fontSize: "60px" }} icon={faEdit} />
+                      <FontAwesomeIcon style={{ fontSize: "40px" }} icon={faEdit} />
                     </div>
                   :
                     <>
@@ -171,7 +171,7 @@ class AddressPanel extends Component  {
                       <Form 
                         onSubmit={() => this.handleFormSubmit("shipping")}
                         submitButtonText={"Submit"}
-                        formFields={addressFormFields}
+                        formFields={shippingAddressFormFields}
                         form={"shipping_checkout_form"}
                         initialValues={this.shipping_initial_values()}
                         validation={validate}
@@ -202,20 +202,41 @@ export default connect(mapStateToProps, null)(AddressPanel)
 
 
 const buildAddress = (addy, user_id, bill_or_ship) => {
-  const address = {
-    first_name: addy.first_name,
-    last_name: addy.last_name,
-    company: addy.company,
-    street_address_1: addy.street_address_1,
-    street_address_2: addy.street_address_2,
-    city: addy.city,
-    state: addy.state,
-    zip_code: addy.zip_code,
-    phone_number: addy.phone_number,
-    bill_or_ship: bill_or_ship,
-    _user_id: user_id,
-    country: addy.country
+  console.log(addy)
+  let address
+
+  if (bill_or_ship === "shipping") {
+    address = {
+      first_name: addy.first_name_shipping,
+      last_name: addy.last_name_shipping,
+      company: addy.company_shipping,
+      street_address_1: addy.street_address_1_shipping,
+      street_address_2: addy.street_address_2_shipping,
+      city: addy.city_shipping,
+      state: addy.state_shipping,
+      zip_code: addy.zip_code_shipping,
+      phone_number: addy.phone_number_shipping,
+      bill_or_ship: bill_or_ship,
+      _user_id: user_id,
+      country: addy.country_shipping
+    }
+  } else {
+    address = {
+      first_name: addy.first_name_billing,
+      last_name: addy.last_name_billing,
+      company: addy.company_billing,
+      street_address_1: addy.street_address_1_billing,
+      street_address_2: addy.street_address_2_billing,
+      city: addy.city_billing,
+      state: addy.state_billing,
+      zip_code: addy.zip_code_billing,
+      phone_number: addy.phone_number_billing,
+      bill_or_ship: bill_or_ship,
+      _user_id: user_id,
+      country: addy.country_billing
+    }
   }
+
 
   return address
 }
