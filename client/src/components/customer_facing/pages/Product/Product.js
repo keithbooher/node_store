@@ -46,11 +46,11 @@ const Product = ({
 
   
   useEffect(() => {
-    // fetchData()
+    fetchData()
   }, [])
 
   useEffect(() => {
-    // fetchData()
+    fetchData()
     document.getElementById('root').scrollTo(0, 0);
   }, [match.params.product])
 
