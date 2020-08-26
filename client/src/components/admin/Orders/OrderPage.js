@@ -239,7 +239,7 @@ class OrderPage extends Component {
                 />
               }
             </>
-          : <FontAwesomeIcon className="loadingGif" icon={faSpinner} />
+          : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />
         }
 
         {

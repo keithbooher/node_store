@@ -135,7 +135,7 @@ class Reviews extends Component {
           <div className="flex flex_column">
             {this.renderReviews()}
           </div>
-        : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} /> }
+        : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin /> }
 
         <h2>{this.state.reviews && this.state.reviews.length === 0 && "There are no reviews"}</h2>
 

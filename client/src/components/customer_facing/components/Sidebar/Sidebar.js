@@ -41,7 +41,7 @@ class Sidebar extends Component  {
     })
     return categories.map((category, index) => {
       return (
-        <div key={index} style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "10px", maxWidth: "8em" } }>
+        <div key={index} className="margin-xs-v" style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "12px", maxWidth: "8em" } }>
           <div>
             <FontAwesomeIcon className="inline color-white" style={{ marginRight: "5px" }} icon={faCaretRight} />
             <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline" to={`/shop/${category.path_name}`}>{category.name}</Link>
@@ -71,12 +71,13 @@ class Sidebar extends Component  {
     return (
       <>
         <div ref={node => this.node = node} className={"flex flex_column space-between theme-background-2 sidebar " + sidebar_class}>
-          <div className="padding-m font-size-20">
+          <div className="padding-m font-size-20  h-100 overflow-scroll">
             <h3 className="margin-top-none">Categories</h3>
             {this.renderCategories(null)}
           </div>
-          <div className="padding-m">
-            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq">FAQ</Link>
+          <div className="padding-m flex">
+            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq" className="">FAQ</Link>
+            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/contact" className="margin-m-h">Contact</Link>
           </div>
         </div>
       </>

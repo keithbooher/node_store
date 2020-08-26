@@ -204,7 +204,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
       {categories.length !== 0 ? 
         renderCategories(null)
-      : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
+      : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
 
       {editForm &&
         <div>

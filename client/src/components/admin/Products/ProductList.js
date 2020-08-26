@@ -222,7 +222,7 @@ class ProductList extends Component {
         />
         <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
         {this.state.products.length !== 0 ? this.renderProducts() : "No Products Found" }
-        {this.state.products  === null && <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
+        {this.state.products  === null && <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
         <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
       </>
     )

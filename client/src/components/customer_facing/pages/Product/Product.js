@@ -5,7 +5,7 @@ import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faChevronDown, faChevronUp, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Form from "../../../shared/Form"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import { reset } from "redux-form"
@@ -46,11 +46,11 @@ const Product = ({
 
   
   useEffect(() => {
-    fetchData()
+    // fetchData()
   }, [])
 
   useEffect(() => {
-    fetchData()
+    // fetchData()
     document.getElementById('root').scrollTo(0, 0);
   }, [match.params.product])
 
@@ -275,7 +275,7 @@ const Product = ({
       </MetaTags>
 
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
-      {product && 
+      {product ? 
         <div>
           <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
           <div style={{ marginBottom: "20px" }}>
@@ -406,7 +406,7 @@ const Product = ({
             }
           </div>
         </div>
-      }
+      : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />}
     </div>
   )
 }

@@ -116,7 +116,7 @@ class ProductCard extends Component {
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
     cart.checkout_state = "shopping"
-    
+
     cart.email = this.props.user.email
 
 
@@ -233,7 +233,7 @@ class ProductCard extends Component {
               <button className="margin-s-h inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
             </div>
           </div>
-        : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
+        : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
 
         {this.state.exceededInventory && 
           <Modal cancel={() => this.setState({ exceededInventory: false })}>

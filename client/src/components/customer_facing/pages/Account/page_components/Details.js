@@ -138,7 +138,7 @@ class Details extends Component {
                 </div>
             }
           </>
-          : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} />
+          : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
         }
       </div>
     )

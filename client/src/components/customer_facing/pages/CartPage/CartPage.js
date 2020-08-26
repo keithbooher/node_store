@@ -48,7 +48,7 @@ class CartPage extends Component {
             <Link to="/checkout"><button>Go to Checkout</button></Link>
           </>
         :
-          <FontAwesomeIcon className="loadingGif" icon={faSpinner} />
+          <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />
         }
       </div>
     )

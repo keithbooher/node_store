@@ -213,7 +213,7 @@ class Orders extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.orders !== null ? this.renderOrders() : <FontAwesomeIcon className="loadingGif" icon={faSpinner} />}
+            {this.state.orders !== null ? this.renderOrders() : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />}
           </tbody>
         </table>
         <div>

@@ -116,7 +116,7 @@ class ReviewItems extends Component {
             propertyToEdit={this.state.propertyToEdit}
           />
 
-          <div className="flex flex_column">
+          <div className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
             <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
