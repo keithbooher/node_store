@@ -111,7 +111,7 @@ class Orders extends Component {
     }
     return (
       <div>
-        {this.state.orders.length !== 0 ? this.renderOrders() : <FontAwesomeIcon icon={faSpinner} className="loadingGif" spin /> }
+        {this.state.orders.length !== 0 ? this.renderOrders() : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
         <PageChanger 
           page_number={this.state.page_number} 
           list_items={this.state.orders} 

@@ -216,6 +216,7 @@ class ProductCard extends Component {
                 }
               <div className="border-radius-s flex flex_column justify-center background-color-black card_image_container">
                 <LazyLoadImage
+                  style={{ marginTop: "5px" }}
                   src={product.image}
                   wrapperClassName="margin-auto-h card_image"
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}

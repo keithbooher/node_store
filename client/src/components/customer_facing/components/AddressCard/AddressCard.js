@@ -32,8 +32,8 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
       title = "Shipping"
     }
     return (
-      <h5>
-        <span style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
+      <h4>
+        <span className="store_text_color" style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
         {hideCreate ? "" : 
           <FontAwesomeIcon 
             className="hover"
@@ -41,7 +41,7 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
             icon={faPlusCircle} 
           />
         }
-      </h5>
+      </h4>
     )
   }
   

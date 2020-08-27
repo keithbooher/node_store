@@ -81,7 +81,7 @@ class Details extends Component {
           <>
             <h4>Email: {this.props.auth.email}</h4>
             <div className="relative">
-              First Name: <a className="inline" onClick={() => this.showEditIndicator("first_name")}>{this.props.auth.first_name}</a>
+              <span className="bold" >First Name: </span><a className="inline" onClick={() => this.showEditIndicator("first_name")}>{this.props.auth.first_name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "first_name" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -90,7 +90,7 @@ class Details extends Component {
                 }
             </div>
             <div className="relative">
-              Last Name: <a className="inline" onClick={() => this.showEditIndicator("last_name")}>{this.props.auth.last_name}</a>
+            <span className="bold" >Last Name:</span> <a className="inline" onClick={() => this.showEditIndicator("last_name")}>{this.props.auth.last_name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "last_name" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 

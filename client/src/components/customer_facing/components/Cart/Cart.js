@@ -74,7 +74,7 @@ class Cart extends Component {
                 {this.props.cart.chosen_rate && <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(shipping)}</div>}
                 <div><span className="bold store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
               </div>
-              <button className="margin-auto-v flex flex_column justify-center" onClick={this.expandCart} style={{ height: '25px', padding: "25px 15px", fontSize: "18px" }} ><Link onClick={this.expandCart} className="" to="/checkout">Checkout</Link></button>
+              <button className="margin-auto-v flex flex_column justify-center" onClick={this.expandCart} style={{ height: '25px', padding: "25px 10px", fontSize: "18px" }} ><Link onClick={this.expandCart} className="" to="/checkout">Checkout</Link></button>
             </div>
           </ul>
         </div>

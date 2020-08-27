@@ -139,17 +139,17 @@ class LineItems extends Component {
                       <img onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
                     </div>
 
-                    <div className="flex flex_column padding-s">
+                    <div className="padding-s">
                       <h3 className="margin-top-none margin-bottom-none line_item_name"><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
                       <div className="color-black bold margin-m-v">${line_item.product_price}/ea</div>
 
-                      <div style={{ fontSize: "15px" }}className="flex align-items-center color-black margin-auto-v">
+                      <div style={{ fontSize: "14px" }}className="flex align-items-center color-black margin-auto-v">
                         <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                         <input 
                           onChange={(e) => console.log(e)} 
                           onFocus={() => this.setState({ showModal: line_item })} 
                           value={line_item.quantity} 
-                          style={{ width: "50px" }}
+                          style={{ width: "100%", maxWidth: "45px" }}
                         />
                         <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                       </div>

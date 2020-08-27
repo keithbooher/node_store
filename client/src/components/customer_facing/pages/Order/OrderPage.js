@@ -48,7 +48,7 @@ class OrderPage extends Component {
             {order.shipment.line_items.map((item, index) => {
               return (
                 <div key={index} className="flex flex_column align-items-center">
-                  <img className="radius-s" style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
+                  <img className="border-radius-s" style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
                   <div className="flex space-evenly w-90" style={{ margin: ".9em auto" }}>
                     <div>
                       <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
