@@ -60,7 +60,7 @@ class Home extends Component  {
           {this.state.banner ?
             <img className="w-auto h-auto" style={isMobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
           :
-            <FontAwesomeIcon icon={faSpinner} className="loadingGif" spin />
+            <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin />
           }
         </div>
         <div className="flex flex-wrap space-evenly home_product_container">

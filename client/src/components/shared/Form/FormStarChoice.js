@@ -16,7 +16,7 @@ class FormStarChoice extends Component {
       <div>
         <StarRatings
           rating={this.props.input.value ? this.props.input.value : 0}
-          starRatedColor="blue"
+          starRatedColor="#6CB2EB"
           changeRating={this.changeRating}
           numberOfStars={5}
           name='rating'

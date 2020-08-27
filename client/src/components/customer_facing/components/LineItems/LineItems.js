@@ -141,23 +141,19 @@ class LineItems extends Component {
 
                     <div className="flex flex_column padding-s">
                       <h3 className="margin-top-none margin-bottom-none line_item_name"><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
-                      <div style={{ fontSize: "15px", padding: "10px 5px" }} className="flex flex_column color-black margin-auto-v">
+                      <div className="color-black bold margin-m-v">${line_item.product_price}/ea</div>
 
-
-                        <div className="small-text">${line_item.product_price}/ea</div>
-                        <div className="flex align-items-center">
-                          <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
-                          <input 
-                            onChange={(e) => console.log(e)} 
-                            onFocus={() => this.setState({ showModal: line_item })} 
-                            value={line_item.quantity} 
-                            style={{ width: "50px" }}
-                          />
-                          <FontAwesomeIcon onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
-                        </div>
-
-                        <div>${line_item.product_price * line_item.quantity}</div>
+                      <div style={{ fontSize: "15px" }}className="flex align-items-center color-black margin-auto-v">
+                        <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                        <input 
+                          onChange={(e) => console.log(e)} 
+                          onFocus={() => this.setState({ showModal: line_item })} 
+                          value={line_item.quantity} 
+                          style={{ width: "50px" }}
+                        />
+                        <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                       </div>
+
                     </div>
                   </div>
                 </div>

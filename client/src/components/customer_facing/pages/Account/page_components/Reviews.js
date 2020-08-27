@@ -77,7 +77,7 @@ class Reviews extends Component {
             <div>Rating: </div>
             <StarRatings
               rating={review.rating}
-              starRatedColor="blue"
+              starRatedColor="#6CB2EB"
               numberOfStars={5}
               name='rating'
               starDimension="15px"

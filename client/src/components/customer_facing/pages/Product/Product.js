@@ -261,7 +261,7 @@ const Product = ({
   } else if (reviews.length === 0) {
     review_container_style = { height: "auto" }
   }
-
+  console.log(match)
   return (
     <div>
       <MetaTags>
@@ -282,7 +282,7 @@ const Product = ({
             {reviews.length > 0 && averageRating &&
               <StarRatings
                 rating={new Number(averageRating)}
-                starRatedColor="blue"
+                starRatedColor="#6CB2EB"
                 numberOfStars={5}
                 name='rating'
                 starDimension="15px"
@@ -296,7 +296,8 @@ const Product = ({
           <div >
             <div className="flex flex_column">
               <h1 className="margin-v-none">${product.price}</h1>
-              {!product.backorderable && <div className="margin-s">In Stock: {product.inventory_count}</div>}
+              {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
+              {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
             </div>
             <div className="flex">
               <div className="flex">
@@ -326,15 +327,15 @@ const Product = ({
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
-                <div id="reviews_container" style={{ maxHeight: "450px" }} className={`relative overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                <div id="reviews_container" style={{ maxHeight: "450px" }} className={`relative border-radius-s overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
                   {reviews.map((review, index) => {
                     return (
-                      <div className="background-color-grey-6 padding-s margin-xs-v" style={{ borderRadius: "2px", borderColor: "black", borderWidth: "1px" }} key={index}>
+                      <div className="theme-background-2 padding-s margin-xs-v border-radius-s" key={index}>
                         <div className="flex align-items-center">
                           <h4 style={{ marginRight: "10px" }}>Rating:</h4>
                           {<StarRatings
                             rating={review.rating}
-                            starRatedColor="blue"
+                            starRatedColor="#6CB2EB"
                             numberOfStars={5}
                             name='rating'
                             starDimension="15px"

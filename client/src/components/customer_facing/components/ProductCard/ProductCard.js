@@ -44,6 +44,8 @@ class ProductCard extends Component {
       cart.line_items = []
     }
 
+    console.log(product.categories)
+
     if (this.props.cart == null) {
       create_boolean = true
       cart = {
