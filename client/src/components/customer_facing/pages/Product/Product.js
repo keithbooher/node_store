@@ -307,7 +307,7 @@ const Product = ({
                   <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
                 </div>
               </div>
-              <button className="margin-s inline" onClick={addToCart.bind(this)}>Add To Cart</button>
+              <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
             </div>
             <hr/>
             <h3>Description</h3>
@@ -373,7 +373,7 @@ const Product = ({
                     onSubmit={submitReviewForm}
                     formFields={[
                       { label: 'Rating', name: 'rating', typeOfComponent: "star-choice", noValueError: 'You must provide an value', value: null },
-                      { label: 'Description', name: 'description', typeOfComponent: "text-area", noValueError: 'You must provide an value', value: null },
+                      { label: 'Tell us how you liked it!', name: 'description', typeOfComponent: "text-area", noValueError: 'You must provide an value', value: null },
                     ]}
                     submitButtonText={"Submit Review"}                  
                     form={"product_review_form"}

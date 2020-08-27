@@ -13,7 +13,7 @@ class FormStarChoice extends Component {
 
   render() {
     return (
-      <div>
+      <div className="margin-s-v">
         <StarRatings
           rating={this.props.input.value ? this.props.input.value : 0}
           starRatedColor="#6CB2EB"

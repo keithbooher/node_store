@@ -44,7 +44,6 @@ class AddressPanel extends Component  {
   
   async handleSubmit() {
     const selected_shipping_method = this.props.form[`shipping_method_selection_form`].values
-    console.log(this.props.form)
     const cost = selected_shipping_method.shipping_rates.value
     const shipping_method = "Flat Rate"
     const rate = selected_shipping_method.shipping_rates.name

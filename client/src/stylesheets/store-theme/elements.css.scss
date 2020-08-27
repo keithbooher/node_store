@@ -31,13 +31,14 @@ a.a-invert:hover {
 ////////////////////////////////
 
 button {
-  background-color:$blue-7;
-  border: solid 1px $blue-3;
-  color: $blue-3;
+  background-color: #12283A;
+  border: solid 1px #6CB2EB;
+  color: #6CB2EB;
   border-radius: 4px;
-  font-size: 14px;
-  padding: 4px;
+  font-size: 15px;
+  padding: 10px 6px;
   font-weight: 600;
+  margin-top: -2px;
 }
 
 button:hover {

@@ -69,12 +69,12 @@ class Cart extends Component {
             </div>
             <div className="flex space-between theme-background-3 padding-s">
               <div className="flex flex_column">
-                <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
-                <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
-                {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(shipping)}</div>}
-                <div>Total: ${formatMoney(this.props.cart.total)}</div>
+                <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
+                <div><span className="bold store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
+                {this.props.cart.chosen_rate && <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(shipping)}</div>}
+                <div><span className="bold store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
               </div>
-              <button onClick={this.expandCart} ><Link onClick={this.expandCart} className="header_list_item clickable" to="/checkout">Checkout</Link></button>
+              <button className="margin-auto-v flex flex_column justify-center" onClick={this.expandCart} style={{ height: '25px', padding: "25px 15px", fontSize: "18px" }} ><Link onClick={this.expandCart} className="" to="/checkout">Checkout</Link></button>
             </div>
           </ul>
         </div>

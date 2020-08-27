@@ -6,6 +6,7 @@ import PageChanger from "../../../../shared/PageChanger"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faExternalLinkAlt, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Link } from "react-router-dom"
+import { formatMoney } from "../../../../../utils/helpFunctions"
 class Orders extends Component {
   constructor(props) {
     super()
@@ -46,19 +47,35 @@ class Orders extends Component {
   orderData(order) {
     var date = order.date_placed.split("T")[0]
     return  (
-      <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
+      <div className="w-95 margin-auto-h padding-xs" style={{ backgroundColor: 'rgb(111, 111, 111)' }}>
         <div>
+          <h2 className="margin-xs-v underline">Line Items</h2>
           {order.shipment && order.shipment.line_items.map((line_item, index) => {
             return (
-              <div key={index} className="flex">
-                <div>{line_item.product_name}</div>
-                <LeaveReview order_id={order._id} line_item={line_item} />
-              </div>
+              <>
+                <div key={index} className="flex align-items-center">
+                  <div>
+                    <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px",  marginRight: "10px" }}>
+                      <img className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image}  />
+                    </div>
+                  </div>
+                  <div className="margin-s-h">
+                    <h3 className="margin-s-v">{line_item.product_name}</h3>
+                    <div><span className="store_text_color">Price:</span> {line_item.product_price}</div>
+                    <div><span className="store_text_color">Quantity:</span> {line_item.quantity}</div>
+                    <LeaveReview order_id={order._id} line_item={line_item} />
+                  </div>
+                </div>
+                <hr />
+              </>
             )
           })}
         </div>
-        <div>Total: ${order.total}</div>
-        <div>Date Place: {date}</div>
+        <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
+        <div><span className="bold store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
+        <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+        <div><span className="store_text_color bold">Total:</span> ${formatMoney(order.total)}</div>
+        <div><span className="store_text_color bold">Date Place:</span> {date}</div>
       </div>
     )
   }
@@ -74,7 +91,7 @@ class Orders extends Component {
       return (
         <div key={index}>
           <div className="flex space-between margin-xs-v padding-s" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>        
-            <FontAwesomeIcon icon={faCaretDown} onClick={ () => this.setOrder(order) } />
+            <FontAwesomeIcon className="store_text_color" icon={faCaretDown} onClick={ () => this.setOrder(order) } />
             <div>{"..." + order._id.substr(order._id.length - 8)}</div>
             <div>{date}</div>
             <Link to={`/order/${order._id}`}><FontAwesomeIcon icon={faExternalLinkAlt} onClick={ () => this.setOrder(order) } /></Link>
@@ -86,7 +103,6 @@ class Orders extends Component {
   }
 
   render() {
-    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.orders && this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {

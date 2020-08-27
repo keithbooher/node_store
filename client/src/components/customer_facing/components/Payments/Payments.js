@@ -147,6 +147,7 @@ const Payments = ({
     // Create Order
     let order = {
       sub_total: cart.sub_total,
+      tax: cart.tax,
       total: cart.sub_total,
       shipment: new_shipment.data._id,
       date_placed: date,

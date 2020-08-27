@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 import LeaveReview from "../../../shared/LeaveReview"
 import AddressDisplay from "../../../shared/AddressDisplay"
 import MetaTags from 'react-meta-tags'
-
+import { formatMoney } from "../../../../utils/helpFunctions"
 class OrderPage extends Component {
   constructor(props) {
     super()
@@ -32,23 +32,28 @@ class OrderPage extends Component {
           <meta name="description" content="Review a past order" />
           <meta name="keywords" content="" />
         </MetaTags>
+        <h1>Your Order</h1>
         {order &&
           <>
-            <div>Order ID: {order._id}</div>
-            <div>Status: {order.status}</div>
-            <div>Customer: <Link style={{ display: "inline" }} to={`/admin/users/${order._user_id}`} >{order.email}</Link></div>
-            <div>Date Placed: {order.date_placed}</div>
-            <div>Total: {order.total}</div>
+            <div><span className="store_text_color">Order ID:</span> {order._id}</div>
+            <div><span className="store_text_color">Status:</span> {order.status}</div>
+            <div><span className="store_text_color">Customer:</span> {order.email}</div>
+            <div><span className="store_text_color">Date Placed:</span> {order.date_placed}</div>
+            <div><span className="store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
+            <div><span className="store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
+            <div><span className="store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+            <div><span className="store_text_color">Total:</span> {formatMoney(order.total)}</div>
             <hr/>
             <h2>Items Purchased</h2>
             {order.shipment.line_items.map((item, index) => {
               return (
-                <div key={index}>
-                  <img style={{ height: "auto", width: "auto", maxHeight: "200px", maxWidth: "200px" }} src={item.image} />
-                  <div className="flex flex_column">
-                    <div>Quantity: x{item.quantity}</div>
-                    <div>Price Each: ${item.product_price}</div>
-                    <div>Combined Total: ${item.quantity * item.product_price}</div>
+                <div key={index} className="flex flex_column align-items-center">
+                  <img className="radius-s" style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
+                  <div className="flex space-evenly w-90" style={{ margin: ".9em auto" }}>
+                    <div>
+                      <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
+                      <div><span className="store_text_color bold">Price Each:</span> ${item.product_price}</div>
+                    </div>
                     <LeaveReview order_id={order._id} line_item={item} />
                   </div>
                 </div>

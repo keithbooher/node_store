@@ -11,7 +11,7 @@ class LeaveReview extends Component {
     super()
     this.fields = [
       { label: "rating", field_class: "line_item_rating_input", name: "rating", typeOfComponent: "star-choice", noValueError: `` },
-      { label: "description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
+      { label: "Tell what you think about your purchase!", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
     ]
     this.leaveReview = this.leaveReview.bind(this)
     this.submitReview = this.submitReview.bind(this)
@@ -69,7 +69,7 @@ class LeaveReview extends Component {
     return (
     <div>
       <div className="flex">
-        <button className="bare_button" onClick={this.leaveReview}> - {this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
+        <button style={{ fontSize: "12px" }} className="margin-s-v" onClick={this.leaveReview}>{this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
         {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       </div>
       {this.state.show_review ?
