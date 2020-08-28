@@ -80,9 +80,9 @@ module.exports = app => {
 
   // GET A GUEST CART
   app.put('/api/cart/guest/:id', async (req, res) => {
-    const cart_id = req.params.id
     try {
-      const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000", checkout_state: { $ne: "complete" } }, {new: true})
+      const cart_id = req.params.id
+      const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000" }, {new: true})
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)
