@@ -8,19 +8,6 @@ import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import Carousel from "../../../shared/Carousel"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import FormModal from "../../../shared/Form/FormModal"
-import { render } from 'react-dom';
-
-// const AddressCard = ({ 
-//   auth, 
-//   actionBox, 
-//   reset, 
-//   bill_or_ship, 
-//   hideCreate, 
-//   showForm, 
-//   fedUser, 
-//   updateUser,
-//   form
-// }) => {
 
 class AddressCard extends Component {
   constructor(props) {
@@ -57,10 +44,10 @@ class AddressCard extends Component {
     }
     return (
       <h4>
-        <span className="store_text_color" style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
+        <span style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
         {this.props.hideCreate ? "" : 
           <FontAwesomeIcon 
-            className="hover"
+            className="hover store_text_color"
             onClick={() => this.props.showForm(this.props.bill_or_ship)} 
             icon={faPlusCircle} 
           />
@@ -143,11 +130,10 @@ class AddressCard extends Component {
       <div 
         key={index} 
         data-address-id={address._id} 
-        style={ this.check_highlight(address) ? { backgroundColor: "rgb(160 169 212)" } :  {}} 
-        className="address_card_container padding-s-h padding-s-bottom padding-l-top color-black border-radius-s theme-background-4 relative"
+        className={`address_card_container padding-s-h padding-s-bottom padding-l-top border-radius-s theme-background-2 relative ${ this.check_highlight(address) ? "st-border" : "" }`}
       >
         <div className="margin-xs-v">
-          <span className="bold">First Name:</span> 
+          <span >First Name:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("first_name", this.props.bill_or_ship)}>{address.first_name ? address.first_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "first_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -157,7 +143,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Last Name:</span> 
+          <span >Last Name:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("last_name", this.props.bill_or_ship)} >{address.last_name ? address.last_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "last_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -167,7 +153,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Company:</span> 
+          <span >Company:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("company", this.props.bill_or_ship)} >{address.company ? address.company : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "company" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -177,7 +163,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Street Address 1:</span> 
+          <span >Street Address 1:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_1", this.props.bill_or_ship)}>{address.street_address_1 ? address.street_address_1 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "street_address_1" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -187,7 +173,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Street Address 2:</span> 
+          <span >Street Address 2:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_2", this.props.bill_or_ship)}>{address.street_address_2 ? address.street_address_2 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "street_address_2" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -197,7 +183,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">City:</span> 
+          <span >City:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("city", this.props.bill_or_ship)}>{address.city ? address.city : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "city" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -207,7 +193,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">State:</span> 
+          <span >State:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("state", this.props.bill_or_ship)}>{address.state ? address.state : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "state" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -217,7 +203,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Zip Code:</span> 
+          <span >Zip Code:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("zip_code", this.props.bill_or_ship)}>{address.zip_code ? address.zip_code : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "zip_code" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -227,7 +213,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Phone Number:</span> 
+          <span >Phone Number:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("phone_number", this.props.bill_or_ship)}>{address.phone_number ? address.phone_number : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "phone_number" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -237,7 +223,7 @@ class AddressCard extends Component {
           }
         </div>
         <div className="margin-xs-v">
-          <span className="bold">Country:</span> 
+          <span >Country:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("country", this.props.bill_or_ship)}>{address.country ? address.country : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.property === "country" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
@@ -246,7 +232,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <button className="absolute" style={{ top: "3px", right: "3px" }} onClick={() => this.deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
+        <FontAwesomeIcon className="absolute store_text_color" style={{ top: "5px", right: "5px" }} onClick={() => this.deleteAddress(address)} icon={faTrash} />
         { this.props.actionBox ? <button style={{ marginTop: '10px' }} onClick={() => this.checkBox(address)}>Use this address </button> : "" }
       </div>
       )

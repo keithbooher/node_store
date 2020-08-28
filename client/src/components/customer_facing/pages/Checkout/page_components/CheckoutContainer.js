@@ -35,9 +35,13 @@ class CheckoutContainer extends Component  {
     if (!this.props.current_user) {
       const guest_cart_id = cookies.get('guest_cart')
       if (!guest_cart_id) {
+        console.log("1")
         this.props.history.push("/")
+        return
       } else {
+        console.log("2")
         current_cart = await this.props.getGuestCart(guest_cart_id)
+        console.log(current_cart)
       }
     } else {
       current_cart = await this.props.getCurrentCart(this.props.current_user._id)

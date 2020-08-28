@@ -182,9 +182,7 @@ class AddressPanel extends Component  {
             </div>
 
             { bill_complete && ship_complete && 
-              <button onClick={this.nextTab} className="teal btn-flat right white-text">
-                <i className="material-icons right">Next</i>
-              </button>
+              <div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold" onClick={this.nextTab} >Continue</button></div>
             }
 
           </>

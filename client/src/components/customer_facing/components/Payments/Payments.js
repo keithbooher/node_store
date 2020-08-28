@@ -179,12 +179,12 @@ const Payments = ({
         name="Node Store"
         description='Purchase your order at ______' 
         panelLabel="Purchase"
-        amount={500}
+        amount={cart.total * 100}
         token={token => someFunction(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
-        email={null}
+        email={cart.email}
       >
-        <button className="btn margin-s-v">Pay For Order</button>
+        <div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold">Pay For Order</button></div>
       </StripeCheckout>
       {outOfStockMessage && 
         <LowInventory 

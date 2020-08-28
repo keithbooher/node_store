@@ -75,7 +75,7 @@ class AddressPanel extends Component  {
               <div>
                 <Form 
                   onSubmit={this.handleSubmit}
-                  submitButtonText={"Select Shipping Method"}
+                  submitButton={<div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold">Select Shipping Method</button></div>}
                   formFields={this.state.rateFields}
                   form='shipping_method_selection_form'
                 />

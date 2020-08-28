@@ -16,6 +16,7 @@ class Checkout extends Component  {
   async componentDidMount() {
     // make api request for cart and then set the state for cart (if we need it here)
     const current_user = await this.props.getCurrentUser()
+    console.log(current_user.data)
     this.setState({ current_user: current_user.data })
   }
   

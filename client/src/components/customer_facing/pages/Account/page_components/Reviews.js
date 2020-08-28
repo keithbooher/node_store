@@ -4,10 +4,12 @@ import { getUsersReviews, getOrder, lastUserReview, updateReview } from "../../.
 import PageChanger from "../../../../shared/PageChanger"
 import StarRatings from 'react-star-ratings'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSpinner, faArrowDown, faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import { updatedFormFields } from "../../../../../utils/helpFunctions"
 import FormModal from "../../../../shared/Form/FormModal"
+import { Link } from "react-router-dom"
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 class Reviews extends Component {
   constructor(props) {
@@ -70,11 +72,20 @@ class Reviews extends Component {
   renderReviews() {
     return this.state.reviews.map((review, index) => {
       return (
-        <div key={index} className="relative border margin-m-v">
+        <div key={index} className="relative border margin-m-v padding-s border-radius-s" >
+          {review.line_item &&
+            <>
+              <h2><Link to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>
+              <div className="flex margin-auto-h justify-center align-items-center background-color-black" style={{ maxHeight: "200px", maxWidth: "200px", minHeight: "200px", minWidth: "200px", marginTop: "10px", marginBottom: "10px" }}>
+                <LazyLoadImage
+                  style={{ height: "auto", width: "auto", maxHeight: "200px", maxWidth: "200px" }}
+                  src={review.line_item.image}
+                />
+              </div>
+            </>
+          }
           <FontAwesomeIcon className="absolute" style={{ top: "2px", right: "2px" }} icon={faEdit} onClick={() => this.setState({ editForm: review })} />
-          <div>First Name: {review.first_name}</div>
           <div className="flex align-items-center">
-            <div>Rating: </div>
             <StarRatings
               rating={review.rating}
               starRatedColor="#6CB2EB"
@@ -84,16 +95,13 @@ class Reviews extends Component {
               starSpacing="1px"
             />
           </div>
-          <div>description: {review.description}</div>
-          {review.line_item && <div>line_item: {review.line_item.product_name}</div>}
-          <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>
+          <div>{review.description}</div>
+          <a className="margin-s-v" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon className="store_text_color" icon={faArrowCircleDown} /></a>
           {this.state.order !== null ?
             this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id? 
             <div className="padding-m">
-              <div>Order Number: {this.state.order._id}</div>
+              <div>Order Number: <Link className="inline" to={`/order/${this.state.order._id}`}>{this.state.order._id}</Link></div>
               <div>Date Placed: {this.state.order.date_placed}</div>
-              <div>Subtotal: {this.state.order.sub_total}</div>
-              <div>Total: {this.state.order.total}</div>
             </div>  
           : "" : ""}
         </div>
@@ -122,7 +130,6 @@ class Reviews extends Component {
         lastPossibleItem = true
       }
     }
-    console.log(this.state)
     return (
       <div>
         {this.state.reviews.length !== 0 ?

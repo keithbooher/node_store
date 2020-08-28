@@ -44,8 +44,6 @@ class ProductCard extends Component {
       cart.line_items = []
     }
 
-    console.log(product.categories)
-
     if (this.props.cart == null) {
       create_boolean = true
       cart = {
@@ -192,7 +190,6 @@ class ProductCard extends Component {
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
-    console.log(this.props.related_product)
     return (
       <>
         {this.props.auth !== null ? 

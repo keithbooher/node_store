@@ -60,7 +60,7 @@ class Orders extends Component {
                     </div>
                   </div>
                   <div className="margin-s-h">
-                    <h3 className="margin-s-v">{line_item.product_name}</h3>
+                    <h3 className="margin-s-v"><Link to={line_item.product_path}>{line_item.product_name}</Link></h3>
                     <div><span className="store_text_color">Price:</span> {line_item.product_price}</div>
                     <div><span className="store_text_color">Quantity:</span> {line_item.quantity}</div>
                     <LeaveReview order_id={order._id} line_item={line_item} />

@@ -4,8 +4,6 @@ import { FETCH_USER_CART, UPDATE_CART, CONVERT_CART, CREATE_GUEST_CART} from './
 // Find the current user's cart
 export const usersCart = (id) => async dispatch => {
   const res = await axios.get(`/api/current/cart/${id}`)
-  console.log(id)
-  console.log(res.data)
   if (res.data === "") {
     res.data = null
   }

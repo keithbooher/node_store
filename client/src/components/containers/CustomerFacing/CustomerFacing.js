@@ -83,31 +83,37 @@ const CustomerFacing = ({
   }
 
   const getCart = async () => {
+    console.log(auth)
     // If no user signed in
-    if (!auth) {
+    if (!auth || auth._id === "000000000000000000000000") {
       // Look for guest cart
       const cookieGuestCart = cookies.guest_cart
       if (!cookieGuestCart) {
+        console.log("?????")
         // Guest user landing for the first time
         // Create the guest cart
         const guest_cart = await createGuestCart()        
         setCookie('guest_cart', guest_cart._id, { path: '/' })
       } else {
+        console.log("!!!!")
         // Guest user, but they have cart cookies with us 
         // Find the guest cart
         const guest_cart_id = cookies.guest_cart
         const guestCart = await getGuestCart(guest_cart_id)
         if (!guestCart) {
+          console.log("****")
           await createGuestCart()
         }
       } 
     } else if (auth && cookies.guest_cart) {
+      console.log("-----")
       // User is signed in but had an open guest cart
       // convert guest cart to this user's cart
       const guest_cart_id = cookies.guest_cart
       await convertGuestCart(guest_cart_id, auth._id, auth.email)
       removeCookie('guest_cart')
     } else {
+      console.log("/////")
       // User is signed in and no cart in cookies
       await usersCart(auth._id)
       removeCookie('guest_cart')

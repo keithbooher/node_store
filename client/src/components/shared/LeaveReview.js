@@ -68,7 +68,7 @@ class LeaveReview extends Component {
     let item = this.props.line_item
     return (
     <div>
-      <div className="flex">
+      <div className="flex align-items-center">
         <button style={{ fontSize: "12px" }} className="margin-s-v" onClick={this.leaveReview}>{this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
         {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       </div>

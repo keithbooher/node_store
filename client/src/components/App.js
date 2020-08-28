@@ -48,6 +48,9 @@ const App = ({ fetchUser, auth }) => {
     return () => {}
   }, [])
 
+  console.log("AUTH")
+  console.log(auth)
+
   return (
     <BrowserRouter>
       {auth && 
