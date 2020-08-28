@@ -45,8 +45,7 @@ class Cart extends Component {
   }
 
   render() {
-    console.log("CART")
-    console.log(this.props.cart)
+    console.log({cart: this.props.cart})
     let shipping = 0 
     if (this.props.cart) {
       shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0

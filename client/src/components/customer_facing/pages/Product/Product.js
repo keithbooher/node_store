@@ -25,8 +25,7 @@ const Product = ({
   updateCart, 
   form, 
   dispatchObj, 
-  match, 
-  history, 
+  match,
   getProductAverageRating, 
   getProductByPathName, 
   lastReview, 
@@ -261,7 +260,6 @@ const Product = ({
   } else if (reviews.length === 0) {
     review_container_style = { height: "auto" }
   }
-  console.log(match)
   return (
     <div>
       <MetaTags>

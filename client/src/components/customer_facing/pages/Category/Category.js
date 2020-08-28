@@ -91,7 +91,7 @@ class Category extends Component  {
               {this.renderProductCards()}
             </div>
           </>
-       : <FontAwesomeIcon icon={faSpinner} className="loadingGif" spin /> }
+       : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
       </div>
     )
   }
