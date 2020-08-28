@@ -1,32 +1,56 @@
-import React, { useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateUser } from '../../../../actions'
+import { updateUser, dispatchObj } from '../../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faTrash, faPlusCircle, faCaretRight, faCaretLeft} from "@fortawesome/free-solid-svg-icons"
+import {faTrash, faPlusCircle, faEdit} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
 import { capitalizeFirsts } from "../../../../utils/helpFunctions"
 import Carousel from "../../../shared/Carousel"
+import { validatePresenceOnAll } from "../../../../utils/validations"
+import FormModal from "../../../shared/Form/FormModal"
+import { render } from 'react-dom';
 
-const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showForm, fedUser, updateUser }) => {
-  const [checked_box, set_checked_box] = useState(null)
+// const AddressCard = ({ 
+//   auth, 
+//   actionBox, 
+//   reset, 
+//   bill_or_ship, 
+//   hideCreate, 
+//   showForm, 
+//   fedUser, 
+//   updateUser,
+//   form
+// }) => {
 
-  const checkBox = (address) => {
-    actionBox(address)
+class AddressCard extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      checked_box: null,
+      propertyToEdit: null,
+      editForm: null,
+      checked_box: null
+    }
+  }
+
+  checkBox = (address) => {
+    this.props.actionBox(address)
     if (address.bill_or_ship === "billing") {
       reset("billing_checkout_form")
     } else {
       reset("shipping_checkout_form")
     }
-    if (checked_box === address._id) {
-      set_checked_box(null)
+    if (this.state.checked_box === address._id) {
+      this.setState({ checked_box: null })
     } else {
-      set_checked_box(address._id)
+      this.setState({ checked_box: address._id })
+
     }
   }
 
-  const title = () => {
+  title = () => {
     let title
-    if (bill_or_ship.indexOf('billing') > -1) {
+    if (this.props.bill_or_ship.indexOf('billing') > -1) {
       title = "Billing"
     } else {
       title = "Shipping"
@@ -34,10 +58,10 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
     return (
       <h4>
         <span className="store_text_color" style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
-        {hideCreate ? "" : 
+        {this.props.hideCreate ? "" : 
           <FontAwesomeIcon 
             className="hover"
-            onClick={() => showForm(bill_or_ship)} 
+            onClick={() => this.props.showForm(this.props.bill_or_ship)} 
             icon={faPlusCircle} 
           />
         }
@@ -45,79 +69,236 @@ const AddressCard = ({ auth, actionBox, reset, bill_or_ship, hideCreate, showFor
     )
   }
   
-  const check_highlight = (address) => {
-    if (checked_box === address._id) {
+  check_highlight = (address) => {
+    if (this.state.checked_box === address._id) {
       return true
     } else {
       return false
     }
   }
 
-  const deleteAddress = (address) => {
-    let user = auth ? auth : fedUser
+  deleteAddress = (address) => {
+    let user = this.props.auth ? this.props.auth : this.props.fedUser
     let address_to_be_deleted = address
     let new_bill = user.billing_address.filter(address => address_to_be_deleted._id !== address._id)
     let new_ship = user.shipping_address.filter(address => address_to_be_deleted._id !== address._id)
     user.billing_address = new_bill
     user.shipping_address = new_ship
-    updateUser(user)
+    this.props.updateUser(user)
   }
 
-  const renderAddressCards = () => {
-    return user[bill_or_ship].map((address, index) => {
+  updateAddressProperty = async (address, property) => {
+    const form_value = this.props.form['edit_address_property_form'].values[property]
+    console.log(form_value)
+    let user = this.props.auth ? this.props.auth : this.props.fedUser
+
+    user[this.props.bill_or_ship].map((addy) => {
+      if (addy._id === address._id) {
+        addy[property] = form_value
+      }
+      return addy
+    })
+
+    console.log(user)
+    // update user
+    await this.props.updateUser(user)
+
+
+    this.setState({ editForm: null, propertyToEdit: null })
+    dispatchObj(reset("edit_address_property_form"))
+  }
+
+  showEditModal = (property, address) => {
+    const form_object = {
+      address,
+      onSubmit: () => this.updateAddressProperty(address, property),
+      cancel: () => {
+        this.props.dispatchObj(reset("edit_address_property_form"))
+        this.setState({ editForm: null, propertyToEdit: null })
+      },
+      submitButtonText: "Update Address Property",
+      formFields: [
+        { label: capitalizeFirsts(property), name: property, noValueError: `You must provide a value` },
+      ],
+      form: "edit_address_property_form",
+      validation: validatePresenceOnAll,
+      initialValues: {
+          [property]: address[property]
+        }
+    }
+    this.setState({ editForm: form_object })
+  }
+
+  showEditIndicator = (property, bill_or_ship) => {
+    let propertyToEdit = {
+      property,
+      bill_or_ship
+    }
+    this.setState({ propertyToEdit })
+  }
+
+  renderAddressCards = (user) => {
+    return user[this.props.bill_or_ship].map((address, index) => {
       return (      
       <div 
         key={index} 
         data-address-id={address._id} 
-        style={ check_highlight(address) ? { backgroundColor: "rgb(160 169 212)" } :  {}} 
+        style={ this.check_highlight(address) ? { backgroundColor: "rgb(160 169 212)" } :  {}} 
         className="address_card_container padding-s-h padding-s-bottom padding-l-top color-black border-radius-s theme-background-4 relative"
       >
-        <div className="margin-xs-v"><span className="bold">First Name:</span> {address.first_name ? address.first_name : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Last Name:</span> {address.last_name ? address.first_name : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Company:</span> {address.company ? address.company : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Street Address 1:</span> {address.street_address_1 ? address.street_address_1 : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Street Address 2:</span> {address.street_address_2 ? address.street_address_2 : "" }</div>
-        <div className="margin-xs-v"><span className="bold">City:</span> {address.city ? address.city : "" }</div>
-        <div className="margin-xs-v"><span className="bold">State:</span> {address.state ? address.state : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Zip Code:</span> {address.zip_code ? address.zip_code : "" }</div>
-        <div className="margin-xs-v"><span className="bold">Phone Number:</span> {address.phone_number ? address.phone_number : "" }</div>
-        <button className="absolute" style={{ top: "3px", right: "3px" }} onClick={() => deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
-        { actionBox ? <button style={{ marginTop: '10px' }} onClick={() => checkBox(address)}>Use this address </button> : "" }
+        <div className="margin-xs-v">
+          <span className="bold">First Name:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("first_name", this.props.bill_or_ship)}>{address.first_name ? address.first_name : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "first_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("first_name", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Last Name:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("last_name", this.props.bill_or_ship)} >{address.last_name ? address.last_name : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "last_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("last_name", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Company:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("company", this.props.bill_or_ship)} >{address.company ? address.company : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "company" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("company", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Street Address 1:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_1", this.props.bill_or_ship)}>{address.street_address_1 ? address.street_address_1 : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "street_address_1" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("street_address_1", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Street Address 2:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_2", this.props.bill_or_ship)}>{address.street_address_2 ? address.street_address_2 : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "street_address_2" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("street_address_2", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">City:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("city", this.props.bill_or_ship)}>{address.city ? address.city : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "city" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("city", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">State:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("state", this.props.bill_or_ship)}>{address.state ? address.state : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "state" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("state", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Zip Code:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("zip_code", this.props.bill_or_ship)}>{address.zip_code ? address.zip_code : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "zip_code" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("zip_code", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Phone Number:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("phone_number", this.props.bill_or_ship)}>{address.phone_number ? address.phone_number : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "phone_number" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("phone_number", address)} 
+            />
+          }
+        </div>
+        <div className="margin-xs-v">
+          <span className="bold">Country:</span> 
+          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("country", this.props.bill_or_ship)}>{address.country ? address.country : "" }</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit.property === "country" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
+            <FontAwesomeIcon 
+              icon={faEdit} 
+              onClick={() => this.showEditModal("country", address)} 
+            />
+          }
+        </div>
+        <button className="absolute" style={{ top: "3px", right: "3px" }} onClick={() => this.deleteAddress(address)}><FontAwesomeIcon icon={faTrash} /></button>
+        { this.props.actionBox ? <button style={{ marginTop: '10px' }} onClick={() => this.checkBox(address)}>Use this address </button> : "" }
       </div>
       )
     })
   }
 
-  let user
-  if (auth) {
-    user = auth
-  } else {
-    user = fedUser
-  }
 
-  return (
-    <div style={{ position: 'relative' }}>
-      <div className="flex">
-        {title()}
-      </div>
-
-      {user && user[bill_or_ship] && user[bill_or_ship].length > 0 ?
-        <div className="flex space-evenly">
-          <div className="w-100 relative">
-            {user && user[bill_or_ship] && <Carousel children={renderAddressCards()} />}
-          </div>
+  render() {
+    let user
+    if (this.props.auth) {
+      user = this.props.auth
+    } else {
+      user = this.props.fedUser
+    }
+    return (
+      <div style={{ position: 'relative' }}>
+        <div className="flex">
+          {this.title()}
         </div>
-      : ""}
 
+        {user && user[this.props.bill_or_ship] && user[this.props.bill_or_ship].length > 0 ?
+          <div className="flex space-evenly">
+            <div className="w-100 relative">
+              {user && user[this.props.bill_or_ship] && <Carousel children={this.renderAddressCards(user)} />}
+            </div>
+          </div>
+        : ""}
 
-    </div>
-  )
+        {
+          this.state.editForm && 
+            <div>
+              <FormModal
+                onSubmit={this.state.editForm.onSubmit}
+                cancel={this.state.editForm.cancel}
+                submitButtonText={this.state.editForm.submitButtonText}
+                formFields={this.state.editForm.formFields}
+                form={this.state.editForm.form}
+                validation={this.state.editForm.validation}
+                title={"Updating Address Property"}
+                initialValues={this.state.editForm.initialValues}
+              />
+            </div>
+        }
+      </div>
+    )
+  }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, form }) {
+  return { auth, form }
 }
 
-const actions = { updateUser, reset }
+const actions = { updateUser, reset, dispatchObj }
 
 export default connect(mapStateToProps, actions)(AddressCard)

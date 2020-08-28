@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { getProductByPathName, getProductsReviews, submitReview, lastReview, getProductAverageRating } from "../../../../utils/API"
 import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
-import { capitalizeFirsts, productPathNameToName, calculateSubtotal } from '../../../../utils/helpFunctions'
+import { capitalizeFirsts, productPathNameToName, calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faChevronDown, faChevronUp, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Form from "../../../shared/Form"
@@ -295,7 +295,7 @@ const Product = ({
           </div>
           <div >
             <div className="flex flex_column">
-              <h1 className="margin-v-none">${product.price}</h1>
+              <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
               {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
               {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
             </div>

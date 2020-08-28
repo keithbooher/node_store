@@ -41,11 +41,11 @@ class CartPage extends Component {
             <Link to="/checkout">Go to checkout <FontAwesomeIcon icon={faArrowRight} /></Link>
             <h2>Line Items</h2>
             {this.renderLineItems()}
-            <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
-            <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
-            {this.props.cart.chosen_rate && <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
-            <div>Total: ${formatMoney(this.props.cart.total)}</div>
-            <Link to="/checkout"><button>Go to Checkout</button></Link>
+            <div><span className="store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
+            <div><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
+            {this.props.cart.chosen_rate && <div><span className="store_text_color">Shipping:</span> ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
+            <div><span className="store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
+            <Link className="margin-s-v" to="/checkout"><button>Go to Checkout</button></Link>
           </>
         :
           <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />

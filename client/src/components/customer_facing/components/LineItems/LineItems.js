@@ -141,7 +141,7 @@ class LineItems extends Component {
 
                     <div className="padding-s">
                       <h3 className="margin-top-none margin-bottom-none line_item_name"><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
-                      <div className="color-black bold margin-m-v">${line_item.product_price}/ea</div>
+                      <div className="color-black bold margin-m-v">${formatMoney(line_item.product_price)}</div>
 
                       <div style={{ fontSize: "14px" }}className="flex align-items-center color-black margin-auto-v">
                         <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
