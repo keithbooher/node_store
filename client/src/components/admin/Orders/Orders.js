@@ -139,24 +139,24 @@ class Orders extends Component {
       return (
         <>
           <tr key={index} className="clickable margin-xs-v color-white" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id} >
-            <td onClick={ () => this.setOrder(order)} className="padding-xs flex justify-content-space-between quick-view">
+            <td onClick={ () => this.setOrder(order)} className="padding-s flex justify-content-space-between quick-view">
               <a className="margin-auto-h"><FontAwesomeIcon style={{ fontSize: "20px" }} icon={faCaretDown} /></a>
             </td>
-            <td className="padding-xs">
+            <td className="padding-s">
               <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
-                <FontAwesomeIcon icon={faEdit} style={{ display: "inline"}} /><span style={{  marginLeft: "5px" }}>...{order._id.substring(order._id.length - 4)}</span>
+                <span style={{  marginLeft: "5px" }}>...{order._id.substring(order._id.length - 6)}</span>
               </Link>
             </td>
-            <td className="padding-xs">
+            <td className="padding-s">
               <Link to={`/admin/users/${order._user_id}`}>{order.email}</Link>
             </td>
-            {!isMobile && <td className="padding-xs">
+            {!isMobile && <td className="padding-s">
               <span>{new Date(order.date_placed).toDateString()}</span>
             </td>}
-            {!isMobile && <td className="padding-xs">
+            {!isMobile && <td className="padding-s">
               <span>${order.total}</span>
             </td>}
-            {!isMobile && <td className="padding-xs text-align-center">
+            {!isMobile && <td className="padding-s text-align-center">
               <span>{order.status}</span>
             </td>}
           </tr>
@@ -179,17 +179,16 @@ class Orders extends Component {
     }
 
     return (
-      <div>
-        <div className="flex" style={{ marginTop: "20px" }}>
-          <Link to="/admin/order/create" className="text-align-center flex flex_column align-items-center padding-s"><FontAwesomeIcon style={{ fontSize: '30px' }} icon={faPlusCircle} /><div>New Order</div></Link>
-          <div style={{ width: "20em" }}>
-            <Form
-              submitButton={<div/>}
-              onChange={this.changeOrderTab}
-              formFields={this.state.dropDownField}
-              form='order_status_dropdown'
-            />
-          </div>
+      <div  style={{ marginTop: "20px" }}>
+
+        <Link to="/admin/order/create" className="text-align-center flex align-items-center padding-s absolute" style={{ top: "0px", right: "0px" }}><FontAwesomeIcon style={{ fontSize: '20px' }} className="margin-xs-h" icon={faPlusCircle} /><div>New Order</div></Link>
+        <div style={{ width: "20em" }}>
+          <Form
+            submitButton={<div/>}
+            onChange={this.changeOrderTab}
+            formFields={this.state.dropDownField}
+            form='order_status_dropdown'
+          />
         </div>
 
         <Form 

@@ -16,7 +16,7 @@ class ProductList extends Component {
     this.filterProductsByCategory = this.filterProductsByCategory.bind(this)
     this.changePage = this.changePage.bind(this)
     this.state = {
-      products: [],
+      products: null,
       page_number: 1,
       chosen_product: null,
       last_product: null,
@@ -204,6 +204,7 @@ class ProductList extends Component {
     }
     return (
       <>
+        <Link to="/admin/products/form/add" className="absolute" style={{ top: "5px", right: "5px" }}>Add Product <FontAwesomeIcon icon={faPlusCircle} /></Link>
         <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
 
         <Form
@@ -220,10 +221,23 @@ class ProductList extends Component {
           formFields={productSearchField}
           form='product_search_form'
         />
-        <Link to="/admin/products/form/add" ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }}icon={faPlusCircle} />Add Product</button></Link>
-        {this.state.products.length !== 0 ? this.renderProducts() : "No Products Found" }
-        {this.state.products  === null && <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
-        <PageChanger page_number={this.state.page_number} list_items={this.state.products} requestMore={this.changePage} lastPossibleItem={lastPossibleItem} />
+        
+        {this.state.products ? 
+          this.state.products.length === 0 ?
+            <div>No Product Found</div>
+            : 
+            <>
+              {this.renderProducts()}
+              <PageChanger 
+                page_number={this.state.page_number} 
+                list_items={this.state.products} 
+                requestMore={this.changePage} 
+                lastPossibleItem={lastPossibleItem} 
+              />
+            </>
+          : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
+        }
+        
       </>
     )
   }

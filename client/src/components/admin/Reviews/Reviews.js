@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAllReviews, getOrder, updateReview } from "../../../utils/API"
+import { formatMoney } from "../../../utils/helpFunctions"
 import PageChanger from "../../shared/PageChanger"
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSpinner, faTimes, faCheck, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+
 class Reviews extends Component {
   constructor(props) {
     super()
@@ -81,26 +84,35 @@ class Reviews extends Component {
   renderReviews() {
     return this.state.reviews.map((review, index) => {
       return (
-        <div key={index} className="border margin-m-v">
+        <div key={index} className="border margin-s-v border-radius-s padding-s">
           <div>
+            {review.line_item &&
+              <>
+                <h2><Link to={`/admin/products/form/update/${review.line_item.product_path.split("/")[review.line_item.product_path.split("/").length - 1]}`}>{review.line_item.product_name}</Link></h2>
+                <div className="flex margin-auto-h justify-center align-items-center background-color-black" style={{ maxHeight: "200px", maxWidth: "200px", minHeight: "200px", minWidth: "200px", marginTop: "10px", marginBottom: "10px" }}>
+                  <LazyLoadImage
+                    style={{ height: "auto", width: "auto", maxHeight: "200px", maxWidth: "200px" }}
+                    src={review.line_item.image}
+                  />
+                </div>
+              </>
+            }
             <div>First Name: {review.first_name}</div>
             <div>Rating: {review.rating}</div>
             <div>description: {review.description}</div>
-            {review.line_item && <div>line_item: {review.line_item.product_name}</div>}
-            {review._order_id && <div className="clickable store_text_color" onClick={() => this.getOrder(review._order_id, review.line_item._id)}>order</div>}
+
+            {review._order_id && <div className="bold theme-background-4 padding-s text-align-center" style={{ borderBottom: "solid 1px lightgrey" }} onClick={() => this.getOrder(review._order_id, review.line_item._id)}>Order <FontAwesomeIcon icon={faChevronDown} /></div>}
             {this.state.order !== null ?
               this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id ? 
               <div className="padding-m">
-                <div>Review Number: {this.state.order._id}</div>
-                <div>Date Placed: {this.state.order.date_placed}</div>
-                <div>Subtotal: {this.state.order.sub_total}</div>
-                <div>Total: {this.state.order.total}</div>
+                <div>Order Number: <Link to={`/admin/orders/${this.state.order._id}`} >{this.state.order._id}</Link></div>
+                <div>Date Placed: {this.state.order.date_placed.split("T")[0]}</div>
+                <div>Total: {formatMoney(this.state.order.total)}</div>
               </div>  
             : "" : ""}
           </div>
-          <div>
-            <button style={review.approved === true ? {cursor: "default", color: "black"} : {}} onClick={() => this.approve(true, review)}>Approve</button>
-            <button style={review.approved === false ? {cursor: "default", color: "black"} : {}} onClick={() => this.approve(false, review)} >Unapprove</button>
+          <div className="bold theme-background-4 padding-s text-align-center" onClick={() => this.approve(!review.approved, review)}>
+            { review.approved ? <span>Approved</span> : <span>Unapproved</span> }
           </div>
         </div>
       )

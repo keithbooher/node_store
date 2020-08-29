@@ -64,12 +64,12 @@ module.exports = app => {
       const last_review_id = req.params.last_review_id
       let reviews
       if (last_review_id === 'none') {
-        reviews = await Review.find({ _product_id: product_id, approved: true }).sort({_id:-1}).limit(10)
+        reviews = await Review.find({ "line_item._product_id": product_id, approved: true }).sort({_id:-1}).limit(10)
       } else {
         if (direction === "next") {
-          reviews = await Review.find({_id: {$lt: last_review_id}, _product_id: product_id, approved: true}).sort({_id:-1}).limit(10)
+          reviews = await Review.find({_id: {$lt: last_review_id}, "line_item._product_id": product_id, approved: true}).sort({_id:-1}).limit(10)
         } else {
-          reviews = await Review.find({_id: {$gt: last_review_id}, _product_id: product_id, approved: true}).limit(10)
+          reviews = await Review.find({_id: {$gt: last_review_id}, "line_item._product_id": product_id, approved: true}).limit(10)
           reviews = reviews.reverse()
         }
       }

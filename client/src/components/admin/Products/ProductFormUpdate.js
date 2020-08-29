@@ -12,7 +12,7 @@ import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import FormModal from "../../shared/Form/FormModal"
 import ReactFilestack from "filestack-react"
-
+import Key from "../../shared/Key"
 // TO DO
 // if we are in the create form lets show a disabled input 
 // for product path name that is filled out as the user types
@@ -132,13 +132,19 @@ class ProductForm extends Component {
       <>
        {this.state.categories.length > 0 ?
           <>
-            <div>
-              <Link to="/admin/products"><FontAwesomeIcon icon={faArrowAltCircleLeft} /> Back to products</Link>
-              <Link to={`/admin/product/related_products/${this.state.product._id}`}><FontAwesomeIcon icon={faArrowAltCircleRight} /> Update Related Products</Link>
-
+            <div className="flex">
+              <Link to="/admin/products" className="w-50 text-align-center theme-background-2 padding-s" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+                <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleLeft} />
+                <h3 className="margin-xs-v">Back to products</h3>
+              </Link>
+              <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-50 text-align-center theme-background-2 padding-s" style={{ borderRadius: "0px 4px 4px 0px" }}>
+                <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleRight} /> 
+                <h3 className="margin-xs-v">Related Products</h3>
+                </Link>
             </div>
-
-              <img style={{ height: "200px", width: "auto" }} src={this.state.product.image ? this.state.product.image : ""} />
+              <div className="margin-auto-h flex justify-center align-items-center background-color-black" style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px" }}>
+                <img style={{ height: "300px", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.product.image ? this.state.product.image : ""} />
+              </div>
               <ReactFilestack
                 apikey={process.env.REACT_APP_FILESTACK_API}
                 customRender={({ onPick }) => (
@@ -148,8 +154,8 @@ class ProductForm extends Component {
                 )}
                 onSuccess={this.finishUploading}
               />
-            <div className="relative">
-              Name: <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Name:</span> <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "name" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -157,11 +163,11 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Path Name: {this.state.product.path_name}
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Path Name:</span> {this.state.product.path_name}
             </div>
-            <div className="relative">
-              Sku: <a className="inline" onClick={() => this.showEditIndicator("sku")}>{this.state.product.sku ? this.state.product.sku : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Sku:</span> <a className="inline" onClick={() => this.showEditIndicator("sku")}>{this.state.product.sku ? this.state.product.sku : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "sku" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -169,8 +175,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Description: <a className="inline" onClick={() => this.showEditIndicator("description")}>{this.state.product.description ? this.state.product.description : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Description:</span> <a className="inline" onClick={() => this.showEditIndicator("description")}>{this.state.product.description ? this.state.product.description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "description" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -178,8 +184,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Short Description: <a className="inline" onClick={() => this.showEditIndicator("short_description")}>{this.state.product.short_description ? this.state.product.short_description : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Short Description:</span> <a className="inline" onClick={() => this.showEditIndicator("short_description")}>{this.state.product.short_description ? this.state.product.short_description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "short_description" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -187,8 +193,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Meta Title: <a className="inline" onClick={() => this.showEditIndicator("meta_title")}>{this.state.product.meta_title ? this.state.product.meta_title : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Meta Title:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_title")}>{this.state.product.meta_title ? this.state.product.meta_title : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_title" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -196,8 +202,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Meta Description: <a className="inline" onClick={() => this.showEditIndicator("meta_description")}>{this.state.product.meta_description ? this.state.product.meta_description : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Meta Description:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_description")}>{this.state.product.meta_description ? this.state.product.meta_description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_description" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -205,8 +211,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Meta Keywords: <a className="inline" onClick={() => this.showEditIndicator("meta_keywords")}>{this.state.product.meta_keywords ? this.state.product.meta_keywords : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Meta Keywords:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_keywords")}>{this.state.product.meta_keywords ? this.state.product.meta_keywords : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_keywords" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -214,8 +220,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Inventory Count: <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Inventory Count:</span> <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "inventory_count" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -223,8 +229,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Price: <a className="inline" onClick={() => this.showEditIndicator("price")}>{this.state.product.price}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Price:</span> <a className="inline" onClick={() => this.showEditIndicator("price")}>{this.state.product.price}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "price" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -232,8 +238,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Height: <a className="inline" onClick={() => this.showEditIndicator("height")}>{this.state.product.dimensions.height ? this.state.product.dimensions.height : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Height:</span> <a className="inline" onClick={() => this.showEditIndicator("height")}>{this.state.product.dimensions.height ? this.state.product.dimensions.height : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "height" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -241,8 +247,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Width: <a className="inline" onClick={() => this.showEditIndicator("width")}>{this.state.product.dimensions.width ? this.state.product.dimensions.width : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Width:</span> <a className="inline" onClick={() => this.showEditIndicator("width")}>{this.state.product.dimensions.width ? this.state.product.dimensions.width : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "width" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -250,8 +256,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Depth: <a className="inline" onClick={() => this.showEditIndicator("depth")}>{this.state.product.dimensions.depth ? this.state.product.dimensions.depth : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Depth:</span> <a className="inline" onClick={() => this.showEditIndicator("depth")}>{this.state.product.dimensions.depth ? this.state.product.dimensions.depth : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "depth" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 
@@ -259,8 +265,8 @@ class ProductForm extends Component {
                   />
                 }
             </div>
-            <div className="relative">
-              Weight: <a className="inline" onClick={() => this.showEditIndicator("weight")}>{this.state.product.weight ? this.state.product.weight : "N/A"}</a>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+              <span>Weight:</span> <a className="inline" onClick={() => this.showEditIndicator("weight")}>{this.state.product.weight ? this.state.product.weight : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "weight" && 
                   <FontAwesomeIcon 
                     icon={faEdit} 

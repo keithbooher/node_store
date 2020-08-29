@@ -50,13 +50,12 @@ class Product extends Component  {
       transform: "translate(-50%, -50%)",
       width: isMobile ? "90%" : "30em",
       height: "auto",
-      padding: "3em",
       zIndex: 30
     }
 
     return (
       <div id="outer" ref={this.outerRef} style={ style_outer }>
-        <div id="inner" ref={this.ref} className="theme-background-3 border-radius-s color-white" style={ style_inner }>
+        <div id="inner" ref={this.ref} className="theme-background-3 border-radius-s color-white padding-m" style={ style_inner }>
           {this.props.children}
         </div>
       </div>

@@ -356,7 +356,7 @@ const Product = ({
                   }
                 </div>
               :
-                <h4 style={{ marginBottom: "20px" }} className="padding-s border-radius-s st-border w-90 margin-auto-h">There are no reviews for this product yet</h4>  
+                <h4 style={{ marginBottom: "20px" }} className="padding-s border-radius-s w-90 margin-auto-h theme-background-2">There are no reviews for this product yet</h4>  
               }
               <PageChanger 
                 page_number={page_number} 

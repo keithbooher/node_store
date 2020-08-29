@@ -4,6 +4,7 @@ import { convertCart } from '../../../../../../actions'
 import _ from "lodash"
 import Form from '../../../../../shared/Form';
 import { getShippingMethodForCheckout } from "../../../../../../utils/API"
+import { calculateSubtotal } from "../../../../../../utils/helpFunctions"
 
 // ONLY MAKING CONSIDERATIONS FOR FLAT RATE SHIPPING FOR NOW
 class AddressPanel extends Component  {
@@ -57,10 +58,19 @@ class AddressPanel extends Component  {
     }
 
     cart.chosen_rate = chosen_rate
+
+    let sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate.cost)
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = Number(sub_total + tax + shipping)
+
     cart.checkout_state = "payment"
 
     // update redux store
-    const thing = await this.props.updateCart(cart)
+    await this.props.updateCart(cart)
 
     this.props.chooseTab("payment")
   }

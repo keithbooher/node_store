@@ -6,7 +6,7 @@ import { shippingAddressFormFields, billingAddressFormFields, validate } from '.
 import { updatedAddressFormFields } from "../../../../../../utils/helpFunctions"
 import AddressCard from '../../../../components/AddressCard';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../../../../utils/validations"
 
 
@@ -21,7 +21,8 @@ class AddressPanel extends Component  {
       billing_card_chosen: false,
       shipping_card_chosen: false,
       billing_form_submit: false,
-      shipping_form_submit: false
+      shipping_form_submit: false,
+      shipping_same_as_billing: false
     }
   }
 
@@ -38,12 +39,12 @@ class AddressPanel extends Component  {
       const ship_addy = this.props.form.shipping_checkout_form.values
       cart_instance.shipping_address = buildAddress(ship_addy, cart_instance._user_id, "shipping")
       this.setState({ shipping_form_submit: true })
-      this.props.setPreExistingAddress({ bill_or_ship: "shipping" })
+      // this.props.setPreExistingAddress({ bill_or_ship: "shipping" })
     } else  {
       const bill_addy = this.props.form.billing_checkout_form.values
       cart_instance.billing_address = buildAddress(bill_addy, cart_instance._user_id, "billing")
       this.setState({ billing_form_submit: true })
-      this.props.setPreExistingAddress({ bill_or_ship: "billing" })
+      // this.props.setPreExistingAddress({ bill_or_ship: "billing" })
     }
     this.props.updateCart(cart_instance)
   }
@@ -92,6 +93,9 @@ class AddressPanel extends Component  {
   nextTab() {
     let cart_instance = this.props.cart
     cart_instance.checkout_state = "shipping"
+    if (this.state.shipping_same_as_billing) {
+      cart_instance.shipping_address = cart_instance.billing_address
+    }
     this.props.updateCart(cart_instance)
   }
 
@@ -112,8 +116,16 @@ class AddressPanel extends Component  {
     if (this.state.billing_form_submit === true || this.state.billing_card_chosen) {
       bill_complete = true
     }
-    if (this.state.shipping_form_submit === true || this.state.shipping_card_chosen) {
+    console.log(this.state.shipping_same_as_billing)
+    if (this.state.shipping_form_submit === true || this.state.shipping_card_chosen || this.state.shipping_same_as_billing === true) {
       ship_complete = true
+    }
+
+    let hide_combination_option = false
+    if (this.props.cart && this.props.cart.billing_address) {
+      if (this.props.cart.shipping_address) {
+        hide_combination_option = true
+      }
     }
 
     return (
@@ -133,6 +145,16 @@ class AddressPanel extends Component  {
                   form={"guest_email_checkout_form"}
                   validation={validatePresenceOnAll}
                 />
+              </div>
+            }
+
+            {!hide_combination_option &&
+              <div className="flex align-items-center st-border border-radius-s w-80 padding-m justify-center" style={{ margin: "20px auto" }}>
+                <h4>Shipping address the <br /> same as Billing?</h4>
+                {this.state.shipping_same_as_billing ? 
+                  <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faCheck} className="margin-s-h" style={{ fontSize: "30px" }} />
+                :
+                  <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faTimes} className="margin-s-h" style={{ fontSize: "30px" }} />}
               </div>
             }
 
@@ -159,26 +181,30 @@ class AddressPanel extends Component  {
               </div> 
       
       
-              <div className="shipping_address_form_container address_form">
-                { this.state.shipping_card_chosen === true || this.state.shipping_form_submit === true ? 
-                    <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("ship")}>
-                      <h2>Edit Shipping</h2>
-                      <FontAwesomeIcon style={{ fontSize: "40px" }} icon={faEdit} />
-                    </div>
-                  :
-                    <>
-                      <h5 className="address_form_title">Shipping</h5>
-                      <Form 
-                        onSubmit={() => this.handleFormSubmit("shipping")}
-                        submitButtonText={"Submit"}
-                        formFields={shippingAddressFormFields}
-                        form={"shipping_checkout_form"}
-                        initialValues={this.shipping_initial_values()}
-                        validation={validate}
-                      />
-                    </>
-                }
-              </div>
+              {!this.state.shipping_same_as_billing && 
+                <div className="shipping_address_form_container address_form">
+                  {this.state.shipping_card_chosen === true || this.state.shipping_form_submit === true ? 
+                      <>
+                          <div className="hover text-align-center padding-m" onClick={() => this.editSubmittedForm("ship")}>
+                          <h2>Edit Shipping</h2>
+                          <FontAwesomeIcon style={{ fontSize: "40px" }} icon={faEdit} />
+                        </div>
+                      </>
+                    :
+                      <>
+                        <h5 className="address_form_title">Shipping</h5>
+                        <Form 
+                          onSubmit={() => this.handleFormSubmit("shipping")}
+                          submitButtonText={"Submit"}
+                          formFields={shippingAddressFormFields}
+                          form={"shipping_checkout_form"}
+                          initialValues={this.shipping_initial_values()}
+                          validation={validate}
+                        />
+                      </>
+                  }
+                </div>
+              }
             </div>
 
             { bill_complete && ship_complete && 

@@ -101,7 +101,7 @@ class Reviews extends Component {
             this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id? 
             <div className="padding-m">
               <div>Order Number: <Link className="inline" to={`/order/${this.state.order._id}`}>{this.state.order._id}</Link></div>
-              <div>Date Placed: {this.state.order.date_placed}</div>
+              <div>Date Placed: {this.state.order.date_placed.split("T")[0]}</div>
             </div>  
           : "" : ""}
         </div>

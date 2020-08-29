@@ -26,15 +26,16 @@ class EnlargeImage extends Component {
       width: "auto",
       maxHeight: "500px",
       maxWidth: "100%",
-      margin: "0px auto"
+      margin: "0px auto",
+      paddingTop: "10px"
     }
 
     return (
       <Modal cancel={() => this.props.dispatchEnlargeImage(null)} >
         <img onClick={() => this.props.dispatchEnlargeImage(null)} style={image_style} src={this.props.image} />
-        <div className="flex">
-          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s"><Link to={this.props.path}>Go to Product</Link></button>
-          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s">Done</button>
+        <div className="flex margin-s-v">
+          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s" style={{ paddingTop: "5px", paddingBottom: "5px" }}><Link to={this.props.path}>Go to Product</Link></button>
+          <button onClick={() => this.props.dispatchEnlargeImage(null)} className="margin-s" style={{ paddingTop: "5px", paddingBottom: "5px" }}>Done</button>
         </div>
       </Modal>
 

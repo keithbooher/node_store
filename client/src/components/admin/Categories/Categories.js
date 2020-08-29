@@ -98,10 +98,10 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
                 </div>
               </div>
               <div className="flex">
-                <button onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
-                <button onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
+                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
@@ -190,7 +190,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
   return (
     <div style={{ marginTop: "30px" }}>
       <div>
-        <button onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Add a New Top Level Category</button>
+        <span className="absolute store_text_color" style={{ top: "5px", right: "5px" }} onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Parent Category</span>
         {show_create_input === "top" ? 
             <CategoryForm
               category={null}

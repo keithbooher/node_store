@@ -8,7 +8,7 @@ import  { shippingStatusDropDown }  from "./formFeilds"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
-import { capitalizeFirsts } from "../../../utils/helpFunctions"
+import { capitalizeFirsts, formatMoney } from "../../../utils/helpFunctions"
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
 import Modal from "../../shared/Modal"
@@ -150,13 +150,11 @@ class OrderPage extends Component {
               </div>
    
 
-              <div>Order ID: {order._id}</div>
-              <div>Status: {order.status}</div>
-              <div>Customer: <Link style={{ display: "inline" }} to={`/admin/users/${order._user_id}`} >{order.email}</Link></div>
-              <div>Date Placed: {order.date_placed}</div>
-              <div>Total: {order.total}</div>
-
-              <button onClick={() => this.setState({ refundModal: true })}>Start a return</button>
+              <div className="margin-xs-v"><span className="bold">Order ID:</span> {order._id}</div>
+              <div className="margin-xs-v"><span className="bold">Status:</span> {order.status}</div>
+              <div className="margin-xs-v"><span className="bold">Customer:</span> <Link style={{ display: "inline" }} to={`/admin/users/${order._user_id}`} >{order.email}</Link></div>
+              <div className="margin-xs-v"><span className="bold">Date Placed:</span> {order.date_placed.split("T")[0]}</div>
+              <div className="margin-xs-v"><span className="bold">Total:</span> ${formatMoney(order.total)}</div>
 
               <Form 
                 onSubmit={this.handleNoteSubmission}
@@ -177,10 +175,10 @@ class OrderPage extends Component {
                   return (
                     <div key={index} className="margin-s-h">
                       <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
-                      <div>Product name: {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
-                      <div>product price: ${item.product_price}</div>
-                      <div>quantity: {item.quantity}</div>
-                      <div>item total: ${item.quantity * item.product_price}</div>
+                      <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                      <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
+                      <div><span className="bold">quantity:</span> {item.quantity}</div>
+                      <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
                     </div>
                   )
                 })}       
@@ -189,9 +187,23 @@ class OrderPage extends Component {
               <hr/>
 
               <h4>Shipping Rate</h4>
-              <div>Method: {order.shipment.chosen_rate.shipping_method}</div>
-              <div>Rate: {order.shipment.chosen_rate.shipping_rate}</div>
-              <div>Cost: {order.shipment.chosen_rate.cost}</div>
+              <div><span className="bold">Method:</span> {order.shipment.chosen_rate.shipping_method}</div>
+              <div><span className="bold">Rate:</span> {order.shipment.chosen_rate.shipping_rate}</div>
+              <div><span className="bold">Cost:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+
+              <hr/>
+
+              <h4 className="margin-s-v">Date Shipped</h4>
+              <div>{order.shipment.date_shipped ? order.shipment.date_shipped : "Not Shipped Yet"}</div>
+
+              {/* {order.status !== "refunded" && 
+                <Form 
+                  onSubmit={(e) => this.updateShipmentStatus(e)}
+                  submitButton={<button className="w-100 margin-s-v">Update Shipment Status</button>}
+                  formFields={this.createFormFields()}
+                  form='update_shipment_status_form'
+                />
+              } */}
 
               <hr/>
 
@@ -225,21 +237,10 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <h5>Date Shipped</h5>
-              {order.shipment.date_shipped ? order.shipment.date_shipped : "Not Shipped Yet"}
+              <button className="w-100 margin-s-v" onClick={() => this.setState({ refundModal: true })}>Start a return</button>
 
-              <hr/>
-
-              {order.status !== "refunded" && 
-                <Form 
-                  onSubmit={(e) => this.updateShipmentStatus(e)}
-                  submitButtonText={"update shipment statues"}
-                  formFields={this.createFormFields()}
-                  form='update_shipment_status_form'
-                />
-              }
             </>
-          : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />
+          : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
         }
 
         {
