@@ -101,6 +101,7 @@ class StoreSettings extends Component {
     return (
       <div style={{ marginTop: "30px" }}>
 
+        <h2 className="underline">Home Content</h2>
         <h3>Desktop Banner Image</h3>
         {desktop_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={desktop_banner_setting.value.image} />}
         <ReactFilestack
@@ -147,6 +148,8 @@ class StoreSettings extends Component {
           onSuccess={this.finishUploadingMobile}
         />
 
+        <hr />
+
         {hide_zero_setting && 
           <div>
             <div>
@@ -158,6 +161,8 @@ class StoreSettings extends Component {
             </div>
           </div>
         }
+
+        <hr />
 
         <h2>FAQ's <FontAwesomeIcon onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
         {this.state.faqs && this.state.faqs.map((faq, index) => {

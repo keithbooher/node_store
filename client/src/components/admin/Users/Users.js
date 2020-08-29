@@ -33,12 +33,32 @@ class Users extends Component {
       }
     }
     return (
-      <div style={{ marginTop: "30px" }}>
-        {this.state.users.map((user, index) => {
-          return (<div key={index}>
-                    <Link to={`/admin/users/${user._id}`}>{user.first_name}</Link>
-                </div>)
-        })}
+      <div style={{ marginTop: "40px" }}>
+        <h1 className="underline">Users</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Joined On</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.users.map((user, index) => {
+              return (
+                      <tr className="theme-background-2 color-white">
+                        <td key={index} className="padding-s border-radius-xs">
+                          <Link to={`/admin/users/${user._id}`}>{user.email.substring(0,20)}{user.email.length > 20 && "..."}</Link>
+                        </td>
+                        <td key={index} className="padding-s border-radius-xs">
+                          {user.joined_on && user.joined_on.split("T")[0]}
+                        </td>
+                      </tr>
+                      )
+              }
+            )}
+          </tbody>
+        </table>
+
 
         <PageChanger 
           page_number={this.state.page_number} 

@@ -10,11 +10,11 @@ class FormCheckbox extends Component {
   }
   render() {
     return (
-      <div>
-        <label>{this.props.label}</label>
+      <div className="flex align-items-center margin-s-v">
+        <label className="inline">{this.props.label}</label>
         {this.props.input.value === true ? 
-        <input type="checkbox" className={this.props.field_class} checked {...this.props.input} style={{ marginBottom: '5px' }} />
-        : <input type="checkbox" className={this.props.field_class} {...this.props.input} style={{ marginBottom: '5px' }} />}
+        <input type="checkbox" className={this.props.field_class} checked {...this.props.input} style={{ marginBottom: '5px', marginLeft: "10px", display: "inline", width: "20px", height: "20px" }} />
+        : <input type="checkbox" className={this.props.field_class} {...this.props.input} style={{ marginBottom: '5px', marginLeft: "10px", display: "inline", width: "20px", height: "20px" }} />}
       </div>
     )
   }
