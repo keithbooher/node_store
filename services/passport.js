@@ -44,7 +44,7 @@ passport.use(
 passport.use(new FacebookStrategy({
   clientID: keys.facebookClientID,
   clientSecret: keys.facebookClientSecret,
-  callbackURL: "https://aqueous-eyrie-67265.herokuapp.com/auth/facebook/callback",
+  callbackURL: process.env.NODE_ENV === "production" ? keys.fb_redirect_uri : "/auth/facebook/callback",
   profileFields: ['email']
 },
 async (accessToken, refreshToken, profile, done) => {
