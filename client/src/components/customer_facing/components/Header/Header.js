@@ -63,7 +63,7 @@ class Header extends Component {
   render() {
     return (
     <div className={`${this.props.showHeader} nav header_container`}>
-      <div className="header_container flex space-between theme-background-3">
+      <div className="header_container flex space-between align-items-center theme-background-3" style={{ minHeight: "50px" }}>
         <div className="header_container flex justify-center align-items-center">
           <FontAwesomeIcon id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
           <Link to='/' className="margin-s-h"><h2 className="margin-none">Node Store</h2></Link>

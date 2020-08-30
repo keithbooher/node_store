@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Cart from '../Cart'
 import { useHistory } from 'react-router-dom';  
-import AccountDropDown from "./Dropdown"
+import SignInDropDown from "./AccountDropdown/SignInDropdown"
+import AccountDropDown from "./AccountDropdown"
 import { logout as logoutReq } from "../../../../utils/API"
 import { withCookies, useCookies } from 'react-cookie'
 
@@ -27,16 +28,20 @@ const AccountNav = ({ auth, logoutReq }) => {
 
   const renderDropDown = () => {
     return [
-      <Link className="header_list_item clickable a-invert" to="/account/details">{auth.email}</Link>,
+      <Link className="clickable a-invert" to="/account/details">{auth.email}</Link>,
       <div onClick={logout} className="header_list_item clickable a-invert">Logout</div>
     ]
   }
 
   const renderContent = () => {
+    console.log(auth)
     if (auth) {
       switch (auth._id) {
         case "000000000000000000000000":
-            return [<a href="/auth/google">Sign in with Google</a>, <Cart />]
+            return [
+              <SignInDropDown />, 
+              <Cart />
+            ]
         default:
           return [
             <AccountDropDown key={1} elements={renderDropDown()} />,

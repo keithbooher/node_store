@@ -5,7 +5,7 @@ import { faUser, faCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { showCartAction } from "../../../../../actions"
 import "./dropdown.css.scss"
 
-class Dropdown extends Component {
+class AccountDropdown extends Component {
   constructor(props) {
     super()
     this.dropRef = React.createRef()
@@ -71,5 +71,5 @@ function mapStateToProps({ showCart }) {
 
 const actions = { showCartAction }
 
-export default connect(mapStateToProps, actions)(Dropdown)
+export default connect(mapStateToProps, actions)(AccountDropdown)
 

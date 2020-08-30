@@ -5,6 +5,7 @@ const PaymentSchema = require('./Address')
 
 const userSchema = new Schema({
   googleId: String,
+  facebookId: String,
   email: String,
   first_name: {
     type: String,

@@ -1,5 +1,6 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20')
+FacebookStrategy = require('passport-facebook').Strategy;
 const mongoose = require('mongoose')
 const keys = require('../config/keys')
 
@@ -24,7 +25,7 @@ passport.use(
     proxy: true
   }, 
   async (accessToken, refreshToken, profile, done) => {
-    const existingUser = await User.findOne({ googleId: profile.id })
+    const existingUser = await User.findOne({ email: profile.emails[0].value })
     if (existingUser) {
       // Already have a record with given profile id
       return done(null, existingUser)
@@ -39,3 +40,24 @@ passport.use(
   }
  )
 );
+
+passport.use(new FacebookStrategy({
+  clientID: keys.facebookClientID,
+  clientSecret: keys.facebookClientSecret,
+  callbackURL: "/auth/facebook/callback",
+  profileFields: ['email']
+},
+async (accessToken, refreshToken, profile, done) => {
+  console.log(profile)
+  const existingUser = await User.findOne({ email: profile.emails[0].value })
+  if (existingUser) {
+    // Already have a record with given profile id
+    return done(null, existingUser)
+  } 
+  let first_name = profile.name.givenName ? profile.name.givenName : null
+  let last_name = profile.name.familyName ? profile.name.familyName : null
+
+  const user = await new User({ facebookId: profile.id, email: profile.emails[0].value, first_name, last_name  }).save()
+  done(null, user)
+}
+));
