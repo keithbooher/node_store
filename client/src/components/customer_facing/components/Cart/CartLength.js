@@ -23,16 +23,16 @@ class CartLength extends Component {
 
   render() {
     return (
-      <a className="flex justify-center align-items-center h-100" style={{ width: "50px" }} >
-        <div className="inline margin-xs-h">{this.calculated_cart_length()}</div>
-        <FontAwesomeIcon ref={this.props.lengthRef} style={{ zIndex: 0 }} icon={faShoppingCart} />
+      <a className="flex justify-center align-items-center h-100" style={this.props.mobile ? { width: "50px" } : { fontSize: "25px", paddingLeft: ".8em" }} >
+        <div className="inline">{this.calculated_cart_length()}</div>
+        <span style={this.props.mobile ? { margin: "0 .4em" } : { marginLeft: ".2em", marginRight: ".8em" }}><FontAwesomeIcon ref={this.props.lengthRef} style={{ zIndex: 0 }} icon={faShoppingCart} /></span>
       </a>
     )
   }
 }
 
-function mapStateToProps({ cart }) {
-  return { cart }
+function mapStateToProps({ cart, mobile }) {
+  return { cart, mobile }
 }
 
 

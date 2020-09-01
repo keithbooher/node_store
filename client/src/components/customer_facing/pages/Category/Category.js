@@ -38,16 +38,25 @@ class Category extends Component  {
     if (!this.props.zeroInventory) {
       products = products.filter((product) => product.inventory_count > 0)
     }
+
+    if (products.length % 2 !== 0) {
+      products.push(null)
+    }
+
     return products.map((product, index) => {
-      return <ProductCard
-                key={index}
-                product={product} 
-                category_path_name={this.props.match.params.category}
-                user={this.props.auth}
-                createCart={this.props.createCart}
-                cart={this.props.cart} 
-                updateCart={this.props.updateCart}
-              />
+      if (product === null) {
+        return (<div className="card_desktop"></div>)
+      } else{
+        return <ProductCard
+                  key={index}
+                  product={product} 
+                  category_path_name={this.props.match.params.category}
+                  user={this.props.auth}
+                  createCart={this.props.createCart}
+                  cart={this.props.cart} 
+                  updateCart={this.props.updateCart}
+                />
+      }
     })
   }
   async getProducts() {

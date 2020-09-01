@@ -1,4 +1,4 @@
-import { ENLARGE, SHOW_CART, SHOW_HEADER, ERROR } from './types'
+import { ENLARGE, SHOW_CART, SHOW_HEADER, ERROR, DEVICE } from './types'
 export * from './cart_actions'
 export * from './user_actions'
 export * from './product_actions'
@@ -24,4 +24,8 @@ export const showHeaderAction = (value) => dispatch => {
 
 export const errorAction = (value) => dispatch => {
   dispatch({type: ERROR, payload: value})
+}
+
+export const setDevice = (value) => dispatch => {
+  dispatch({type: DEVICE, payload: value})
 }

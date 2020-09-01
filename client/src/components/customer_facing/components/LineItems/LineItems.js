@@ -130,17 +130,25 @@ class LineItems extends Component {
         {this.props.cart && 
           this.props.cart.line_items.map((line_item, index) => {
             return (
-              <li key={index} className="divider line_item flex align-items-center relative" style={{ minHeight: "150px" }}>
+              <li key={index} className="divider line_item flex align-items-center relative padding-s-v" style={{ minHeight: "150px" }}>
 
                 <div className="line_item_sub_container">
 
                   <div className="flex">
-                    <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" }}>
-                      <img onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
+                    <div 
+                      className="margin-auto-v flex justify-center align-items-center background-color-black" 
+                      style={this.props.mobile ? { maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px", minHeight: "175px", minWidth: "175px" } }
+                    >
+                      <img 
+                        onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} 
+                        className="h-w-auto margin-auto-h" 
+                        style={ this.props.mobile ? { maxHeight: "125px", maxWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px" } } 
+                        src={line_item.image} 
+                      />
                     </div>
 
                     <div className="padding-s">
-                      <h3 className="margin-top-none margin-bottom-none line_item_name"><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                      <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
                       <div className="color-black bold margin-m-v">${formatMoney(line_item.product_price)}</div>
 
                       <div style={{ fontSize: "14px" }}className="flex align-items-center color-black margin-auto-v">
@@ -197,8 +205,8 @@ class LineItems extends Component {
   }
 }
 
-function mapStateToProps({ enlargeImage, form, cart }) {
-  return { enlargeImage, form, cart }
+function mapStateToProps({ enlargeImage, form, cart, mobile }) {
+  return { enlargeImage, form, cart, mobile }
 }
 
 const actions = { updateCart, dispatchEnlargeImage, checkInventory, dispatchObj }

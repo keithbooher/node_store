@@ -45,15 +45,20 @@ class AccountDropdown extends Component {
   render() {
     return (
       <div className="relative">
-        <a ref={this.dropRef} onClick={this.showAccountMenu} className="header_list_item flex">
+        <a 
+          ref={this.dropRef} 
+          onClick={this.showAccountMenu} 
+          className="header_list_item flex" 
+          style={this.props.mobile ? {} : { fontSize: "25px" }}
+        >
           <div className="margin-xs-h" ref={this.userIconRef}><FontAwesomeIcon icon={faUser} /></div>
           <div ref={this.caratDownRef}><FontAwesomeIcon icon={faCaretDown} /></div>
         </a>
         {this.state.open === true && 
           <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom st-nav-dropdown-background-color color-white">
-            <ul>
+            <ul style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px" }}>
               {this.props.elements.map((element, index) => {
-                return <li key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
+                return <li className="account_dropdown_item" style={this.props.mobile ? {} : { fontSize: "20px" }} key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
               })}
             </ul>
           </div>
@@ -65,8 +70,8 @@ class AccountDropdown extends Component {
   }
 }
 
-function mapStateToProps({ showCart }) {
-  return { showCart }
+function mapStateToProps({ showCart, mobile }) {
+  return { showCart, mobile }
 }
 
 const actions = { showCartAction }

@@ -193,7 +193,15 @@ class ProductCard extends Component {
     return (
       <>
         {this.props.auth !== null ? 
-          <div style={this.props.related_product ? { margin: "0px 10px", minWidth: "280px" } : {} } key={product._id} className={`border-radius card st-product-card-shadow st-product-card-background ${this.props.related_product ? "" : "w-90"} ${this.props.related_product && "related_product"} margin-s-v ${product._id === "" && "hidden"}`}>
+          <div 
+            style={this.props.related_product ? { margin: "0px 10px", minWidth: "280px" } : {} } 
+            key={product._id} 
+            className={`border-radius st-product-card-shadow st-product-card-background 
+                        ${this.props.related_product ? "" : "w-90"} 
+                        ${this.props.related_product && "related_product"} margin-s-v 
+                        ${product._id === "" && "hidden"}
+                        ${this.props.mobile ? "card" : "card_desktop"}`}
+          >
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
                 <div className="inline" style={{ fontSize: "22px" }}>${formatMoney(product.price)}</div>
@@ -251,8 +259,8 @@ class ProductCard extends Component {
   }
 }
 
-function mapStateToProps({ zeroInventory }) {
-  return { zeroInventory }
+function mapStateToProps({ zeroInventory, mobile }) {
+  return { zeroInventory, mobile }
 }
 
 const actions = { dispatchEnlargeImage, showCartAction, getProductAverageRating, showHeaderAction }

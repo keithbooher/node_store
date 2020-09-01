@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchUser } from '../actions'
+import { fetchUser, setDevice } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Admin from './containers/Admin'
@@ -9,6 +9,11 @@ import Customer from './containers/CustomerFacing'
 import Error from "./shared/Error"
 
 import PrivateRoute from './PrivateRoute'
+
+import mobile from "is-mobile"
+
+let isMobile = mobile()
+
 
 const checkAdmin = (user) => {
   let admin 
@@ -35,7 +40,7 @@ const checkAdmin = (user) => {
 
 
 
-const App = ({ fetchUser, auth }) => {
+const App = ({ fetchUser, auth, setDevice }) => {
   const [admin, setAdmin] = useState(null)
   useEffect(() => {
     async function mount() {
@@ -43,6 +48,7 @@ const App = ({ fetchUser, auth }) => {
       let user = await fetchUser()
       let checkedAdmin = checkAdmin(user)
       setAdmin(checkedAdmin)
+      setDevice(isMobile)
     }
     mount()
     return () => {}
@@ -81,6 +87,6 @@ function mapStateToProps({ auth }) {
   return { auth}
 }
 
-const actions = { fetchUser }
+const actions = { fetchUser, setDevice }
 
 export default connect(mapStateToProps, actions)(App)

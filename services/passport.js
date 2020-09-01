@@ -44,7 +44,7 @@ passport.use(
 passport.use(new FacebookStrategy({
   clientID: keys.facebookClientID,
   clientSecret: keys.facebookClientSecret,
-  callbackURL: process.env.NODE_ENV === "production" ? keys.fb_redirect_uri : "/auth/facebook/callback",
+  callbackURL: keys.fb_redirect_uri,
   profileFields: ['email']
 },
 async (accessToken, refreshToken, profile, done) => {

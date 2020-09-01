@@ -28,7 +28,8 @@ const CustomerFacing = ({
   usersCart,
   sidebar,
   enlarge,
-  cart
+  cart,
+  mobile
 }) => {
 
   const [cookies, setCookie, removeCookie] = useCookies(['guest_cart']);
@@ -130,12 +131,23 @@ const CustomerFacing = ({
       break;
   }
 
+  let marginTop = "0px"
+  if (scrollClass !== "top_of_page_nav") {
+    if (mobile) {
+      marginTop = "50px"
+    } else {
+      marginTop = "80px"
+    }
+  } else {
+    marginTop = "0px" 
+  }
+
   return (
     <div className="customer_container" style={scrollClass !== "top_of_page_nav" ? { marginTop: "50px" } : { marginTop: "0px" }}>
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />
-        <div id="body_content_container" className="padding-s">
+        <div id="body_content_container" className={`padding-s ${ mobile ? "" : "max-customer-container-width margin-auto-h" }`}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/shop/:category" component={Category} />
@@ -158,8 +170,8 @@ const CustomerFacing = ({
 }
 
 
-function mapStateToProps({ sidebar, enlarge, cart  }) {
-  return { sidebar, enlarge, cart }
+function mapStateToProps({ sidebar, enlarge, cart, mobile  }) {
+  return { sidebar, enlarge, cart, mobile }
 }
 
 const actions = { usersCart, createGuestCart, getGuestCart, convertGuestCart, zeroInventorySettingCheck }

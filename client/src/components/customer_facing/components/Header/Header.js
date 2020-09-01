@@ -35,22 +35,22 @@ class Header extends Component {
     let scrollClass
     if (root.scrollTop < 50 && self.state.offsetTop > root.scrollTop || root.scrollTop < 50 && self.state.offsetTop < root.scrollTop) {  
       // if getting really close to the top, assign relative positioning
-      scrollClass = "top_of_page_nav"
+      scrollClass = this.props.mobile ? "top_of_page_nav" : "top_of_page_nav_desktop"
     }else if (root.scrollTop >= 50 && self.state.offsetTop < root.scrollTop) {
       // hide nav if scrolling down
       // but only after its left the screen
       // fixed position top: -50px
-      scrollClass = "scrolling_down_nav"
+      scrollClass = this.props.mobile ? "scrolling_down_nav" : "scrolling_down_nav_desktop"
       if (this.props.showCart) {
         this.props.showCartAction(false)
       }
     } else if (self.state.offsetTop > root.scrollTop) {
       // show nav if scrolling up
       // fixed position top: 0
-      scrollClass = "scrolling_up_nav"
+      scrollClass = this.props.mobile ? "scrolling_up_nav" : "scrolling_up_nav_desktop"
     } else {
       // apply regular stylings
-      scrollClass = "scrolling_up_nav"
+      scrollClass = this.props.mobile ? "scrolling_up_nav" : "scrolling_up_nav_desktop"
     }
     self.setState({ offsetTop: root.scrollTop })
     this.props.showHeaderAction(scrollClass)
@@ -62,11 +62,11 @@ class Header extends Component {
   }
   render() {
     return (
-    <div className={`${this.props.showHeader} nav header_container`}>
-      <div className="header_container flex space-between align-items-center theme-background-3" style={{ minHeight: "50px" }}>
+    <div className={`${this.props.showHeader} ${this.props.mobile ? "nav" : "desktop_nav" } header_container`}>
+      <div className="header_container flex space-between align-items-center theme-background-3 h-100" style={{ minHeight: "50px" }}>
         <div className="header_container flex justify-center align-items-center">
-          <FontAwesomeIcon id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
-          <Link to='/' className="margin-s-h"><h2 className="margin-none">Node Store</h2></Link>
+          <FontAwesomeIcon style={ this.props.mobile ? {} : { fontSize: "27px" } } id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
+          <Link to='/' className="margin-s-h"><h2 style={ this.props.mobile ? {} : { fontSize: "35px" } } className="margin-none">Node Store</h2></Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>
           <NavAccount />
@@ -78,8 +78,8 @@ class Header extends Component {
 }
 
 
-function mapStateToProps({ sidebar, showCart, showHeader }) {
-  return { sidebar, showCart, showHeader }
+function mapStateToProps({ sidebar, showCart, showHeader, mobile }) {
+  return { sidebar, showCart, showHeader, mobile }
 }
 
 const actions = { sidebarBoolean, showHeaderAction, showCartAction }

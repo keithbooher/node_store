@@ -3,14 +3,10 @@ import { connect } from 'react-redux'
 import ProductCard from '../../components/ProductCard'
 import { updateCart, createCart } from '../../../../actions'
 import { homeProducts, homeBanner } from '../../../../utils/API'
-import mobile from "is-mobile"
 import './home.css.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import MetaTags from 'react-meta-tags'
-
-let isMobile = mobile()
-
 
 // pull from actions. create action to make request for adding product-data to the cart
 
@@ -25,22 +21,30 @@ class Home extends Component  {
 
   async componentDidMount() {
     let { data } = await this.props.homeProducts()
-    let banner_image = await this.props.homeBanner(isMobile ? "mobile" : "desktop")
+    let banner_image = await this.props.homeBanner(this.props.mobile ? "mobile" : "desktop")
     this.setState({ products: data, banner: banner_image.data })
   }
 
   renderProducts() {
-    return this.state.products.map(product => {
-      return <>
-              <ProductCard 
-                createCart={this.props.createCart}
-                updateCart={this.props.updateCart}
-                user={this.props.auth} 
-                product={product} 
-                cart={this.props.cart} 
-                category_path_name={product.categories.length > 0 ? product.categories[0].path_name : ""} 
-              />
-            </>
+    let products = this.state.products
+    if (products.length % 2 !== 0) {
+      products.push(null)
+    }
+    return products.map(product => {
+      if (product === null) {
+        return (<div className="card_desktop"></div>)
+      } else{
+        return <>
+                <ProductCard 
+                  createCart={this.props.createCart}
+                  updateCart={this.props.updateCart}
+                  user={this.props.auth} 
+                  product={product} 
+                  cart={this.props.cart} 
+                  category_path_name={product.categories.length > 0 ? product.categories[0].path_name : ""} 
+                />
+              </>
+      }
     })
   }
 
@@ -58,12 +62,13 @@ class Home extends Component  {
         <h1>Node Store</h1>
         <div className="text-align-center margin-l-v">
           {this.state.banner ?
-            <img className="w-auto h-auto" style={isMobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
+            <img className="w-auto h-auto" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
           :
             <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin />
           }
         </div>
-        <div className="flex flex-wrap space-evenly home_product_container">
+        <h1 className="text-align-center margin-m-v">Featured Products</h1>
+        <div className="flex flex-wrap justify-center home_product_container">
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>
@@ -72,8 +77,8 @@ class Home extends Component  {
 }
 
 
-function mapStateToProps({ auth, cart }) {
-  return { auth, cart }
+function mapStateToProps({ auth, cart, mobile }) {
+  return { auth, cart, mobile }
 }
 
 const actions = { updateCart, createCart, homeProducts, homeBanner }

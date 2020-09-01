@@ -59,9 +59,9 @@ class Cart extends Component {
 
       {this.props.showCart && 
         <div>
-          <ul ref={node => this.node = node} className="expandedCart st-border-color st-nav-dropdown-background-color border-radius-bottom">
+          <ul ref={node => this.node = node} className={`${this.props.mobile ? "expandedCart" : "expandedCartDesktop"} st-border-color st-nav-dropdown-background-color border-radius-bottom`}>
             <div className="flex flex_column">
-              <div className="padding-s-h font-size-1-2 theme-background-3" style={{ paddingBottom: ".5em" }}><Link onClick={this.expandCart} to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link></div>
+              <div className="padding-s-v font-size-1-2 theme-background-3" style={{ paddingBottom: ".5em" }}><Link onClick={this.expandCart} className="padding-s inline" to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link></div>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
                 <div id="items" className="padding-xs">
                   <LineItems cart={this.props.cart} expandCart={this.expandCart} />
@@ -85,8 +85,8 @@ class Cart extends Component {
   }
 }
 
-function mapStateToProps({ cart, showCart }) {
-  return { cart, showCart }
+function mapStateToProps({ cart, showCart, mobile }) {
+  return { cart, showCart, mobile }
 }
 
 const actions = { dispatchEnlargeImage, showCartAction }

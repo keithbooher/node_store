@@ -9,6 +9,12 @@
   z-index: 25;
 }
 
+.desktop_nav {
+  height: 80px;
+  width: 100%;
+  z-index: 25;
+}
+
 .scrolling_down_nav {
   position: fixed;
   top: -50px;
@@ -20,5 +26,19 @@
 }
 
 .top_of_page_nav {
+  position: relative;
+}
+
+.scrolling_down_nav_desktop {
+  position: fixed;
+  top: -80px;
+}
+
+.scrolling_up_nav_desktop {
+  position: fixed;
+  top: 0px;
+}
+
+.top_of_page_nav_desktop {
   position: relative;
 }

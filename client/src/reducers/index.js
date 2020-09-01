@@ -7,6 +7,7 @@ import zeroInventoryReducer from './zeroInventorySettingReducer'
 import showCartReducer from './showCartReducer'
 import showHeaderReducer from './showHeaderReducer'
 import errorReducer from './errorReducer'
+import mobileReducer from './mobileReducer'
 import { reducer as reduxForm } from 'redux-form'
 
 
@@ -19,5 +20,6 @@ export default combineReducers({
   zeroInventory: zeroInventoryReducer,
   showCart: showCartReducer,
   showHeader: showHeaderReducer,
-  error: errorReducer
+  error: errorReducer,
+  mobile: mobileReducer,
 })

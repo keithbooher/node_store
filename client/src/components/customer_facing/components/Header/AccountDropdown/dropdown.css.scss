@@ -1,6 +1,13 @@
+@import '../../../../../stylesheets/colors/colors.css.scss';
+
 #cart_container {
   position: absolute;
-  bottom: 0px;
+  bottom: -9px;
   right: 0px;
   transform: translate(0px, 100%);
+}
+
+
+.account_dropdown_item:hover {
+  background-color: $blue-7;
 }

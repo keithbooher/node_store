@@ -45,15 +45,20 @@ class SignInDropdown extends Component {
   render() {
     return (
       <div className="relative">
-        <a ref={this.dropRef} onClick={this.showAccountMenu} className="header_list_item flex">
+        <a 
+          ref={this.dropRef} 
+          onClick={this.showAccountMenu} 
+          className="header_list_item flex" 
+          style={this.props.mobile ? {} : { fontSize: "25px" }}
+        >
           <div style={{ marginRight: "5px" }} ref={this.userIconRef}>Sign In</div>
           <div ref={this.caratDownRef}><FontAwesomeIcon icon={faCaretDown} /></div>
         </a>
         {this.state.open === true && 
           <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom st-nav-dropdown-background-color color-white">
-            <ul className="text-align-center" style={{ minWidth: "180px" }}>
-              <li className="padding-s"><a href="/auth/google">Sign in with Google</a></li>
-              <li className="padding-s"><a href="/auth/facebook">Sign in with Facebook</a></li>
+            <ul className="text-align-center" style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px" }}>
+              <li style={this.props.mobile ? {} : { fontSize: "25px" }} className="padding-s account_dropdown_item"><a href="/auth/google">Sign in with Google</a></li>
+              <li style={this.props.mobile ? {} : { fontSize: "25px" }} className="padding-s account_dropdown_item"><a href="/auth/facebook">Sign in with Facebook</a></li>
             </ul>
           </div>
         }
@@ -64,8 +69,8 @@ class SignInDropdown extends Component {
   }
 }
 
-function mapStateToProps({ showCart }) {
-  return { showCart }
+function mapStateToProps({ mobile }) {
+  return { mobile }
 }
 
 const actions = { showCartAction }
