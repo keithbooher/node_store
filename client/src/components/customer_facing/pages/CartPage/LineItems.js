@@ -92,25 +92,27 @@ class LineItems extends Component {
           return (
             <>
               <div key={index} className="flex">
-                <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" }}>
+                <div 
+                  className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
+                  style={this.props.mobile ? { maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" } : { maxHeight: "250px", maxWidth: "250px", minHeight: "250px", minWidth: "250px" }}>
                   <LazyLoadImage
-                    style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}
+                    style={this.props.mobile ? { height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" } : { height: "auto", width: "auto", maxHeight: "250px", maxWidth: "250px" }}
                     src={line_item.image}
                     onClick={() => this.enlargeImage(line_item.image, line_item.product_path)}
                   />
                 </div>
                 <div className="margin-s-h">
-                  <h3 className="margin-s-v"><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link></h3>
-                  <div className="margin-s-v">${formatMoney(line_item.product_price)}</div>
+                  <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                  <div className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
                   <div className="flex align-items-center">
-                    <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                    <FontAwesomeIcon className="hover hover-color-3 theme-background-4 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                     <input 
                       onChange={(e) => console.log(e)} 
                       onFocus={() => this.setState({ showModal: line_item })} 
                       value={line_item.quantity} 
                       style={{ width: "100%", maxWidth: "45px" }}
                     />
-                    <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                    <FontAwesomeIcon className="hover hover-color-3 theme-background-4 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                   </div>
                 </div>
               </div>

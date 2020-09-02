@@ -56,9 +56,9 @@ class AccountDropdown extends Component {
         </a>
         {this.state.open === true && 
           <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom st-nav-dropdown-background-color color-white">
-            <ul style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px" }}>
+            <ul style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px", width: "auto" }}>
               {this.props.elements.map((element, index) => {
-                return <li className="account_dropdown_item" style={this.props.mobile ? {} : { fontSize: "20px" }} key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
+                return <li className="account_dropdown_item" style={this.props.mobile ? {} : { fontSize: "25px" }} key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
               })}
             </ul>
           </div>

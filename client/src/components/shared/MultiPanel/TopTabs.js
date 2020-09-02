@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 
@@ -11,8 +12,16 @@ class TopTabs extends Component  {
   }
 
   renderTabs() {
+    let mobileFontSize = '1em'
+    if (!this.props.mobile) {
+      mobileFontSize = '30px'
+    }
     return this.props.sections.map((section, index) => {
-      return <NavLink key={index} style={{ flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}><h3 data-tab={section} className="tab_section_header margin-none clickable">{capitalizeFirsts(section.tab)}</h3></NavLink>
+      return <NavLink key={index} style={{ fontSize: mobileFontSize, flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}>
+                <h3 data-tab={section} className="tab_section_header margin-none">
+                  {capitalizeFirsts(section.tab)}
+                </h3>
+              </NavLink>
     })
   }
 
@@ -30,4 +39,9 @@ class TopTabs extends Component  {
   }
 }
 
-export default TopTabs
+
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(TopTabs)

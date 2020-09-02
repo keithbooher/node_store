@@ -136,7 +136,7 @@ class LineItems extends Component {
 
                   <div className="flex">
                     <div 
-                      className="margin-auto-v flex justify-center align-items-center background-color-black" 
+                      className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
                       style={this.props.mobile ? { maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px", minHeight: "175px", minWidth: "175px" } }
                     >
                       <img 
@@ -147,26 +147,26 @@ class LineItems extends Component {
                       />
                     </div>
 
-                    <div className="padding-s">
-                      <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline inverted_text" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
-                      <div className="color-black bold margin-m-v">${formatMoney(line_item.product_price)}</div>
+                    <div className="padding-s flex flex_column space-evenly">
+                      <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline a-invert" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                      <div className="color-black bold margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
 
-                      <div style={{ fontSize: "14px" }}className="flex align-items-center color-black margin-auto-v">
-                        <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                      <div style={{ fontSize: "14px" }}className="flex align-items-center color-black">
+                        <FontAwesomeIcon className="hover hover-color-1 theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                         <input 
                           onChange={(e) => console.log(e)} 
                           onFocus={() => this.setState({ showModal: line_item })} 
                           value={line_item.quantity} 
                           style={{ width: "100%", maxWidth: "45px" }}
                         />
-                        <FontAwesomeIcon className="theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                        <FontAwesomeIcon className="hover hover-color-1 theme-background-4 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                       </div>
 
                     </div>
                   </div>
                 </div>
-                <i style={{ fontSize: "14px", top: "5px", right: "5px" }} className={`color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
-                  <FontAwesomeIcon icon={faTrash} />
+                <i style={this.props.mobile ? { fontSize: "14px", top: "5px", right: "5px" } : {fontSize: "18px", top: "5px", right: "10px" }} className={`hover color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
+                  <FontAwesomeIcon className="hover-color-2" icon={faTrash} />
                 </i>
 
                 {this.state.inventory_limit &&

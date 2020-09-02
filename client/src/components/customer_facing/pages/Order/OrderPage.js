@@ -26,7 +26,7 @@ class OrderPage extends Component {
     const order = this.state.order
 
     return (
-      <div>
+      <div style={{ paddingBottom: "80px" }}>
         <MetaTags>
           <title>Node Store Order Review</title>
           <meta name="description" content="Review a past order" />

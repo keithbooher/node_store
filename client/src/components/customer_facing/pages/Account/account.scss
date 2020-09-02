@@ -1,3 +1,5 @@
+@import '../../../../stylesheets/colors/colors.css.scss';
+
 .new_user_address_forms_container {
   display: flex;
 }
@@ -16,6 +18,11 @@
 .address_card_container {
   min-width: 14em;
   margin: 0px .2em;
+}
+
+.address_card_container_desktop {
+  min-width: 18em;
+  margin: 0px .5em;
 }
 
 .card_container {

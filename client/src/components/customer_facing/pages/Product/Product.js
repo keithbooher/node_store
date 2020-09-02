@@ -261,7 +261,7 @@ const Product = ({
     review_container_style = { height: "auto" }
   }
   return (
-    <div>
+    <div style={{ paddingBottom: "80px" }}>
       <MetaTags>
         {product &&
           <>

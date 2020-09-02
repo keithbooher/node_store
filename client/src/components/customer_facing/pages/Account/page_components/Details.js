@@ -75,28 +75,34 @@ class Details extends Component {
   }
 
   render() {
+    let mobileFontSize = "1em"
+    if (!this.props.mobile) {
+      mobileFontSize = "25px"
+    }
     return (
       <div>
         { this.props.auth ?
           <>
-            <h4>Email: {this.props.auth.email}</h4>
+            <h4 style={{ fontSize: mobileFontSize }}>Email: {this.props.auth.email}</h4>
             <div className="relative">
-              <span className="bold" >First Name: </span><a className="inline" onClick={() => this.showEditIndicator("first_name")}>{this.props.auth.first_name}</a>
+              <span style={{ fontSize: mobileFontSize }} className="bold" >First Name: </span>
+              <a style={{ fontSize: mobileFontSize }} className="inline" onClick={() => this.showEditIndicator("first_name")}>{this.props.auth.first_name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "first_name" && 
-                  <FontAwesomeIcon 
-                    icon={faEdit} 
-                    onClick={() => this.showEditModal("first_name")} 
-                  />
-                }
+                <FontAwesomeIcon 
+                  icon={faEdit} 
+                  onClick={() => this.showEditModal("first_name")} 
+                />
+              }
             </div>
             <div className="relative">
-            <span className="bold" >Last Name:</span> <a className="inline" onClick={() => this.showEditIndicator("last_name")}>{this.props.auth.last_name}</a>
+              <span style={{ fontSize: mobileFontSize }} className="bold" >Last Name: </span> 
+              <a style={{ fontSize: mobileFontSize }} className="inline" onClick={() => this.showEditIndicator("last_name")}>{this.props.auth.last_name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "last_name" && 
-                  <FontAwesomeIcon 
-                    icon={faEdit} 
-                    onClick={() => this.showEditModal("last_name")} 
-                  />
-                }
+                <FontAwesomeIcon 
+                  icon={faEdit} 
+                  onClick={() => this.showEditModal("last_name")} 
+                />
+              }
             </div>
 
 
@@ -145,8 +151,8 @@ class Details extends Component {
   }
 }
 
-function mapStateToProps({ auth, form }) {
-  return { auth, form }
+function mapStateToProps({ auth, form, mobile }) {
+  return { auth, form, mobile }
 }
 
 const actions = { updateUser, dispatchObj }

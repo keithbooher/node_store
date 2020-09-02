@@ -81,11 +81,13 @@ class AddressPanel extends Component  {
         { this.props.cart ?
           <>
             <div>
-              <h4>Choose Shipping Method</h4>
+              <h4 style={this.props.mobile ? {} : { fontSize: "20px" }}>Choose Shipping Method</h4>
               <div>
                 <Form 
                   onSubmit={this.handleSubmit}
-                  submitButton={<div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold">Select Shipping Method</button></div>}
+                  submitButton={<div className={`${this.props.mobile ? "w-90" : ""} margin-auto-h`} style={{ marginTop: "20px" }}>
+                                  <button style={this.props.mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Select Shipping Method</button>
+                                </div>}
                   formFields={this.state.rateFields}
                   form='shipping_method_selection_form'
                 />
@@ -98,8 +100,8 @@ class AddressPanel extends Component  {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { convertCart, getShippingMethodForCheckout }

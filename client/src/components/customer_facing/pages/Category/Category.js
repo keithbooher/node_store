@@ -79,7 +79,7 @@ class Category extends Component  {
       this.getProducts()
     }
     return (
-      <div>
+      <div style={{ paddingBottom: "80px" }}>
         <MetaTags>
           {this.state.category_data &&
             <>

@@ -3,6 +3,20 @@
 @import './store-theme-components.css.scss';
 @import './border.css.scss';
 @import './text.css.scss';
+@import 'colors/colors.css.scss';
 
 
 
+
+.hover-color-1:hover {
+  background-color: $blue-7;
+  color: white;
+}
+
+.hover-color-2:hover {
+  color: $blue-3;
+}
+
+.hover-color-3:hover {
+  background-color: $blue-3;
+}

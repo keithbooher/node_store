@@ -1,5 +1,6 @@
 import React, { Component }  from 'react'
 import DropdownList from 'react-widgets/lib/DropdownList'
+import { connect } from 'react-redux'
 import 'react-widgets/dist/css/react-widgets.css'
 
 // export default ({ input, label, field_class, options, onChange, meta: { error, touched } }) => {
@@ -40,20 +41,26 @@ class FormDropdown extends Component {
     let default_option = this.props.options.find(option => option.default === true)
 
     return (
-      <div>
-        <label>{this.props.label}</label>
-        <DropdownList
-          data={this.props.options}
-          valueField="value"
-          textField="name"
-          onChange={e => this.onChange(e)}
-          onSubmit={e => this.onSubmit(e)}
-          defaultValue={default_option}
-          value={this.state.chosen}
-        />
+      <div className={`${this.props.mobile ? "" : "w-70"}`}>
+        <label style={this.props.mobile ? {} : { fontSize: "20px" }}>{this.props.label}</label>
+        <div style={this.props.mobile ? {} : { fontSize: "20px" }}>
+          <DropdownList
+            data={this.props.options}
+            valueField="value"
+            textField="name"
+            onChange={e => this.onChange(e)}
+            onSubmit={e => this.onSubmit(e)}
+            defaultValue={default_option}
+            value={this.state.chosen}
+          />
+        </div>
       </div>
     )
   }
 }
 
-export default FormDropdown
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(FormDropdown)

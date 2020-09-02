@@ -23,13 +23,13 @@ class Checkout extends Component  {
   render() {
     // Need to render a side container showing the contents of the cart 
     return (
-      <div>
+      <div style={{ paddingBottom: "80px" }}>
         <MetaTags>
           <title>Node Store Checkout</title>
           <meta name="description" content="Finalize your purchase here" />
           <meta name="keywords" content="" />
         </MetaTags>
-        <h1 style={{ textAlign: 'center' }}>Node Store Checkout</h1>
+        <h1 style={{ textAlign: 'center' }}>Checkout</h1>
         {this.state.current_user !== null ? 
           <CheckoutContainer current_user={this.state.current_user} />
         : ""}

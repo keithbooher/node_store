@@ -116,7 +116,6 @@ class AddressPanel extends Component  {
     if (this.state.billing_form_submit === true || this.state.billing_card_chosen) {
       bill_complete = true
     }
-    console.log(this.state.shipping_same_as_billing)
     if (this.state.shipping_form_submit === true || this.state.shipping_card_chosen || this.state.shipping_same_as_billing === true) {
       ship_complete = true
     }
@@ -149,7 +148,7 @@ class AddressPanel extends Component  {
             }
 
             {!hide_combination_option &&
-              <div className="flex align-items-center st-border border-radius-s w-80 padding-m justify-center" style={{ margin: "20px auto" }}>
+              <div className={`flex align-items-center border-radius-s padding-m justify-center theme-background-3`} style={this.props.mobile === true ? { margin: "20px auto", width: "80%" } : { margin: "20px 0px", width: "250px" }}>
                 <h4>Shipping address the <br /> same as Billing?</h4>
                 {this.state.shipping_same_as_billing ? 
                   <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faCheck} className="margin-s-h" style={{ fontSize: "30px" }} />
@@ -208,7 +207,9 @@ class AddressPanel extends Component  {
             </div>
 
             { bill_complete && ship_complete && 
-              <div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold" onClick={this.nextTab} >Continue</button></div>
+              <div className="w-90 margin-auto-h text-align-center" style={{ marginTop: "20px" }}>
+                <button style={this.props.mobile ? { fontSize: "20px", width: "100%" } : { width: "400px", fontSize: "30px" }} className={`bold margin-m-v`} onClick={this.nextTab} >Continue</button>
+              </div>
             }
 
           </>
@@ -218,8 +219,8 @@ class AddressPanel extends Component  {
   }
 }
 
-function mapStateToProps({ form, cart, auth }) {
-  return { form, cart, auth }
+function mapStateToProps({ form, cart, auth, mobile }) {
+  return { form, cart, auth, mobile }
 }
 
 export default connect(mapStateToProps, null)(AddressPanel)

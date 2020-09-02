@@ -51,7 +51,7 @@ class Home extends Component  {
   
   render() {
     return (
-      <div>
+      <div style={{ paddingBottom: "80px" }}>
         <MetaTags>
           <title>Node Store</title>
           <meta name="description" content="Some description." />
@@ -59,10 +59,9 @@ class Home extends Component  {
           <meta property="og:image" content="path/to/image.jpg" />
         </MetaTags>
 
-        <h1>Node Store</h1>
         <div className="text-align-center margin-l-v">
           {this.state.banner ?
-            <img className="w-auto h-auto" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
+            <img className="w-auto h-auto border-radius-s" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
           :
             <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin />
           }

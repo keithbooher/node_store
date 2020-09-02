@@ -30,7 +30,7 @@ class CartPage extends Component {
   render() {
 
     return (
-      <div >
+      <div style={{ paddingBottom: "80px" }}>
         <MetaTags>
           <title>Node Store Cart</title>
           <meta name="description" content="Review your cart" />
@@ -39,13 +39,13 @@ class CartPage extends Component {
         {this.props.cart ?
           <>
             <Link to="/checkout">Go to checkout <FontAwesomeIcon icon={faArrowRight} /></Link>
-            <h2>Line Items</h2>
+            <h2 style={ this.props.mobile ? {} : { fontSize: "25px" }}>Products In Your Cart</h2>
             {this.renderLineItems()}
-            <div><span className="store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
-            <div><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
-            {this.props.cart.chosen_rate && <div><span className="store_text_color">Shipping:</span> ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
-            <div><span className="store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
-            <Link className="margin-s-v" to="/checkout"><button>Go to Checkout</button></Link>
+            <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
+            <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
+            {this.props.cart.chosen_rate && <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Shipping:</span> ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
+            <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
+            <button className="margin-s-v"><Link to="/checkout">Go to Checkout</Link></button>
           </>
         :
           <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />
@@ -56,8 +56,8 @@ class CartPage extends Component {
 }
 
 
-function mapStateToProps({ cart }) {
-  return { cart }
+function mapStateToProps({ cart, mobile }) {
+  return { cart, mobile }
 }
 
 // const actions = { sidebarBoolean }
