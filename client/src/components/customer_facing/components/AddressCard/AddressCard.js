@@ -132,7 +132,7 @@ class AddressCard extends Component {
         className={`${this.props.mobile ? "address_card_container" : "address_card_container_desktop"} padding-s-h padding-s-bottom padding-l-top border-radius-s theme-background-2 relative ${ this.check_highlight(address) ? "st-border" : "" }`}
         style={ this.props.mobile ? {} : { fontSize: "20px" }}
       >
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >First Name:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("first_name", this.props.bill_or_ship, address._id)}>{address.first_name ? address.first_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "first_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -142,7 +142,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Last Name:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("last_name", this.props.bill_or_ship, address._id)}>{address.last_name ? address.last_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "last_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -152,7 +152,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Company:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("company", this.props.bill_or_ship, address._id)}>{address.company ? address.company : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "company" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -162,7 +162,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Street Address 1:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_1", this.props.bill_or_ship, address._id)}>{address.street_address_1 ? address.street_address_1 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "street_address_1" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -172,7 +172,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Street Address 2:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_2", this.props.bill_or_ship, address._id)}>{address.street_address_2 ? address.street_address_2 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "street_address_2" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -182,7 +182,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >City:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("city", this.props.bill_or_ship, address._id)}>{address.city ? address.city : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "city" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -192,7 +192,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >State:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("state", this.props.bill_or_ship, address._id)}>{address.state ? address.state : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "state" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -202,7 +202,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Zip Code:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("zip_code", this.props.bill_or_ship, address._id)}>{address.zip_code ? address.zip_code : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "zip_code" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -212,7 +212,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Phone Number:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("phone_number", this.props.bill_or_ship)}>{address.phone_number ? address.phone_number : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "phone_number" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -222,7 +222,7 @@ class AddressCard extends Component {
             />
           }
         </div>
-        <div className={`margin-xs-v ${this.props.mobile ? "" : "margin-s-v"}`}>
+        <div className={`margin-xs-v`}>
           <span >Country:</span> 
           <a className="inline margin-s-h" onClick={() => this.showEditIndicator("country", this.props.bill_or_ship)}>{address.country ? address.country : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "country" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
@@ -249,12 +249,12 @@ class AddressCard extends Component {
     }
     return (
       <div style={{ position: 'relative' }}>
-        <div style={this.props.mobile ? {} : { fontSize: "25px" }} className="flex">
+        <div style={this.props.mobile ? {} : { fontSize: "30px", width: "90%", margin: "0px auto" }} className="flex">
           {this.title()}
         </div>
 
         {this.props.mobile !== null && user && user[this.props.bill_or_ship] && user[this.props.bill_or_ship].length > 0 ?
-          <div className={`flex space-evenly theme-background-3 padding-m border-radius-s`}>
+          <div className={`flex space-evenly theme-background-5 padding-m border-radius-s ${this.props.mobile ? "" : "w-90 margin-auto-h"}`}>
             <div className="w-100 relative">
               {user && user[this.props.bill_or_ship] && <Carousel mobile={this.props.mobile} children={this.renderAddressCards(user)} />}
             </div>

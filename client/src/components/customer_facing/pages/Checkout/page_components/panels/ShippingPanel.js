@@ -77,7 +77,7 @@ class AddressPanel extends Component  {
 
   render() {
     return (
-      <div className="shipping_container">
+      <div className={`shipping_container ${!this.props.mobile && "w-90 margin-auto-h"}`}>
         { this.props.cart ?
           <>
             <div>

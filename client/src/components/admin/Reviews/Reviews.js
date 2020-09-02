@@ -101,7 +101,7 @@ class Reviews extends Component {
             <div>Rating: {review.rating}</div>
             <div>description: {review.description}</div>
 
-            {review._order_id && <div className="bold theme-background-4 padding-s text-align-center" style={{ borderBottom: "solid 1px lightgrey" }} onClick={() => this.getOrder(review._order_id, review.line_item._id)}>Order <FontAwesomeIcon icon={faChevronDown} /></div>}
+            {review._order_id && <div className="bold theme-background-6 padding-s text-align-center" style={{ borderBottom: "solid 1px lightgrey" }} onClick={() => this.getOrder(review._order_id, review.line_item._id)}>Order <FontAwesomeIcon icon={faChevronDown} /></div>}
             {this.state.order !== null ?
               this.state.order._id === review._order_id && this.state.line_item_id === review.line_item._id ? 
               <div className="padding-m">
@@ -111,7 +111,7 @@ class Reviews extends Component {
               </div>  
             : "" : ""}
           </div>
-          <div className="bold theme-background-4 padding-s text-align-center" onClick={() => this.approve(!review.approved, review)}>
+          <div className="bold theme-background-6 padding-s text-align-center" onClick={() => this.approve(!review.approved, review)}>
             { review.approved ? <span>Approved</span> : <span>Unapproved</span> }
           </div>
         </div>

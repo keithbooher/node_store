@@ -122,44 +122,52 @@ class CheckoutContainer extends Component  {
       <>
         <h1 className={`underline ${address_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.chooseTab('address')}>Address</h1>
         {this.state.chosen_tab === 'address' ? 
-          <AddressPanel 
-            chooseTab={this.chooseTab}
-            chosen_tab={this.state.chosen_tab} 
-            updateCart={this.updateCart}
-            setPreExistingAddress={this.setPreExistingAddress}
+          <div className="padding-s border-radius-s theme-background-4">
+            <AddressPanel 
+              chooseTab={this.chooseTab}
+              chosen_tab={this.state.chosen_tab} 
+              updateCart={this.updateCart}
+              setPreExistingAddress={this.setPreExistingAddress}
             />
+          </div>
         : ""}
 
         <h1 className={`underline ${shipping_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.paramterChooseTab('shipping')}>Shipping</h1>
         {this.state.chosen_tab === 'shipping' ? 
-          <ShippingPanel
-            cart={this.state.current_cart}
-            updateCart={this.updateCart}
-            chooseTab={this.chooseTab}
+          <div className="padding-s border-radius-s theme-background-4">
+            <ShippingPanel
+              cart={this.state.current_cart}
+              updateCart={this.updateCart}
+              chooseTab={this.chooseTab}
             />
+          </div>
         : ""}
 
         <h1  className={`underline ${payment_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.paramterChooseTab('payment')}>Payment</h1>
         {this.state.chosen_tab === "payment" ? 
-          <PaymentPanel 
-            cart={this.state.current_cart}
-            makeNewOrderAvailable={this.makeNewOrderAvailable} 
-            chooseTab={this.chooseTab} 
-            preExistingShipping={this.state.preExistingShipping}
-            preExistingBilling={this.state.preExistingBilling}
-            updateCart={this.updateCart}
+          <div className="padding-s border-radius-s theme-background-4">            
+            <PaymentPanel 
+              cart={this.state.current_cart}
+              makeNewOrderAvailable={this.makeNewOrderAvailable} 
+              chooseTab={this.chooseTab} 
+              preExistingShipping={this.state.preExistingShipping}
+              preExistingBilling={this.state.preExistingBilling}
+              updateCart={this.updateCart}
             />
+          </div>
           : ""}
 
         <h1 className="underline">Review</h1>
         {this.state.new_order !== null ? this.state.chosen_tab === "review" ?
-          <ReviewPanel 
-            convertCart={this.props.convertCart} 
-            new_order={this.state.new_order} 
-            new_shipment={this.state.new_shipment} 
-            chooseTab={this.chooseTab} 
-            chosen_tab={this.state.chosen_tab} 
+          <div className="padding-s border-radius-s theme-background-4">           
+            <ReviewPanel 
+              convertCart={this.props.convertCart} 
+              new_order={this.state.new_order} 
+              new_shipment={this.state.new_shipment} 
+              chooseTab={this.chooseTab} 
+              chosen_tab={this.state.chosen_tab} 
             />
+          </div>
           : "": ""}
       </>
     )

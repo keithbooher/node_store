@@ -77,45 +77,50 @@ class ReviewItems extends Component {
 
         <div>
 
-          <h3>Email</h3>
-          <div>{this.props.customer.email}</div>
+          <h3 style={this.props.mobile ? {} : { fontSize: "30px", width: "80%", margin: ".4em auto" } }>Email</h3>
+          <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "0px auto" } }>{this.props.customer.email}</div>
 
-          <h3>Line Items</h3>
-          <div className="flex flex_column">
+          <h3 style={this.props.mobile ? {} : {fontSize: "30px", width: "80%", margin: "30px auto" } }>Line Items</h3>
+          <div className={`flex flex_column ${!this.props.mobile && "w-80 margin-auto-h"}`}>
             {this.props.cart.line_items.map((line_item, index) => {
               return (
-                <div key={index} className="flex align-items-center" style={{ marginTop: "5px" }}>
-                  <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px",  marginRight: "10px" }}>
+                <div key={index} className="flex align-items-center" style={{ marginTop: "10px" }}>
+                  <div className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-xs" style={{ maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px",  marginRight: "10px" }}>
                     <img className="h-w-auto margin-auto-h" style={{ maxHeight: "125px", maxWidth: "125px" }} src={line_item.image} />
                   </div>
                   <div>
-                    <h3 className="margin-s-v">{line_item.product_name}</h3>
-                    <div>Quantity: {line_item.quantity}</div>
+                    <h3 className="margin-s-v" style={this.props.mobile ? {} : {fontSize: "25px"} }>{line_item.product_name}</h3>
+                    <div style={this.props.mobile ? {} : {fontSize: "20px"} }>Quantity: {line_item.quantity}</div>
                   </div>
                 </div>
               )
             })}
           </div>
 
-          <h3>Billing Address</h3>
-          <AddressDisplayEdit 
-            showEditIndicator={this.showEditIndicator} 
-            showEditModal={this.showEditModal}
-            address={this.props.cart.billing_address} 
-            bill_or_ship={"billing"} 
-            propertyToEdit={this.state.propertyToEdit}
-          />
+          <div className={`${this.props.mobile ? "" : "flex space-around"}`}>
+            <div>
+              <h3  style={this.props.mobile ? {} : {fontSize: "30px"} }>Billing Address</h3>
+              <AddressDisplayEdit 
+                showEditIndicator={this.showEditIndicator} 
+                showEditModal={this.showEditModal}
+                address={this.props.cart.billing_address} 
+                bill_or_ship={"billing"} 
+                propertyToEdit={this.state.propertyToEdit}
+              />
+            </div>
+            <div>
+              <h3 style={this.props.mobile ? {} : {fontSize: "30px"} }>Shipping Address</h3>
+              <AddressDisplayEdit 
+                showEditIndicator={this.showEditIndicator} 
+                showEditModal={this.showEditModal}
+                address={this.props.cart.shipping_address} 
+                bill_or_ship={"shipping"} 
+                propertyToEdit={this.state.propertyToEdit}
+              />
+            </div>
+          </div>
 
-          <h3>Shipping Address</h3>
-          <AddressDisplayEdit 
-            showEditIndicator={this.showEditIndicator} 
-            showEditModal={this.showEditModal}
-            address={this.props.cart.shipping_address} 
-            bill_or_ship={"shipping"} 
-            propertyToEdit={this.state.propertyToEdit}
-          />
-
-          <div className="flex flex_column margin-m-v">
+          <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
             <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
@@ -145,8 +150,8 @@ class ReviewItems extends Component {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { updateCart, dispatchObj }

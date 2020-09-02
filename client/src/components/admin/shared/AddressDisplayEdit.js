@@ -1,14 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 
-const AddressDisplayEdit = ({ address, showEditIndicator, propertyToEdit, showEditModal, bill_or_ship }) => {
+const AddressDisplayEdit = ({ address, showEditIndicator, propertyToEdit, showEditModal, bill_or_ship, mobile }) => {
   // logic stuff up here
 
   // TO DO
   // MAP THROUGH ADDRESS OBJECT TO CLEAN UP
   return (
-    <div>
+    <div style={mobile ? {} : { fontSize: "20px" }}>
       <div>
         First Name: <a className="inline" onClick={() => showEditIndicator("first_name", bill_or_ship)} >{address.first_name ? address.first_name : "N/A"}</a>
         {propertyToEdit && propertyToEdit.property === "first_name" && propertyToEdit.bill_or_ship === bill_or_ship && 
@@ -113,4 +114,8 @@ const AddressDisplayEdit = ({ address, showEditIndicator, propertyToEdit, showEd
   )
 }
 
-export default AddressDisplayEdit
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(AddressDisplayEdit)

@@ -65,7 +65,8 @@ const Payments = ({
   updateCart, 
   createOrder, 
   checkInventory, 
-  createShipment 
+  createShipment,
+  mobile
 }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
@@ -177,14 +178,16 @@ const Payments = ({
       {auth && <ReviewItems cart={cart} customer={auth} />}
       <StripeCheckout
         name="Node Store"
-        description='Purchase your order at ______' 
+        description='Complete your order with Node Store' 
         panelLabel="Purchase"
         amount={cart.total * 100}
         token={token => someFunction(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
         email={cart.email}
       >
-        <div className="w-90 margin-auto-h" style={{ marginTop: "20px" }}><button style={{ fontSize: "20px" }} className="w-100 bold">Pay For Order</button></div>
+        <div style={mobile ? { marginTop: "40px", width: "90%" } : { margin: "40px auto 0px auto", width: "80%" }}>
+          <button style={mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Pay For Order</button>
+        </div>
       </StripeCheckout>
       {outOfStockMessage && 
         <LowInventory 
@@ -201,8 +204,8 @@ const Payments = ({
 
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, mobile }) {
+  return { auth, mobile }
 }
 
 const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder, createShipment, checkInventory }
