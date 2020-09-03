@@ -148,12 +148,14 @@ class AddressPanel extends Component  {
             }
 
             {!hide_combination_option &&
-              <div className={`flex align-items-center border-radius-s padding-m justify-center theme-background-3`} style={this.props.mobile === true ? { margin: "20px auto", width: "80%" } : { margin: "20px 0px", width: "250px" }}>
-                <h4>Shipping address the <br /> same as Billing?</h4>
-                {this.state.shipping_same_as_billing ? 
-                  <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faCheck} className="margin-s-h" style={{ fontSize: "30px" }} />
-                :
-                  <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faTimes} className="margin-s-h" style={{ fontSize: "30px" }} />}
+              <div className={`${!this.props.mobile && "w-90 margin-auto-h"}`}>
+                <div className={`flex align-items-center border-radius-s padding-m justify-center theme-background-5 inverted_text`} style={this.props.mobile === true ? { margin: "20px auto", width: "80%" } : { margin: "40px 0px 20px 0px", width: "250px" }}>
+                  <h4>Shipping address the <br /> same as Billing?</h4>
+                  {this.state.shipping_same_as_billing ? 
+                    <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faCheck} className="margin-s-h store_text_color hover hover-color-4" style={{ fontSize: "30px" }} />
+                  :
+                    <FontAwesomeIcon onClick={() => this.setState({ shipping_same_as_billing: !this.state.shipping_same_as_billing })} icon={faTimes} className="margin-s-h store_text_color hover hover-color-4" style={{ fontSize: "30px" }} />}
+                </div>
               </div>
             }
 

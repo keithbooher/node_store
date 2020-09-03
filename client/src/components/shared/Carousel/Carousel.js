@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useEmblaCarousel } from 'embla-carousel/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons'
-
-
+import "./carousel.scss"
 const EmblaCarousel = ({children, mobile}) => {
   console.log(children)
   const [EmblaCarouselReact, embla] = useEmblaCarousel({ loop: false, inViewThreshold: 1, startIndex: 0 })

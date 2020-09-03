@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faTrash, faPlusCircle, faEdit} from "@fortawesome/free-solid-svg-icons"
 import { reset } from 'redux-form'
 import { capitalizeFirsts } from "../../../../utils/helpFunctions"
-import Carousel from "../../../shared/Carousel"
+import Carousel from "../../../shared/Carousel/Carousel"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import FormModal from "../../../shared/Form/FormModal"
 
