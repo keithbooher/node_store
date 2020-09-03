@@ -51,6 +51,13 @@ class Cart extends Component {
       shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
     }
 
+    let fontSize = "1em"
+    let totalsFontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "25px"
+      totalsFontSize = "20px"
+    }
+
     return (
     <div>
       <div onClick={this.expandCart} ref={this.dropRef} className="h-100">
@@ -61,7 +68,7 @@ class Cart extends Component {
         <div>
           <ul ref={node => this.node = node} className={`${this.props.mobile ? "expandedCart" : "expandedCartDesktop"} st-border-color st-nav-dropdown-background-color border-radius-bottom`}>
             <div className="flex flex_column">
-              <div className="padding-s-v font-size-1-2 theme-background-3" style={{ paddingBottom: ".5em" }}><Link onClick={this.expandCart} className="padding-s inline" to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link></div>
+              <div className="padding-s-v font-size-1-2 theme-background-3" style={{ paddingBottom: ".5em", fontSize }}><Link onClick={this.expandCart} className="padding-s inline" to="/cart">Go to cart <FontAwesomeIcon icon={faArrowRight} /></Link></div>
               {this.props.cart && this.props.cart.line_items.length > 0 && 
                 <div id="items" className="padding-xs">
                   <LineItems cart={this.props.cart} expandCart={this.expandCart} />
@@ -69,7 +76,7 @@ class Cart extends Component {
               }
             </div>
             <div className="flex space-between theme-background-3 padding-s">
-              <div className="flex flex_column">
+              <div className="flex flex_column" style={{ fontSize: totalsFontSize }}>
                 <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
                 <div><span className="bold store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
                 {this.props.cart.chosen_rate && <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(shipping)}</div>}

@@ -47,9 +47,9 @@ class Orders extends Component {
   orderData(order) {
     var date = order.date_placed.split("T")[0]
     return  (
-      <div className="w-95 margin-auto-h padding-xs" style={{ backgroundColor: 'rgb(111, 111, 111)' }}>
-        <div>
-          <h2 className="margin-xs-v underline">Line Items</h2>
+      <td colspan="3">
+        <div  className={`theme-background-4 margin-auto-h w-90 ${this.props.mobile ? "padding-xs" : "padding-s"}`} style={this.props.mobile ? {} : { fontSize: "18px" }}>
+          <h2 className="margin-xs-v">Products Purchased</h2>
           {order.shipment && order.shipment.line_items.map((line_item, index) => {
             return (
               <>
@@ -60,7 +60,7 @@ class Orders extends Component {
                     </div>
                   </div>
                   <div className="margin-s-h">
-                    <h3 className="margin-s-v"><Link to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                    <h3 className="margin-s-v"><Link to={line_item.product_path} style={this.props.mobile ? {} : { fontSize: "25px" }}>{line_item.product_name}</Link></h3>
                     <div><span className="store_text_color">Price:</span> {line_item.product_price}</div>
                     <div><span className="store_text_color">Quantity:</span> {line_item.quantity}</div>
                     <LeaveReview order_id={order._id} line_item={line_item} />
@@ -70,13 +70,13 @@ class Orders extends Component {
               </>
             )
           })}
+          <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
+          <div><span className="bold store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
+          <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+          <div><span className="store_text_color bold">Total:</span> ${formatMoney(order.total)}</div>
+          <div><span className="store_text_color bold">Date Place:</span> {date}</div>
         </div>
-        <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
-        <div><span className="bold store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
-        <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
-        <div><span className="store_text_color bold">Total:</span> ${formatMoney(order.total)}</div>
-        <div><span className="store_text_color bold">Date Place:</span> {date}</div>
-      </div>
+      </td>
     )
   }
 
@@ -89,15 +89,17 @@ class Orders extends Component {
     return this.state.orders.map((order, index) => {
       var date = order.date_placed.split("T")[0]
       return (
-        <div key={index}>
-          <div className="flex space-between margin-xs-v padding-s" style={{ backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>        
-            <FontAwesomeIcon className="store_text_color" icon={faCaretDown} onClick={ () => this.setOrder(order) } />
-            <div>{"..." + order._id.substr(order._id.length - 8)}</div>
-            <div>{date}</div>
-            <Link to={`/order/${order._id}`}><FontAwesomeIcon icon={faExternalLinkAlt} onClick={ () => this.setOrder(order) } /></Link>
-          </div>
-          { this.state.chosen_order === order._id ? this.orderData(order) : ""}
-        </div>
+        <>
+          <tr key={index} style={this.props.mobile ? { backgroundColor: 'rgb(45, 45, 45)' } : { fontSize: "26px", backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>
+              <td className={`flex ${this.props.mobile ? "padding-s" : "padding-xs" }`}>
+                <FontAwesomeIcon className="store_text_color hover hover-color-5" icon={faCaretDown} onClick={ () => this.setOrder(order) } />
+                <div className="margin-s-h">{this.props.mobile ? "..." + order._id.substr(order._id.length - 8) : order._id }</div>
+              </td>
+              <td className={`text-align-center ${this.props.mobile ? "padding-s" : "padding-xs" }`}>{date}</td>
+              <td className={`text-align-center ${this.props.mobile ? "padding-s" : "padding-xs" }`}><Link to={`/order/${order._id}`}><FontAwesomeIcon icon={faExternalLinkAlt} onClick={ () => this.setOrder(order) } /></Link></td>
+          </tr>
+          { this.state.chosen_order === order._id ? <tr>{this.orderData(order)}</tr> : "" }
+        </>
       )
     })
   }
@@ -111,20 +113,33 @@ class Orders extends Component {
     }
     return (
       <div>
-        {this.state.orders.length !== 0 ? this.renderOrders() : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
-        <PageChanger 
-          page_number={this.state.page_number} 
-          list_items={this.state.orders} 
-          requestMore={this.changePage} 
-          lastPossibleItem={lastPossibleItem}           
-          />
+        <div>
+          <table style={ this.props.mobile ? { width: "100%", margin: "20px auto" } : { margin: "30px auto", minWidth: "625px", width: "80%" } }>
+            <thead>
+              <tr className="theme-background-2" style={this.props.mobile ? {} : { fontSize: "25px" }}>
+                <th className="store_text_color text-align-left" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px 15px 10px" }}>{this.props.mobile ? "Order #" : "Order Number"}</th>
+                <th className="store_text_color" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px" }}>Placed On</th>
+                <th className="store_text_color" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px" }}>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.orders.length !== 0 ? this.renderOrders() : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
+            </tbody>
+          </table>
+          <PageChanger 
+            page_number={this.state.page_number} 
+            list_items={this.state.orders} 
+            requestMore={this.changePage} 
+            lastPossibleItem={lastPossibleItem}           
+            />
+        </div>
       </div>
     )
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth }
+function mapStateToProps({ auth, mobile }) {
+  return { auth, mobile }
 }
 
 const actions = { getUsersOrders, lastOrder }

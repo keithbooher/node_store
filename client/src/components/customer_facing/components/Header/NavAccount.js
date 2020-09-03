@@ -28,8 +28,8 @@ const AccountNav = ({ auth, logoutReq }) => {
 
   const renderDropDown = () => {
     return [
-      <Link className="clickable a-invert" style={{ marginTop: "0px" }} to="/account/details">{auth.email}</Link>,
-      <div onClick={logout} className="header_list_item clickable a-invert">Logout</div>
+      <Link style={{ marginTop: "0px" }} to="/account/details">{auth.email}</Link>,
+      <a onClick={logout}>Logout</a>
     ]
   }
 
