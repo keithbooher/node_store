@@ -152,14 +152,14 @@ class LineItems extends Component {
                       <div className="color-black bold margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
 
                       <div style={{ fontSize: "14px" }}className="flex align-items-center color-black">
-                        <FontAwesomeIcon className="hover hover-color-1 theme-background-6 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                        <FontAwesomeIcon className="hover hover-color-3 color-white theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                         <input 
                           onChange={(e) => console.log(e)} 
                           onFocus={() => this.setState({ showModal: line_item })} 
                           value={line_item.quantity} 
                           style={{ width: "100%", maxWidth: "45px" }}
                         />
-                        <FontAwesomeIcon className="hover hover-color-1 theme-background-6 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                        <FontAwesomeIcon className="hover hover-color-3 color-white theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                       </div>
 
                     </div>

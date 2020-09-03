@@ -69,7 +69,7 @@ class LeaveReview extends Component {
     return (
     <div>
       <div className="flex align-items-center">
-        <button style={{ fontSize: "12px" }} className="margin-s-v" onClick={this.leaveReview}>{this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
+        <button style={this.props.mobile ? { fontSize: "12px" } : { minWidth: "120px" }} className="margin-s-v" onClick={this.leaveReview}>{this.state.reviewed === "" ?  "Leave a review" : "Edit Review" }</button> 
         {this.state.submitted === true ? <FontAwesomeIcon icon={faCheckCircle} /> : "" }
       </div>
       {this.state.show_review ?
@@ -90,8 +90,8 @@ class LeaveReview extends Component {
   }
 }
 
-function mapStateToProps({ form, auth }) {
-  return { form, auth }
+function mapStateToProps({ form, auth, mobile }) {
+  return { form, auth, mobile }
 }
 
 const actions = { updateReview, checkIfReviewExists, submitReview }

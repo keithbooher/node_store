@@ -37,29 +37,40 @@ class OrderPage extends Component {
           <div style={this.props.mobile ? {} : {fontSize: "20px"} }>
             <div className={!this.props.mobile && "flex"}>
               <div className={!this.props.mobile && "w-50"}>
-                <div><span className="store_text_color">Order ID:</span> {order._id}</div>
-                <div><span className="store_text_color">Status:</span> {order.status}</div>
-                <div><span className="store_text_color">Customer:</span> {order.email}</div>
-                <div><span className="store_text_color">Date Placed:</span> {order.date_placed}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Order ID:</span> {order._id}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Status:</span> {order.status}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Customer:</span> {order.email}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Date Placed:</span> {order.date_placed}</div>
               </div>
-
+              {this.props.mobile && 
+                <>
+                  <br />
+                  <hr />
+                  <br />
+                </>
+              }
               <div className={!this.props.mobile && "w-50"}>
-                <div><span className="store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
-                <div><span className="store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
-                <div><span className="store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
-                <div><span className="store_text_color">Total:</span> {formatMoney(order.total)}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+                <div className="margin-xs-v"><span className="store_text_color">Total:</span> {formatMoney(order.total)}</div>
               </div>
             </div>
-
+            {this.props.mobile && <br />}
             <hr/>
             <h2>Items Purchased</h2>
             {this.props.mobile ? <MobileLineItems order={order} line_items={order.shipment.line_items} /> : <DesktopLineItems order={order} line_items={order.shipment.line_items} /> }
 
-
-            <h2>Billing</h2>
-            <AddressDisplay address={order.shipment.billing_address} />
-            <h2>Shipping</h2>
-            <AddressDisplay address={order.shipment.shipping_address} />
+            <div className={!this.props.mobile && "flex margin-s-h"}>
+              <div className={!this.props.mobile && "w-50"}>
+                <h2>Billing</h2>
+                <AddressDisplay address={order.shipment.billing_address} />
+              </div>
+              <div className={!this.props.mobile && "w-50"}>
+                <h2>Shipping</h2>
+                <AddressDisplay address={order.shipment.shipping_address} />
+              </div>
+            </div>
           </div>
         }
       </div>
@@ -86,7 +97,7 @@ const MobileLineItems = ({ line_items, order }) => {
             <div className="border-radius-s flex flex_column justify-center background-color-black" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
               <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
             </div>
-            <div className="flex space-evenly w-90" style={{ margin: ".9em auto" }}>
+            <div className="flex space-between" style={{ margin: ".9em auto" }}>
               <div>
                 <div className="bold"><Link to={item.product_path}>{item.product_name}</Link></div>
                 <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
@@ -108,17 +119,19 @@ const DesktopLineItems = ({ line_items, order }) => {
     <div className="flex" style-={{ }}>
       {line_items.map((item, index) => {
         return (
-          <div key={index} className="flex flex_column align-items-center st-product-card-background padding-s" style={{ width: "15em", margin: "10px" }}>
+          <div key={index} className="flex flex_column align-items-center st-product-card-background padding-m" style={{ width: "15em", margin: "10px" }}>
             <div className="border-radius-s flex justify-center background-color-black"  style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }} >
               <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
             </div>
-            <div className="flex space-evenly w-90" style={{ margin: ".9em auto" }}>
+            <div className="w-90" style={{ margin: ".9em auto" }}>
               <div>
-                <div className="bold"><Link to={item.product_path}>{item.product_name}</Link></div>
+                <div className="bold margin-s-v"><Link to={item.product_path}>{item.product_name}</Link></div>
                 <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
                 <div><span className="store_text_color bold">Price Each:</span> ${item.product_price}</div>
               </div>
-              <LeaveReview order_id={order._id} line_item={item} />
+              <div style={{ marginTop: "20px" }}>
+                <LeaveReview order_id={order._id} line_item={item} />
+              </div>
             </div>
           </div>
         )
