@@ -19,8 +19,8 @@ class Reviews extends Component {
     this.submitReviewUpdate = this.submitReviewUpdate.bind(this)
 
     this.fields = [
-      { label: "rating", field_class: "line_item_rating_input", name: "rating", typeOfComponent: "star-choice", noValueError: `` },
-      { label: "description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
+      { label: "Rating", field_class: "line_item_rating_input", name: "rating", typeOfComponent: "star-choice", noValueError: `` },
+      { label: "Description", field_class: "line_item_rating_text_area", typeOfComponent: "text-area", name: "description", noValueError: `` },
     ]
 
     this.state = {
@@ -102,6 +102,7 @@ class Reviews extends Component {
                 line_item_id={this.state.line_item_id }
                 order={this.state.order }
                 getOrder={this.getOrder}
+                mobile={this.props.mobile}
               /> 
             )}
           </div>
@@ -131,8 +132,8 @@ class Reviews extends Component {
   }
 }
 
-function mapStateToProps({ auth, form }) {
-  return { auth, form }
+function mapStateToProps({ auth, form, mobile }) {
+  return { auth, form, mobile }
 }
 
 const actions = { getOrder, updateReview, getUsersReviews, lastUserReview }
@@ -146,9 +147,9 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
         {review.line_item &&
           <>
             <h2><Link to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>
-            <div className="flex margin-auto-h justify-center align-items-center background-color-black" style={{ maxHeight: "200px", maxWidth: "200px", minHeight: "200px", minWidth: "200px", marginTop: "10px", marginBottom: "10px" }}>
+            <div className="flex margin-auto-h justify-center align-items-center background-color-black" style={{ maxHeight: "300px", maxWidth: "100%", height: "auto", width: "auto", marginTop: "10px", marginBottom: "10px" }}>
               <LazyLoadImage
-                style={{ height: "auto", width: "auto", maxHeight: "200px", maxWidth: "200px" }}
+                style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }}
                 src={review.line_item.image}
               />
             </div>
@@ -189,9 +190,9 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
             </div>
           }
           <div className="margin-m-h">
-            <FontAwesomeIcon className="absolute" style={{ top: "2px", right: "2px" }} icon={faEdit} onClick={() => setEditForm(review)} />
+            
             {review.line_item && <h2 style={{ fontSize: "35px" }}><Link to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>}
-            <h2 style={{ fontSize: "25px" }}>Your Rating</h2>
+            <h2 style={{ fontSize: "25px" }}>Your Rating <FontAwesomeIcon className="hover hover-color-2" icon={faEdit} onClick={() => setEditForm(review)} /></h2>
             <div className="flex align-items-center">
               <StarRatings
                 rating={review.rating}
@@ -207,10 +208,10 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
             <div style={{ fontSize: "25px" }}>{review.description}</div>
           </div>
         </div>
-        <a className="margin-s-v" onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon className="store_text_color" icon={faArrowCircleDown} /></a>
+        <a className="margin-s-v" style={{ fontSize: "20px" }} onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon className="store_text_color" icon={faArrowCircleDown} /></a>
         {order !== null ?
           order._id === review._order_id && line_item_id === review.line_item._id? 
-          <div className="padding-m">
+          <div className="padding-m" style={{ fontSize: "20px" }}>
             <div>Order Number: <Link className="inline" to={`/order/${order._id}`}>{order._id}</Link></div>
             <div>Date Placed: {order.date_placed.split("T")[0]}</div>
           </div>  

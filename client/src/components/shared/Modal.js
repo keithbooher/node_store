@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import mobile from "is-mobile"
 
 let isMobile = mobile()
@@ -53,6 +54,10 @@ class Product extends Component  {
       zIndex: 30
     }
 
+    if (!this.props.mobile) {
+      style_inner.fontSize = "25px"
+    }
+
     return (
       <div id="outer" ref={this.outerRef} style={ style_outer }>
         <div id="inner" ref={this.ref} className="theme-background-3 border-radius-s color-white padding-m" style={ style_inner }>
@@ -64,4 +69,8 @@ class Product extends Component  {
 }
 
 
-export default Product
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(Product)

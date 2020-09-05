@@ -112,7 +112,7 @@ class Orders extends Component {
       }
     }
     return (
-      <div>
+      <div style={{ paddingBottom: "80px" }}>
         <div>
           <table style={ this.props.mobile ? { width: "100%", margin: "20px auto" } : { margin: "30px auto", minWidth: "625px", width: "80%" } }>
             <thead>

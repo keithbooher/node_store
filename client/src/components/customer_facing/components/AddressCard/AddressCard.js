@@ -254,7 +254,7 @@ class AddressCard extends Component {
         </div>
 
         {this.props.mobile !== null && user && user[this.props.bill_or_ship] && user[this.props.bill_or_ship].length > 0 ?
-          <div className={`flex space-evenly theme-background-5 padding-m border-radius-s ${this.props.mobile ? "" : "w-90 margin-auto-h"}`}>
+          <div className={`flex space-evenly padding-m border-radius-s ${this.props.mobile ? "" : "w-90 margin-auto-h"}`}>
             <div className="w-100 relative">
               {user && user[this.props.bill_or_ship] && <Carousel mobile={this.props.mobile} children={this.renderAddressCards(user)} />}
             </div>

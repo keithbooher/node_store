@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 import FormField from './FormField'
 import FormTextArea from './FormTextArea'
@@ -66,6 +66,7 @@ class Form extends Component {
                 display={display}
                 searchButton={this.props.searchButton}
                 autofocus={autofocus}
+                mobile={this.props.mobile}
               />
     })
   }
@@ -106,8 +107,13 @@ function validate(values, props) {
   return validation
 }
 
+
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
 export default reduxForm({
   validate,
   destroyOnUnmount: false,
   enableReinitialize : true
-})(Form)
+})(connect(mapStateToProps, null)(Form))

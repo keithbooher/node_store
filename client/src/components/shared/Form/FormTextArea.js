@@ -1,11 +1,21 @@
 import React from 'react'
 
-export default ({ input, label, field_class, onChange, meta: { error, touched } }) => {
-  // console.log(input)
+export default ({ mobile, input, label, field_class, onChange, meta: { error, touched } }) => {
+  let fieldStyle = {
+    marginBottom: '5px',
+    minHeight: "65px"
+  }
+
+  if (!mobile) {
+    fieldStyle.fontSize = "20px"
+  }
   return (
     <div className="textArea">
       <label>{label}</label>
-      <textarea onChange={onChange} className={field_class} value={input.value} {...input} style={{ marginBottom: '5px' }} />
+      <div>
+
+        <textarea onChange={onChange} className={field_class} value={input.value} {...input} style={ fieldStyle } />
+      </div>
       <div className="color-red-5" style={{ marginBottom: '20px' }}>
         {touched && error}
       </div>

@@ -29,8 +29,17 @@ class CartPage extends Component {
 
   render() {
 
+    let containerStyle = {
+      paddingBottom: "80px"
+    }
+
+    if (!this.props.mobile) {
+      containerStyle.width = "80%"
+      containerStyle.margin = "0px auto"
+    }
+
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div style={ containerStyle }>
         <MetaTags>
           <title>Node Store Cart</title>
           <meta name="description" content="Review your cart" />
@@ -38,7 +47,7 @@ class CartPage extends Component {
         </MetaTags>
         {this.props.cart ?
           <>
-            <Link to="/checkout">Go to checkout <FontAwesomeIcon icon={faArrowRight} /></Link>
+            <Link style={ this.props.mobile ? {} : { fontSize: "20px" }} to="/checkout">Go to checkout <FontAwesomeIcon icon={faArrowRight} /></Link>
             <h2 style={ this.props.mobile ? {} : { fontSize: "25px" }}>Products In Your Cart</h2>
             {this.renderLineItems()}
             <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
