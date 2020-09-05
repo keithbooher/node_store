@@ -204,13 +204,19 @@ const Product = ({
 
   const submitReviewForm = async () => {
     let form_values = form["product_review_form"].values
-    const review = {
+    let review = {
       rating: parseInt(form_values.rating),
       description: form_values.description,
       first_name: auth.first_name,
       _user_id: auth._id,
       _product_id: product._id
     }
+
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    review.created_at = today
+
     await submitReview(review)
     const { data } = await getProductsReviews(product._id, "none", "none")
     dispatchObj(reset("product_review_form"))

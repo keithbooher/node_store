@@ -39,7 +39,7 @@ class LeaveReview extends Component {
   submitReview() {
     const form_values = this.props.form[`line_item_${this.props.line_item._id}_review_form`].values
     const line_item = this.props.line_item
-    const review = {
+    let review = {
       rating: parseInt(form_values.rating),
       description: form_values.description,
       line_item: line_item,
@@ -47,6 +47,13 @@ class LeaveReview extends Component {
       _user_id: this.props.auth._id,
       _order_id: this.props.order_id
     }
+
+
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    review.created_at = today
+
     this.props.submitReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: review })
   }
@@ -56,6 +63,7 @@ class LeaveReview extends Component {
     let review = this.state.reviewed
     review.description = form_values.description
     review.rating = form_values.rating
+
     let { data } = await this.props.updateReview(review)
     this.setState({ submitted: true, show_review: false, reviewed: data })
   }
