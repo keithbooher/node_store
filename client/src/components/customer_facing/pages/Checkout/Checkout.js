@@ -23,7 +23,7 @@ class Checkout extends Component  {
   render() {
     // Need to render a side container showing the contents of the cart 
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div style={{ paddingBottom: "100px" }}>
         <MetaTags>
           <title>Node Store Checkout</title>
           <meta name="description" content="Finalize your purchase here" />
