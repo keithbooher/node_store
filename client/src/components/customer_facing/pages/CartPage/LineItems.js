@@ -94,7 +94,8 @@ class LineItems extends Component {
               <div key={index} className="flex">
                 <div 
                   className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
-                  style={this.props.mobile ? { maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" } : { maxHeight: "250px", maxWidth: "250px", minHeight: "250px", minWidth: "250px" }}>
+                  style={this.props.mobile ? { maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" } : { maxHeight: "250px", maxWidth: "250px", minHeight: "250px", minWidth: "250px" }}
+                >
                   <LazyLoadImage
                     style={this.props.mobile ? { height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" } : { height: "auto", width: "auto", maxHeight: "250px", maxWidth: "250px" }}
                     src={line_item.image}

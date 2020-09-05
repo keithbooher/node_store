@@ -11,7 +11,7 @@ class AdminDashboard extends Component {
   render() {
     return (
       <div style={{ marginTop: "30px" }}>
-        Admin Dash        
+        <h1 className="fixed text-align-center" style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>Admin Dash <br /><span style={{ fontSize: ".7em" }}>(More Coming Soon)</span></h1>
       </div>
     )
   }

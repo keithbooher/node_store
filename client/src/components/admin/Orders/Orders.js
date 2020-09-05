@@ -8,12 +8,8 @@ import { Link } from "react-router-dom"
 import QuickView from './QuickView'
 import Form from "../../shared/Form"
 import { connect } from 'react-redux'
-import mobile from "is-mobile"
 import { reset } from "redux-form"
-
-
-let isMobile = mobile()
-
+import { formatMoney } from "../../../utils/helpFunctions"
 class Orders extends Component {
   constructor(props) {
     super()
@@ -144,19 +140,19 @@ class Orders extends Component {
             </td>
             <td className="padding-s">
               <Link  style={{ display: "inline"}} to={`/admin/orders/${order._id}`}>
-                <span style={{  marginLeft: "5px" }}>...{order._id.substring(order._id.length - 6)}</span>
+                <span style={{  marginLeft: "5px" }}>{this.props.mobile ? "..." + order._id.substring(order._id.length - 6) : order._id}</span>
               </Link>
             </td>
             <td className="padding-s">
               <Link to={`/admin/users/${order._user_id}`}>{order.email}</Link>
             </td>
-            {!isMobile && <td className="padding-s">
+            {!this.props.mobile && <td className="padding-s">
               <span>{new Date(order.date_placed).toDateString()}</span>
             </td>}
-            {!isMobile && <td className="padding-s">
-              <span>${order.total}</span>
+            {!this.props.mobile && <td className="padding-s">
+              <span>${formatMoney(order.total)}</span>
             </td>}
-            {!isMobile && <td className="padding-s text-align-center">
+            {!this.props.mobile && <td className="padding-s text-align-center">
               <span>{order.status}</span>
             </td>}
           </tr>
@@ -170,7 +166,6 @@ class Orders extends Component {
   }
 
   render() {
-    console.log(this.state)
     let lastPossibleItem = false
     if (this.state.orders && this.state.orders.length > 0 && this.state.last_order) {
       if (this.state.orders[this.state.orders.length - 1]._id === this.state.last_order._id) {
@@ -200,15 +195,15 @@ class Orders extends Component {
         />
 
         <br/>
-        <table>
+        <table style={this.props.mobile ? {} : { fontSize: "20px" }}>
           <thead>
             <tr>
               <th style={{ wordWrap: "normal", width: "2em" }}>Info</th>
               <th>Order Number</th>
               <th>Customer Email</th>
-              {!isMobile && <th>Date Placed</th>}
-              {!isMobile && <th>Total</th>}
-              {!isMobile && <th>Status</th>}
+              {!this.props.mobile && <th>Date Placed</th>}
+              {!this.props.mobile && <th>Total</th>}
+              {!this.props.mobile && <th>Status</th>}
             </tr>
           </thead>
           <tbody>
@@ -232,8 +227,8 @@ class Orders extends Component {
 }
 
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { paginatedOrders, lastOrderAdmin, dispatchObj }

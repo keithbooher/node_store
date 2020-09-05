@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { capitalizeFirsts } from "../../../../../utils/helpFunctions"
-import notAvailable from '../../../../../images/no-image-available.jpg'
 import { updateUser, dispatchObj } from "../../../../../actions"
-import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from "../../../../../utils/validations"
 import FormModal from "../../../../shared/Form/FormModal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"

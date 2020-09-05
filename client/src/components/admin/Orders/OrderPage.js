@@ -139,14 +139,20 @@ class OrderPage extends Component {
 
   render() {
     let order = this.state.order
+    let fontSize = "1em"
+    let iconFontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+      iconFontSize = "30px"
+    }
     return (
-      <div>
+      <div style={{ fontSize }}>
         {
           this.state.order ?
             <>
               <div className="relative" style={{ marginTop: "2em" }}>
-                <Link className="absolute" style={{ left: "0px" }} to="/admin/orders"><FontAwesomeIcon icon={faArrowLeft}/></Link>
-                <h3 className="underline text-align-center">Order Data</h3>
+                <Link className="absolute" style={{ left: "0px" }} to="/admin/orders"><FontAwesomeIcon style={{ fontSize: iconFontSize }} className="hover-color-4" icon={faArrowLeft}/></Link>
+                <h2 className={`underline ${this.props.mobile ? "text-align-center" : "padding-xl-top"}`}>Order Data</h2>
               </div>
    
 
@@ -166,34 +172,59 @@ class OrderPage extends Component {
                 initialValues={{"admin_notes": order.admin_notes}}
               />
 
-              <h3 className="underline text-align-center">Shipment Data</h3>
+              <h2 className={`underline ${this.props.mobile ? "text-align-center" : "padding-xl-top"}`}>Shipment Data</h2>
         
-              <h4>Line Items</h4>
+              <h3>Line Items</h3>
               <div className="flex flex-wrap">
                 {order.shipment.line_items && order.shipment.line_items.map((item, index) => {
                   let path = item.product_path ? item.product_path.split("/").pop() : "undefined"
-                  return (
-                    <div key={index} className="margin-s-h">
-                      <img style={{ maxHeight: "150px", width: "auto" }} src={item.image} />
-                      <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
-                      <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
-                      <div><span className="bold">quantity:</span> {item.quantity}</div>
-                      <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
-                    </div>
-                  )
+                  if (this.props.mobile) {
+                    return (
+                      <div key={index} style={{ margin: "10px auto" }} className="theme-background-6 w-100 padding-m border-radius-s">
+                        <div 
+                          className="flex justify-center align-items-center background-color-black border-radius-s" 
+                          style={{ maxHeight: "300px", maxWidth: "500px", width: '100%', margin: "auto" }}
+                        >
+                          <img style={{ maxHeight: "300px", width: "auto" }} src={item.image} />
+                        </div>
+                        <div style={{ marginTop: "30px" }}>
+                          <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                          <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
+                          <div><span className="bold">quantity:</span> {item.quantity}</div>
+                          <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
+                        </div>
+                      </div>
+                    )
+                  } else {
+                    return (<div key={index} style={{ margin: "10px", maxWidth: "300px", maxHeight: "500px", overflow: "scroll" }} className="theme-background-6 w-100 padding-m border-radius-s">
+                              <div 
+                                className="flex justify-center align-items-center background-color-black border-radius-s" 
+                                style={{ maxHeight: "300px", maxWidth: "500px", width: '100%', margin: "auto" }}
+                              >
+                                <img style={{ maxHeight: "300px", width: "auto" }} src={item.image} />
+                              </div>
+                              <div style={{ marginTop: "30px" }}>
+                                <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                                <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
+                                <div><span className="bold">quantity:</span> {item.quantity}</div>
+                                <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
+                              </div>
+                            </div>)
+                  }
+
                 })}       
               </div>
 
               <hr/>
 
-              <h4>Shipping Rate</h4>
+              <h3>Shipping Rate</h3>
               <div><span className="bold">Method:</span> {order.shipment.chosen_rate.shipping_method}</div>
               <div><span className="bold">Rate:</span> {order.shipment.chosen_rate.shipping_rate}</div>
               <div><span className="bold">Cost:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
 
               <hr/>
 
-              <h4 className="margin-s-v">Date Shipped</h4>
+              <h3 className="margin-s-v">Date Shipped</h3>
               <div>{order.shipment.date_shipped ? order.shipment.date_shipped : "Not Shipped Yet"}</div>
 
               {/* {order.status !== "refunded" && 
@@ -207,9 +238,9 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <div className="flex flex_column">
-                <div>
-                  <h4>Shipping Address</h4>
+              <div className={`${this.props.mobile ? "flex flex_column" : "flex"}`}>
+                <div className={`${!this.props.mobile && "w-50"}`} >
+                  <h3>Shipping Address</h3>
                   <div style={{ marginLeft: "1em" }}>
                     <AddressDisplayEdit 
                       showEditIndicator={this.showEditIndicator} 
@@ -220,8 +251,8 @@ class OrderPage extends Component {
                     />
                   </div>
                 </div>
-                <div>
-                  <h4>Billing Address</h4>
+                <div className={`${!this.props.mobile && "w-50"}`}>
+                  <h3>Billing Address</h3>
                   <div style={{ marginLeft: "1em" }}>
                     <AddressDisplayEdit 
                       showEditIndicator={this.showEditIndicator} 
@@ -237,7 +268,7 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <button className="w-100 margin-s-v" onClick={() => this.setState({ refundModal: true })}>Start a return</button>
+              <button style={this.props.mobile ? { width: "100%", margin: ".4em auto" } : { width: "200px" }} onClick={() => this.setState({ refundModal: true })}>Start a return</button>
 
             </>
           : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />

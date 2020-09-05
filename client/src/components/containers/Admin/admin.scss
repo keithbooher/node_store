@@ -1,6 +1,6 @@
-#admin_container {
-  height: 100%;
-}
+// #admin_container {
+//   height: 100%;
+// }
 
 
 ////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@
 ////////////////////////////////////////////////////////
 
 /* Standard syntax */
-@keyframes width_admin_open {
+@keyframes width_admin_open_sidebar {
   from {
     left: -11em;
   }
@@ -61,7 +61,7 @@
 }
 
 /* Standard syntax */
-@keyframes width_admin_close {
+@keyframes width_admin_close_sidebar {
   from {
     left: 0px;
   }
@@ -81,12 +81,100 @@
 }
 
 .admin_sidebar_open {
-  animation: width_admin_open .4s;
+  animation: width_admin_open_sidebar .4s;
   animation-fill-mode: forwards;
 }
 
 .admin_sidebar_closed {
-  animation: width_admin_close .4s;
+  animation: width_admin_close_sidebar .4s;
+  animation-fill-mode: forwards;
+}
+
+////////////////////////////////////////////////////////
+//////////// Content ANIMATION desktop /////////////////
+////////////////////////////////////////////////////////
+
+/* Standard syntax */
+@keyframes admin_width_open_desktop {
+  from {
+    left: 5px;
+  }
+  to {
+    left: 345px;
+  }
+}
+
+/* Standard syntax */
+@keyframes admin_width_close_desktop {
+  from {
+    left: 345px;
+  }
+  to {
+    left: 5px;
+  }
+}
+
+
+
+.admin_sidebar_open_content_desktop {
+  animation: admin_width_open_desktop .4s;
+  animation-fill-mode: forwards;
+}
+
+.admin_sidebar_closed_content_desktop {
+  animation: admin_width_close_desktop .4s;
+  animation-fill-mode: forwards;
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////
+//////////// SIDEBAR ANIMATION Desktop /////////////////
+////////////////////////////////////////////////////////
+
+/* Standard syntax */
+@keyframes width_admin_open_sidebar_desktop {
+  from {
+    left: -340px;
+  }
+  to {
+    left: 0em;
+  }
+}
+
+/* Standard syntax */
+@keyframes width_admin_close_sidebar_desktop {
+  from {
+    left: 0px;
+  }
+  to {
+    left: -340px;
+  }
+}
+
+.admin_sidebar_desktop {
+  position: fixed;
+  top: 0;
+  bottom: 0px;
+  left: -340px;
+  background-color: white;
+  width: 300px;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.admin_sidebar_open_desktop {
+  animation: width_admin_open_sidebar_desktop .4s;
+  animation-fill-mode: forwards;
+}
+
+.admin_sidebar_closed_desktop {
+  animation: width_admin_close_sidebar_desktop .4s;
   animation-fill-mode: forwards;
 }
 

@@ -1,9 +1,15 @@
 @import '../colors/colors.css.scss';
 
 html {
-  background: #212020;
-  color: $white;
+  background-color: #F1F5F8;
+  overflow: scroll;
 }
+
+
+// html {
+//   background: #212020;
+//   color: $white;
+// }
 
 .theme-border {
   border: 1px solid $blue-3

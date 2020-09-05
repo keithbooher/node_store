@@ -40,6 +40,11 @@ class FormDropdown extends Component {
   render() {
     let default_option = this.props.options.find(option => option.default === true)
 
+    let dropdown = document.getElementsByClassName("rw-dropdown-list")[0]
+    if (!this.props.mobile && dropdown) {
+      dropdown.style.width = "400px"
+    }
+
     return (
       <div className={`${this.props.mobile ? "" : "w-70"}`}>
         <label style={this.props.mobile ? {} : { fontSize: "20px" }}>{this.props.label}</label>

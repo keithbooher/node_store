@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 import Sidebar from '../../admin/Sidebar/Sidebar'
 import AdminDashboard from '../../admin/AdminDashboard'
@@ -16,10 +17,10 @@ import Cart from "../../admin/Carts/Cart"
 import StoreSettings from "../../admin/StoreSettings "
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
-import "./admin.scss"
 import UpdateRelatedProducts from '../../admin/Products/UpdateRelatedProducts';
 import Four04Page from "../../shared/Four04Page"
 import MetaTags from 'react-meta-tags'
+import "./admin.scss"
 
 class Admin extends Component {
   constructor(props) {
@@ -43,14 +44,24 @@ class Admin extends Component {
     let container_class
     switch (this.state.sidebar) {
       case true:
+        if (this.props.mobile) {
+          content_class = "admin_sidebar_open_content"
+          sidebar_class = "admin_sidebar_open"
+        } else {
+          content_class = "admin_sidebar_open_content_desktop"
+          sidebar_class = "admin_sidebar_open_desktop"
+        }
         container_class = "admin_sidebar_open_container"
-        content_class = "admin_sidebar_open_content"
-        sidebar_class = "admin_sidebar_open"
         break;
       case false:
+        if (this.props.mobile) {
+          content_class = "admin_sidebar_closed_content"
+          sidebar_class = "admin_sidebar_closed" 
+        } else {
+          content_class = "admin_sidebar_closed_content_desktop"
+          sidebar_class = "admin_sidebar_closed_desktop" 
+        }
         container_class = "admin_sidebar_closed_container"
-        content_class = "admin_sidebar_closed_content"
-        sidebar_class = "admin_sidebar_closed"        
         break;
       case null:
         container_class = ""
@@ -64,21 +75,31 @@ class Admin extends Component {
         break;
     }
 
+    let bars_style = {
+      position: "fixed", 
+      top: "5px", 
+      left: "5px",
+      fontSize: "1em"
+    }
+    if (!this.props.mobile) {
+      bars_style.fontSize = "25px"
+    }
+
 
     return (
-      <div id="admin_container" className={`${container_class}`}>
+      <div id="admin_container" className={`${container_class} ${!this.props.mobile && "w-90 margin-auto-h"}`} style={{ maxWidth: "1200px" }}>
         <MetaTags>
           <title>Node Store Admin</title>
           <meta name="description" content="Take control of your store" />
           <meta name="keywords" content="" />
         </MetaTags>
-        <div className={`relative border padding-s admin_sidebar ${sidebar_class}`} style={{ backgroundColor: '#22292F' }}>
+        <div className={`relative border ${this.props.mobile ? "admin_sidebar padding-s" : "admin_sidebar_desktop"} ${sidebar_class}`} style={{ backgroundColor: '#22292F' }}>
           <Sidebar setSidebar={this.sidebar} sidebar={this.state.sidebar} />
         </div>
 
-        <div ref={this.myRef} className={`relative color-black h-100 overflow-scroll`} style={{ backgroundColor: "#F1F5F8"  }}>
+        <div ref={this.myRef} className={`relative color-black h-100 ${this.props.mobile && "overflow-scroll"}`}>
           <div className="padding-s h-100">
-            <FontAwesomeIcon id="sidebar_bars" className={`${content_class}`} onClick={this.sidebar} style={{ position: "fixed", top: "5px", left: "5px" }} icon={faBars} />
+            <FontAwesomeIcon id="sidebar_bars" className={`${content_class} hover hover-color-2`} onClick={this.sidebar} style={ bars_style } icon={faBars} />
             <Switch>
               <Route exact path="/admin" component={AdminDashboard} />
               <Route exact path="/admin/orders" component={Orders} />
@@ -105,4 +126,8 @@ class Admin extends Component {
   }
 }
 
-export default Admin
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(Admin)

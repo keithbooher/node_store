@@ -76,20 +76,20 @@ class Form extends Component {
       <div>
         <form 
           style={{ marginTop: '10px' }} 
-          className={`${this.props.searchButton ? "flex space-evenly" : ""}`} 
+          className={`${this.props.searchButton ? this.props.mobile ? "flex space-evenly" : "flex" : ""}`} 
           id={!this.props.formId ? "general_form_id" : this.props.formId} 
           onSubmit={(e) => this.props.handleSubmit(e)}
         >
           {this.renderFields()}
          
           {!this.props.submitButton ?
-            <button type="submit" className={`teal btn-flat right white-text ${this.props.searchButton ? "search_button" : ""}`}>
+            <button type="submit" style={this.props.mobile ? { maxHeight: "50px" } : { padding: "6px", maxHeight: "50px" }} className={`${this.props.searchButton ? (this.props.mobile ? "search_button" : "search_button_desktop") : ""}`}>
               <i className="material-icons right">{this.props.submitButtonText}</i>
             </button> 
           : this.props.submitButton}
 
           {this.props.cancel ?
-            <button onClick={this.props.cancel} className="teal btn-flat right white-text">
+            <button onClick={this.props.cancel} className="">
               <i className="material-icons right">Cancel</i>
             </button> 
           : ""}
