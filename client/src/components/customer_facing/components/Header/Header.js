@@ -33,10 +33,14 @@ class Header extends Component {
 
   scrollTracker(self, root) {
     let scrollClass
-    if (root.scrollTop < 50 && self.state.offsetTop > root.scrollTop || root.scrollTop < 50 && self.state.offsetTop < root.scrollTop) {  
+    let threshold = 50
+    if (!this.props.mobile) {
+      threshold = 70
+    }
+    if (root.scrollTop < threshold && self.state.offsetTop > root.scrollTop || root.scrollTop < threshold && self.state.offsetTop < root.scrollTop) {  
       // if getting really close to the top, assign relative positioning
       scrollClass = this.props.mobile ? "top_of_page_nav" : "top_of_page_nav_desktop"
-    }else if (root.scrollTop >= 50 && self.state.offsetTop < root.scrollTop) {
+    }else if (root.scrollTop >= threshold && self.state.offsetTop < root.scrollTop) {
       // hide nav if scrolling down
       // but only after its left the screen
       // fixed position top: -50px

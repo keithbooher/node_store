@@ -59,15 +59,19 @@ const CustomerFacing = ({
   const [scrollClass, setScrollClass] = useState("top_of_page_nav")
   const scrollTracker = (root) => {
     let scroll_class = "top_of_page_nav"
-    if (root.scrollTop < 50 && offsetTop > root.scrollTop || root.scrollTop < 50 && offsetTop < root.scrollTop) {  
+    let threshold = 50
+    if (!mobile) {
+      threshold = 70
+    }
+    if (root.scrollTop < threshold && offsetTop > root.scrollTop || root.scrollTop < threshold && offsetTop < root.scrollTop) {  
       // if getting really close to the top, assign relative positioning
       scroll_class = "top_of_page_nav"
-    }else if (root.scrollTop >= 50 && offsetTop < root.scrollTop) {
+    }else if (root.scrollTop >= threshold && offsetTop < root.scrollTop) {
       // hide nav if scrolling down
       // but only after its left the screen
       // fixed position top: -50px
       scroll_class = "scrolling_down_nav"
-    } else if (root.scrollTop >= 50 && offsetTop > root.scrollTop) {
+    } else if (root.scrollTop >= threshold && offsetTop > root.scrollTop) {
       // show nav if scrolling up
       // fixed position top: 0
       scroll_class = "scrolling_up_nav"
@@ -136,7 +140,7 @@ const CustomerFacing = ({
     if (mobile) {
       marginTop = "50px"
     } else {
-      marginTop = "80px"
+      marginTop = "70px"
     }
   } else {
     marginTop = "0px" 

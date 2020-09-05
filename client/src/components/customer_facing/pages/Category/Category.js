@@ -92,7 +92,7 @@ class Category extends Component  {
 
         { this.state.products !== null ?
           <>
-            <a className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
+            <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
             <h1 style={{ marginTop: "0px" }}>
               {capitalizeFirsts(this.state.category_data.name)}
             </h1>
@@ -107,8 +107,8 @@ class Category extends Component  {
 }
 
 
-function mapStateToProps({ auth, sidebar, cart, zeroInventory }) {
-  return { auth, sidebar, cart, zeroInventory }
+function mapStateToProps({ auth, sidebar, cart, zeroInventory, mobile }) {
+  return { auth, sidebar, cart, zeroInventory, mobile }
 }
 
 const actions = { sidebarBoolean, updateCart, createCart, getCategoryProducts }

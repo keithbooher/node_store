@@ -57,8 +57,8 @@ class SignInDropdown extends Component {
         {this.state.open === true && 
           <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom st-nav-dropdown-background-color color-white">
             <ul className="text-align-center" style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px" }}>
-              <li style={this.props.mobile ? {} : { fontSize: "25px" }} className="padding-s account_dropdown_item"><a href="/auth/google">Sign in with Google</a></li>
-              <li style={this.props.mobile ? {} : { fontSize: "25px" }} className="padding-s account_dropdown_item"><a href="/auth/facebook">Sign in with Facebook</a></li>
+              <li style={this.props.mobile ? {} : { fontSize: "23px" }} className="padding-s account_dropdown_item"><a href="/auth/google">Sign in with Google</a></li>
+              <li style={this.props.mobile ? {} : { fontSize: "23px" }} className="padding-s account_dropdown_item"><a href="/auth/facebook">Sign in with Facebook</a></li>
             </ul>
           </div>
         }

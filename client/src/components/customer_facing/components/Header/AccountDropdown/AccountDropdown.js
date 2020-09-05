@@ -60,9 +60,9 @@ class AccountDropdown extends Component {
           <div ref={node => this.node = node} id="cart_container" className="border-radius-bottom theme-background-3 color-white">
             <ul style={this.props.mobile ? { minWidth: "180px" } : { minWidth: "270px", width: "auto" }}>
               {this.props.elements.map((element, index) => {
-                return <li className="account_dropdown_item padding-s hover" style={this.props.mobile ? {} : { fontSize: "25px" }} key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
+                return <li className="account_dropdown_item padding-s hover" style={this.props.mobile ? {} : { fontSize: "23px" }} key={index} onClick={() => this.setState({ open: !this.state.open })}>{element}</li>
               })}
-              { this.props.auth && this.props.auth.role === "admin" && <li className="account_dropdown_item padding-s hover" style={this.props.mobile ? {} : { fontSize: "25px" }} onClick={() => this.setState({ open: !this.state.open })}><Link to="/admin" >Admin</Link></li> }
+              { this.props.auth && this.props.auth.role === "admin" && <li className="account_dropdown_item padding-s hover" style={this.props.mobile ? {} : { fontSize: "23px" }} onClick={() => this.setState({ open: !this.state.open })}><Link to="/admin" >Admin</Link></li> }
             </ul>
           </div>
         }

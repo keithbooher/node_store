@@ -14,7 +14,7 @@ import { capitalizeFirsts } from "../../../utils/helpFunctions"
 // import { useHistory } from 'react-router-dom'
 
 
-const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updateCategory }) => {
+const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updateCategory, mobile }) => {
   const [ categories, setCategories ] = useState([])
   const [ show_create_input, setShowCreateInput ] = useState([])
   const [ editForm, setEditForm ] = useState(null)
@@ -187,6 +187,11 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
     setCategories( delete_cat )
   }
 
+  let fontSize = "1em"
+  if (!mobile) {
+    fontSize = "25px"
+  }
+
   return (
     <div style={{ marginTop: "30px" }}>
       <div>
@@ -225,8 +230,8 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { updateCategory, deleteCategory, getTopCategories, dispatchObj }
