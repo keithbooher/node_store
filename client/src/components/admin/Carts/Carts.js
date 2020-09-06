@@ -5,7 +5,9 @@ import PageChanger from "../../shared/PageChanger"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { Link } from "react-router-dom"
+import { formatMoney } from "../../../utils/helpFunctions"
 import Form from "../../shared/Form"
+import "./cart.scss"
 
 class Carts extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class Carts extends Component {
       last_cart: null,
       status_filter: "shopping",
       search_term: "none",
+      loading: true,
       dropDownField: [
         { 
           label: "Filter", 
@@ -83,10 +86,11 @@ class Carts extends Component {
   async componentDidMount() {
     let carts = await this.props.paginatedCarts("none", "none", "shopping", "none")
     let last_cart = await this.props.lastCart("shopping", "none")
-    this.setState({ carts: carts.data, last_cart: last_cart.data })
+    this.setState({ carts: carts.data, last_cart: last_cart.data, loading: false })
   }
 
   async changeCartTab() {
+    this.setState({ loading: true })
     let status = this.props.form.cart_status_dropdown.values.cart_status.value
 
     let dropDownField = this.state.dropDownField
@@ -114,12 +118,13 @@ class Carts extends Component {
 
     let carts = await this.props.paginatedCarts("none", "none", status, this.state.search_term)
     let last_cart = await this.props.lastCart(status, this.state.search_term)
-    this.setState({ carts: carts.data, status_filter: status, dropDownField, last_cart: last_cart.data })
+    this.setState({ carts: carts.data, status_filter: status, dropDownField, last_cart: last_cart.data, loading: false })
   }
 
   async changePage(direction_reference_id, direction, page_increment) {
+    this.setState({ loading: true })
     const carts = await this.props.paginatedCarts(direction_reference_id, direction, this.state.status_filter, this.state.search_term)
-    this.setState({ carts: carts.data, page_number: this.state.page_number + page_increment })
+    this.setState({ carts: carts.data, page_number: this.state.page_number + page_increment, loading: false })
   }
 
 
@@ -138,10 +143,17 @@ class Carts extends Component {
       }
     }
 
+    let containerStyle = {}
+    if (this.props.mobile) {
+      containerStyle.width = "70%"
+      containerStyle.margin = "0px auto"
+      containerStyle.fontSize = "25px"
+    }
+
     return (
-      <div>
+      <div style={ containerStyle }>
         <div className="flex" style={{ marginTop: "20px" }}>
-          <div style={{ width: "20em" }}>
+          <div style={this.props.mobile ? { width: "20em" } : { width: "100%" }}>
             <Form
               submitButton={<div/>}
               onChange={this.changeCartTab}
@@ -160,7 +172,7 @@ class Carts extends Component {
 
 
         <br/>
-        <table>
+        <table style={this.props.mobile ? {} : { fontSize: "20px" }}>
           <thead>
             <tr>
               <th>email</th>
@@ -170,7 +182,7 @@ class Carts extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.carts.length !== 0 ? <RenderReviews carts={this.state.carts} /> : <FontAwesomeIcon className="loadingGif" icon={faSpinner} /> }
+            {this.state.carts.length !== 0 && !this.state.loading ? <RenderReviews carts={this.state.carts} /> : <p>No Carts Found</p> }
           </tbody>
         </table>
         <PageChanger 
@@ -179,6 +191,7 @@ class Carts extends Component {
           requestMore={this.changePage} 
           lastPossibleItem={lastPossibleItem} 
         />
+        {this.state.loading && <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />}
       </div>
     )
   }
@@ -189,7 +202,7 @@ const RenderReviews = ({carts}) => {
     return (
       <tr key={index} className="background-color-grey-7 margin-xs-v">
         <td>{cart.email ? cart.email : "guest"}</td>
-        <td>{cart.total}</td>
+        <td className="text-align-center">${formatMoney(Number(cart.total))}</td>
         <td>{`${cart.created_at}`.split("T")[0]}</td>
         <td><Link to={`/admin/cart/${cart._id}`} ><FontAwesomeIcon icon={faEdit} /></Link></td>
       </tr>
@@ -197,8 +210,8 @@ const RenderReviews = ({carts}) => {
   })
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { paginatedCarts, lastCart }

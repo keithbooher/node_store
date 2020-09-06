@@ -30,7 +30,6 @@ class OrderCreate extends Component {
   
 
   render() {
-    console.log(this.props)
     let fontSize = "1em"
     if (!this.props.mobile) {
       fontSize = "25px"

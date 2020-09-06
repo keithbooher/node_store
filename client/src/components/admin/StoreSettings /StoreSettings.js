@@ -30,7 +30,6 @@ class StoreSettings extends Component {
   }
 
   async updateSettingBoolean(setting) {
-    console.log(setting)
     setting.value.boolean = !setting.value.boolean
     await this.props.updateStoreSetting(setting)
     const { data } = await this.props.getAllStoreSettings()
@@ -98,55 +97,72 @@ class StoreSettings extends Component {
     let hide_zero_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "hide_zero")[0]
     let desktop_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "desktop_banner_photo")[0]
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
+
+    let containerStyle = {
+      marginTop: "30px"
+    }
+    if (!this.props.mobile) {
+      containerStyle.fontSize = "20px"
+    }
     return (
-      <div style={{ marginTop: "30px" }}>
+      <div style={ containerStyle }>
 
         <h2 className="underline">Home Content</h2>
-        <h3>Desktop Banner Image</h3>
-        {desktop_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={desktop_banner_setting.value.image} />}
-        <ReactFilestack
-          apikey={process.env.REACT_APP_FILESTACK_API}
-          actionOptions={{
-            imageDim: [1200, 560],
-            transformations: {
-              circle: false,
-              rotate: false,
-              crop: {
-                aspectRatio: 1200 / 560,
-                force: true
-              }
-            }
-          }}
-          customRender={({ onPick }) => (
-            <div>
-              <button onClick={onPick}>Upload Desktop Banner Image</button>
-            </div>
-          )}
-          onSuccess={this.finishUploadingDesktop}
-        />
 
-        <h3>Mobile Banner Image</h3>
-        {mobile_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={mobile_banner_setting.value.image} />}
-        <ReactFilestack
-          apikey={process.env.REACT_APP_FILESTACK_API}
-          actionOptions={{
-            imageDim: [600, 800],
-            transformations: {
-              circle: false,
-              rotate: false,
-              crop: {
-                aspectRatio: 600 / 800,
-                force: true
-              }
-            }
-          }}
-          customRender={({ onPick }) => (
-            <div>
-              <button onClick={onPick}>Upload Mobile Banner Image</button>
-            </div>
-          )}
-          onSuccess={this.finishUploadingMobile}
-        />
+        <div className={`${!this.props.mobile && "flex"}`}>
+          <div className={`${!this.props.mobile && "w-50"}`}>
+            <h3>Desktop Banner Image</h3>
+            {desktop_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={desktop_banner_setting.value.image} />}
+            <ReactFilestack
+              apikey={process.env.REACT_APP_FILESTACK_API}
+              actionOptions={{
+                imageDim: [1200, 560],
+                transformations: {
+                  circle: false,
+                  rotate: false,
+                  crop: {
+                    aspectRatio: 1200 / 560,
+                    force: true
+                  }
+                }
+              }}
+              customRender={({ onPick }) => (
+                <div>
+                  <button onClick={onPick}>Upload Desktop Banner Image</button>
+                </div>
+              )}
+              onSuccess={this.finishUploadingDesktop}
+            />
+          </div>
+
+          <div className={`${!this.props.mobile && "w-50"}`}>
+            <h3>Mobile Banner Image</h3>
+            {mobile_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={mobile_banner_setting.value.image} />}
+            <ReactFilestack
+              apikey={process.env.REACT_APP_FILESTACK_API}
+              actionOptions={{
+                imageDim: [600, 800],
+                transformations: {
+                  circle: false,
+                  rotate: false,
+                  crop: {
+                    aspectRatio: 600 / 800,
+                    force: true
+                  }
+                }
+              }}
+              customRender={({ onPick }) => (
+                <div>
+                  <button onClick={onPick}>Upload Mobile Banner Image</button>
+                </div>
+              )}
+              onSuccess={this.finishUploadingMobile}
+            />
+          </div>
+        </div>
+
+
+
 
         <hr />
 
@@ -164,14 +180,14 @@ class StoreSettings extends Component {
 
         <hr />
 
-        <h2>FAQ's <FontAwesomeIcon onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
+        <h2>FAQ's <FontAwesomeIcon className="hover hover-color-2" onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
         {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (
             <div key={index} className="relative">
               <h3>{faq.question}</h3>
               <div>{faq.answer}</div>
-              <FontAwesomeIcon className="absolute" style={{ top: "0px", right: "20px" }} icon={faEdit} onClick={() => this.editFaqModal(faq)} />
-              <FontAwesomeIcon className="absolute" style={{ top: "0px", right: "0px" }} icon={faTrash} onClick={() => this.deleteFaq(faq)} />
+              <FontAwesomeIcon className="absolute hover hover-color-2" style={{ top: "0px", right: "20px" }} icon={faEdit} onClick={() => this.editFaqModal(faq)} />
+              <FontAwesomeIcon className="absolute hover hover-color-2" style={{ top: "0px", right: "0px" }} icon={faTrash} onClick={() => this.deleteFaq(faq)} />
             </div>
           )
         })}
@@ -218,8 +234,8 @@ class StoreSettings extends Component {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { getAllFAQs, updateFAQ, createFAQ, updateStoreSetting, getAllStoreSettings }

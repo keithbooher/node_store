@@ -54,12 +54,18 @@ class ChooseCustomer extends Component {
       }
     }
 
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
     let cart = {
       billing_address: this.props.form.billing_admin_checkout_form.values,
       shipping_address: this.props.form.shipping_admin_checkout_form.values,
       _user_id: customer._id,
       email,
-      line_items: []
+      line_items: [],
+      total: 0,
+      created_at: today,
+      checkout_state: "shopping"
     }
 
     const state = {

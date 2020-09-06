@@ -49,7 +49,6 @@ class Payment extends Component {
 
     let cart = this.props.cart
     cart.checkout_state = 'complete'
-    cart.deleted_at = today
     cart.converted = true
 
     let updated_cart = await this.props.updateCart(cart)

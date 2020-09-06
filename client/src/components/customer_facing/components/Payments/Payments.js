@@ -91,7 +91,6 @@ const Payments = ({
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
     cart.checkout_state = 'complete'
-    cart.deleted_at = date
     cart.converted = true
 
     // update cart in db

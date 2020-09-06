@@ -292,8 +292,14 @@ class Cart extends Component {
   render() {
     let cart = this.state.cart
 
+    let containerStyle = {
+      marginTop: "30px"
+    }
+    if (!this.props.mobile) {
+      containerStyle.fontSize = "20px"
+    }
     return (
-      <div style={{ marginTop: "30px" }}>
+      <div style={ containerStyle }>
         {cart &&
           <>
             <h1 style={{ textDecoration: "underline"}}> Cart</h1>
@@ -474,8 +480,8 @@ const buildAddress = (addy, user_id, bill_or_ship) => {
   return address
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout, dispatchObj }
