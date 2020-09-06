@@ -9,7 +9,7 @@ import _ from 'lodash'
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import { validatePresenceOnAll } from "../../../utils/validations"
-
+import Key from "../../shared/Key"
 
 class FlatRate extends Component {
   constructor(props) {
@@ -135,6 +135,7 @@ class FlatRate extends Component {
     if (this.state.editIndication._rate_id === rate._id 
       && this.state.editIndication.property === property) {
       return <FontAwesomeIcon 
+                className="hover hover-color-2"
                 icon={faEdit} 
                 style={{ 
                   zIndex: "20",
@@ -152,11 +153,21 @@ class FlatRate extends Component {
 
     const rateProperties = ["name", "description", "effector", "display"]
 
+    let styles = {
+      fontSize: "1em",
+      marginTop: "30px"
+    }
+    if (!this.props.mobile) { 
+      styles.fontSize = "20px"
+      styles.width = "80%"
+      styles.margin = "30px auto"
+    }
+
     return (
-    <div style={{ marginTop: "30px" }}>
+    <div style={ styles }>
       {this.state.shippingMethod && 
         <>
-          <div className="flex" onClick={this.showRateForm} >
+          <div className="flex hover hover-color-2" onClick={this.showRateForm} >
             <FontAwesomeIcon icon={this.state.rateForm ? faTimesCircle : faPlusCircle} />
             {this.state.rateForm ? <div className="margin-s-h">cancel</div> : <div className="margin-s-h">add a new flat rate</div>}
           </div>
@@ -201,13 +212,13 @@ class FlatRate extends Component {
                     property={"effector"}
                   />
                   <FontAwesomeIcon 
-                    className="absolute" 
+                    className="absolute hover hover-color-2" 
                     onClick={() => this.rateDisplay(rate)} 
                     icon={rate.display ? faEye : faEyeSlash} 
                     style={{ top: "5px", right: "25px" }} 
                   />
                   <FontAwesomeIcon 
-                    className="absolute" 
+                    className="absolute hover hover-color-2" 
                     onClick={() => this.destroyRate(rate)} 
                     icon={faTrash} 
                     style={{ top: "5px", right: "5px" }} 
@@ -244,7 +255,7 @@ class FlatRate extends Component {
 const RateProperty = ({ setEditIndication, renderEditIndicator, rate, property }) => {
   return (
     <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
-      <div className="inline">{capitalizeFirsts(property === "effector" ? "rate" : property)}: {`${rate[property]}`}</div>
+      <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline store_color_text hover hover-color-4">{rate[property]}</a></div>
       {renderEditIndicator(rate, property)}
     </div>
   )
@@ -272,8 +283,8 @@ const validate = (values, props) => {
 }
 
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { dispatchObj, getShippingMethod, updateShippingMethod }

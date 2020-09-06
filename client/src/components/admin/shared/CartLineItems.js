@@ -7,9 +7,9 @@ import { dispatchObj } from "../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faSearch, faTrash, faCaretUp, faCaretDown, faTimesCircle } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
-import { capitalizeFirsts } from "../../../utils/helpFunctions"
+import { capitalizeFirsts, formatMoney } from "../../../utils/helpFunctions"
 import FormModal from "../../shared/Form/FormModal"
-
+import Modal from "../../shared/Modal"
 
 class CartLineItems extends Component {
   constructor(props) {
@@ -34,6 +34,11 @@ class CartLineItems extends Component {
   addToLineItems(product) {
     // MAKE A CHECK TO SEE IF THE LINE ITEM IS ALREADY I THE ARRAY, IF SO, JUST ADD QUANTITY
     let line_items = [...this.props.cart.line_items]
+
+    if (!product.backorderable && this.state.quantity > product.inventory_count || !product.backorderable && product.inventory_count < 1) {
+      this.setState({ insufficientStock: true })
+      return
+    }
 
     let already_in_array = false
     line_items.forEach(item => {
@@ -65,7 +70,7 @@ class CartLineItems extends Component {
 
     this.props.addToLineItems(cart)
 
-    this.setState({ cart, addProduct: false })
+    this.setState({ cart, addProduct: false, result: null, quantity: 1 })
 
   }
 
@@ -112,7 +117,7 @@ class CartLineItems extends Component {
       quantity = this.state.quantity - 1
     }
     
-    if (direction == "up" && !product.backorderable && quantity > product.inventory_count || quantity < 1) {
+    if (direction == "up" && !product.backorderable && quantity > product.inventory_count) {
       return
     }
     this.setState({ quantity })
@@ -218,15 +223,42 @@ class CartLineItems extends Component {
     if (this.state.addProduct === true) {
       show_button = false
     }
+    let searchButton = document.getElementsByClassName("search_button")
+    if (searchButton[0]) {
+      searchButton[0].style.marginTop = "34px"
+    }
     return (
       <div>
         <h2>Line Items</h2>
-        <div  className="flex flex-wrap space-evenly">
+        <div  className="flex flex-wrap">
           {this.props.cart.line_items.map((item, index) => {
+            let container_style = {
+              flexBasis: "100%", 
+              margin: "10px"
+            }
+            let trashStyle = {
+              fontSize: "1em",
+              right: "0px",
+              top: "0px"
+            }
+            if (!this.props.mobile) {
+              trashStyle.fontSize = "20px"
+              trashStyle.right = "5px"
+              trashStyle.top = "5px"
+              container_style.flexBasis = "22%"
+            }
             return (
-                <div key={index} className="relative padding-m background-color-grey-2" style={{ flexBasis: "100%", marginTop: "10px" }}>
-                  <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute" style={{ right: "0px", top: "0px" }} icon={faTrash} />
-                  <div><img style={{ height: "auto", width: "98%" }} src={item.image}/></div>
+                <div key={index} className={`relative ${this.props.mobile ? "padding-m" : "padding-l"} background-color-grey-2`} style={ container_style } >
+                  <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute hover hover-color-2" style={ trashStyle } icon={faTrash} />
+                  {this.props.mobile ?
+                    <div>
+                      <img style={{ height: "auto", width: "98%" }} src={item.image}/>
+                    </div>
+                  : 
+                    <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
+                      <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image}/>
+                    </div>
+                  }
                   <div>{item.product_name}</div>
                   <div>
                     Price: <a className="inline" onClick={() => this.showEditIndicator("product_price", item._id)} >${item.product_price}</a>
@@ -240,10 +272,12 @@ class CartLineItems extends Component {
                   <div>
                     Quantity: {item.quantity}
                     <FontAwesomeIcon 
+                      className="hover hover-color-2"
                       onClick={() => this.adjustLineItemQuantity(item, "up")} 
                       icon={faCaretUp} 
                     />
                     <FontAwesomeIcon 
+                      className="hover hover-color-2"
                       onClick={() => this.adjustLineItemQuantity(item, "down")} 
                       icon={faCaretDown} 
                     />
@@ -272,24 +306,32 @@ class CartLineItems extends Component {
               <>
                 <h3>Product Found</h3>
                 <h3>{this.state.result.name}</h3>
-                <div>
-                  <img src={this.state.result.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
-                </div>
-                {!this.state.result.backorderable ? <p>On hand: {this.state.result.inventory_count}</p> : <p>backorderable</p>}
+                {this.props.mobile ?
+                  <div>
+                    <img src={this.state.result.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
+                  </div>
+                : 
+                  <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
+                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.result.image}/>
+                  </div>
+                }
+
+                <div className="margin-s-v">${formatMoney(this.state.result.price)}</div>
+                {!this.state.result.backorderable ? <div className="margin-s-v">On hand: {this.state.result.inventory_count}</div> : <div className="margin-s-v">backorderable</div>}
                 <div className="flex">
                   <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e, this.state.result)} style={{ width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
-                  <div className="flex flex_column margin-s-h">
-                    <FontAwesomeIcon onClick={() => this.setQuantity("up", this.state.result)} icon={faCaretUp} />
-                    <FontAwesomeIcon onClick={() => this.setQuantity("down", this.state.result)} icon={faCaretDown} />
+                  <div className="flex flex_column margin-s-h" style={{ marginTop: '-11px' }}>
+                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("up", this.state.result)} icon={faCaretUp} />
+                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down", this.state.result)} icon={faCaretDown} />
                   </div>
-                  <button onClick={() => this.addToLineItems(this.state.result)}>Add to cart</button>
+                  <button style={this.props.mobile ? {} : { height: "40px" }} onClick={() => this.addToLineItems(this.state.result)}>Add to cart</button>
                 </div>
               </>
             }
 
             {this.state.result === "" && <h3>No product found, check for typos</h3>}
 
-            <FontAwesomeIcon className="absolute" style={{ top: "10px", right: "5px" }} onClick={() => this.setState({ addProduct: false })} icon={faTimesCircle} />
+            {this.state.cart.line_items.length > 0 && <FontAwesomeIcon className="absolute" style={{ top: "10px", right: "5px" }} onClick={() => this.setState({ addProduct: false })} icon={faTimesCircle} />}
           </div>
         }
 
@@ -308,6 +350,12 @@ class CartLineItems extends Component {
                 initialValues={this.state.editForm.initialValues}
               />
             </div>
+        }
+
+        {this.state.insufficientStock && 
+          <Modal cancel={() => this.setState({ insufficientStock: false })}>
+            <h1>Insufficient Stock</h1>
+          </Modal>
         }
       </div>
     )

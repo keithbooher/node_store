@@ -29,46 +29,59 @@ class Carriers extends Component {
   render() {
     const not_available = ['fedex', 'by_weight']
 
+    let styles = {
+      marginTop: "30px",
+      fontSize: "1em"
+    }
+    if (!this.props.mobile) { 
+      styles.fontSize = "20px"
+      styles.width = "80%"
+      styles.margin = "0px auto"
+    }
     return (
-    <div>
-      <div className="flex flex_column">
-        {this.state.shippingMethods.map((method, index) => {
-          let url
-          if (method.display) {
-            url = `/admin/shipping/shipping_method/${method.internal_name}`
-          } else {
-            url= '/admin/shipping/methods'
-          }
-          return (
-            <div key={index} className="" key={method.internal_name}>
-              <div className="background-color-grey-2">
-                <Link to={url} className={` ${method.display && "hover"}`}>
-                  <h2 className="padding-s">{method.name}</h2>
-                  {not_available.indexOf(method.internal_name) > -1 && <div className="padding-s-h">Not available</div>}
-                  {!method.display && 
-                    <>
-                      <div className="padding-s-h">Hidden in checkout</div>
-                    </>
-                  }
-                </Link>
-                <div className="padding-s">
-                  {not_available.indexOf(method.internal_name) < 0 ? 
-                    <div className="flex clickable" onClick={() => this.changeDisplay(method)}>
-                      <FontAwesomeIcon icon={method.display ? faEye : faEyeSlash} />
-                      {method.display ? <div className="margin-s-h">This shipping method is used in checkout</div> : <div className="margin-s-h">use this shipping method in checkout</div>}
-                    </div>
-                  : "Not available"}
+      <div style={ styles }>
+        <div className="flex flex_column">
+          {this.state.shippingMethods.map((method, index) => {
+            let url
+            if (method.display) {
+              url = `/admin/shipping/shipping_method/${method.internal_name}`
+            } else {
+              url= '/admin/shipping/methods'
+            }
+            return (
+              <div key={index} className="" key={method.internal_name}>
+                <div className="background-color-grey-2">
+                  <Link to={url} className={` ${method.display && "hover"}`}>
+                    <h2 className="padding-s">{method.name}</h2>
+                    {not_available.indexOf(method.internal_name) > -1 && <div className="padding-s-h">Not available</div>}
+                    {!method.display && 
+                      <>
+                        <div className="padding-s-h">Hidden in checkout</div>
+                      </>
+                    }
+                  </Link>
+                  <div className="padding-s">
+                    {not_available.indexOf(method.internal_name) < 0 ? 
+                      <div className="flex clickable" onClick={() => this.changeDisplay(method)}>
+                        <FontAwesomeIcon icon={method.display ? faEye : faEyeSlash} />
+                        {method.display ? <div className="margin-s-h">This shipping method is used in checkout</div> : <div className="margin-s-h">use this shipping method in checkout</div>}
+                      </div>
+                    : "Not available"}
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
-    </div>
     )
   }
 }
 
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
 const actions = { getShippingMethods, updateShippingMethod }
 
-export default connect(null, actions)(Carriers)
+export default connect(mapStateToProps, actions)(Carriers)

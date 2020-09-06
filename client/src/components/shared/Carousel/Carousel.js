@@ -42,7 +42,7 @@ const EmblaCarousel = ({children, mobile}) => {
 
   return (
     <div className="flex space-between relative">
-      <FontAwesomeIcon style={{ color: "#e4e3e3", top: "50%", left: horizantle, transform: "translateY(-50%)" }} onClick={prev} className="absolute z-10 margin-auto-v font-size-3-0" icon={faCaretLeft} />
+      <FontAwesomeIcon style={{ top: "50%", left: horizantle, transform: "translateY(-50%)" }} onClick={prev} className="absolute z-10 margin-auto-v font-size-3-0 hover hover-color-2" icon={faCaretLeft} />
       <EmblaCarouselReact>
         <div style={{ display: 'flex' }}>
           {children.map((child) => {
@@ -50,7 +50,7 @@ const EmblaCarousel = ({children, mobile}) => {
           })}
         </div>
       </EmblaCarouselReact>
-      <FontAwesomeIcon style={{ color: "#e4e3e3", top: "50%", right: horizantle, transform: "translateY(-50%)" }} onClick={next} className="absolute z-10 margin-auto-v font-size-3-0" icon={faCaretRight} />
+      <FontAwesomeIcon style={{ top: "50%", right: horizantle, transform: "translateY(-50%)" }} onClick={next} className="absolute z-10 margin-auto-v font-size-3-0 hover hover-color-2" icon={faCaretRight} />
     </div>
   )
 }

@@ -92,19 +92,23 @@ class ChooseCustomer extends Component {
     if (this.state.customer_type === "guest" || this.state.chosen_customer !== null ) {
       show_address_form = true
     }
+    let searchButton = document.getElementsByClassName("search_button")
+    if (searchButton[0]) {
+      searchButton[0].style.marginTop = "34px"
+    }
     return (
       <>
         {this.state.customer_type === null && 
-          <div className="h-100">
+          <div className="vh100">
             <div  
               onClick={() => this.setState({ customer_type: "guest" })}
-              className="h-40 flex flex_column justify-center"
+              className="h-50 flex flex_column justify-center hover hover-color-6"
             >
               <h1 className="text-align-center">Guest</h1>
             </div>
             <div 
               onClick={() => this.setState({ customer_type: "customer" })}
-              className="h-40 flex flex_column justify-center"
+              className="h-50 flex flex_column justify-center hover hover-color-6"
             >
               <h1 className="text-align-center">Customer</h1>
             </div>
@@ -114,14 +118,14 @@ class ChooseCustomer extends Component {
         {this.state.customer_type !== null && 
           <div className="flex flex_column" style={{ marginTop: "30px" }}>
             <div 
-              style={ this.state.customer_type === "guest" ? { color: "blue" } : {}} 
               onClick={() => this.setState({ customer_type: "guest" })}
+              className={`hover hover-color-2 ${this.state.customer_type === "guest" && "store_text_color"}`}
             >
               Guest
             </div>
             <div 
-              style={ this.state.customer_type === "customer" ? { color: "blue" } : {}} 
               onClick={() => this.setState({ customer_type: "customer" })}
+              className={`hover hover-color-2 ${this.state.customer_type === "customer" && "store_text_color"}`}
             >
               Customer
             </div>
@@ -169,25 +173,32 @@ class ChooseCustomer extends Component {
               </div>
             }
 
-            <h5 className="address_form_title">Billing</h5>
-            <Form 
-              submitButton={<div></div>}
-              submitButtonText={"Submit"}
-              formFields={addressFormFields} 
-              form={"billing_admin_checkout_form"}
-              initialValues={this.billing_initial_values()}
-              validation={validate}
-            />
+            <div className={`${!this.props.mobile && "flex"}`}>
+              <div className={`${!this.props.mobile && "w-50"}`}>
+                <h5 className="address_form_title">Billing</h5>
+                <Form 
+                  submitButton={<div></div>}
+                  submitButtonText={"Submit"}
+                  formFields={addressFormFields} 
+                  form={"billing_admin_checkout_form"}
+                  initialValues={this.billing_initial_values()}
+                  validation={validate}
+                />
+              </div>
+              <div className={`${!this.props.mobile && "w-50"}`}>
+                <h5 className="address_form_title">Shipping</h5>
+                <Form 
+                  submitButton={<div></div>}
+                  submitButtonText={"Submit"}
+                  formFields={addressFormFields}
+                  form={"shipping_admin_checkout_form"}
+                  initialValues={this.shipping_initial_values()}
+                  validation={validate}
+                />
+              </div>
+            </div>
 
-            <h5 className="address_form_title">Shipping</h5>
-            <Form 
-              submitButton={<div></div>}
-              submitButtonText={"Submit"}
-              formFields={addressFormFields}
-              form={"shipping_admin_checkout_form"}
-              initialValues={this.shipping_initial_values()}
-              validation={validate}
-            />
+
 
             <button onClick={this.proceedToNextStep}>Proceed to product selection</button>
           </div>

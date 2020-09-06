@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import ChooseCustomer from './ChooseCustomer'
 import FillCart from "./FillCart"
 import ShippingOptions from "./ShippingOptions"
@@ -30,12 +31,16 @@ class OrderCreate extends Component {
 
   render() {
     console.log(this.props)
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "25px"
+    }
     return (
-      <div className="h-100">
+      <div className="h-100" style={{ fontSize }}>
 
         {this.state.step !== "customer" && 
-          <div className="absolute" style={{ top: "5px", right: "5px" }} onClick={this.restart}>
-            <FontAwesomeIcon icon={faSync} />
+          <div className="absolute hover hover-color-2" style={{ top: "5px", right: "5px" }} onClick={this.restart}>
+            Start Over <FontAwesomeIcon icon={faSync} />
           </div>
         }
 
@@ -51,4 +56,8 @@ class OrderCreate extends Component {
   }
 }
 
-export default OrderCreate
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
+export default connect(mapStateToProps, null)(OrderCreate)

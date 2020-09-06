@@ -11,7 +11,6 @@ export default ({ mobile, input, field_class, label, searchButton, meta: { error
     fieldStyle.fontSize = "20px"
     if (searchButton) {
       width_class = "w-40"
-      fieldStyle.width = "97%"
     }
   } else {
     if (searchButton) {

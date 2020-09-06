@@ -50,8 +50,13 @@ class ShippingOptions extends Component {
 
   render() {
     console.log(this.props)
+    let containerStyle = {}
+    if (!this.props.mobile) {
+      containerStyle.width = "70%"
+      containerStyle.margin = "0px auto"
+    }
     return (
-      <div>
+      <div style={ containerStyle }>
         {this.state.shipping_method !== null && 
           <>
             <h1>Shipping Method: {this.state.shipping_method.name}</h1>
@@ -63,8 +68,7 @@ class ShippingOptions extends Component {
               }
               return (
                 <div 
-                  style={active ? {color: "blue"} : {}} 
-                  className={"padding-s margin-xs-v background-color-grey-2"} 
+                  className={`padding-s margin-xs-v hover hover-color-2 ${active ? "store_text_color theme-background-4" : "background-color-grey-2"}`} 
                   onClick={() => this.chooseRate(rate)}
                   key={index}
                 >
@@ -84,7 +88,10 @@ class ShippingOptions extends Component {
   }
 }
 
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
 
 const actions = { updateCart, getShippingMethodForCheckout }
 
-export default connect(null, actions)(ShippingOptions)
+export default connect(mapStateToProps, actions)(ShippingOptions)

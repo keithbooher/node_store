@@ -150,35 +150,53 @@ class Payment extends Component {
           <h3>Customer</h3>
           <div>{this.props.customer.email}</div>
 
-          <h3>Line Items <FontAwesomeIcon onClick={() => this.props.topStateSetter({ step: "cart" })} icon={faEdit} /></h3>
+          <h3>Line Items <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.props.topStateSetter({ step: "cart" })} icon={faEdit} /></h3>
           <div className="flex flex_column">
             {this.props.cart.line_items.map((line_item, index) => {
               return (
-                <div key={index} style={{ marginTop: "5px" }}>
-                  <div>{line_item.product_name}</div>
-                  <div>Quantity: {line_item.quantity}</div>
+                <div className={`${this.props.mobile && "flex"}`} key={index} style={{ marginTop: "5px" }}>
+                  {this.props.mobile ?
+                    <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "150px", width: "150px", maxHeight: "150px", maxWidth: "150px" }}>
+                      <img src={line_item.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
+                    </div>
+                  : 
+                    <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
+                      <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={line_item.image}/>
+                    </div>
+                  }
+
+                  <div>
+                    <div>{line_item.product_name}</div>
+                    <div>Quantity: {line_item.quantity}</div>
+                  </div>
                 </div>
               )
             })}
           </div>
 
-          <h3>Billing Address</h3>
-          <AddressDisplayEdit 
-            showEditIndicator={this.showEditIndicator} 
-            showEditModal={this.showEditModal}
-            address={this.props.cart.billing_address} 
-            bill_or_ship={"billing"} 
-            propertyToEdit={this.state.propertyToEdit}
-          />
+          <div className={`${this.props.mobile && "flex"}`}>            
+            <div className={`${this.props.mobile && "w-50"}`}>
+              <h3>Billing Address</h3>
+              <AddressDisplayEdit 
+                showEditIndicator={this.showEditIndicator} 
+                showEditModal={this.showEditModal}
+                address={this.props.cart.billing_address} 
+                bill_or_ship={"billing"} 
+                propertyToEdit={this.state.propertyToEdit}
+              />
+            </div>
+            <div className={`${this.props.mobile && "w-50"}`}>
+              <h3>Shipping Address</h3>
+              <AddressDisplayEdit 
+                showEditIndicator={this.showEditIndicator} 
+                showEditModal={this.showEditModal}
+                address={this.props.cart.shipping_address} 
+                bill_or_ship={"shipping"} 
+                propertyToEdit={this.state.propertyToEdit}
+              />
+            </div>
+          </div>
 
-          <h3>Shipping Address</h3>
-          <AddressDisplayEdit 
-            showEditIndicator={this.showEditIndicator} 
-            showEditModal={this.showEditModal}
-            address={this.props.cart.shipping_address} 
-            bill_or_ship={"shipping"} 
-            propertyToEdit={this.state.propertyToEdit}
-          />
 
         </div>
 
@@ -227,8 +245,8 @@ class Payment extends Component {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { handleToken, updateCart, createOrder, updateOrder, dispatchObj, createShipment }

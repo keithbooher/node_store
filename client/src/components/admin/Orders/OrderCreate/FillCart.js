@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import { getProductbyName, createCart, updateCart } from "../../../../utils/API"
 import { dispatchObj } from "../../../../actions"
-import { formatMoney } from "../../../../utils/helpFunctions"
+import { formatMoney, calculateSubtotal } from "../../../../utils/helpFunctions"
 import CartLineItems from '../../shared/CartLineItems'
 
 class FillCart extends Component {
@@ -47,18 +47,17 @@ class FillCart extends Component {
   }
 
   renderSubTotal() {
-    let sub_total = 0
-    this.state.line_items.forEach((item) => {
-      sub_total = sub_total + (item.product_price * item.quantity)
-    })
-    return formatMoney(sub_total)
+    console.log(this.props.cart)
+    if (!this.props.cart) {
+      return 0
+    }
+    return Number(calculateSubtotal(this.props.cart))
   }
 
   renderTax() {
     let sub_total = this.renderSubTotal()
-    let shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
-    let tax = (sub_total + shipping) * .08
-    return formatMoney(tax)
+    let tax = (sub_total) * .08
+    return Number(tax)
   }
 
   renderTotal() {
@@ -66,7 +65,7 @@ class FillCart extends Component {
     let tax = this.renderTax()
     let shipping = this.props.cart.chosen_rate ? this.props.cart.chosen_rate.cost : 0
     let total = tax + sub_total + shipping
-    return formatMoney(total)
+    return Number(total)
   }
 
 
@@ -162,12 +161,24 @@ class FillCart extends Component {
           adjustCost={this.adjustLineItemCost}
         />
 
-        <div className="margin-s-v">
-          Sub Total: ${this.renderSubTotal()}
-        </div>
-        <div className="margin-s-v">
-          Total: ${this.renderTotal()}
-        </div>
+        {this.props.cart &&
+          <>
+            <div className="margin-s-v">
+              Sub Total: ${formatMoney(this.renderSubTotal())}
+            </div>
+            <div className="margin-s-v">
+              Tax: ${formatMoney(this.renderTax(this.props.cart))}
+            </div>
+            {this.props.cart.chosen_rate &&
+              <div className="margin-s-v">
+                Shipping: ${formatMoney(Number(this.props.cart.chosen_rate.cost))}
+              </div>
+            }
+            <div className="margin-s-v">
+              Total: ${formatMoney(this.renderTotal())}
+            </div>
+          </>
+          }
          {this.state.line_items.length > 0 && <button onClick={this.proceedToNextStep} className="margin-s-v">Move to shipping step</button>}
       </div>
     )

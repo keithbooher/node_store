@@ -129,7 +129,7 @@ class AddressCard extends Component {
       <div 
         key={index} 
         data-address-id={address._id} 
-        className={`${this.props.mobile ? "address_card_container" : "address_card_container_desktop"} padding-s-h padding-s-bottom padding-l-top border-radius-s theme-background-2 relative ${ this.check_highlight(address) ? "st-border" : "" }`}
+        className={`${this.props.mobile ? "address_card_container" : "address_card_container_desktop"} color-white padding-s-h padding-s-bottom padding-l-top border-radius-s relative ${ this.check_highlight(address) ? "theme-background-4 st-border" : "theme-background-2" }`}
         style={ this.props.mobile ? {} : { fontSize: "20px" }}
       >
         <div className={`margin-xs-v`}>

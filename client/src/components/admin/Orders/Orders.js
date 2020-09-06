@@ -172,9 +172,15 @@ class Orders extends Component {
         lastPossibleItem = true
       }
     }
-
+    let styles = {
+      marginTop: "30px",
+      fontSize: "1em"
+    }
+    if (!this.props.mobile) { 
+      styles.fontSize = "20px"
+    }
     return (
-      <div  style={{ marginTop: "20px" }}>
+      <div  style={ styles }>
 
         <Link to="/admin/order/create" className="text-align-center flex align-items-center padding-s absolute" style={{ top: "0px", right: "0px" }}><FontAwesomeIcon style={{ fontSize: '20px' }} className="margin-xs-h" icon={faPlusCircle} /><div>New Order</div></Link>
         <div style={{ width: "20em" }}>
@@ -195,7 +201,7 @@ class Orders extends Component {
         />
 
         <br/>
-        <table style={this.props.mobile ? {} : { fontSize: "20px" }}>
+        <table>
           <thead>
             <tr>
               <th style={{ wordWrap: "normal", width: "2em" }}>Info</th>
