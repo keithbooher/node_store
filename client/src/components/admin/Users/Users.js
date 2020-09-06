@@ -32,8 +32,12 @@ class Users extends Component {
         lastPossibleItem = true
       }
     }
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+    }
     return (
-      <div style={{ marginTop: "40px" }}>
+      <div style={{ marginTop: "40px", fontSize }}>
         <h1 className="underline">Users</h1>
         <table>
           <thead>
@@ -71,6 +75,10 @@ class Users extends Component {
   }
 }
 
+function mapStateToProps({ mobile }) {
+  return { mobile }
+}
+
 const actions = { getUsers, lastUser }
 
-export default connect(null, actions)(Users)
+export default connect(mapStateToProps, actions)(Users)

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default ({ input, field_class, label, searchButton, autofocus, meta: { error, touched } }) => {
+export default ({ mobile, input, field_class, label, searchButton, autofocus, meta: { error, touched } }) => {
 
   const preventAlpha = (e) => {
     if (!isNumber(e)) {
@@ -19,7 +19,7 @@ export default ({ input, field_class, label, searchButton, autofocus, meta: { er
   console.log(autofocus)
 
   return (
-    <div className={`formField ${searchButton ? "w-90" : "" }`}>
+    <div className={`formField numberField ${searchButton ? "w-90" : "" }`}>
       <label>{label}</label>
       <input autoFocus={autofocus} onKeyDown={(e) => preventAlpha(e)} className={field_class} value={input.value} {...input} style={{ marginBottom: '5px' }} />
       <div className="color-red-5" style={{ marginBottom: '20px' }}>

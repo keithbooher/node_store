@@ -83,7 +83,7 @@ class Form extends Component {
           {this.renderFields()}
          
           {!this.props.submitButton ?
-            <button type="submit" style={this.props.mobile ? { maxHeight: "50px" } : { padding: "6px", maxHeight: "50px" }} className={`${this.props.searchButton ? (this.props.mobile ? "search_button" : "search_button_desktop") : ""}`}>
+            <button type="submit" style={{ padding: "6px", maxHeight: "50px" }} className={`${this.props.searchButton ? "search_button" : ""}`}>
               <i className="material-icons right">{this.props.submitButtonText}</i>
             </button> 
           : this.props.submitButton}

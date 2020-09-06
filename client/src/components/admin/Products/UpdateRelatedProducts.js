@@ -9,6 +9,7 @@ import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import { Link } from 'react-router-dom'
 import Modal from "../../shared/Modal"
+import Key from "../../shared/Key"
 class UpdateRelatedProducts extends Component {
   constructor(props) {
     super()
@@ -117,10 +118,10 @@ class UpdateRelatedProducts extends Component {
             <div className="flex justify-center" style={{ height: "50px", width: "50px"}}>
               <img src={product.image} style={{ height: "auto", width: "auto", maxHeight: "50px", maxWidth: "50px" }} />
             </div>
-            <div className="margin-m-h">Name: {product.name}</div>
+            <div className="margin-m-h"><Key>Name:</Key> {product.name}</div>
           </div>
-          {!added && <FontAwesomeIcon className="margin-xs-h" icon={faPlusCircle} onClick={() => this.addToRelatedProducts(product)} />}
-          {added && <FontAwesomeIcon className="margin-xs-h" icon={faTrash} onClick={() => this.removeRelatedProduct(product)} />}
+          {!added && <FontAwesomeIcon className="margin-xs-h hover hover-color-2" icon={faPlusCircle} onClick={() => this.addToRelatedProducts(product)} />}
+          {added && <FontAwesomeIcon className="margin-xs-h hover hover-color-2" icon={faTrash} onClick={() => this.removeRelatedProduct(product)} />}
         </div>
       )
     })
@@ -169,8 +170,12 @@ class UpdateRelatedProducts extends Component {
         lastPossibleItem = true
       }
     }
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+    }
     return (
-      <div style={{ marginTop: "30px" }}>
+      <div style={{ marginTop: "30px", fontSize }}>
         {this.state.product && <Link to={`/admin/products/form/update/${this.state.product.path_name}`} ><FontAwesomeIcon icon={faArrowLeft} /> Back</Link>}
         <h2>Selected Related Products</h2>
 
@@ -213,8 +218,8 @@ class UpdateRelatedProducts extends Component {
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProductByCategory, dispatchObj }

@@ -126,8 +126,12 @@ class ProductForm extends Component {
 
   render() {
     let fields = injectCategoryDataIntoFormFields(this.state.categories, this.state.product)
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+    }
     return (
-      <>
+      <div style={{ fontSize }}>
        {this.state.categories.length > 0 ?
           <>
             <div className="flex">
@@ -140,9 +144,15 @@ class ProductForm extends Component {
                 <h3 className="margin-xs-v">Related Products</h3>
                 </Link>
             </div>
-              <div className="margin-auto-h flex justify-center align-items-center background-color-black" style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px" }}>
-                <img style={{ height: "300px", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.product.image ? this.state.product.image : ""} />
-              </div>
+              {this.props.mobile ?                 
+                <div className={`margin-auto-h flex justify-center align-items-center background-color-black`} style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px" }}>
+                  <img style={{ height: "300px", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.product.image ? this.state.product.image : ""} />
+                </div>
+              : 
+                <div className={`flex justify-center align-items-center background-color-black`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
+                  <img style={{ height: "500px", width: "auto", maxHeight: "500px", maxWidth: "500px" }} src={this.state.product.image ? this.state.product.image : ""} />
+                </div>
+              }
               <ReactFilestack
                 apikey={process.env.REACT_APP_FILESTACK_API}
                 customRender={({ onPick }) => (
@@ -296,13 +306,13 @@ class ProductForm extends Component {
               />            
             </div>
             <div className="margin-s-v">
-              <button className="w-100">Display {this.state.product.display ? <FontAwesomeIcon onClick={() => this.changeBoolean("display", !this.state.product.display)} icon={faEye} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("display", !this.state.product.display)} icon={faEyeSlash} /> }</button>
+              <button onClick={() => this.changeBoolean("display", !this.state.product.display)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}}>Display {this.state.product.display ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
             </div>
             <div className="margin-s-v">
-              <button className="w-100">Home Page Promotion {this.state.product.home_promotion ? <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEye} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} icon={faEyeSlash} /> }</button>
+              <button onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Home Page Promotion {this.state.product.home_promotion ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
             </div>
             <div className="margin-s-v">
-              <button className="w-100">Backorderable {this.state.product.backorderable ? <FontAwesomeIcon onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)} icon={faCheck} /> : <FontAwesomeIcon onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)} icon={faTimes} /> }</button>
+              <button onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)}  style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Backorderable {this.state.product.backorderable ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} /> }</button>
             </div>
 
             {
@@ -322,13 +332,13 @@ class ProductForm extends Component {
             }
           </>
         : ""}
-      </>
+      </div>
     )
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { getAllCategories, dispatchObj, getProductByPathName, updateProduct }

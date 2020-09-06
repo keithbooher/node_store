@@ -9,6 +9,7 @@ import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch, faSpin
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
+import Key from "../../shared/Key"
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -112,12 +113,12 @@ class ProductList extends Component {
 
   productData(product) {
     return  (
-      <div style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto' }}>
-        <div>Name {product.name}</div>
-        <div>Description:  {product.description}</div>
-        <div>Inventory Count:  {product.inventory_count}</div>
-        <div>Price:  {product.price}</div>
-        <div>Display:  {product.display}</div>
+      <div className="color-white padding-s theme-background-4" style={{ width: '93%', margin: '0px auto' }}>
+        <div className="margin-xs-v"><Key>Name:</Key> {product.name}</div>
+        <div className="margin-xs-v"><Key>Description:</Key> {product.description}</div>
+        <div className="margin-xs-v"><Key>Inventory Count:</Key> {product.inventory_count}</div>
+        <div className="margin-xs-v"><Key>Price:</Key> {product.price}</div>
+        <div className="margin-xs-v"><Key>Display:</Key> {product.display ? "true" : "false"}</div>
       </div>
     )
   }
@@ -202,8 +203,17 @@ class ProductList extends Component {
         lastPossibleItem = true
       }
     }
+
+    let fontSize = "1em"
+    if (!this.props.mobile) { 
+      fontSize = "20px"
+    }
+    let searchButton = document.getElementsByClassName("search_button")
+    if (searchButton[0]) {
+      searchButton[0].style.marginTop = "28px"
+    }
     return (
-      <>
+      <div style={{ fontSize }}>
         <Link to="/admin/products/form/add" className="absolute" style={{ top: "5px", right: "5px" }}>Add Product <FontAwesomeIcon icon={faPlusCircle} /></Link>
         <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
 
@@ -238,14 +248,14 @@ class ProductList extends Component {
           : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
         }
         
-      </>
+      </div>
     )
   }
 }
 
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { getAllCategories, getProductbyId, searchProduct, paginatedProducts, updateProduct, lastProduct, dispatchObj, lastProductByCategory }

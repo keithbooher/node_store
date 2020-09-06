@@ -82,6 +82,11 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
           up_disable = true
         }
 
+        let fontSize = "17px"
+        if (!mobile) {
+          fontSize = "20px"
+        }
+
         return (
           <div key={index} style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
             <div 
@@ -98,10 +103,10 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
                 </div>
               </div>
               <div className="flex">
-                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
-                <button className="padding-xs" style={{ fontSize: "17px", maxHeight: "28px", margin: "0px 2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
@@ -187,15 +192,22 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
     setCategories( delete_cat )
   }
 
-  let fontSize = "1em"
-  if (!mobile) {
-    fontSize = "25px"
+  
+  let container_style = {
+    fontSize: "1em",
+    margin: "30px 0px 0px 0px"
   }
-
+  
+  if (!mobile) {
+    container_style.fontSize = "20px"
+    container_style.width = "80%"
+    container_style.margin = "50px auto"
+  }
   return (
-    <div style={{ marginTop: "30px" }}>
+    <div style={ container_style }>
       <div>
         <span className="absolute store_text_color" style={{ top: "5px", right: "5px" }} onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Parent Category</span>
+        <h1 className="text-align-center">Categories</h1>
         {show_create_input === "top" ? 
             <CategoryForm
               category={null}
@@ -208,7 +220,9 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
       </div>
 
       {categories.length !== 0 ? 
-        renderCategories(null)
+        <div>
+          {renderCategories(null)}
+        </div>
       : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
 
       {editForm &&

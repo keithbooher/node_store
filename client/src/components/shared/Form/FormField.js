@@ -2,8 +2,7 @@ import React from 'react'
 
 export default ({ mobile, input, field_class, label, searchButton, meta: { error, touched } }) => {
   let fieldStyle = {
-    marginBottom: '5px',
-    width: searchButton ? "97%" : "100%"
+    marginBottom: '5px'
   }
 
   let width_class = ""
@@ -12,6 +11,7 @@ export default ({ mobile, input, field_class, label, searchButton, meta: { error
     fieldStyle.fontSize = "20px"
     if (searchButton) {
       width_class = "w-40"
+      fieldStyle.width = "97%"
     }
   } else {
     if (searchButton) {

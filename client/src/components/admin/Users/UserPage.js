@@ -63,15 +63,19 @@ class Users extends Component {
 
 
   render() {
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+    }
     return (
-      <div style={{ marginTop: "30px" }}>
+      <div style={{ marginTop: "30px", fontSize }}>
         {this.state.user &&
           <div>
-            <div>Email: {this.state.user.email}</div>
-            <div onClick={() => this.showEdit("first_name")}>First Name: <a className="inline">{this.state.user.first_name}</a></div>
-            <div onClick={() => this.showEdit("last_name")}>Last Name: <a className="inline">{this.state.user.last_name}</a></div>
-            <div  onClick={() => this.showEdit("role")}>Role: <a className="inline">{this.state.user.role}</a></div>
-            <div>Joined On: {this.state.user.joined_on}</div>
+            <div className="margin-xs-v">Email: {this.state.user.email}</div>
+            <div className="margin-xs-v" onClick={() => this.showEdit("first_name")}>First Name: <a className="inline">{this.state.user.first_name}</a></div>
+            <div className="margin-xs-v" onClick={() => this.showEdit("last_name")}>Last Name: <a className="inline">{this.state.user.last_name}</a></div>
+            <div className="margin-xs-v"  onClick={() => this.showEdit("role")}>Role: <a className="inline">{this.state.user.role}</a></div>
+            <div className="margin-xs-v">Joined On: {this.state.user.joined_on}</div>
           </div>
         }
 
@@ -95,8 +99,8 @@ class Users extends Component {
 }
 
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { dispatchObj, getUser, updateUser }

@@ -65,15 +65,19 @@ class ProductForm extends Component {
   }
 
   render() {
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "18px"
+    }
     return (
-      <>
+      <div style={{ fontSize }}>
        {this.state.categories !== null ?
           <>
             <Link to="/admin/products"><FontAwesomeIcon icon={faTimesCircle} />Cancel</Link>
             <div>
               <Form 
                 onSubmit={(e) => this.handleSubmitCreate(e)}
-                submitButton={<button className="w-100" style={{ marginTop: "10px" }}>Create Product</button>}
+                submitButton={<button style={this.props.mobile ? { marginTop: "10px", width: "100%" } : { marginTop: "20px", width: "200px", fontSize: "25px" }}>Create Product</button>}
                 formFields={injectCategoryDataIntoFormFields(this.state.categories, null, "create")}
                 form='create_product_form'
                 validation={validate}
@@ -81,13 +85,13 @@ class ProductForm extends Component {
             </div>
           </>
         : ""}
-      </>
+      </div>
     )
   }
 }
 
-function mapStateToProps({ form }) {
-  return { form }
+function mapStateToProps({ form, mobile }) {
+  return { form, mobile }
 }
 
 const actions = { getAllCategories, dispatchObj, createProduct }
