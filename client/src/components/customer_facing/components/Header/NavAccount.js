@@ -28,8 +28,8 @@ const AccountNav = ({ auth, logoutReq }) => {
 
   const renderDropDown = () => {
     return [
-      <Link style={{ marginTop: "0px" }} to="/account/details">{auth.email}</Link>,
-      <a onClick={logout}>Logout</a>
+      <Link style={{ marginTop: "0px" }} className="hover-color-7" to="/account/details">{auth.email}</Link>,
+      <a className="hover-color-7" onClick={logout}>Logout</a>
     ]
   }
 

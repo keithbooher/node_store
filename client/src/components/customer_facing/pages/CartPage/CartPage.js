@@ -54,7 +54,7 @@ class CartPage extends Component {
             <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
             {this.props.cart.chosen_rate && <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Shipping:</span> ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
             <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
-            <button className="margin-s-v"><Link to="/checkout">Go to Checkout</Link></button>
+            <Link to="/checkout"><button className="margin-s-v">Go to Checkout</button></Link>
           </>
         :
           <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin />

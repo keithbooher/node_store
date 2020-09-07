@@ -338,10 +338,9 @@ const Product = ({
                   </div>
                 </div>
               }
-              <hr/>
             </div>
           :
-            <div className="margin-s-v">
+            <div className="margin-m-v">
               <div className="flex align-items-center">
                 <div className="w-40">
                   <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={product.image} />
@@ -349,8 +348,8 @@ const Product = ({
                 <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
                   <div>
                     <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
-                    <div className="flex align-items-center">
-                      <h1 style={{ marginTop: "10px", margin: "0px" }}>{product.name}</h1>
+                    <div className="flex align-items-center" style={{ margin: "10px 0px 10px 0px" }}>
+                      <h1 style={{ margin: "0px" }}>{product.name}</h1>
                       <div className="margin-s-h">
                         {reviews.length > 0 && averageRating &&
                           <StarRatings
@@ -395,9 +394,12 @@ const Product = ({
                     }
                 </div>
               </div>
-              <hr />
             </div>
           }
+          
+          <br />
+          <hr />
+          <br />
 
           <div >
             <div>

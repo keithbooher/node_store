@@ -166,7 +166,7 @@ class LineItems extends Component {
                   </div>
                 </div>
                 <i style={this.props.mobile ? { fontSize: "14px", top: "5px", right: "5px" } : {fontSize: "18px", top: "5px", right: "10px" }} className={`hover color-black absolute ${lock && "display-none"}`} onClick={() => this.removeProduct(line_item)}>
-                  <FontAwesomeIcon className="hover-color-2" icon={faTrash} />
+                  <FontAwesomeIcon className="hover-color-8" icon={faTrash} />
                 </i>
 
                 {this.state.inventory_limit &&

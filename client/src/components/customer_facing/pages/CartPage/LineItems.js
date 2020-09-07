@@ -106,14 +106,14 @@ class LineItems extends Component {
                   <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link></h3>
                   <div className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
                   <div className="flex align-items-center">
-                    <FontAwesomeIcon className="hover hover-color-3 theme-background-6 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                    <FontAwesomeIcon className="hover hover-color-8 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                     <input 
                       onChange={(e) => console.log(e)} 
                       onFocus={() => this.setState({ showModal: line_item })} 
                       value={line_item.quantity} 
                       style={{ width: "100%", maxWidth: "45px" }}
                     />
-                    <FontAwesomeIcon className="hover hover-color-3 theme-background-6 padding-s border-radius-s margin-xs-h color-black" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                    <FontAwesomeIcon className="hover hover-color-8 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                   </div>
                 </div>
               </div>

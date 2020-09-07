@@ -200,7 +200,9 @@ class ProductCard extends Component {
                         ${this.props.related_product ? "" : "w-90"} 
                         ${this.props.related_product && "related_product"} margin-s-v 
                         ${product._id === "" && "hidden"}
-                        ${this.props.mobile ? "card" : "card_desktop"}`}
+                        ${this.props.mobile ? "card" : "card_desktop"}
+                        color-white
+                        `}
           >
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>

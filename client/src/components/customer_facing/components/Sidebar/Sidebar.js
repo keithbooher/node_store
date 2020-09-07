@@ -44,7 +44,7 @@ class Sidebar extends Component  {
         <div key={index} className="margin-s-v" style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" } }>
           <div className="flex">
             <FontAwesomeIcon className="inline color-white" style={{ marginRight: "5px", marginTop: "3px" }} icon={faCaretRight} />
-            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline" to={`/shop/${category.path_name}`}>{category.name}</Link>
+            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
           </div>
           <div>{this.renderCategories(category)}</div>
         </div>
@@ -76,8 +76,8 @@ class Sidebar extends Component  {
             {this.renderCategories(null)}
           </div>
           <div className="padding-m flex">
-            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq" className="">FAQ</Link>
-            <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/contact" className="margin-m-h">Contact</Link>
+            <Link className='hover-color-5' onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq" className="">FAQ</Link>
+            <Link className='hover-color-5' onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/contact" className="margin-m-h">Contact</Link>
           </div>
         </div>
       </>
