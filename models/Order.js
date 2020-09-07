@@ -21,6 +21,7 @@ const orderSchema = new Schema({
     ref: 'shipments'
   },
   admin_notes: String,
+  customer_notes: String,
   payment: Object,
   refund: Object
 })

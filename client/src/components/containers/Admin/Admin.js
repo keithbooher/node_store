@@ -99,7 +99,7 @@ class Admin extends Component {
 
         <div ref={this.myRef} className={`relative color-black h-100 ${this.props.mobile && "overflow-scroll"}`}>
           <div className="padding-s h-100">
-            <FontAwesomeIcon id="sidebar_bars" className={`${content_class} hover hover-color-2`} onClick={this.sidebar} style={ bars_style } icon={faBars} />
+            <FontAwesomeIcon id="sidebar_bars" className={`${content_class} hover hover-color-8`} onClick={this.sidebar} style={ bars_style } icon={faBars} />
             <Switch>
               <Route exact path="/admin" component={AdminDashboard} />
               <Route exact path="/admin/orders" component={Orders} />

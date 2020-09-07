@@ -423,7 +423,7 @@ class Cart extends Component {
               <Modal cancel={() => this.setState({ convert: false }) }>
                 <StripeCheckout
                   name="Node Store"
-                  description='Purchase your order at ______' 
+                  description='Complete your order with Node Store' 
                   panelLabel="Purchase"
                   amount={cart.total * 100}
                   token={token => this.finalize(token)}

@@ -10,6 +10,7 @@ import FormModal from "../../../shared/Form/FormModal"
 import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom"
 import { formatMoney } from '../../../../utils/helpFunctions'
+import Form from "../../../shared/Form"
 
 class ReviewItems extends Component {
   constructor(props) {
@@ -118,6 +119,16 @@ class ReviewItems extends Component {
                 propertyToEdit={this.state.propertyToEdit}
               />
             </div>
+          </div>
+
+          <div>
+            <Form 
+              submitButton= {<div />}
+              formFields={[
+                { label: 'Order Notes', name: 'customer_notes', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
+              ]} 
+              form={"customer_order_notes_form"}
+            />
           </div>
 
           <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">

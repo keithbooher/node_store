@@ -162,11 +162,19 @@ class OrderPage extends Component {
               <div className="margin-xs-v"><span className="bold">Date Placed:</span> {order.date_placed.split("T")[0]}</div>
               <div className="margin-xs-v"><span className="bold">Total:</span> ${formatMoney(order.total)}</div>
 
+
+              {order.customer_notes &&
+                <div className="margin-m-v">
+                  <div className="bold">Customer Notes</div>
+                  <div>{order.customer_notes}</div>
+                </div>
+              }
+
               <Form 
                 onSubmit={this.handleNoteSubmission}
                 submitButtonText={"Update Notes"}
                 formFields={[
-                  { label: 'Notes', name: 'admin_notes', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
+                  { label: 'Admin Notes', name: 'admin_notes', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
                 ]} 
                 form={"admin_order_notes_form"}
                 initialValues={{"admin_notes": order.admin_notes}}

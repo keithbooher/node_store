@@ -66,7 +66,8 @@ const Payments = ({
   createOrder, 
   checkInventory, 
   createShipment,
-  mobile
+  mobile,
+  form
 }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
@@ -143,7 +144,6 @@ const Payments = ({
       _user_id: cart._user_id
     }
     const new_shipment = await createShipment(shipment)
-
     // Create Order
     let order = {
       sub_total: cart.sub_total,
@@ -153,7 +153,8 @@ const Payments = ({
       date_placed: date,
       _user_id: cart._user_id,
       email: auth.email ? auth.email : cart.email,
-      payment: charge.data
+      payment: charge.data,
+      customer_notes: form['customer_order_notes_form'].values ? form['customer_order_notes_form'].values.customer_notes : ""
     }
     const new_order = await createOrder(order)
 
@@ -203,8 +204,8 @@ const Payments = ({
 
 }
 
-function mapStateToProps({ auth, mobile }) {
-  return { auth, mobile }
+function mapStateToProps({ auth, mobile, form }) {
+  return { auth, mobile, form }
 }
 
 const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder, createShipment, checkInventory }

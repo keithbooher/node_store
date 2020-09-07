@@ -4,7 +4,7 @@ import { reset } from "redux-form"
 import { Link } from 'react-router-dom'
 import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import Modal from "../../../shared/Modal"
 import Form from "../../../shared/Form"
@@ -84,6 +84,31 @@ class LineItems extends Component {
     this.props.dispatchEnlargeImage({ image, path })
   }
 
+  removeProduct(incoming_line_item) {
+    const cart = this.props.cart
+
+    const current_cart_line_items = cart.line_items
+
+    let updated_line_items = current_cart_line_items.filter((line_item) => {
+      return incoming_line_item._id !== line_item._id
+    })
+    cart.line_items = updated_line_items
+
+    let sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+    cart.total = Number(sub_total + tax + shipping)
+    if (cart.line_items.length < 1) {
+      cart.chosen_rate = null
+    }
+    cart.checkout_state = "shopping"
+    
+    this.props.updateCart(cart)
+  }
+
   render() {
     console.log(this.props)
     return (
@@ -102,18 +127,18 @@ class LineItems extends Component {
                     onClick={() => this.enlargeImage(line_item.image, line_item.product_path)}
                   />
                 </div>
-                <div className="margin-s-h">
-                  <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                <div className="relative margin-s-h">
+                  <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link> <FontAwesomeIcon style={{ fontSize: "18px" }} onClick={() => this.removeProduct(line_item)} className="hover-color-8 hover" icon={faTrash} /></h3>
                   <div className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
                   <div className="flex align-items-center">
-                    <FontAwesomeIcon className="hover hover-color-8 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
+                    <FontAwesomeIcon className="hover hover-color-9 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                     <input 
                       onChange={(e) => console.log(e)} 
                       onFocus={() => this.setState({ showModal: line_item })} 
                       value={line_item.quantity} 
                       style={{ width: "100%", maxWidth: "45px" }}
                     />
-                    <FontAwesomeIcon className="hover hover-color-8 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
+                    <FontAwesomeIcon className="hover hover-color-9 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'addition')} icon={faPlus} />
                   </div>
                 </div>
               </div>

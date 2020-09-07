@@ -61,6 +61,13 @@ class OrderPage extends Component {
             <h2>Items Purchased</h2>
             {this.props.mobile ? <MobileLineItems order={order} line_items={order.shipment.line_items} /> : <DesktopLineItems order={order} line_items={order.shipment.line_items} /> }
 
+            {order.customer_notes &&
+              <>
+                <h2>Order Notes</h2>
+                <div>{order.customer_notes}</div>
+              </>
+            }
+            
             <div className={!this.props.mobile && "flex margin-s-h"}>
               <div className={!this.props.mobile && "w-50"}>
                 <h2>Billing</h2>

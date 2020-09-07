@@ -88,7 +88,9 @@ class LineItems extends Component {
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
     cart.checkout_state = "shopping"
-    
+    if (cart.line_items.length < 1) {
+      cart.chosen_rate = null
+    }
     this.props.updateCart(cart)
   }
 

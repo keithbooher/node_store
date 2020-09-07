@@ -70,7 +70,7 @@ module.exports = app => {
   app.get('/api/current/cart/:user_id', async (req, res) => {
     const _user_id = req.params.user_id
     try {
-      const cart = await Cart.findOne({ _user_id, deleted_at: null })
+      const cart = await Cart.findOne({ _user_id, deleted_at: null, checkout_state: {$ne: "complete"} })
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)

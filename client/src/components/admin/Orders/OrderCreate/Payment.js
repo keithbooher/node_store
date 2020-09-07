@@ -201,9 +201,9 @@ class Payment extends Component {
 
         <StripeCheckout
           name="Node Store"
-          description='Purchase your order at ______' 
+          description='Complete your order with Node Store' 
           panelLabel="Purchase"
-          amount={this.props.cart.total}
+          amount={this.props.cart.total * 100}
           token={token => this.finalize(token)}
           stripeKey={process.env.REACT_APP_STRIPE_KEY}
           email={this.props.customer.email}

@@ -13,6 +13,7 @@
   color: white;
 }
 
+
 .hover-color-2 {
   color: white;
 }
@@ -21,27 +22,34 @@
   color: $blue-3;
 }
 
+
 .hover-color-3:hover {
   background-color: $blue-3;
 }
+
 
 .hover-color-4:hover {
   color: $blue-7;
 }
 
+
 .hover-color-5:hover {
   color: white;
 }
+
 
 .hover-color-6:hover {
   background-color: #c2c6c9;
   color: $blue-3;
 }
 
+
 .hover-color-7:hover {
   color: white !important;
 }
 
+
+
 .hover-color-8 {
   color: $blue-7;
 }
@@ -50,11 +58,19 @@
   color: $blue-3;
 }
 
-.hover-color-8 {
+
+
+.hover-color-9 {
   color: $blue-3;
 }
 
-.hover-color-8:hover {
+.hover-color-9:hover {
   color: $blue-7;
   background-color: $blue-3;
+}
+
+
+
+.hover-color-10:hover {
+  color: $blue-3;
 }
