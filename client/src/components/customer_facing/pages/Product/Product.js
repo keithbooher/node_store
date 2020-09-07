@@ -30,7 +30,8 @@ const Product = ({
   getProductByPathName, 
   lastReview, 
   getProductsReviews,
-  submitReview
+  submitReview,
+  mobile
 }) =>  {
 
   const [product, setProduct] = useState(null)
@@ -266,8 +267,17 @@ const Product = ({
   } else if (reviews.length === 0) {
     review_container_style = { height: "auto" }
   }
+
+  let containerStyle = {
+    fontSize: "1em", 
+    padding: ".4em .4em 80px .4em"
+  }
+  if (!mobile) {
+    containerStyle.fontSize = "20px"
+  }
+
   return (
-    <div style={{ paddingBottom: "80px" }}>
+    <div style={ containerStyle } className={`${!mobile && "max-customer-container-width margin-auto-h"}`}>
       <MetaTags>
         {product &&
           <>
@@ -281,72 +291,133 @@ const Product = ({
       <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
       {product ? 
         <div>
-          <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
-          <div style={{ marginBottom: "20px" }}>
-            {reviews.length > 0 && averageRating &&
-              <StarRatings
-                rating={new Number(averageRating)}
-                starRatedColor="#6CB2EB"
-                numberOfStars={5}
-                name='rating'
-                starDimension="15px"
-                starSpacing="1px"
-              />
-            }
-          </div>
-          <div className="text-align-center">
-            <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={product.image} />
-          </div>
-          <div >
-            <div className="flex flex_column">
-              <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
-              {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
-              {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
-            </div>
-            <div className="flex">
+          {mobile ?
+            <div>
+              <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
+              <div style={{ marginBottom: "20px" }}>
+                {reviews.length > 0 && averageRating &&
+                  <StarRatings
+                    rating={new Number(averageRating)}
+                    starRatedColor="#6CB2EB"
+                    numberOfStars={5}
+                    name='rating'
+                    starDimension="15px"
+                    starSpacing="1px"
+                  />
+                }
+              </div>
+              <div className="text-align-center">
+                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={product.image} />
+              </div>
+              <div className="flex flex_column">
+                <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
+                {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
+                {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
+              </div>
               <div className="flex">
-                <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
-                <div className="flex flex_column">
-                  <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                  <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                <div className="flex">
+                  <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+                  <div className="flex flex_column">
+                    <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
+                    <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                  </div>
                 </div>
+                <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
               </div>
-              <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
+              <hr/>
+              <h3>Description</h3>
+              <p>{product.description ? product.description : "No Product Description"}</p>
+              {product.dimensions && 
+                <div>
+                  <h3 className="margin-bottom-none">Specs</h3>
+                  <div className="padding-s">
+                    <div>Height: {product.dimensions.height}</div>
+                    <div>Width: {product.dimensions.width}</div>
+                    <div>Depth: {product.dimensions.depth}</div>
+                    <div>Weight: {product.weight}</div>
+                  </div>
+                </div>
+              }
+              <hr/>
             </div>
-            <hr/>
-            <h3>Description</h3>
-            <p>{product.description ? product.description : "No Product Description"}</p>
-            {product.dimensions && 
-              <div>
-                <h3 className="margin-bottom-none">Specs</h3>
-                <div className="padding-s">
-                  <div>Height: {product.dimensions.height}</div>
-                  <div>Width: {product.dimensions.width}</div>
-                  <div>Depth: {product.dimensions.depth}</div>
-                  <div>Weight: {product.weight}</div>
+          :
+            <div className="margin-s-v">
+              <div className="flex align-items-center">
+                <div className="w-40">
+                  <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={product.image} />
+                </div>
+                <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
+                  <div>
+                    <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
+                    <div className="flex align-items-center">
+                      <h1 style={{ marginTop: "10px", margin: "0px" }}>{product.name}</h1>
+                      <div className="margin-s-h">
+                        {reviews.length > 0 && averageRating &&
+                          <StarRatings
+                            rating={new Number(averageRating)}
+                            starRatedColor="#6CB2EB"
+                            numberOfStars={5}
+                            name='rating'
+                            starDimension="25px"
+                            starSpacing="1px"
+                          />
+                        }
+                      </div>
+                    </div>
+                    <h3 className="margin-xs-v">Description</h3>
+                    <div>{product.description ? product.description : "No Product Description"}</div>
+                  </div>
+                  <div className="margin-s-v">
+                    {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
+                    {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
+                    <div className="flex">
+                      <div className="flex">
+                        <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+                        <div className="flex flex_column">
+                          <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
+                          <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                        </div>
+                      </div>
+                      <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
+                    </div>
+                  </div>
+
+                  {product.dimensions && 
+                      <div>
+                        <h3 className="margin-bottom-none">Details</h3>
+                        <div className="padding-s">
+                          <div>Height: {product.dimensions.height}</div>
+                          <div>Width: {product.dimensions.width}</div>
+                          <div>Depth: {product.dimensions.depth}</div>
+                          <div>Weight: {product.weight}</div>
+                        </div>
+                      </div>
+                    }
                 </div>
               </div>
-            }
-            <hr/>
+              <hr />
+            </div>
+          }
+
+          <div >
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
-                <div id="reviews_container" style={{ maxHeight: "450px" }} className={`relative border-radius-s overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                <div id="reviews_container" style={mobile ? { maxHeight: "450px" } : { maxHeight: "600px" } } className={`relative border-radius-s overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
                   {reviews.map((review, index) => {
                     return (
-                      <div className="theme-background-2 padding-s margin-xs-v border-radius-s" key={index}>
+                      <div style={mobile ? {} : { fontSize: "20px" }} className="theme-background-6 padding-s margin-xs-v border-radius-s" key={index}>
                         <div className="flex align-items-center">
-                          <h4 style={{ marginRight: "10px" }}>Rating:</h4>
                           {<StarRatings
                             rating={review.rating}
                             starRatedColor="#6CB2EB"
                             numberOfStars={5}
                             name='rating'
-                            starDimension="15px"
+                            starDimension="25px"
                             starSpacing="1px"
                           />}
                         </div>
-                        <div style={{ fontSize: "12px" }}>{review.first_name}</div>
+                        <div style={mobile ? { fontSize: "12px" } : { fontSize: "18px" }}>{review.first_name}</div>
                         <p>{review.description}</p>
                       </div>
                     )
@@ -362,7 +433,7 @@ const Product = ({
                   }
                 </div>
               :
-                <h4 style={{ marginBottom: "20px" }} className="padding-s border-radius-s w-90 margin-auto-h theme-background-2">There are no reviews for this product yet</h4>  
+                <h4 style={{ marginBottom: "20px" }} className="padding-s border-radius-s w-90 margin-auto-h theme-background-6">There are no reviews for this product yet</h4>  
               }
               <PageChanger 
                 page_number={page_number} 
@@ -417,8 +488,8 @@ const Product = ({
 }
 
 
-function mapStateToProps({ cart, auth, form }) {
-  return { cart, auth, form }
+function mapStateToProps({ cart, auth, form, mobile }) {
+  return { cart, auth, form, mobile }
 }
 
 const actions = { updateCart, createCart, dispatchObj, getProductByPathName, getProductAverageRating, submitReview, getProductsReviews, lastReview }

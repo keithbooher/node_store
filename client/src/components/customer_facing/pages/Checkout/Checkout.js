@@ -23,7 +23,7 @@ class Checkout extends Component  {
   render() {
     // Need to render a side container showing the contents of the cart 
     return (
-      <div style={{ paddingBottom: "100px" }}>
+      <div style={{ padding: ".4em .4em 100px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
           <title>Node Store Checkout</title>
           <meta name="description" content="Finalize your purchase here" />

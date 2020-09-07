@@ -69,7 +69,7 @@ class Header extends Component {
     <div className={`${this.props.showHeader} ${this.props.mobile ? "nav" : "desktop_nav" } header_container`}>
       <div className="header_container flex space-between align-items-center theme-background-3 h-100" style={{ minHeight: "50px" }}>
         <div className="header_container flex justify-center align-items-center">
-          <FontAwesomeIcon style={ this.props.mobile ? {} : { fontSize: "27px" } } id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover" icon={faBars} />
+          <FontAwesomeIcon style={ this.props.mobile ? {} : { fontSize: "27px" } } id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover hover-color-2" icon={faBars} />
           <Link to='/' className="margin-s-h"><h2 style={ this.props.mobile ? {} : { fontSize: "35px" } } className="margin-none">Node Store</h2></Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>

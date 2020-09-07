@@ -152,7 +152,7 @@ const CustomerFacing = ({
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />
-        <div id="body_content_container" className={`padding-s ${ mobile ? "" : "max-customer-container-width margin-auto-h" }`}>
+        <div id="body_content_container">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/shop/:category" component={Category} />

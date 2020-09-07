@@ -28,7 +28,7 @@ class Account extends Component  {
       {tab: "reviews", path: "/account/reviews"}
     ]
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div style={{ padding: ".4em .4em 80px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
           <title>Node Store Account Info</title>
           <meta name="description" content="Adjust and review your user information and purchase history" />

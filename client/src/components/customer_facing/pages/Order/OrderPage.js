@@ -26,7 +26,7 @@ class OrderPage extends Component {
     const order = this.state.order
 
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div className={`${ this.props.mobile ? "" : "max-customer-container-width margin-auto-h" }`} style={{ padding: ".4em .4em 100px .4em" }}>
         <MetaTags>
           <title>Node Store Order Review</title>
           <meta name="description" content="Review a past order" />

@@ -79,7 +79,7 @@ class Category extends Component  {
       this.getProducts()
     }
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div style={{ padding: ".4em .4em 80px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
           {this.state.category_data &&
             <>

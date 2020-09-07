@@ -116,12 +116,12 @@ class StoreSettings extends Component {
             <ReactFilestack
               apikey={process.env.REACT_APP_FILESTACK_API}
               actionOptions={{
-                imageDim: [1200, 560],
+                imageDim: [1600, 560],
                 transformations: {
                   circle: false,
                   rotate: false,
                   crop: {
-                    aspectRatio: 1200 / 560,
+                    aspectRatio: 1600 / 560,
                     force: true
                   }
                 }

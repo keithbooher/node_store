@@ -51,7 +51,7 @@ class Home extends Component  {
   
   render() {
     return (
-      <div style={{ paddingBottom: "80px" }}>
+      <div style={{ padding: "0em 0em 80px 0em" }}>
         <MetaTags>
           <title>Node Store</title>
           <meta name="description" content="Some description." />
@@ -59,15 +59,15 @@ class Home extends Component  {
           <meta property="og:image" content="path/to/image.jpg" />
         </MetaTags>
 
-        <div className="text-align-center margin-l-v">
+        <div className={`text-align-center`}>
           {this.state.banner ?
-            <img className="w-auto h-auto border-radius-s" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "100%", marginBottom: "30px" }} src={this.state.banner.value.image} />
+            <img className="w-auto h-auto border-radius-s" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "1600px", marginBottom: "30px" }} src={this.state.banner.value.image} />
           :
             <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin />
           }
         </div>
         <h1 className="text-align-center margin-m-v">Featured Products</h1>
-        <div className="flex flex-wrap justify-center home_product_container">
+        <div className={`flex flex-wrap justify-center home_product_container ${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
           {this.state.products.length > 0 ? this.renderProducts() : ""}
         </div>
       </div>

@@ -11,9 +11,17 @@ class ContactPage extends Component {
 
 
   render() {
+    let containerStyle = {
+      padding: ".4em .4em 80px .4em"
+    }
 
+    if (!this.props.mobile) {
+      containerStyle.width = "80%"
+      containerStyle.margin = "0px auto"
+      containerStyle.fontSize = "20px"
+    }
     return (
-      <div style={this.props.mobile ? {} : { fontSize: "20px" }}>
+      <div style={ containerStyle } className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <h1>Contact</h1>
         <div>If you have any questions or concerns please feel free to email <a className="inline" href="mailto:keith.booher@yaoho.com">_______@_____.com</a></div>
       </div>

@@ -30,7 +30,7 @@ class CartPage extends Component {
   render() {
 
     let containerStyle = {
-      paddingBottom: "80px"
+      padding: ".4em .4em 80px .4em"
     }
 
     if (!this.props.mobile) {
@@ -39,7 +39,7 @@ class CartPage extends Component {
     }
 
     return (
-      <div style={ containerStyle }>
+      <div style={ containerStyle } className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
           <title>Node Store Cart</title>
           <meta name="description" content="Review your cart" />
