@@ -190,6 +190,10 @@ class ProductCard extends Component {
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
+    let fontSize = "1em"
+    if (!this.props.mobile) {
+      fontSize = "20px"
+    }
     return (
       <>
         {this.props.auth !== null ? 
@@ -229,8 +233,8 @@ class ProductCard extends Component {
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />
               </div>
-              {!this.props.related_product && <div className="margin-s-v" style={{ fontSize: "18px" }}>{product.short_description}</div>}
-              {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>In Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
+              {!this.props.related_product && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "18px" } : { fontSize: "20px" }}>{product.short_description}</div>}
+              {!product.backorderable && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "14px" } : { fontSize: "16px"}}>In Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
             </div>
             <div className="flex">
               <div className="flex">
