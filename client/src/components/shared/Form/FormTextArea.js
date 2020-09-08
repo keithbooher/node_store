@@ -3,11 +3,13 @@ import React from 'react'
 export default ({ mobile, input, label, field_class, onChange, meta: { error, touched } }) => {
   let fieldStyle = {
     marginBottom: '5px',
-    minHeight: "65px"
+    minHeight: "65px",
+    padding: "5px"
   }
 
   if (!mobile) {
     fieldStyle.fontSize = "20px"
+    fieldStyle.padding = "10px"
   }
   return (
     <div className="textArea">

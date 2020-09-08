@@ -129,110 +129,120 @@ class AddressCard extends Component {
       <div 
         key={index} 
         data-address-id={address._id} 
-        className={`${this.props.mobile ? "address_card_container" : "address_card_container_desktop"} color-white padding-s-h padding-s-bottom padding-l-top border-radius-s relative ${ this.check_highlight(address) ? "theme-background-4 st-border" : "theme-background-2" }`}
+        className={`${this.props.mobile ? "address_card_container" : "address_card_container_desktop"} color-white padding-s-h padding-s-bottom padding-l-top border-radius-s relative ${ this.check_highlight(address) ? "theme-background-4 st-border" : "theme-background-3" }`}
         style={ this.props.mobile ? {} : { fontSize: "20px" }}
       >
         <div className={`margin-xs-v`}>
           <span >First Name:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("first_name", this.props.bill_or_ship, address._id)}>{address.first_name ? address.first_name : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("first_name", this.props.bill_or_ship, address._id)}>{address.first_name ? address.first_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "first_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("first_name", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Last Name:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("last_name", this.props.bill_or_ship, address._id)}>{address.last_name ? address.last_name : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("last_name", this.props.bill_or_ship, address._id)}>{address.last_name ? address.last_name : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "last_name" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("last_name", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Company:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("company", this.props.bill_or_ship, address._id)}>{address.company ? address.company : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("company", this.props.bill_or_ship, address._id)}>{address.company ? address.company : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "company" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("company", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Street Address 1:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_1", this.props.bill_or_ship, address._id)}>{address.street_address_1 ? address.street_address_1 : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("street_address_1", this.props.bill_or_ship, address._id)}>{address.street_address_1 ? address.street_address_1 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "street_address_1" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("street_address_1", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Street Address 2:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("street_address_2", this.props.bill_or_ship, address._id)}>{address.street_address_2 ? address.street_address_2 : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("street_address_2", this.props.bill_or_ship, address._id)}>{address.street_address_2 ? address.street_address_2 : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "street_address_2" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("street_address_2", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >City:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("city", this.props.bill_or_ship, address._id)}>{address.city ? address.city : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("city", this.props.bill_or_ship, address._id)}>{address.city ? address.city : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "city" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("city", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >State:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("state", this.props.bill_or_ship, address._id)}>{address.state ? address.state : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("state", this.props.bill_or_ship, address._id)}>{address.state ? address.state : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "state" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("state", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Zip Code:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("zip_code", this.props.bill_or_ship, address._id)}>{address.zip_code ? address.zip_code : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("zip_code", this.props.bill_or_ship, address._id)}>{address.zip_code ? address.zip_code : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "zip_code" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("zip_code", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Phone Number:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("phone_number", this.props.bill_or_ship)}>{address.phone_number ? address.phone_number : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("phone_number", this.props.bill_or_ship)}>{address.phone_number ? address.phone_number : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "phone_number" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("phone_number", address)} 
             />
           }
         </div>
         <div className={`margin-xs-v`}>
           <span >Country:</span> 
-          <a className="inline margin-s-h" onClick={() => this.showEditIndicator("country", this.props.bill_or_ship)}>{address.country ? address.country : "" }</a>
+          <a className="inline margin-s-h hover-color-11" onClick={() => this.showEditIndicator("country", this.props.bill_or_ship)}>{address.country ? address.country : "" }</a>
           {this.state.propertyToEdit && this.state.propertyToEdit.id === address._id && this.state.propertyToEdit.property === "country" && this.state.propertyToEdit.bill_or_ship === this.props.bill_or_ship && 
             <FontAwesomeIcon 
               icon={faEdit} 
+              className="hover-color-2 hover"
               onClick={() => this.showEditModal("country", address)} 
             />
           }
         </div>
-        <FontAwesomeIcon className="absolute store_text_color" style={{ top: "5px", right: "5px" }} onClick={() => this.deleteAddress(address)} icon={faTrash} />
+        <FontAwesomeIcon className="absolute hover hover-color-11" style={{ top: "5px", right: "5px" }} onClick={() => this.deleteAddress(address)} icon={faTrash} />
         { this.props.actionBox ? <button style={{ marginTop: '10px' }} onClick={() => this.checkBox(address)}>Use this address </button> : "" }
       </div>
       )

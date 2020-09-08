@@ -17,8 +17,8 @@ class TopTabs extends Component  {
       mobileFontSize = '30px'
     }
     return this.props.sections.map((section, index) => {
-      return <NavLink key={index} style={{ fontSize: mobileFontSize, flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}>
-                <h3 data-tab={section} className="tab_section_header margin-none">
+      return <NavLink className="" key={index} style={{ fontSize: mobileFontSize, flexBasis: "25%", textAlign: "center", textDecoration: "underline" }} activeClassName="color-white" exact to={section.path}>
+                <h3 data-tab={section} className="tab_section_header margin-none hover-color-5">
                   {capitalizeFirsts(section.tab)}
                 </h3>
               </NavLink>
@@ -27,12 +27,9 @@ class TopTabs extends Component  {
 
   
   render() {
-    let bg_style = {
-      backgroundColor: '#212121'
-    }
 
     return (
-      <div style={bg_style} className="flex space-evenly">
+      <div className="flex space-evenly theme-background-3 padding-s border-radius-s">
         {this.renderTabs()}
       </div>
     )

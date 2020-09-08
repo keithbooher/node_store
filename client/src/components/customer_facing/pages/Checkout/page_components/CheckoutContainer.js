@@ -120,9 +120,9 @@ class CheckoutContainer extends Component  {
     }
     return (
       <>
-        <h1 className={`underline ${address_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.chooseTab('address')}>Address</h1>
+        <h1 className={`underline ${address_boolean && "color-grey-4"} hover hover-color-8`} onClick={() => this.chooseTab('address')}>Address</h1>
         {this.state.chosen_tab === 'address' ? 
-          <div className="padding-s border-radius-s theme-background-4">
+          <div className="padding-s border-radius-s theme-background-6">
             <AddressPanel 
               chooseTab={this.chooseTab}
               chosen_tab={this.state.chosen_tab} 
@@ -132,9 +132,9 @@ class CheckoutContainer extends Component  {
           </div>
         : ""}
 
-        <h1 className={`underline ${shipping_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.paramterChooseTab('shipping')}>Shipping</h1>
+        <h1 className={`underline ${shipping_boolean && "color-grey-4"} hover hover-color-8`} onClick={() => this.paramterChooseTab('shipping')}>Shipping</h1>
         {this.state.chosen_tab === 'shipping' ? 
-          <div className="padding-s border-radius-s theme-background-4">
+          <div className="padding-s border-radius-s theme-background-6">
             <ShippingPanel
               cart={this.state.current_cart}
               updateCart={this.updateCart}
@@ -143,9 +143,9 @@ class CheckoutContainer extends Component  {
           </div>
         : ""}
 
-        <h1  className={`underline ${payment_boolean && "color-grey-4"} hover hover-color-2`} onClick={() => this.paramterChooseTab('payment')}>Payment</h1>
+        <h1  className={`underline ${payment_boolean && "color-grey-4"} hover hover-color-8`} onClick={() => this.paramterChooseTab('payment')}>Payment</h1>
         {this.state.chosen_tab === "payment" ? 
-          <div className="padding-s border-radius-s theme-background-4">            
+          <div className="padding-s border-radius-s theme-background-6">            
             <PaymentPanel 
               cart={this.state.current_cart}
               makeNewOrderAvailable={this.makeNewOrderAvailable} 
@@ -159,7 +159,7 @@ class CheckoutContainer extends Component  {
 
         <h1 className="underline">Review</h1>
         {this.state.new_order !== null ? this.state.chosen_tab === "review" ?
-          <div className="padding-s border-radius-s theme-background-4">           
+          <div className="padding-s border-radius-s theme-background-6">           
             <ReviewPanel 
               convertCart={this.props.convertCart} 
               new_order={this.state.new_order} 

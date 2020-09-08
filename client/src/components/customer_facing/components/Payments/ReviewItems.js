@@ -121,7 +121,7 @@ class ReviewItems extends Component {
             </div>
           </div>
 
-          <div>
+          <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } }>
             <Form 
               submitButton= {<div />}
               formFields={[

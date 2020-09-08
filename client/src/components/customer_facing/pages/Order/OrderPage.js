@@ -126,7 +126,7 @@ const DesktopLineItems = ({ line_items, order }) => {
     <div className="flex" style-={{ }}>
       {line_items.map((item, index) => {
         return (
-          <div key={index} className="flex flex_column align-items-center st-product-card-background padding-m" style={{ width: "15em", margin: "10px" }}>
+          <div key={index} className="flex flex_column align-items-center st-product-card-background padding-m border-radius-s" style={{ width: "15em", margin: "10px" }}>
             <div className="border-radius-s flex justify-center background-color-black"  style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }} >
               <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={item.image} />
             </div>

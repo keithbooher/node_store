@@ -143,10 +143,10 @@ export default connect(mapStateToProps, actions)(Reviews)
 const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, line_item_id }) => {
   if (mobile) {
     return (
-      <div key={index} className="relative theme-background-2 margin-m-v padding-s border-radius-s" >
+      <div key={index} className="relative theme-background-3 color-white margin-m-v padding-s border-radius-s" >
         {review.line_item &&
           <>
-            <h2><Link to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>
+            <h2><Link className="hover-color-5" to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>
             <div className="flex margin-auto-h justify-center align-items-center background-color-black" style={{ maxHeight: "300px", maxWidth: "100%", height: "auto", width: "auto", marginTop: "10px", marginBottom: "10px" }}>
               <LazyLoadImage
                 style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }}
@@ -167,11 +167,11 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
           />
         </div>
         <div>{review.description}</div>
-        <a className="margin-s-v" onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon className="store_text_color" icon={faArrowCircleDown} /></a>
+        <a className="margin-s-v hover-color-5" onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon icon={faArrowCircleDown} /></a>
         {order !== null ?
           order._id === review._order_id && line_item_id === review.line_item._id? 
           <div className="padding-m">
-            <div>Order Number: <Link className="inline" to={`/order/${order._id}`}>{order._id}</Link></div>
+            <div>Order Number: <Link className="inline hover-color-5" to={`/order/${order._id}`}>{order._id}</Link></div>
             <div>Date Placed: {order.date_placed.split("T")[0]}</div>
           </div>  
         : "" : ""}
@@ -179,7 +179,7 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
     )
   } else {
     return (
-      <div key={index} className="relative theme-background-2 padding-s border-radius-s" style={{ width: "75%", margin: "20px auto" }}>
+      <div key={index} className="relative theme-background-3 color-white padding-s border-radius-s" style={{ width: "75%", margin: "20px auto" }}>
         <div className="flex">
           {review.line_item &&
             <div className="flex justify-center align-items-center background-color-black" style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px", marginBottom: "10px" }}>
@@ -191,7 +191,7 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
           }
           <div className="margin-m-h">
             
-            {review.line_item && <h2 style={{ fontSize: "35px" }}><Link to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>}
+            {review.line_item && <h2 style={{ fontSize: "35px" }}><Link className="hover-color-5" to={review.line_item.product_path}>{review.line_item.product_name}</Link></h2>}
             <h2 style={{ fontSize: "25px" }}>Your Rating <FontAwesomeIcon className="hover hover-color-2" icon={faEdit} onClick={() => setEditForm(review)} /></h2>
             <div className="flex align-items-center">
               <StarRatings
@@ -208,11 +208,11 @@ const DynamicReview = ({ mobile, index, review, setEditForm, getOrder, order, li
             <div style={{ fontSize: "25px" }}>{review.description}</div>
           </div>
         </div>
-        <a className="margin-s-v" style={{ fontSize: "20px" }} onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon className="store_text_color" icon={faArrowCircleDown} /></a>
+        <a className="margin-s-v hover-color-5" style={{ fontSize: "20px" }} onClick={() => getOrder(review._order_id, review.line_item._id)}>Order Details <FontAwesomeIcon icon={faArrowCircleDown} /></a>
         {order !== null ?
           order._id === review._order_id && line_item_id === review.line_item._id? 
           <div className="padding-m" style={{ fontSize: "20px" }}>
-            <div>Order Number: <Link className="inline" to={`/order/${order._id}`}>{order._id}</Link></div>
+            <div>Order Number: <Link className="inline hover-color-5" to={`/order/${order._id}`}>{order._id}</Link></div>
             <div>Date Placed: {order.date_placed.split("T")[0]}</div>
           </div>  
         : "" : ""}

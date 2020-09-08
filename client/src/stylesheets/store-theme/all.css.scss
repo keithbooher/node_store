@@ -19,7 +19,7 @@
 }
 
 .hover-color-2:hover {
-  color: $blue-3;
+  color: $blue-3 !important;
 }
 
 
@@ -34,7 +34,7 @@
 
 
 .hover-color-5:hover {
-  color: white;
+  color: white !important;
 }
 
 
@@ -55,7 +55,7 @@
 }
 
 .hover-color-8:hover {
-  color: $blue-3;
+  color: $blue-3 !important;
 }
 
 
@@ -73,4 +73,14 @@
 
 .hover-color-10:hover {
   color: $blue-3;
+}
+
+
+
+.hover-color-11 {
+  color: $blue-3;
+}
+
+.hover-color-11:hover {
+  color: white;
 }

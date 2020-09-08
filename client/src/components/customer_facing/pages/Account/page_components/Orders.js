@@ -48,7 +48,7 @@ class Orders extends Component {
     var date = order.date_placed.split("T")[0]
     return  (
       <td colspan="3">
-        <div  className={`theme-background-4 margin-auto-h w-90 ${this.props.mobile ? "padding-xs" : "padding-s"}`} style={this.props.mobile ? {} : { fontSize: "18px" }}>
+        <div  className={`theme-background-6 color-black margin-auto-h w-90 ${this.props.mobile ? "padding-xs" : "padding-s"}`} style={this.props.mobile ? {} : { fontSize: "18px" }}>
           <h2 className="margin-xs-v">Products Purchased</h2>
           {order.shipment && order.shipment.line_items.map((line_item, index) => {
             return (
@@ -61,8 +61,8 @@ class Orders extends Component {
                   </div>
                   <div className="margin-s-h">
                     <h3 className="margin-s-v"><Link to={line_item.product_path} style={this.props.mobile ? {} : { fontSize: "25px" }}>{line_item.product_name}</Link></h3>
-                    <div><span className="store_text_color">Price:</span> {line_item.product_price}</div>
-                    <div><span className="store_text_color">Quantity:</span> {line_item.quantity}</div>
+                    <div><span className="">Price:</span> {line_item.product_price}</div>
+                    <div><span className="">Quantity:</span> {line_item.quantity}</div>
                     <LeaveReview order_id={order._id} line_item={line_item} />
                   </div>
                 </div>
@@ -70,11 +70,11 @@ class Orders extends Component {
               </>
             )
           })}
-          <div><span className="bold store_text_color">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
-          <div><span className="bold store_text_color">Tax:</span> ${formatMoney(order.tax)}</div>
-          <div><span className="bold store_text_color">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
-          <div><span className="store_text_color bold">Total:</span> ${formatMoney(order.total)}</div>
-          <div><span className="store_text_color bold">Date Place:</span> {date}</div>
+          <div><span className="bold">Sub Total:</span> ${formatMoney(order.sub_total)}</div>
+          <div><span className="bold">Tax:</span> ${formatMoney(order.tax)}</div>
+          <div><span className="bold">Shipping:</span> ${formatMoney(order.shipment.chosen_rate.cost)}</div>
+          <div><span className="bold">Total:</span> ${formatMoney(order.total)}</div>
+          <div><span className="bold">Date Place:</span> {date}</div>
         </div>
       </td>
     )
@@ -90,7 +90,7 @@ class Orders extends Component {
       var date = order.date_placed.split("T")[0]
       return (
         <>
-          <tr key={index} style={this.props.mobile ? { backgroundColor: 'rgb(45, 45, 45)' } : { fontSize: "26px", backgroundColor: 'rgb(45, 45, 45)' }} data-order-tab={order._id}>
+          <tr key={index} className="theme-background-3" style={this.props.mobile ? {} : { fontSize: "26px" }} data-order-tab={order._id}>
               <td className={`flex ${this.props.mobile ? "padding-s" : "padding-xs" }`}>
                 <FontAwesomeIcon className="store_text_color hover hover-color-5" icon={faCaretDown} onClick={ () => this.setOrder(order) } />
                 <div className="margin-s-h">{this.props.mobile ? "..." + order._id.substr(order._id.length - 8) : order._id }</div>
@@ -114,9 +114,9 @@ class Orders extends Component {
     return (
       <div style={{ paddingBottom: "80px" }}>
         <div>
-          <table style={ this.props.mobile ? { width: "100%", margin: "20px auto" } : { margin: "30px auto", minWidth: "625px", width: "80%" } }>
+          <table className="color-white" style={ this.props.mobile ? { width: "100%", margin: "20px auto" } : { margin: "30px auto", minWidth: "625px", width: "80%" } }>
             <thead>
-              <tr className="theme-background-2" style={this.props.mobile ? {} : { fontSize: "25px" }}>
+              <tr className="theme-background-3" style={this.props.mobile ? {} : { fontSize: "25px" }}>
                 <th className="store_text_color text-align-left" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px 15px 10px" }}>{this.props.mobile ? "Order #" : "Order Number"}</th>
                 <th className="store_text_color" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px" }}>Placed On</th>
                 <th className="store_text_color" style={this.props.mobile ? { padding: "10px 5px" } :{ padding: "15px 5px" }}>Link</th>
