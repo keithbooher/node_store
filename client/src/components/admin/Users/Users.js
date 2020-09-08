@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
-import { getUsers, lastUser } from "../../../utils/API"
+import { getUsers, lastUser, getUserByEmail } from "../../../utils/API"
 import PageChanger from "../../shared/PageChanger"
 import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSearch, faSyncAlt } from "@fortawesome/free-solid-svg-icons"
+import Form from "../../shared/Form"
 
 class Users extends Component {
   constructor(props) {
@@ -25,6 +28,15 @@ class Users extends Component {
     this.setState({ users, page_number: this.state.page_number + page_increment })
   }
 
+  async handleSearchSubmit() {
+    const search_for_user = this.props.form['user_search_form'].values && this.props.form['user_search_form'].values.search_bar
+
+    let { data } = await this.props.getUserByEmail(search_for_user)
+
+    this.setState({ users: [data], page_number: 1 })
+  }
+
+
   render() {
     let lastPossibleItem = false
     if (this.state.users.length > 0 && this.state.last_user) {
@@ -36,9 +48,20 @@ class Users extends Component {
     if (!this.props.mobile) {
       fontSize = "20px"
     }
+    let searchButton = document.getElementsByClassName("search_button")
+    if (searchButton[0] && !this.props.mobile) {
+      searchButton[0].style.marginTop = "27px"
+    }
     return (
       <div style={{ marginTop: "40px", fontSize }}>
-        <h1 className="underline">Users</h1>
+        <h1 className="underline">Users <Link className="inline margin-m-h" to="/admin/users" style={this.props.mobile ? { fontSize: "16px" } : { fontSize: "18px" }} onClick={this.getAllProducts} ><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</Link></h1>
+        <Form 
+          onSubmit={(e) => this.handleSearchSubmit(e)}
+          submitButtonText={<FontAwesomeIcon icon={faSearch} />}
+          searchButton={true}
+          formFields={[{ label: 'Search By Email', name: 'search_bar', noValueError: 'You must provide an email' }]}
+          form='user_search_form'
+        />
         <table>
           <thead>
             <tr>
@@ -51,7 +74,7 @@ class Users extends Component {
               return (
                       <tr className="theme-background-2 color-white">
                         <td key={index} className="padding-s border-radius-xs">
-                          <Link to={`/admin/users/${user._id}`}>{user.email.substring(0,20)}{user.email.length > 20 && "..."}</Link>
+                          <Link className="hover-color-11" to={`/admin/users/${user._id}`}>{user.email.substring(0,20)}{user.email.length > 20 && "..."}</Link>
                         </td>
                         <td key={index} className="padding-s border-radius-xs">
                           {user.joined_on && user.joined_on.split("T")[0]}
@@ -75,10 +98,10 @@ class Users extends Component {
   }
 }
 
-function mapStateToProps({ mobile }) {
-  return { mobile }
+function mapStateToProps({ mobile, form }) {
+  return { mobile, form }
 }
 
-const actions = { getUsers, lastUser }
+const actions = { getUsers, lastUser, getUserByEmail }
 
 export default connect(mapStateToProps, actions)(Users)

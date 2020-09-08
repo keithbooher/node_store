@@ -83,30 +83,32 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
         }
 
         let fontSize = "17px"
+        let marginTop = "5px"
         if (!mobile) {
           fontSize = "20px"
+          marginTop = "10px"
         }
 
         return (
-          <div key={index} style={parent_category === null ? {} : { marginLeft: "20px" }} key={category._id}>
+          <div key={index} style={parent_category === null ? { marginTop } : { marginLeft: "20px", marginTop }} key={category._id}>
             <div 
               className="margin-xs-v color-white flex space-between" 
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
             >
               <div className="flex">
                 <div className="flex margin-s-h">
-                  <a style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
-                  <a style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
+                  <a className="hover-color-11" style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
+                  <a className="hover-color-11" style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
                 </div>
                 <div>
                   {category.name}
                 </div>
               </div>
               <div className="flex">
-                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
-                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
@@ -206,7 +208,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
   return (
     <div style={ container_style }>
       <div>
-        <span className="absolute store_text_color" style={{ top: "5px", right: "5px" }} onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Parent Category</span>
+        <span className="absolute store_text_color hover hover-color-4" style={{ top: "5px", right: "5px" }} onClick={() => setShowCreateInput("top")}><FontAwesomeIcon icon={faPlusCircle} /> Parent Category</span>
         <h1 className="text-align-center">Categories</h1>
         {show_create_input === "top" ? 
             <CategoryForm

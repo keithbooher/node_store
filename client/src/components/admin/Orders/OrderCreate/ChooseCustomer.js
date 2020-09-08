@@ -99,7 +99,7 @@ class ChooseCustomer extends Component {
       show_address_form = true
     }
     let searchButton = document.getElementsByClassName("search_button")
-    if (searchButton[0]) {
+    if (searchButton[0] && !this.props.mobile) {
       searchButton[0].style.marginTop = "34px"
     }
     return (
