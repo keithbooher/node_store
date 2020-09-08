@@ -110,7 +110,7 @@ class StoreSettings extends Component {
         <h2 className="underline">Home Content</h2>
 
         <div className={`${!this.props.mobile && "flex"}`}>
-          <div className={`${!this.props.mobile && "w-50"}`}>
+          <div className={`${!this.props.mobile && "w-50 padding-l"}`} style={this.props.mobile? {} : { borderRight: "solid 1px lightgrey"}}>
             <h3>Desktop Banner Image</h3>
             {desktop_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={desktop_banner_setting.value.image} />}
             <ReactFilestack
@@ -135,7 +135,7 @@ class StoreSettings extends Component {
             />
           </div>
 
-          <div className={`${!this.props.mobile && "w-50"}`}>
+          <div className={`${!this.props.mobile && "w-50 padding-l"}`}>
             <h3>Mobile Banner Image</h3>
             {mobile_banner_setting && <img className="w-auto h-auto" style={{ maxHeight: "200px", maxWidth: "90%" }} src={mobile_banner_setting.value.image} />}
             <ReactFilestack
@@ -180,7 +180,7 @@ class StoreSettings extends Component {
 
         <hr />
 
-        <h2>FAQ's <FontAwesomeIcon className="hover hover-color-2" onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
+        <h2>FAQ's <FontAwesomeIcon className="hover hover-color-12" onClick={this.createFAQModal} icon={faPlusCircle} /></h2>
         {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (
             <div key={index} className="relative">

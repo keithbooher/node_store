@@ -34,8 +34,12 @@ passport.use(
     let last_name = profile.name.familyName ? profile.name.familyName : null
     let email = profile.emails[0] ? profile.emails[0].value : null
     let photo = profile.photos[0] ? profile.photos[0].value : null
+
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
     // doesn't get run if there is an existing user because of the above return in the if statement 
-    const user = await new User({ googleId: profile.id, first_name, last_name, email, photo }).save()
+    const user = await new User({ googleId: profile.id, first_name, last_name, email, photo, joined_on: today }).save()
     done(null, user)
   }
  )
@@ -57,7 +61,10 @@ async (accessToken, refreshToken, profile, done) => {
   let first_name = profile.name.givenName ? profile.name.givenName : null
   let last_name = profile.name.familyName ? profile.name.familyName : null
 
-  const user = await new User({ facebookId: profile.id, email: profile.emails[0].value, first_name, last_name  }).save()
+  let date = new Date()
+  const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+  
+  const user = await new User({ facebookId: profile.id, email: profile.emails[0].value, first_name, last_name, joined_on: today  }).save()
   done(null, user)
 }
 ));
