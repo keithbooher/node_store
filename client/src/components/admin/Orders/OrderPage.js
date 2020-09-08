@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getOrder, updateShipment, updateOrder, handleRefund } from "../../../utils/API"
+import { getOrder, updateShipment, updateOrder, handleRefund, handlePartialRefund } from "../../../utils/API"
 import { dispatchObj } from "../../../actions"
 import { Link } from "react-router-dom"
 import Form from "../../shared/Form"
@@ -22,6 +22,7 @@ class OrderPage extends Component {
     this.showEditModal = this.showEditModal.bind(this)
     this.handleNoteSubmission = this.handleNoteSubmission.bind(this)
     this.handleRefund = this.handleRefund.bind(this)
+    this.handlePartialRefund = this.handlePartialRefund.bind(this)
     this.state = {
       order: null,
       propertyToEdit: null,
@@ -137,8 +138,21 @@ class OrderPage extends Component {
     // make sure nothing can be changed at this point
   }
 
+  async handlePartialRefund(){
+    const refundValue = this.props.form['partial_refund_form'].values.partial_refund
+    const refund = await this.props.handlePartialRefund(this.state.order.payment, refundValue)
+    let order = this.state.order
+    order.status = "refunded"
+    order.refund = refund.data
+    let { data } = await this.props.updateOrder(order)
+    this.props.dispatchObj(reset("partial_refund_form"))
+    this.setState({ order: data, partialRefundModal: false })
+    // make sure nothing can be changed at this point
+  }
+
   render() {
     let order = this.state.order
+    console.log(order)
     let fontSize = "1em"
     let iconFontSize = "1em"
     if (!this.props.mobile) {
@@ -157,7 +171,7 @@ class OrderPage extends Component {
    
 
               <div className="margin-xs-v"><span className="bold">Order ID:</span> {order._id}</div>
-              <div className="margin-xs-v"><span className="bold">Status:</span> {order.status}</div>
+              <div className="margin-xs-v"><span className="bold">Status:</span> {order.status} {order.refund && `- $${formatMoney(order.refund.amount)}`}</div>
               <div className="margin-xs-v"><span className="bold">Customer:</span> <Link style={{ display: "inline" }} to={`/admin/users/${order._user_id}`} >{order.email}</Link></div>
               <div className="margin-xs-v"><span className="bold">Date Placed:</span> {order.date_placed.split("T")[0]}</div>
               <div className="margin-xs-v"><span className="bold">Total:</span> ${formatMoney(order.total)}</div>
@@ -209,7 +223,7 @@ class OrderPage extends Component {
                                 className="flex justify-center align-items-center background-color-black border-radius-s" 
                                 style={{ maxHeight: "300px", maxWidth: "500px", width: '100%', margin: "auto" }}
                               >
-                                <img style={{ maxHeight: "300px", width: "auto" }} src={item.image} />
+                                <img style={{ maxHeight: "300px", width: "auto", maxWidth: "300px" }} src={item.image} />
                               </div>
                               <div style={{ marginTop: "30px" }}>
                                 <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
@@ -276,7 +290,7 @@ class OrderPage extends Component {
 
               <hr/>
 
-              <button style={this.props.mobile ? { width: "100%", margin: ".4em auto" } : { width: "200px" }} onClick={() => this.setState({ refundModal: true })}>Start a return</button>
+              {!order.refund && <button style={this.props.mobile ? { width: "100%", margin: ".4em auto" } : { width: "200px" }} onClick={() => this.setState({ refundModal: true })}>Start a return</button>}
 
             </>
           : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
@@ -302,8 +316,29 @@ class OrderPage extends Component {
           this.state.refundModal && 
             <Modal cancel={() => this.setState({ refundModal: false })}>
               <button onClick={this.handleRefundOffline}>Handle Refund Offline</button>
-              <button onClick={this.handleRefund}>Refund Through Stripe</button>
+              <button onClick={() => this.setState({ stripeRefundModal: true })}>Refund Through Stripe</button>
             </Modal>
+        }
+
+        {
+          this.state.stripeRefundModal && 
+            <Modal cancel={() => this.setState({ stripeRefundModal: false })}>
+              <button onClick={() => this.setState({ partialRefundModal: true })}>Partial Refund</button>
+              <button onClick={this.handleRefund}>Full Refund</button>
+            </Modal>
+        }
+
+        {
+          this.state.partialRefundModal && 
+            <FormModal
+              onSubmit={this.handlePartialRefund}
+              cancel={() => this.setState({ stripeRefundModal: false })}
+              submitButtonText={"Refund"}
+              formFields={[{ label: 'Enter the amount to refund', name: 'partial_refund', noValueError: 'You must provide an amount' }]}
+              form={"partial_refund_form"}
+              title={"Partial Refund"}
+              validation={validatePresenceOnAll}
+            />
         }
 
       </div>
@@ -317,6 +352,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateOrder, getOrder, dispatchObj, updateShipment }
+const actions = { updateOrder, getOrder, dispatchObj, updateShipment, handlePartialRefund, handleRefund }
 
 export default connect(mapStateToProps, actions)(OrderPage)

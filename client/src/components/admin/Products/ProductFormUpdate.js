@@ -135,11 +135,11 @@ class ProductForm extends Component {
        {this.state.categories.length > 0 ?
           <>
             <div className="flex">
-              <Link to="/admin/products" className="w-50 text-align-center theme-background-2 padding-s" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+              <Link to="/admin/products" className="w-50 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
                 <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleLeft} />
                 <h3 className="margin-xs-v">Back to products</h3>
               </Link>
-              <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-50 text-align-center theme-background-2 padding-s" style={{ borderRadius: "0px 4px 4px 0px" }}>
+              <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-50 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRadius: "0px 4px 4px 0px" }}>
                 <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleRight} /> 
                 <h3 className="margin-xs-v">Related Products</h3>
                 </Link>

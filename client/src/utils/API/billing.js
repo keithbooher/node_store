@@ -28,3 +28,16 @@ export const handleRefund = (charge) => async dispatch => {
     return {data: {}}
   }
 }
+
+export const handlePartialRefund = (charge, amount) => async dispatch => {
+  let req = await axios.post('/api/stripe/partial/refund', { charge, amount  }).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+    return req
+  } else {
+    return {data: {}}
+  }
+}

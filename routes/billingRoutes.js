@@ -31,4 +31,22 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+  app.post('/api/stripe/partial/refund', adminRequired, async (req, res) => {    
+    try {
+      let charge = req.body.charge
+      let amount = req.body.amount
+      await stripe.refunds.create(
+        {
+          charge: charge.id,
+          amount
+        },
+        function(err, refund) {
+          res.send(refund)
+        }
+      )
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
 }
