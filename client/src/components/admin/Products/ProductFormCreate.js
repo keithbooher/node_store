@@ -40,7 +40,14 @@ class ProductForm extends Component {
 
     let new_product = {
       categories: [],
-      dimensions: {}
+      dimensions: {},
+      images : {
+        i1: null,
+        i2: null,
+        i3: null,
+        i4: null,
+        i5: null
+      }
     }
     for (let [key, value] of Object.entries(create_product_values)) {
       if (key === "depth" || key === "width" || key === "height") {
@@ -50,9 +57,12 @@ class ProductForm extends Component {
         value.forEach((category) => {
           new_product["categories"].push(category._id)
         })
-      }  else {
+      } else if(key === "images") {
+        new_product.images.i1 = value
+      } else {
        new_product[key] = value
       }
+      
     }
     new_product["path_name"] = productNameToPathName(new_product.name)
     let create_product = await this.props.createProduct(new_product)

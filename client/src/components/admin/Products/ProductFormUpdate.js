@@ -26,7 +26,8 @@ class ProductForm extends Component {
     this.state = {
       categories: [],
       product: null,
-      propertyToEdit: null
+      propertyToEdit: null,
+      edit_image: null
     }
   }
 
@@ -111,7 +112,7 @@ class ProductForm extends Component {
   async finishUploading(fsData) {
     let product = this.state.product
     const src = fsData.filesUploaded[0].url
-    product.image = src
+    product.images[this.state.edit_image] = src
     let { data } = await this.props.updateProduct(product)
     this.setState({ product: data })
   }
@@ -144,25 +145,7 @@ class ProductForm extends Component {
                 <h3 className="margin-xs-v">Related Products</h3>
                 </Link>
             </div>
-              {this.props.mobile ?                 
-                <div className={`margin-auto-h flex justify-center align-items-center background-color-black`} style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px" }}>
-                  <img style={{ height: "300px", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.product.image ? this.state.product.image : ""} />
-                </div>
-              : 
-                <div className={`flex justify-center align-items-center background-color-black`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
-                  <img style={{ height: "500px", width: "auto", maxHeight: "500px", maxWidth: "500px" }} src={this.state.product.image ? this.state.product.image : ""} />
-                </div>
-              }
-              <ReactFilestack
-                apikey={process.env.REACT_APP_FILESTACK_API}
-                customRender={({ onPick }) => (
-                  <div>
-                    <button onClick={onPick}>Upload image</button>
-                  </div>
-                )}
-                onSuccess={this.finishUploading}
-              />
-            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+            <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "22px" }}>
               <span>Name:</span> <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "name" && 
                   <FontAwesomeIcon 
@@ -172,6 +155,66 @@ class ProductForm extends Component {
                   />
                 }
             </div>
+            <h2 className="margin-xs-v">Images</h2>
+            {this.props.mobile ?
+              <>               
+                <div onClick={() => this.setState({ edit_image: "i1" })} className={`margin-auto-h flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "300px", maxWidth: "300px", minHeight: "300px", minWidth: "300px", marginTop: "10px" }}>
+                  {!this.state.product.images.i1 && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "30px" } : { fontSize: "35px" }} className="hover hover-color-12" icon={faEdit} />}
+                  <img style={{ height: "300px", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.product.images.i1} />
+                </div>
+                <div className="flex flex-wrap justify-center">
+                  {Object.keys(this.state.product.images).map((image_key, index) => {
+                    if (image_key === "i1") {
+                      return
+                    } else {
+                      return (
+                        <div onClick={() => this.setState({ edit_image: image_key })}  key={index} className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === image_key && "st-selection-border"}`} style={{ maxHeight: "150px", width: "40%", minHeight: "100px", margin: "10px 2px 0px 2px", flexBasis: "40%" }}>
+                          {!this.state.product.images[image_key] && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "20px" } : { fontSize: "25px" }} className="hover hover-color-12" icon={faEdit} />}
+                          <img style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "100%" }} src={this.state.product.images[image_key]} />
+                        </div>
+                      )
+                    }
+                  })}
+                </div>
+              </>
+            : 
+              <>
+                <div className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
+                  {!this.state.product.images.i1 && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "30px" } : { fontSize: "35px" }} className="hover hover-color-12" icon={faEdit} />}
+                  <img style={{ height: "500px", width: "auto", maxHeight: "500px", maxWidth: "500px" }} src={this.state.product.images.i1} />
+                </div>
+                <div className="flex flex-wrap">
+                  {Object.keys(this.state.product.images).map((image_key, index) => {
+                    if (image_key === "i1") {
+                      return
+                    } else {
+                      return (
+                        <div onClick={() => this.setState({ edit_image: image_key })}  key={index} className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === image_key && "st-selection-border"}`} style={{ maxHeight: "300px", width: "23%", minHeight: "100px", margin: "10px 2px 0px 2px", flexBasis: "23%" }}>
+                          {!this.state.product.images[image_key] && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "20px" } : { fontSize: "25px" }} className="hover hover-color-12" icon={faEdit} />}
+                          <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "100%" }} src={this.state.product.images[image_key]} />
+                        </div>
+                      )
+                    }
+                  })}
+                </div>
+              </>
+            }
+              
+            {this.state.edit_image &&
+              <div className={`${this.props.mobile && "text-align-center"} margin-s-v`}>
+                <ReactFilestack
+                  apikey={process.env.REACT_APP_FILESTACK_API}
+                  customRender={({ onPick }) => (
+                    <div>
+                      <button onClick={onPick}>Upload image</button>
+                    </div>
+                  )}
+                  onSuccess={this.finishUploading}
+                />
+              </div>
+
+            }
+
             <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
               <span>Path Name:</span> {this.state.product.path_name}
             </div>

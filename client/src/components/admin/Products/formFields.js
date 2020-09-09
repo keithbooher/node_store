@@ -19,7 +19,7 @@ export const productFields = [
   { label: 'Home Page Promotion', name: 'home_promotion', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Make Backorderable', name: 'backorderable', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
-  { label: 'Image', name: 'image', typeOfComponent: 'photo-upload', noValueError: 'You must provide an address' },
+  { label: 'Image', name: 'images', typeOfComponent: 'photo-upload', noValueError: 'You must provide an address' },
 ]
 
 export const categoryField = [

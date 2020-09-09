@@ -116,7 +116,7 @@ class UpdateRelatedProducts extends Component {
         <div key={index} className="flex space-between margin-s-v background-color-grey-3 padding-xs align-items-center">
           <div className="flex align-items-center" key={product._id}>
             <div className="flex justify-center" style={{ height: "50px", width: "50px"}}>
-              <img src={product.image} style={{ height: "auto", width: "auto", maxHeight: "50px", maxWidth: "50px" }} />
+              <img src={product.images.i1} style={{ height: "auto", width: "auto", maxHeight: "50px", maxWidth: "50px" }} />
             </div>
             <div className="margin-m-h"><Key>Name:</Key> {product.name}</div>
           </div>

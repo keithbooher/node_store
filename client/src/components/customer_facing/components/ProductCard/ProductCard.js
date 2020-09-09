@@ -50,7 +50,7 @@ class ProductCard extends Component {
         line_items: [
           {
             product_name: product.name,
-            image: product.image,
+            image: product.images.i1,
             _product_id: product._id,
             quantity: quantity,
             product_price: product.price,
@@ -97,7 +97,7 @@ class ProductCard extends Component {
       } else {
         let line_item = {
           product_name: product.name,
-          image: product.image,
+          image: product.images.i1,
           _product_id: product._id,
           quantity: quantity,
           product_price: product.price,
@@ -184,7 +184,7 @@ class ProductCard extends Component {
   }
 
   enlargeImage(product, category_path_name) {
-    this.props.dispatchEnlargeImage({ image: product.image, path: `/shop/${category_path_name}/${product.path_name}`})
+    this.props.dispatchEnlargeImage({ image: product.images.i1, path: `/shop/${category_path_name}/${product.path_name}`})
   }
 
   render() {
@@ -228,7 +228,7 @@ class ProductCard extends Component {
               <div className="border-radius-s flex flex_column justify-center background-color-black card_image_container">
                 <LazyLoadImage
                   style={{ marginTop: "5px" }}
-                  src={product.image}
+                  src={product.images.i1}
                   wrapperClassName="margin-auto-h card_image"
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />

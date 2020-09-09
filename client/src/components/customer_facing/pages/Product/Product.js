@@ -64,6 +64,7 @@ const Product = ({
     setAverageRating(average_rating.average)
     setReviews(get_reviews)
     setLastReview(get_last_review)
+    setSelectedImage(data.images.i1)
   }
 
   const addToCart = () => {
@@ -88,7 +89,7 @@ const Product = ({
         line_items: [
           {
             product_name: _product.name,
-            image: _product.image,
+            image: _product.images.i1,
             _product_id: _product._id,
             quantity: _quantity,
             product_price: _product.price,
@@ -130,7 +131,7 @@ const Product = ({
       } else {
         let line_item = {
           product_name: _product.name,
-          image: _product.image,
+          image: _product.images.i1,
           _product_id: _product._id,
           quantity: _quantity,
           product_price: _product.price,
@@ -276,6 +277,8 @@ const Product = ({
     containerStyle.fontSize = "20px"
   }
 
+  const [selectedImage, setSelectedImage] = useState(null)
+
   return (
     <div style={ containerStyle } className={`${!mobile && "max-customer-container-width margin-auto-h"}`}>
       <MetaTags>
@@ -307,7 +310,16 @@ const Product = ({
                 }
               </div>
               <div className="text-align-center">
-                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={product.image} />
+                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={selectedImage} />
+              </div>
+              <div className="flex" style={{ margin: "10px 10px 0px 10px" }}>
+                {Object.keys(product.images).map((image_key, index) => {
+                  return (
+                    <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "20%" }}>
+                      <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
+                    </div>
+                  )
+                })}
               </div>
               <div className="flex flex_column">
                 <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
@@ -343,7 +355,18 @@ const Product = ({
             <div className="margin-m-v">
               <div className="flex align-items-center">
                 <div className="w-40">
-                  <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={product.image} />
+                  <div>
+                    <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={selectedImage} />
+                  </div>
+                  <div className="flex">
+                    {Object.keys(product.images).map((image_key, index) => {
+                      return (
+                        <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "25%" }}>
+                          <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
                 <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
                   <div>

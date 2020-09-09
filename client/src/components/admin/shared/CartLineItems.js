@@ -53,7 +53,7 @@ class CartLineItems extends Component {
     if (!already_in_array) {
       let line_item = {
         product_name: product.name,
-        image: product.image,
+        image: product.images.i1,
         _product_id: product._id,
         quantity: this.state.quantity,
         product_price: product.price,

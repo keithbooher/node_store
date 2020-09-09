@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
-const CategorySchema = require('./Category')
 
 const productSchema = new Schema({
   name: String,
@@ -35,7 +34,16 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'categorys'
   }],
-  image: String,
+  images: {
+    type: Object,
+    default: {
+      i1: null,
+      i2: null,
+      i3: null,
+      i4: null,
+      i5: null,
+    }
+  },
   display: {
     type: Boolean,
     default: false
