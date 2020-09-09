@@ -32,6 +32,7 @@ class NewBillAddress extends Component {
       state: addy.state,
       zip_code: addy.zip_code,
       phone_number: addy.phone_number,
+      country: addy.country,
       bill_or_ship: bill_or_ship,
       _user_id: this.props.auth._id
     }

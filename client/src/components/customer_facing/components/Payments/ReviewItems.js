@@ -61,6 +61,11 @@ class ReviewItems extends Component {
           [property]: address[property]
         }
     }
+    if (property === "country") {
+      form_object.formFields[0].typeOfComponent = "countries"
+    } else if (property === "state") {
+      form_object.formFields[0].typeOfComponent = "states"
+    }
     this.setState({ editForm: form_object })
   }
 

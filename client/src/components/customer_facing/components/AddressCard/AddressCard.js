@@ -47,7 +47,7 @@ class AddressCard extends Component {
         <span style={{ marginRight: "5px" }}>{capitalizeFirsts(title)} Addresses</span>
         {this.props.hideCreate ? "" : 
           <FontAwesomeIcon 
-            className="hover store_text_color hover-color-1"
+            className="hover store_text_color hover-color-12"
             onClick={() => this.props.showForm(this.props.bill_or_ship)} 
             icon={faPlusCircle} 
           />
@@ -111,6 +111,11 @@ class AddressCard extends Component {
           [property]: address[property]
         }
     }
+    if (property === "country") {
+      form_object.formFields[0].typeOfComponent = "countries"
+    } else if (property === "state") {
+      form_object.formFields[0].typeOfComponent = "states"
+    }
     this.setState({ editForm: form_object })
   }
 
@@ -120,6 +125,7 @@ class AddressCard extends Component {
       bill_or_ship,
       id
     }
+    console.log(propertyToEdit)
     this.setState({ propertyToEdit })
   }
 

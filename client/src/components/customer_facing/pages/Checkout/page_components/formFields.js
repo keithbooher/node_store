@@ -9,8 +9,8 @@ export const shippingAddressFormFields = [
   { label: 'Company', name: 'company_shipping', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_shipping', noValueError: 'You must provide a first name' },
   { label: 'Last Name', name: 'last_name_shipping', noValueError: 'You must provide a first name' },
-  { label: 'State', name: 'state_shipping', noValueError: 'You must provide a last name' },
-  { label: 'Country', name: 'country_shipping', noValueError: 'You must provide a country' }
+  { label: 'State', name: 'state_shipping', typeOfComponent: "states", options: { bill_or_ship: "shipping" }, noValueError: 'You must provide a last name' },
+  { label: 'Country', name: 'country_shipping', typeOfComponent: "countries", options: { bill_or_ship: "shipping" }, noValueError: 'You must provide a country' }
 ]
 
 export const billingAddressFormFields = [
@@ -22,8 +22,8 @@ export const billingAddressFormFields = [
   { label: 'Company', name: 'company_billing', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_billing', noValueError: 'You must provide a first name' },
   { label: 'Last Name', name: 'last_name_billing', noValueError: 'You must provide a first name' },
-  { label: 'State', name: 'state_billing', noValueError: 'You must provide a last name' },
-  { label: 'Country', name: 'country_billing', noValueError: 'You must provide a country' }
+  { label: 'State', name: 'state_billing', typeOfComponent: "states", options: { bill_or_ship: "billing" }, noValueError: 'You must provide a last name' },
+  { label: 'Country', name: 'country_billing', typeOfComponent: "countries", options: { bill_or_ship: "billing" }, noValueError: 'You must provide a country' }
 ]
 
 export const validate = (values, props) => {

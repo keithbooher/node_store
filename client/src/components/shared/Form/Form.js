@@ -11,8 +11,10 @@ import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
 import PhotoUpload from "./PhotoUpload"
 import NumberField from "./NumberField"
-import "./form.scss"
 import FormStarChoice from './FormStarChoice';
+import FormSelectStates from './FormSelectStates';
+import FormSelectCountries from './FormSelectCountries';
+import "./form.scss"
 class Form extends Component {
   constructor(props) {
     super()
@@ -50,6 +52,12 @@ class Form extends Component {
         case 'number':
           component = NumberField
           break;
+        case 'states':
+          component = FormSelectStates
+          break;
+        case 'countries':
+          component = FormSelectCountries
+          break;
         default:
           component = FormField
       }
@@ -83,13 +91,13 @@ class Form extends Component {
           {this.renderFields()}
          
           {!this.props.submitButton ?
-            <button type="submit" style={{ padding: "6px", maxHeight: "50px" }} className={`${this.props.searchButton ? "search_button" : ""}`}>
+            <button type="submit" style={{ padding: "6px", maxHeight: "50px", marginTop: "10px" }} className={`${this.props.searchButton ? "search_button" : ""}`}>
               <i className="material-icons right">{this.props.submitButtonText}</i>
             </button> 
           : this.props.submitButton}
 
           {this.props.cancel ?
-            <button onClick={this.props.cancel} className="">
+            <button onClick={this.props.cancel} style={{ padding: "6px", maxHeight: "50px", marginTop: "10px" }} className="">
               <i className="material-icons right">Cancel</i>
             </button> 
           : ""}

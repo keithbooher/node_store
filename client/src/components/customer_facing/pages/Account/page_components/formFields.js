@@ -13,8 +13,8 @@ export const addressFields = [
   { label: 'Company', name: 'company', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name', noValueError: 'You must provide a first name' },
   { label: 'Last Name', name: 'last_name', noValueError: 'You must provide a first name' },
-  { label: 'State', name: 'state', noValueError: 'You must provide a last name' },
-  { label: 'Country', name: 'country', noValueError: 'You must provide a country' }
+  { label: 'State', name: 'state', typeOfComponent: 'states', noValueError: 'You must provide a last name' },
+  { label: 'Country', name: 'country', typeOfComponent: 'countries', noValueError: 'You must provide a country' }
 ]
 
 export const validate = (values, props) => {
@@ -25,6 +25,9 @@ export const validate = (values, props) => {
 
   _.each(props.formFields, ({ name, noValueError }) => {
     if (name === "street_address_2") {
+      return
+    }
+    if (name === "company") {
       return
     }
     
