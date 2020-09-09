@@ -9,6 +9,7 @@ import _ from 'lodash'
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import { validatePresenceOnAll } from "../../../utils/validations"
+import Modal from "../../shared/Modal"
 import Key from "../../shared/Key"
 
 class FlatRate extends Component {
@@ -27,6 +28,7 @@ class FlatRate extends Component {
         _rate_id: null,
         property: null
       },
+      areYouSure: false, 
       editForm: null
     }
   }
@@ -77,7 +79,7 @@ class FlatRate extends Component {
     let shippingMethod = this.state.shippingMethod
     shippingMethod.shipping_rates = shippingMethod.shipping_rates.filter((rate) => rate._id !== rate_to_remove._id)
     const { data } = await this.props.updateShippingMethod(shippingMethod)
-    this.setState({ shippingMethod: data })
+    this.setState({ shippingMethod: data, areYouSure: false })
   }
 
   setEditIndication(e, _rate_id, property) {
@@ -135,7 +137,7 @@ class FlatRate extends Component {
     if (this.state.editIndication._rate_id === rate._id 
       && this.state.editIndication.property === property) {
       return <FontAwesomeIcon 
-                className="hover hover-color-2"
+                className="hover hover-color-12"
                 icon={faEdit} 
                 style={{ 
                   zIndex: "20",
@@ -167,7 +169,7 @@ class FlatRate extends Component {
     <div style={ styles }>
       {this.state.shippingMethod && 
         <>
-          <div className="flex hover hover-color-2" onClick={this.showRateForm} >
+          <div className="flex hover hover-color-12" onClick={this.showRateForm} >
             <FontAwesomeIcon icon={this.state.rateForm ? faTimesCircle : faPlusCircle} />
             {this.state.rateForm ? <div className="margin-s-h">cancel</div> : <div className="margin-s-h">add a new flat rate</div>}
           </div>
@@ -212,14 +214,14 @@ class FlatRate extends Component {
                     property={"effector"}
                   />
                   <FontAwesomeIcon 
-                    className="absolute hover hover-color-2" 
+                    className="absolute hover hover-color-12" 
                     onClick={() => this.rateDisplay(rate)} 
                     icon={rate.display ? faEye : faEyeSlash} 
                     style={{ top: "5px", right: "25px" }} 
                   />
                   <FontAwesomeIcon 
-                    className="absolute hover hover-color-2" 
-                    onClick={() => this.destroyRate(rate)} 
+                    className="absolute hover hover-color-12" 
+                    onClick={() => this.setState({ areYouSure: rate })} 
                     icon={faTrash} 
                     style={{ top: "5px", right: "5px" }} 
                   />
@@ -246,6 +248,16 @@ class FlatRate extends Component {
           </div>
       }
 
+      {this.state.areYouSure &&
+        <Modal cancel={() => this.setState({ areYouSure: false })}>
+          <h2>Are you sure you want to delete {this.state.areYouSure.name}?</h2>
+          <div>
+            <button className="padding-s margin-s-h" onClick={() => this.destroyRate(this.state.areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
+            <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
+          </div>
+        </Modal>
+      }
+      
     </div>
     )
   }
@@ -255,7 +267,7 @@ class FlatRate extends Component {
 const RateProperty = ({ setEditIndication, renderEditIndicator, rate, property }) => {
   return (
     <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
-      <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline store_color_text hover hover-color-4">{rate[property]}</a></div>
+      <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline hover hover-color-12">{rate[property]}</a></div>
       {renderEditIndicator(rate, property)}
     </div>
   )

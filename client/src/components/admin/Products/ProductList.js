@@ -10,6 +10,7 @@ import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import Key from "../../shared/Key"
+import Modal from "../../shared/Modal"
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -108,7 +109,7 @@ class ProductList extends Component {
     } else {
       last_product = await this.props.lastProductByCategory().then(res => res.data)
     }
-    this.setState({ products, chosen_product: null, last_product})
+    this.setState({ products, chosen_product: null, last_product, areYouSure: false })
   }
 
   productData(product) {
@@ -144,7 +145,7 @@ class ProductList extends Component {
             </div>
             <div className="flex">
               <Link className="margin-s-h" to={`/admin/products/form/update/${product.path_name}`} ><FontAwesomeIcon icon={faEdit} /></Link>
-              <a><FontAwesomeIcon className="margin-xs-h" onClick={() => this.deleteProduct(product)} icon={faTrash} /></a>
+              <a><FontAwesomeIcon className="margin-xs-h" onClick={() => this.setState({ areYouSure: product })} icon={faTrash} /></a>
             </div>
           </div>
           { this.state.chosen_product === product._id ? this.productData(product) : ""}
@@ -246,6 +247,17 @@ class ProductList extends Component {
               />
             </>
           : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />
+        }
+
+        {this.state.areYouSure &&
+          <Modal cancel={() => this.setState({ areYouSure: false })}>
+            <h2>Are you sure you want to delete {this.state.areYouSure.name}?</h2>
+            <div>
+              <button className="padding-s margin-s-h" onClick={() => this.deleteProduct(this.state.areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
+              <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
+            </div>
+          </Modal>
+          
         }
         
       </div>

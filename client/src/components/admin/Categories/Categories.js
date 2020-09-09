@@ -9,6 +9,7 @@ import { validatePresenceOnAll } from "../../../utils/validations"
 import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
+import Modal from "../../shared/Modal"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 
 // import { useHistory } from 'react-router-dom'
@@ -68,6 +69,8 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
     setCategories(data)
   }
 
+  const [areYouSure, setAreYouSure] = useState(false)
+
   const renderCategories = (parent_category) => {
     let category_set = parent_category !== null ? parent_category.sub_categories : categories
     return (
@@ -108,7 +111,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => deleteCat(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setAreYouSure(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
             </div>
                       
@@ -191,6 +194,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
     let cat = category
     cat.deleted_at = Date.now()
     const delete_cat = await deleteCategory(cat).then(res => res.data)
+    setAreYouSure( false )
     setCategories( delete_cat )
   }
 
@@ -240,6 +244,16 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
             initialValues={editForm.initialValues}
           />
         </div>
+      }
+
+      {areYouSure &&
+        <Modal cancel={() => setAreYouSure(false)}>
+          <h2>Are you sure you want to delete {areYouSure.name}?</h2>
+          <div>
+            <button className="padding-s margin-s-h" onClick={() => deleteCat(areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
+            <button className="padding-s margin-s-h" onClick={() => setAreYouSure(false)} ><h2 style={{ margin: "0px" }}>No</h2></button>
+          </div>
+        </Modal>
       }
     </div>
   )

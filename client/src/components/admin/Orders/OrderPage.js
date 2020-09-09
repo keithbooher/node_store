@@ -249,14 +249,14 @@ class OrderPage extends Component {
               <h3 className="margin-s-v">Date Shipped</h3>
               <div>{order.shipment.date_shipped ? order.shipment.date_shipped : "Not Shipped Yet"}</div>
 
-              {/* {order.status !== "refunded" && 
+              {order.status !== "refunded" && 
                 <Form 
                   onSubmit={(e) => this.updateShipmentStatus(e)}
                   submitButton={<button className="w-100 margin-s-v">Update Shipment Status</button>}
                   formFields={this.createFormFields()}
                   form='update_shipment_status_form'
                 />
-              } */}
+              }
 
               <hr/>
 

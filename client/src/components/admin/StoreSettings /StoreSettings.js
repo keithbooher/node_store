@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes, faPlusCircle, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from '../../../utils/validations'
+import Modal from "../../shared/Modal"
 import FormModal from "../../shared/Form/FormModal"
 class StoreSettings extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class StoreSettings extends Component {
       settings: null,
       faqs: [],
       createFAQ: null,
-      editFAQ: null
+      editFAQ: null,
+      areYouSure: false
     }
   }
 
@@ -89,7 +91,7 @@ class StoreSettings extends Component {
     faq.deleted_at = today
     await this.props.updateFAQ(faq)
     const { data } = await this.props.getAllFAQs()
-    this.setState({ faqs: data })
+    this.setState({ faqs: data, areYouSure: false })
 
   }
 
@@ -184,10 +186,12 @@ class StoreSettings extends Component {
         {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (
             <div key={index} className="relative">
-              <h3>{faq.question}</h3>
+              <h3>
+                {faq.question}
+                <FontAwesomeIcon style={this.props.mobile ? { fontSize: "16px" } : { fontSize: "18px" }} className="hover hover-color-12 margin-xs-h" icon={faEdit} onClick={() => this.editFaqModal(faq)} />
+                <FontAwesomeIcon style={this.props.mobile ? { fontSize: "16px" } : { fontSize: "18px" }} className="hover hover-color-12 margin-xs-h" icon={faTrash} onClick={() => this.setState({ areYouSure: faq })}/>
+              </h3>
               <div>{faq.answer}</div>
-              <FontAwesomeIcon className="absolute hover hover-color-2" style={{ top: "0px", right: "20px" }} icon={faEdit} onClick={() => this.editFaqModal(faq)} />
-              <FontAwesomeIcon className="absolute hover hover-color-2" style={{ top: "0px", right: "0px" }} icon={faTrash} onClick={() => this.deleteFaq(faq)} />
             </div>
           )
         })}
@@ -229,6 +233,17 @@ class StoreSettings extends Component {
             }}
           />
         }
+
+
+      {this.state.areYouSure &&
+        <Modal cancel={() => this.setState({ areYouSure: false })}>
+          <h2>Are you sure you want to delete this faq?</h2>
+          <div>
+            <button className="padding-s margin-s-h" onClick={() => this.deleteFaq(this.state.areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
+            <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
+          </div>
+        </Modal>
+      }
       </div>
     )
   }
