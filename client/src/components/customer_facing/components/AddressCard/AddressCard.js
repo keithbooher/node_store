@@ -127,7 +127,6 @@ class AddressCard extends Component {
       bill_or_ship,
       id
     }
-    console.log(propertyToEdit)
     this.setState({ propertyToEdit })
   }
 
