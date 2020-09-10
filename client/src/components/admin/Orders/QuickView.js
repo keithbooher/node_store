@@ -14,7 +14,7 @@ class QuickView extends Component  {
   render() {
     let order = this.props.order
     return (
-      <div className="padding-s " style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto', padding: '10px' }}>
+      <div className="padding-s color-white" style={{ backgroundColor: 'rgb(111, 111, 111)', width: '93%', margin: '0px auto', padding: '10px' }}>
         <h3 className="margin-xs-v">User Email:</h3>
         <div className="margin-xs-h"><Link to={`/admin/users/${order._user_id}`}>{order.email}</Link></div>
         <h3 className="margin-xs-v">Line Items:</h3>

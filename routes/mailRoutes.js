@@ -15,8 +15,8 @@ module.exports = app => {
     const msg = {
           to: recipient,
           from: 'keibooher@gmail.com', // Use the email address or domain you verified above
-          subject: 'Sending with Twilio SendGrid is Fun',
-          text: 'and easy to do anywhere, even with Node.js',
+          subject: 'Note Store Order Confirmation',
+          text: "Just letting you know we've received your order",
           html: confirmationTemplate(orderNumber)
         }
 
@@ -37,8 +37,8 @@ module.exports = app => {
     const msg = {
           to: recipient,
           from: 'keibooher@gmail.com', // Use the email address or domain you verified above
-          subject: 'Sending with Twilio SendGrid is Fun',
-          text: 'and easy to do anywhere, even with Node.js',
+          subject: 'Node Store Purchase Shipped',
+          text: 'check out your tracking number',
           html: trackingTemplate(order)
         }
 
@@ -59,8 +59,8 @@ module.exports = app => {
     const msg = {
           to: recipient,
           from: 'keibooher@gmail.com', // Use the email address or domain you verified above
-          subject: 'Sending with Twilio SendGrid is Fun',
-          text: 'and easy to do anywhere, even with Node.js',
+          subject: 'Your order is being processed!',
+          text: 'Your Node Store purchase is being processed',
           html: processingTemplate(order)
         }
 

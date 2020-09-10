@@ -17,7 +17,7 @@ class FAQ extends Component {
 
   render() {
     return (
-      <div className="flex flex_column">
+      <div style={{ padding: ".4em .4em 80px .4em" }} className={`flex flex_column ${!this.props.mobile && "w-80 margin-auto-h"}`}>
         <h1 className="margin-s-v">FAQ's</h1>
         {this.state.faqs && this.state.faqs.map((faq, index) => {
           return (

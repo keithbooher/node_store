@@ -4,7 +4,7 @@ import './line_item.css.scss'
 import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { updateCart, dispatchEnlargeImage, dispatchObj } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlus, faMinus, faTrash, faSlash } from "@fortawesome/free-solid-svg-icons"
+import { faPlus, faMinus, faTrash, faSlash, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
 import { checkInventory } from "../../../../utils/API"
 import LowInventory from "../../../shared/LowInventory"
 import { Link } from "react-router-dom"
@@ -22,7 +22,8 @@ class LineItems extends Component {
     this.state = {
       inventory_limit: false,
       lock: false,
-      showModal: false
+      showModal: false,
+      viewGiftNote: false
     }
   }
 
@@ -151,6 +152,7 @@ class LineItems extends Component {
 
                     <div className="padding-s flex flex_column space-evenly">
                       <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline a-invert" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
+                      {line_item.gift_note && <a onClick={() => this.setState({ viewGiftNote: line_item.gift_note })} className="margin-top-none margin-bottom-none" style={ this.props.mobile ? {} : { fontSize: "23px" }}>Gift Note</a>}
                       <div className="color-black bold margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
 
                       <div style={{ fontSize: "14px" }}className="flex align-items-center color-black">
@@ -195,6 +197,11 @@ class LineItems extends Component {
                       form='change_line_item_quantity_form'
                       initialValues={{ quantity: this.state.showModal.quantity }}
                     />
+                  </Modal>
+                }
+                {this.state.viewGiftNote &&
+                  <Modal cancel={() => this.setState({ viewGiftNote: false })}>
+                    <h3>{this.state.viewGiftNote}</h3>
                   </Modal>
                 }
 

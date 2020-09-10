@@ -255,10 +255,11 @@ class OrderPage extends Component {
                                 <img style={{ maxHeight: "300px", width: "auto", maxWidth: "300px" }} src={item.image} />
                               </div>
                               <div style={{ marginTop: "30px" }}>
-                                <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
-                                <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
-                                <div><span className="bold">quantity:</span> {item.quantity}</div>
-                                <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
+                                <div><span className="bold">Product Name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                                <div><span className="bold">Product Price:</span> ${formatMoney(item.product_price)}</div>
+                                <div><span className="bold">Quantity:</span> {item.quantity}</div>
+                                <div><span className="bold">Item Total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
+                                {item.gift_note && <div><span className="bold">Gift Note:</span> {item.gift_note}</div>}
                               </div>
                             </div>)
                   }

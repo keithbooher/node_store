@@ -93,7 +93,8 @@ const Product = ({
             _product_id: _product._id,
             quantity: _quantity,
             product_price: _product.price,
-            product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`
+            product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
+            gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null
           }
         ],
         _user_id: user_id,
@@ -105,7 +106,7 @@ const Product = ({
       create_boolean = false
       sub_total = 0
       // CHECK TO SEE IF PRODUCT IS CONTAINED WITHIN CART ALREADY
-      let found = false;
+      let found = false
       for(var i = 0; i < _cart.line_items.length; i++) {
         if (_cart.line_items[i]._product_id == _product._id) {
             found = true;
@@ -115,7 +116,7 @@ const Product = ({
 
       // IF FOUND, UPDATE THE LINE ITEM QUANTITY and check against inventory. 
       // OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
-      if(found === true) {
+      if(found === true && !product.gift_note) {
         _cart.line_items = _cart.line_items.map((line_item) => {
           if(product._id === line_item._product_id) {
             let total = line_item.quantity + _quantity
@@ -135,7 +136,8 @@ const Product = ({
           _product_id: _product._id,
           quantity: _quantity,
           product_price: _product.price,
-          product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`
+          product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
+          gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null
         }
         _cart.line_items.push(line_item)
       }
@@ -278,7 +280,6 @@ const Product = ({
   }
 
   const [selectedImage, setSelectedImage] = useState(null)
-
   return (
     <div style={ containerStyle } className={`${!mobile && "max-customer-container-width margin-auto-h"}`}>
       <MetaTags>
@@ -350,6 +351,15 @@ const Product = ({
                   </div>
                 </div>
               }
+              {product.gift_note &&
+                <Form 
+                  submitButton= {<div />}
+                  formFields={[
+                    { label: 'Gift Note', name: 'gift_note', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
+                  ]} 
+                  form={"gift_note_form"}
+                />
+              }
             </div>
           :
             <div className="margin-m-v">
@@ -404,8 +414,9 @@ const Product = ({
                     </div>
                   </div>
 
-                  {product.dimensions && 
-                      <div>
+                  <div className="flex align-items-center">
+                    {product.dimensions && 
+                      <div style={{ flexBasis: "25%" }}>
                         <h3 className="margin-bottom-none">Details</h3>
                         <div className="padding-s">
                           <div>Height: {product.dimensions.height}</div>
@@ -415,6 +426,18 @@ const Product = ({
                         </div>
                       </div>
                     }
+                    {product.gift_note &&
+                      <div style={{ flexBasis: "75%" }}>
+                        <Form 
+                          submitButton= {<div />}
+                          formFields={[
+                            { label: 'Gift Note', name: 'gift_note', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
+                          ]} 
+                          form={"gift_note_form"}
+                        />
+                      </div>
+                    }
+                  </div>
                 </div>
               </div>
             </div>

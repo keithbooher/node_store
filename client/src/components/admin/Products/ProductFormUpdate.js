@@ -358,6 +358,9 @@ class ProductForm extends Component {
             {console.log(this.state.product)}
               <button onClick={() => this.changeBoolean("backorderable", !this.state.product.backorderable)}  style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Backorderable {this.state.product.backorderable ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} /> }</button>
             </div>
+            <div className="margin-s-v">
+              <button onClick={() => this.changeBoolean("gift_note", !this.state.product.gift_note)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Gift Note {this.state.product.gift_note ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
+            </div>
 
             {
               this.state.editForm && 

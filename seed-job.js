@@ -83,7 +83,8 @@ const seed = async () => {
       image: "",
       display: true,
       home_promotion:  true,
-      backorderable: false
+      backorderable: false,
+      gift_note: false
     }
     let mock_product_data = { new_product: mock_product }
     await axios.post(`${keys.url}/api/store-create/product/create`, mock_product_data)

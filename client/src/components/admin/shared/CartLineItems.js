@@ -160,45 +160,45 @@ class CartLineItems extends Component {
 
 
   async updateCartProperty(property, _id) {
-    const form_value = this.props.form['edit_item_price_form'].values[property]
+    const form_value = this.props.form['edit_item_form'].values[property]
     let cart = this.props.cart
 
     cart.line_items.map((item) => {
       if (item._id === _id) {
-        item.product_price = form_value
+        item[property] = form_value
       }
       return item
     })
 
     this.setState({ editForm: null, propertyToEdit: null })
-    this.props.dispatchObj(reset("edit_item_price_form"))
+    this.props.dispatchObj(reset("edit_item_form"))
 
     this.props.adjustCost(cart.line_items)
   }
 
   showEditModal(property, _id) {
     let cart = this.props.cart
-    let price  
+    let this_item
     cart.line_items.forEach((item) => {
       if (item._id === _id) {
-        price = item.product_price
+        this_item = item
       }
     })
     const form_object = {
       cart,
       onSubmit: () => this.updateCartProperty(property, _id),
       cancel: () => {
-        this.props.dispatchObj(reset("edit_item_price_form"))
+        this.props.dispatchObj(reset("edit_item_form"))
         this.setState({ editForm: null, propertyToEdit: null })
       },
       submitButtonText: "Update Price",
       formFields: [
         { label: capitalizeFirsts(property), name: property, noValueError: `You must provide a value` },
       ],
-      form: "edit_item_price_form",
+      form: "edit_item_form",
       validation: validatePresenceOnAll,
       initialValues: {
-          [property]: price
+          [property]: this_item[property]
         }
     }
     this.setState({ editForm: form_object })
@@ -249,7 +249,7 @@ class CartLineItems extends Component {
             }
             return (
                 <div key={index} className={`relative ${this.props.mobile ? "padding-m" : "padding-l"} background-color-grey-2`} style={ container_style } >
-                  <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute hover hover-color-2" style={ trashStyle } icon={faTrash} />
+                  <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute hover hover-color-12" style={ trashStyle } icon={faTrash} />
                   {this.props.mobile ?
                     <div>
                       <img style={{ height: "auto", width: "98%" }} src={item.image}/>
@@ -264,7 +264,8 @@ class CartLineItems extends Component {
                     Price: <a className="inline" onClick={() => this.showEditIndicator("product_price", item._id)} >${item.product_price}</a>
                     {this.state.propertyToEdit && this.state.propertyToEdit.property === "product_price" &&
                       <FontAwesomeIcon 
-                        icon={faEdit} 
+                        icon={faEdit}
+                        className="hover hover-color-12" 
                         onClick={() => this.showEditModal("product_price", item._id)} 
                       />
                     }
@@ -272,16 +273,27 @@ class CartLineItems extends Component {
                   <div>
                     Quantity: {item.quantity}
                     <FontAwesomeIcon 
-                      className="hover hover-color-2"
+                      className="hover hover-color-12"
                       onClick={() => this.adjustLineItemQuantity(item, "up")} 
                       icon={faCaretUp} 
                     />
                     <FontAwesomeIcon 
-                      className="hover hover-color-2"
+                      className="hover hover-color-12"
                       onClick={() => this.adjustLineItemQuantity(item, "down")} 
                       icon={faCaretDown} 
                     />
                   </div>
+                  {item.gift_note &&
+                    <div>
+                        Gift Note: <a className="inline" onClick={() => this.showEditIndicator("gift_note", item._id)} >{item.gift_note}</a>
+                        {this.state.propertyToEdit && this.state.propertyToEdit.property === "gift_note" &&
+                          <FontAwesomeIcon 
+                            icon={faEdit}
+                            className="hover hover-color-12" 
+                            onClick={() => this.showEditModal("gift_note", item._id)} 
+                          />
+                        }
+                      </div>}
                 </div>
               )
             })
@@ -321,8 +333,8 @@ class CartLineItems extends Component {
                 <div className="flex">
                   <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e, this.state.result)} style={{ width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
                   <div className="flex flex_column margin-s-h" style={{ marginTop: '-11px' }}>
-                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("up", this.state.result)} icon={faCaretUp} />
-                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down", this.state.result)} icon={faCaretDown} />
+                    <FontAwesomeIcon className="hover hover-color-12" onClick={() => this.setQuantity("up", this.state.result)} icon={faCaretUp} />
+                    <FontAwesomeIcon className="hover hover-color-12" onClick={() => this.setQuantity("down", this.state.result)} icon={faCaretDown} />
                   </div>
                   <button style={this.props.mobile ? {} : { height: "40px" }} onClick={() => this.addToLineItems(this.state.result)}>Add to cart</button>
                 </div>
@@ -346,7 +358,7 @@ class CartLineItems extends Component {
                 formFields={this.state.editForm.formFields}
                 form={this.state.editForm.form}
                 validation={this.state.editForm.validation}
-                title={"Updating Product Price"}
+                title={"Updating Product"}
                 initialValues={this.state.editForm.initialValues}
               />
             </div>

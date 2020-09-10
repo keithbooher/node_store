@@ -32,7 +32,7 @@ module.exports = app => {
 
   app.get('/api/products/home_promotion', async (req, res) => {    
     try {
-      const products = await Product.find({ inventory_count: {$gte: 1}, display: true, home_promotion: true }).populate({
+      const products = await Product.find({ inventory_count: {$gte: 1}, display: true, home_promotion: true, deleted_at: null }).populate({
         path: 'categories'
       })
       res.send(products) 

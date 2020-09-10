@@ -62,7 +62,11 @@ const productSchema = new Schema({
   }],
   meta_title: String,
   meta_description: String,
-  meta_keywords: String
+  meta_keywords: String,
+  gift_note: {
+    type: Boolean,
+    default: false
+  }
 })
 
 mongoose.model('products', productSchema)
