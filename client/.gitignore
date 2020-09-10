@@ -11,6 +11,10 @@
 # production
 /build
 
+
+# store themes
+/src/stylesheets/store-theme
+
 # misc
 .DS_Store
 .env.local
