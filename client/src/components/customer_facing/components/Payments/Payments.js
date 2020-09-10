@@ -136,7 +136,8 @@ const Payments = ({
       chosen_rate: {
         cost: cart.chosen_rate.cost,
         shipping_method: cart.chosen_rate.shipping_method,
-        shipping_rate: cart.chosen_rate.rate
+        shipping_rate: cart.chosen_rate.rate,
+        carrier: cart.chosen_rate.carrier
       },
       status: 'pending',
       date_shipped: null,

@@ -21,6 +21,12 @@ class FlatRate extends Component {
     this.renderEditIndicator = this.renderEditIndicator.bind(this)
     this.setEditIndication = this.setEditIndication.bind(this)
 
+    this.carrierOptions = [
+      { value: "Fedex", name: "Fedex", redux_field: "carrier",  },
+      { value: "UPS", name: "UPS", redux_field: "carrier",  },
+      { value: "USPS", name: "USPS", redux_field: "carrier",  }
+    ]
+
     this.state = {
       shippingMethod: null,
       rateForm: false,
@@ -45,7 +51,8 @@ class FlatRate extends Component {
       effector: parseInt(flat_rate_value.effector),
       name: flat_rate_value.name,
       description: flat_rate_value.description,
-      display: false
+      display: false,
+      carrier: flat_rate_value.carrier.value
     }
     shippingMethod.shipping_rates.push(new_rate)
     const { data } = await this.props.updateShippingMethod(shippingMethod)
@@ -94,14 +101,21 @@ class FlatRate extends Component {
   }
 
   async updateRateProperty(rate, property) {
-    const form_value = this.props.form['edit_rate_property_form'].values
+    let form_value = this.props.form['edit_rate_property_form'].values
     let shippingMethod = this.state.shippingMethod
+
+    if (property === "carrier") {
+      form_value = this.props.form['edit_rate_property_form'].values.carrier.value
+    }
     
     shippingMethod.shipping_rates.forEach(shipping_rate => {
       if (shipping_rate._id === rate._id) {
         let value = form_value[property]
         if (property === "effector") {
           value = parseInt(form_value[property])
+        }
+        if (property === "carrier") {
+          value = form_value
         }
         shipping_rate[property] = value
       }
@@ -111,6 +125,8 @@ class FlatRate extends Component {
     this.props.dispatchObj(reset("edit_rate_property_form"))
     this.setState({ editForm: null, shippingMethod: data })
   }
+
+  
 
   showEditForm(rate, property) {
     const form_object = {
@@ -129,6 +145,11 @@ class FlatRate extends Component {
       initialValues: {
           [property]: rate[property]
         }
+    }
+    if (property === "carrier") {
+      form_object.formFields = [
+        { label: capitalizeFirsts(property), name: property, typeOfComponent: "dropdown", options: this.carrierOptions, noValueError: `You must provide a value` },
+      ]
     }
     this.setState({ editForm: form_object })
   }
@@ -152,9 +173,6 @@ class FlatRate extends Component {
   }
 
   render() {
-
-    const rateProperties = ["name", "description", "effector", "display"]
-
     let styles = {
       fontSize: "1em",
       marginTop: "30px"
@@ -164,7 +182,7 @@ class FlatRate extends Component {
       styles.width = "80%"
       styles.margin = "30px auto"
     }
-
+    console.log(this.state.shippingMethod)
     return (
     <div style={ styles }>
       {this.state.shippingMethod && 
@@ -182,11 +200,13 @@ class FlatRate extends Component {
                 submitButtonText={"New Rate"}
                 formFields={[
                   { label: "Name", name: "name", noValueError: `You must provide a value` },
-                  { label: "Flat Rate", name: "effector", noValueError: `You must provide a value` },
-                  { label: "Description", name: "description", noValueError: `You must provide a value` }
+                  { label: "Flat Rate", name: "effector", typeOfComponent: 'number', noValueError: `You must provide a value` },
+                  { label: "Description", name: "description", noValueError: `You must provide a value` },
+                  { label: "Carrier", name: "carrier", typeOfComponent: "dropdown", options: this.carrierOptions, noValueError: `You must provide a value` }
+                  
                 ]}
                 form='flat_rate_form'
-                validation={validate}
+                validate={validate}
               />
             </div>}
 
@@ -212,6 +232,12 @@ class FlatRate extends Component {
                     renderEditIndicator={this.renderEditIndicator}
                     rate={rate}
                     property={"effector"}
+                  />
+                  <RateProperty 
+                    setEditIndication={this.setEditIndication}
+                    renderEditIndicator={this.renderEditIndicator}
+                    rate={rate}
+                    property={"carrier"}
                   />
                   <FontAwesomeIcon 
                     className="absolute hover hover-color-12" 
@@ -265,12 +291,21 @@ class FlatRate extends Component {
 
 
 const RateProperty = ({ setEditIndication, renderEditIndicator, rate, property }) => {
-  return (
-    <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
-      <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline hover hover-color-12">{rate[property]}</a></div>
-      {renderEditIndicator(rate, property)}
-    </div>
-  )
+  if (!rate[property] || rate[property] === null ) {
+    return ( 
+      <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
+        <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline hover hover-color-12">N/A</a></div>
+        {renderEditIndicator(rate, property)}
+      </div>
+    )
+  } else {
+    return (
+      <div className="inline margin-s-h padding-xs relative" onClick={(e) => setEditIndication(e, rate._id, property)}>
+        <div className="inline"><Key>{capitalizeFirsts(property === "effector" ? "rate" : property)}:</Key> <a className="inline hover hover-color-12">{rate[property]}</a></div>
+        {renderEditIndicator(rate, property)}
+      </div>
+    )
+  }
 }
 
 
@@ -281,7 +316,7 @@ const validate = (values, props) => {
   const errors = {}
 
   _.each(props.formFields, ({ name, noValueError }) => {
-    if (name === "effector") {
+    if (name === "description") {
       return
     }
     

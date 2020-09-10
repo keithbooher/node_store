@@ -26,6 +26,7 @@ class AddressPanel extends Component  {
       return {
         name: rate.name,
         value: rate.effector,
+        carrier: rate.carrier,
         default: true,
         redux_field: "shipping_rates"
       }
@@ -48,13 +49,15 @@ class AddressPanel extends Component  {
     const cost = selected_shipping_method.shipping_rates.value
     const shipping_method = "Flat Rate"
     const rate = selected_shipping_method.shipping_rates.name
+    const carrier = selected_shipping_method.shipping_rates.carrier
 
     let cart = {...this.props.cart}
 
     let chosen_rate = {
         cost,
         shipping_method,
-        rate
+        rate,
+        carrier
     }
 
     cart.chosen_rate = chosen_rate

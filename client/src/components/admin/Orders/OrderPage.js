@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getOrder, updateShipment, updateOrder, handleRefund, handlePartialRefund } from "../../../utils/API"
+import { getOrder, updateShipment, updateOrder, handleRefund, handlePartialRefund, sendProcessingEmail, sendTrackingEmail } from "../../../utils/API"
 import { dispatchObj } from "../../../actions"
 import { Link } from "react-router-dom"
 import Form from "../../shared/Form"
 import  { shippingStatusDropDown }  from "./formFeilds"  
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faSpinner, faEdit } from "@fortawesome/free-solid-svg-icons"
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts, formatMoney } from "../../../utils/helpFunctions"
 import { reset } from "redux-form"
@@ -23,36 +23,65 @@ class OrderPage extends Component {
     this.handleNoteSubmission = this.handleNoteSubmission.bind(this)
     this.handleRefund = this.handleRefund.bind(this)
     this.handlePartialRefund = this.handlePartialRefund.bind(this)
+    this.updateShipmentStatus = this.updateShipmentStatus.bind(this)
+    this.updateShipmentTracking = this.updateShipmentTracking.bind(this)
     this.state = {
       order: null,
       propertyToEdit: null,
       editForm: null,
-      refundModal: false
+      refundModal: false,
+      trackingBoolean: false
     }
   }
   
   async componentDidMount() {
     let order = await this.props.getOrder(this.order_id).then(res => res.data)
-    this.setState({ order })
+    let trackingBoolean = false
+    if (order.tracking !== null) {
+      trackingBoolean = true
+    }
+    this.setState({ order, trackingBoolean })
   }
 
 
-  async updateShipmentStatus(e) {
-    e.preventDefault()
+  async updateShipmentStatus() {
     if (!this.props.form['update_shipment_status_form'].values) {
       return
     }
     const chosenStatus = this.props.form['update_shipment_status_form'].values.shipping_status.value
 
-
-
-    // TO DO 
-    // change shipping status when complete manually
     let shipment = this.state.order.shipment
     shipment.status = chosenStatus
     await this.props.updateShipment(shipment)
-    let order = await this.props.getOrder(this.order_id).then(res => res.data)
+
+    let pre_update_order = this.state.order
+    let order 
+    if (chosenStatus === "completed") {
+      pre_update_order.status = "complete"
+      order = await this.props.updateOrder(pre_update_order).then(res => res.data)
+    } else if (chosenStatus === "processing") {
+      sendProcessingEmail(pre_update_order)
+      pre_update_order.status = "processing"
+      order = await this.props.updateOrder(pre_update_order).then(res => res.data)
+    } else {
+      order = await this.props.getOrder(this.order_id).then(res => res.data)
+    }
+
     this.setState({ order })
+  }
+
+  async updateShipmentTracking() {
+    if (!this.props.form['update_shipment_tracking_form'].values) {
+      return
+    }
+    const tracking = this.props.form['update_shipment_tracking_form'].values.tracking
+
+    let shipment = this.state.order.shipment
+    shipment.tracking = Number(tracking)
+    await this.props.updateShipment(shipment)
+    let order = await this.props.getOrder(this.order_id).then(res => res.data)
+    this.setState({ order, trackingBoolean: true })
+    this.props.sendTrackingEmail(this.state.order)
   }
 
   createFormFields() {
@@ -251,11 +280,30 @@ class OrderPage extends Component {
 
               {order.status !== "refunded" && 
                 <Form 
-                  onSubmit={(e) => this.updateShipmentStatus(e)}
-                  submitButton={<button className="w-100 margin-s-v">Update Shipment Status</button>}
+                  onSubmit={() => this.updateShipmentStatus()}
+                  submitButton={<button className={`${this.props.mobile ? "w-100": "desktop_long_button_width" } margin-s-v`}>Update Shipment Status</button>}
                   formFields={this.createFormFields()}
                   form='update_shipment_status_form'
                 />
+              }
+
+              {order.shipment.tracking && 
+                <div>
+                  <h3 className="margin-s-v">Tracking</h3>
+                  <div>{order.shipment.tracking} <FontAwesomeIcon className="hover hover-color-12" icon={faEdit} onClick={() => this.setState({ trackingBoolean: false })} /></div>
+                </div>
+              }
+
+              {order.shipment.status === "completed" && !this.state.trackingBoolean &&  
+                <div className={`${this.props.mobile ? "w-100": "w-40"}`}>
+                  <Form 
+                    onSubmit={() => this.updateShipmentTracking()}
+                    submitButton={<button className={`${this.props.mobile ? "w-100": "desktop_long_button_width" } margin-s-v`}>Update Shipment Status</button>}
+                    formFields={[{ label: 'Enter Tracking NUmber', name: 'tracking', noValueError: 'You must provide an address' }]}
+                    form='update_shipment_tracking_form'
+                    initialValues={order.shipment.tracking ? { "tracking": order.shipment.tracking } : {}}
+                  />
+                </div>
               }
 
               <hr/>
@@ -352,6 +400,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = { updateOrder, getOrder, dispatchObj, updateShipment, handlePartialRefund, handleRefund }
+const actions = { updateOrder, getOrder, dispatchObj, updateShipment, handlePartialRefund, handleRefund, sendTrackingEmail, sendProcessingEmail }
 
 export default connect(mapStateToProps, actions)(OrderPage)

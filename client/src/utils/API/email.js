@@ -15,3 +15,31 @@ export const orderConfirmation =  (recipient, orderNumber) => async dispatch => 
     return {data: {}}
   }
 }
+
+export const sendTrackingEmail =  (order) => async dispatch => {
+  let data = { order }
+  let req = await axios.post(`/api/email/tracking`, data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)    
+    return error.response
+  })
+  if (req.status === 200) {
+    return req
+  } else {
+    return {data: {}}
+  }
+}
+
+export const sendProcessingEmail =  (order) => async dispatch => {
+  let data = { order }
+  let req = await axios.post(`/api/email/processing`, data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)    
+    return error.response
+  })
+  if (req.status === 200) {
+    return req
+  } else {
+    return {data: {}}
+  }
+}

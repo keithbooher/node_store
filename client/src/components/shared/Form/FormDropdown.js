@@ -18,26 +18,26 @@ class FormDropdown extends Component {
     if (default_option) {
       this.props.change(default_option.redux_field, default_option)
     }
+    if (!default_option) {
+      default_option = null
+    }
     this.setState({ chosen: default_option })
   }
 
-  // componentUpdateMount() {
-  //   let default_option = this.props.options.find(option => option.default === true)
-
-  //   this.setState({ chosen: default_option })
-  // }
-
   onChange(option) {
+    console.log("option", option)
     this.setState({ chosen: option.value })
     this.props.change(option.redux_field, option)
   }
 
   onSubmit(option) {
+    console.log(option)
     this.setState({ chosen: option.value })
     this.props.onSubmit(option.redux_field, option)
   }
 
   render() {
+    console.log(this.props)
     let default_option = this.props.options.find(option => option.default === true)
 
     let dropdown = document.getElementsByClassName("rw-dropdown-list")[0]
@@ -58,6 +58,10 @@ class FormDropdown extends Component {
             defaultValue={default_option}
             value={this.state.chosen}
           />
+        </div>
+        {/* <input value={this.state.chosen} {...this.props.input} style={{ display: "none" }} /> */}
+        <div className="color-red-5" style={{marginBottom: '5px'}}>
+          {this.props.meta.touched && this.props.meta.error}
         </div>
       </div>
     )
