@@ -149,7 +149,7 @@ class ProductForm extends Component {
               <span>Name:</span> <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "name" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("name")} 
                   />
@@ -222,7 +222,7 @@ class ProductForm extends Component {
               <span>Sku:</span> <a className="inline" onClick={() => this.showEditIndicator("sku")}>{this.state.product.sku ? this.state.product.sku : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "sku" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("sku")} 
                   />
@@ -232,7 +232,7 @@ class ProductForm extends Component {
               <span>Description:</span> <a className="inline" onClick={() => this.showEditIndicator("description")}>{this.state.product.description ? this.state.product.description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "description" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("description")} 
                   />
@@ -242,7 +242,7 @@ class ProductForm extends Component {
               <span>Short Description:</span> <a className="inline" onClick={() => this.showEditIndicator("short_description")}>{this.state.product.short_description ? this.state.product.short_description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "short_description" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("short_description")} 
                   />
@@ -252,7 +252,7 @@ class ProductForm extends Component {
               <span>Meta Title:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_title")}>{this.state.product.meta_title ? this.state.product.meta_title : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_title" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("meta_title")} 
                   />
@@ -262,7 +262,7 @@ class ProductForm extends Component {
               <span>Meta Description:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_description")}>{this.state.product.meta_description ? this.state.product.meta_description : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_description" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("meta_description")} 
                   />
@@ -272,7 +272,7 @@ class ProductForm extends Component {
               <span>Meta Keywords:</span> <a className="inline" onClick={() => this.showEditIndicator("meta_keywords")}>{this.state.product.meta_keywords ? this.state.product.meta_keywords : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "meta_keywords" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("meta_keywords")} 
                   />
@@ -282,7 +282,7 @@ class ProductForm extends Component {
               <span>Inventory Count:</span> <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "inventory_count" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("inventory_count")} 
                   />
@@ -292,7 +292,7 @@ class ProductForm extends Component {
               <span>Price:</span> <a className="inline" onClick={() => this.showEditIndicator("price")}>{this.state.product.price}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "price" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("price")} 
                   />
@@ -302,7 +302,7 @@ class ProductForm extends Component {
               <span>Height:</span> <a className="inline" onClick={() => this.showEditIndicator("height")}>{this.state.product.dimensions.height ? this.state.product.dimensions.height : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "height" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("height")} 
                   />
@@ -312,7 +312,7 @@ class ProductForm extends Component {
               <span>Width:</span> <a className="inline" onClick={() => this.showEditIndicator("width")}>{this.state.product.dimensions.width ? this.state.product.dimensions.width : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "width" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("width")} 
                   />
@@ -322,7 +322,7 @@ class ProductForm extends Component {
               <span>Depth:</span> <a className="inline" onClick={() => this.showEditIndicator("depth")}>{this.state.product.dimensions.depth ? this.state.product.dimensions.depth : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "depth" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("depth")} 
                   />
@@ -332,7 +332,7 @@ class ProductForm extends Component {
               <span>Weight:</span> <a className="inline" onClick={() => this.showEditIndicator("weight")}>{this.state.product.weight ? this.state.product.weight : "N/A"}</a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "weight" && 
                   <FontAwesomeIcon 
-                    className="margin-s-h"
+                    className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
                     onClick={() => this.showEditModal("weight")} 
                   />

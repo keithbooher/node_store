@@ -118,7 +118,7 @@ class LineItems extends Component {
             <>
               <div key={index} className="flex">
                 <div 
-                  className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
+                  className="hover margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
                   style={this.props.mobile ? { maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" } : { maxHeight: "250px", maxWidth: "250px", minHeight: "250px", minWidth: "250px" }}
                 >
                   <LazyLoadImage
@@ -148,13 +148,15 @@ class LineItems extends Component {
         })}
         {this.state.showModal &&
           <Modal cancel={() => this.setState({ showModal: false })}>
-            <LazyLoadImage
-              style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}
-              src={this.state.showModal.image}
-            />
+            <div className="text-align-center">
+              <LazyLoadImage
+                style={this.props.mobile ? { height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" } : { height: "auto", width: "auto", maxHeight: "400px", maxWidth: "400px" } }
+                src={this.state.showModal.image}
+              />
+            </div>
             <Form
               onSubmit={this.submitQuantity}
-              submitButton={<button>Done</button>}
+              submitButton={<button style={{ padding: "6px" }}>Done</button>}
               cancel={() => this.setState({ showModal: false })}
               onChange={this.changeCartTab}
               formFields={[{ label: `Update ${this.state.showModal.product_name} quantity`, name: 'quantity', typeOfComponent: "number", autofocus: true, noValueError: 'You must provide an quantity' }]}
@@ -175,8 +177,8 @@ class LineItems extends Component {
 }
 
 
-function mapStateToProps({ cart, form, enlargeImage }) {
-  return { cart, form, enlargeImage }
+function mapStateToProps({ cart, form, enlargeImage, mobile }) {
+  return { cart, form, enlargeImage, mobile }
 }
 
 const actions = { dispatchObj, updateCart, checkInventory, dispatchEnlargeImage }

@@ -139,7 +139,7 @@ class LineItems extends Component {
 
                   <div className="flex">
                     <div 
-                      className="margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
+                      className="hover margin-auto-v flex justify-center align-items-center background-color-black border-radius-s" 
                       style={this.props.mobile ? { maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px", minHeight: "175px", minWidth: "175px" } }
                     >
                       <img 

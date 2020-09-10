@@ -115,6 +115,8 @@ class AddressCard extends Component {
       form_object.formFields[0].typeOfComponent = "countries"
     } else if (property === "state") {
       form_object.formFields[0].typeOfComponent = "states"
+    } else if (property === "phone_number") {
+      form_object.formFields[0].typeOfComponent = "number"
     }
     this.setState({ editForm: form_object })
   }

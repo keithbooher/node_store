@@ -3,7 +3,7 @@ import _ from 'lodash'
 export const shippingAddressFormFields = [
   { label: 'Address', name: 'street_address_1_shipping', noValueError: 'You must provide an address' },
   { label: 'Address Cont', name: 'street_address_2_shipping', noValueError: 'You must provide a subject' },
-  { label: 'Phone Number', name: 'phone_number_shipping', noValueError: 'You must provide a phone number' },
+  { label: 'Phone Number', name: 'phone_number_shipping', typeOfComponent: "number", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_shipping', noValueError: 'You must provide a city' },
   { label: 'Zip Code', name: 'zip_code_shipping', noValueError: 'You must provide a city' },
   { label: 'Company', name: 'company_shipping', noValueError: 'You must provide a company' },
@@ -16,7 +16,7 @@ export const shippingAddressFormFields = [
 export const billingAddressFormFields = [
   { label: 'Address', name: 'street_address_1_billing', noValueError: 'You must provide an address' },
   { label: 'Address Cont', name: 'street_address_2_billing', noValueError: 'You must provide a subject' },
-  { label: 'Phone Number', name: 'phone_number_billing', noValueError: 'You must provide a phone number' },
+  { label: 'Phone Number', name: 'phone_number_billing', typeOfComponent: "number", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_billing', noValueError: 'You must provide a city' },
   { label: 'Zip Code', name: 'zip_code_billing', noValueError: 'You must provide a city' },
   { label: 'Company', name: 'company_billing', noValueError: 'You must provide a company' },

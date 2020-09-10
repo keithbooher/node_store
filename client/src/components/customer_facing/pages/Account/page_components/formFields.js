@@ -7,7 +7,7 @@ export const detailsFields = [
 export const addressFields = [
   { label: 'Address', name: 'street_address_1', noValueError: 'You must provide an address', value: "DERP" },
   { label: 'Address Cont', name: 'street_address_2', noValueError: 'You must provide a subject' },
-  { label: 'Phone Number', name: 'phone_number', noValueError: 'You must provide a phone number' },
+  { label: 'Phone Number', name: 'phone_number', typeOfComponent: "number", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city', noValueError: 'You must provide a city' },
   { label: 'Zip Code', name: 'zip_code', noValueError: 'You must provide a city' },
   { label: 'Company', name: 'company', noValueError: 'You must provide a company' },

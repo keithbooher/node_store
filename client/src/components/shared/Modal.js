@@ -49,7 +49,7 @@ class Product extends Component  {
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: isMobile ? "90%" : "30em",
+      width: this.props.width_auto ? "auto" : (isMobile ? "90%" : "30em"),
       height: "auto",
       zIndex: 30
     }
@@ -57,6 +57,8 @@ class Product extends Component  {
     if (!this.props.mobile) {
       style_inner.fontSize = "25px"
     }
+
+    console.log(this.props)
 
     return (
       <div id="outer" ref={this.outerRef} style={ style_outer }>
