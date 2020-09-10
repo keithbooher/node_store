@@ -38,6 +38,7 @@ module.exports = app => {
       let shippingMethod = await ShippingMethod.findOneAndUpdate({ _id: shipping_method._id }, shipping_method, {new: true})
       res.send(shippingMethod)
     } catch (err) {
+      console.log(err)
       req.bugsnag.notify(err)
       res.status(422).send(err)
     }

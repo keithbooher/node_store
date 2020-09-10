@@ -7,7 +7,8 @@ const AddressSchema = require('./Address')
 const rateSchema = new Schema({
   cost: "",
   shipping_method: "",
-  rate: ""
+  rate: "",
+  carrier: ""
 })
 
 const cartSchema = new Schema({

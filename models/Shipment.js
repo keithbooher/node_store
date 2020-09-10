@@ -4,9 +4,10 @@ const AddressSchema = require('./Address')
 const LineItemSchema = require('./LineItem')
 
 const rateSchema = new Schema({
-  cost: '',
+  cost: "",
   shipping_rate: "",
   shipping_method: "",
+  carrier: ""
 })
 
 const shipmentSchema = new Schema({

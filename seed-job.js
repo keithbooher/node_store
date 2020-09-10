@@ -12,7 +12,9 @@ const seed = async () => {
         name: "Standard",
         description: "Standard priority",
         effector: 10,
-        display: true
+        display: true,
+        carrier: null
+
       }],
       display:true
     }

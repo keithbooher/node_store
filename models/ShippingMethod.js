@@ -5,7 +5,8 @@ const shippingRateSchema = new Schema({
   name: String, 
   description: String, 
   effector: Number,
-  display: Boolean
+  display: Boolean,
+  carrier: String
 })
 
 const shippingMethodSchema = new Schema({
