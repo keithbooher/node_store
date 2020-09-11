@@ -115,4 +115,18 @@ export const getSidebarCategories = () => async dispatch => {
 }
 
 
+export const getSitemapCategories = () => async dispatch => {
+    let req = await axios.get('/api/sitemap/categories').catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        Bugsnag.notify(error)        
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: []}
+    }
+}
+
+
 

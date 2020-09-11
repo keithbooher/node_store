@@ -151,6 +151,19 @@ export const getProductAverageRating = (_product_id) => async dispatch => {
   }
 }
 
+export const getAllProducts = () => async dispatch => {
+  let req = await axios.get(`/api/all/products`).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
+}
+
 export const checkInventory = (line_items) => async dispatch => {
   const data = {
     line_items

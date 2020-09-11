@@ -7,6 +7,8 @@ import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from '../../../utils/validations'
 import Modal from "../../shared/Modal"
 import FormModal from "../../shared/Form/FormModal"
+// import Sitemap from 'react-router-sitemap';
+// import routes from "../../../sitemap/sitemap-routes"
 class StoreSettings extends Component {
   constructor(props) {
     super()
@@ -21,7 +23,8 @@ class StoreSettings extends Component {
       faqs: [],
       createFAQ: null,
       editFAQ: null,
-      areYouSure: false
+      areYouSure: false,
+      sitemapGenerated: false
     }
   }
 
@@ -94,6 +97,15 @@ class StoreSettings extends Component {
     this.setState({ faqs: data, areYouSure: false })
 
   }
+
+  // async generateSitemap() {
+  //   new Sitemap(routes)
+  //   .build('http://my-site.ru')
+  //   .save("/sitemap.xml");
+  //   this.setState({ sitemapGenerated: true })
+  // }
+
+
 
   render() {
     let hide_zero_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "hide_zero")[0]
@@ -195,6 +207,12 @@ class StoreSettings extends Component {
             </div>
           )
         })}
+
+        <hr />
+
+        {/* <div>
+          <button onClick={this.generateSitemap}>Regenerate Sitemap</button>{this.state.sitemapGenerated && <span>generated</span>}
+        </div> */}
 
         {this.state.editFAQ && 
           <FormModal
