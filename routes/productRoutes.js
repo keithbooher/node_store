@@ -42,6 +42,16 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/all/products', async (req, res) => {    
+    try {
+      const products = await Product.find({ deleted_at: null }).populate({path: "categories"})
+      res.send(products) 
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.post('/api/product/search', requireLogin, adminRequired, async (req, res) => {    
     try {
       let search_term = req.body.term

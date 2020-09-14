@@ -94,6 +94,16 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/sitemap/categories', async (req, res) => {
+    try {
+      const categories = await Category.find({ deleted_at: null })
+      res.send(categories)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.get('/api/categories', requireLogin, adminRequired, async (req, res) => {  
     try {
       const categories = await Category.find({ deleted_at: null }).populate({

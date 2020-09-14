@@ -12,7 +12,8 @@
     "server": "nodemon index.js --ignore './client/'",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "sitemap": "npm run generate-sitemap --prefix client"
   },
   "author": "",
   "license": "ISC",
