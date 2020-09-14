@@ -181,7 +181,6 @@ class OrderPage extends Component {
 
   render() {
     let order = this.state.order
-    console.log(order)
     let fontSize = "1em"
     let iconFontSize = "1em"
     if (!this.props.mobile) {

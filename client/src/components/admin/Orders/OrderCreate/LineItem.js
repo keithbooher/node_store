@@ -10,8 +10,6 @@ class LineItem extends Component {
   }
 
   onChangeInput(e) {
-    console.log(e.target.value)
-    console.log(parseInt(e.target.value))
     let value = parseInt(e.target.value)
 
     if (e.target.value === "") {
