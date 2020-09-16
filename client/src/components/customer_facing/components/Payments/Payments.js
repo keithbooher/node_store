@@ -81,7 +81,7 @@ const Payments = ({
       return 
     }
 
-    const charge = await handyTok(token)
+    const charge = await handyTok(token, ((cart.total * 100) - 50))
 
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
