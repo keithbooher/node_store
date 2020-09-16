@@ -3,8 +3,8 @@ import axios from "axios"
 import { ERROR } from '../../actions/types'
 import Bugsnag from '@bugsnag/js'
 
-export const handleToken = (token) => async dispatch => {
-  let req = await axios.post('/api/stripe', token).catch(error => {
+export const handleToken = (token, amount) => async dispatch => {
+  let req = await axios.post('/api/stripe', { token, amount }).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
     return error.response
