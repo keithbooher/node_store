@@ -45,7 +45,7 @@ class ShippingOptions extends Component {
     }
     this.props.topStateSetter(state)
 
-    this.props.refProp.current.scrollTo(0, 0);
+    // this.props.refProp.current.scrollTo(0, 0);
   }
 
   render() {

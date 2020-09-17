@@ -247,6 +247,7 @@ class CartLineItems extends Component {
               trashStyle.top = "5px"
               container_style.flexBasis = "22%"
             }
+            console.log(item)
             return (
                 <div key={index} className={`relative ${this.props.mobile ? "padding-m" : "padding-l"} background-color-grey-2`} style={ container_style } >
                   <FontAwesomeIcon onClick={() => this.removeLineItem(item)} className="absolute hover hover-color-12" style={ trashStyle } icon={faTrash} />
@@ -317,14 +318,15 @@ class CartLineItems extends Component {
             {this.state.result &&
               <>
                 <h3>Product Found</h3>
+                {console.log(this.state.result)}
                 <h3>{this.state.result.name}</h3>
                 {this.props.mobile ?
                   <div>
-                    <img src={this.state.result.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
+                    <img src={this.state.result.images.i1} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
                   </div>
                 : 
                   <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
-                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.result.image}/>
+                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.result.images.i1}/>
                   </div>
                 }
 
