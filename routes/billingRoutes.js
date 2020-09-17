@@ -3,29 +3,14 @@ const stripe = require('stripe')(keys.stripeSecretKey)
 const adminRequired = require('../middlewares/adminRequired')
 
 module.exports = app => {
-  app.post('/api/stripe', async (req, res) => {    
+  app.post('/api/stripe/intent', async (req, res) => {    
     try {
-      const charge = await stripe.charges.create({
+      const intent = await stripe.paymentIntents.create({
         amount: req.body.amount,
-        currency: 'usd',
-        description: 'Money For Products',
-        source: req.body.token.id
+        currency: 'usd'
       })
-      // const paymentIntent = await stripe.paymentIntents.create({
-      //   amount: req.body.amount,
-      //   currency: 'usd',
-      //   description: 'Money For Products',
-      //   payment_method_types: ['card'],
-      //   transfer_group: '{ORDER10}',
-      //   source: req.body.token.id
-      // });
-      // const transfer = await stripe.transfers.create({
-      //   amount: 50,
-      //   currency: 'usd',
-      //   description: 'Keith's Cut,
-      //   destination: '{{CONNECTED_STRIPE_ACCOUNT_ID}}',
-      //   transfer_group: '{ORDER10}',
-      // });
+      const charge = await stripe.paymentIntents.confirm(intent.id, { payment_method: "pm_card_visa" })
+
       res.send(charge)
     } catch (err) {
       req.bugsnag.notify(err)
