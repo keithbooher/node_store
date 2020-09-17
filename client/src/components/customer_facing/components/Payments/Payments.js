@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
-import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
 import { convertCart, updateUser, updateCart } from '../../../../actions'
-import { createOrder, createShipment, checkInventory, handleToken as handyTok } from '../../../../utils/API'
+import { createOrder, createShipment, checkInventory, stripeIntent } from '../../../../utils/API'
 import _ from "lodash"
 import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
 import LowInventory from "../../../shared/LowInventory"
 import ReviewItems from "./ReviewItems"
+import {
+  CardElement,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
+
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
   // Check if any of the customers past billing addresses match the one thats submitted
@@ -54,7 +59,7 @@ const checkPassedShippingUsed = (ship_addy, cart) => {
 }
 
 const Payments = ({ 
-  handyTok, 
+  stripeIntent, 
   auth, 
   cart, 
   updateUser, 
@@ -67,12 +72,15 @@ const Payments = ({
   checkInventory, 
   createShipment,
   mobile,
-  form
+  form,
 }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const someFunction = async (token) => {
+  const someFunction = async (e) => {
+    e.preventDefault();
     // First check if products are still available to buy
     const inventoryCheck = await checkInventory(cart.line_items)
     if (inventoryCheck.data.filter((item) => item !== null).length > 0) {
@@ -81,12 +89,14 @@ const Payments = ({
       return 
     }
 
-    const charge = await handyTok(token, ((cart.total * 100) - 50))
-
-    // TO DO
-    // IF HANDLING ABOVE TOKEN FAILS ^
-
-
+    await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    })
+    
+    // this is actually creating intent
+    const charge = await stripeIntent((cart.total * 100) - 50)
+  
     
     // let cart = cart
     let today = new Date()
@@ -173,23 +183,17 @@ const Payments = ({
   }
 
   const out_of_stock_title = "Sorry, these products are now low on stock and their quantities have been updated to reflect the most current available inventory count"
-
   return (
     <>
       {auth && <ReviewItems cart={cart} customer={auth} />}
-      <StripeCheckout
-        name="Node Store"
-        description='Complete your order with Node Store' 
-        panelLabel="Purchase"
-        amount={cart.total * 100}
-        token={token => someFunction(token)}
-        stripeKey={process.env.REACT_APP_STRIPE_KEY}
-        email={cart.email}
-      >
+      
+      <form onSubmit={someFunction}>
+        <CardElement />
         <div style={mobile ? { marginTop: "40px", width: "90%" } : { margin: "40px auto 0px auto", width: "80%" }}>
           <button style={mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Pay For Order</button>
         </div>
-      </StripeCheckout>
+      </form>
+
       {outOfStockMessage && 
         <LowInventory 
           adjust={true} 
@@ -209,7 +213,7 @@ function mapStateToProps({ auth, mobile, form }) {
   return { auth, mobile, form }
 }
 
-const actions = { reset, convertCart, updateUser, handyTok, updateCart, createOrder, createShipment, checkInventory }
+const actions = { reset, convertCart, updateUser, stripeIntent, updateCart, createOrder, createShipment, checkInventory }
 
 export default connect(mapStateToProps, actions)(Payments)
 

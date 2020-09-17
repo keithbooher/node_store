@@ -30,7 +30,7 @@ export const getCartByID =  (_id) => async dispatch => {
 
 export const updateCart = (cart) => async dispatch => {
   const data = { cart }
-  let req = await axios.put('/api/cart/update/' + cart.id, data).catch(error => {
+  let req = await axios.put('/api/cart/update/' + cart._id, data).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
     return error.response

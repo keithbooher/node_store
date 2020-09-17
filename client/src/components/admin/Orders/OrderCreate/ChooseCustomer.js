@@ -125,13 +125,13 @@ class ChooseCustomer extends Component {
           <div className="flex flex_column" style={{ marginTop: "30px" }}>
             <div 
               onClick={() => this.setState({ customer_type: "guest" })}
-              className={`hover hover-color-2 ${this.state.customer_type === "guest" && "store_text_color"}`}
+              className={`hover hover-color-12 ${this.state.customer_type === "guest" && "store_text_color"}`}
             >
               Guest
             </div>
             <div 
               onClick={() => this.setState({ customer_type: "customer" })}
-              className={`hover hover-color-2 ${this.state.customer_type === "customer" && "store_text_color"}`}
+              className={`hover hover-color-12 ${this.state.customer_type === "customer" && "store_text_color"}`}
             >
               Customer
             </div>

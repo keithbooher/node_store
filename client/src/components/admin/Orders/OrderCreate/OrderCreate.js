@@ -6,7 +6,9 @@ import ShippingOptions from "./ShippingOptions"
 import Payment from "./Payment"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSync } from "@fortawesome/free-solid-svg-icons"
-
+import {loadStripe} from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js';
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY)
 class OrderCreate extends Component {
   constructor(props) {
     super()
@@ -46,7 +48,7 @@ class OrderCreate extends Component {
         { this.state.step === "customer" && <ChooseCustomer refProp={this.props.refProp} topStateSetter={this.topStateSetter} /> }
         { this.state.step === "cart" && <FillCart refProp={this.props.refProp} cart={this.state.cart} topStateSetter={this.topStateSetter} /> }
         { this.state.step === "shipping" && <ShippingOptions refProp={this.props.refProp} cart={this.state.cart} topStateSetter={this.topStateSetter} /> }
-        { this.state.step === "payment" && <Payment refProp={this.props.refProp} customer={this.state.customer} cart={this.state.cart} topStateSetter={this.topStateSetter} /> }
+        { this.state.step === "payment" && <Elements stripe={stripePromise}><Payment refProp={this.props.refProp} customer={this.state.customer} cart={this.state.cart} topStateSetter={this.topStateSetter} /></Elements> }
 
         {/* Enter Payment Info */}
         {/* Done */}
