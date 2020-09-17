@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import StripeCheckout from 'react-stripe-checkout'
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
 import { createOrder, createShipment, updateCart, getCartByID, getShippingMethodForCheckout, updateOrder } from "../../../utils/API"
@@ -15,6 +14,11 @@ import FormModal from "../../shared/Form/FormModal"
 import CartLineItems from '../shared/CartLineItems'
 import { handleToken } from '../../../utils/API'
 import Modal from "../../shared/Modal"
+import Payment from "./Payment"
+import {loadStripe} from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js';
+import OfflinePayment from './OfflinePayment';
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY)
 
 class Cart extends Component {
   constructor(props) {
@@ -224,61 +228,6 @@ class Cart extends Component {
     this.setState({ cart: data })
   }
 
-  async finalize(token) {
-    let charge = "offline"
-    if (token !== "offline") {
-      charge = await this.props.handleToken(token)
-    }
-    // TO DO
-    // IF HANDLING ABOVE TOKEN FAILS ^
-
-    // TO DO
-    // handle if the addresses used where past addresses and if not, add them to the users list of addresses
-    let date = new Date()
-    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
-
-    let cart = this.state.cart
-    cart.checkout_state = 'complete'
-    cart.deleted_at = today
-    cart.converted = true
-
-    let updated_cart = await this.props.updateCart(cart)
-
-    // Create Order
-    let order = {
-      tax: cart.tax,
-      sub_total: cart.sub_total,
-      total: cart.sub_total,
-      date_placed: date,
-      _user_id: cart._user_id,
-      email: cart.email,
-      payment: charge
-    }
-    const new_order = await this.props.createOrder(order)
-
-    // Make shipment
-    let shipment = {
-      billing_address: cart.billing_address,
-      shipping_address: cart.shipping_address,
-      chosen_rate: {
-        cost: cart.chosen_rate.cost,
-        shipping_method: cart.chosen_rate.shipping_method,
-        shipping_rate: cart.chosen_rate.rate
-      },
-      status: 'pending',
-      date_shipped: null,
-      line_items: cart.line_items,
-      _user_id: cart._user_id
-    }
-    const new_shipment = await this.props.createShipment(shipment)
-
-    // update order with shipment asynchronously
-    let updated_order = new_order.data
-    updated_order.shipment = new_shipment.data._id
-    await this.props.updateOrder(updated_order)
-
-    this.props.history.push(`/admin/orders/${new_order.data._id}`)
-  }
 
 
   async adjustLineItemCost(line_items){
@@ -421,18 +370,10 @@ class Cart extends Component {
 
             {this.state.convert &&
               <Modal cancel={() => this.setState({ convert: false }) }>
-                <StripeCheckout
-                  name="Node Store"
-                  description='Complete your order with Node Store' 
-                  panelLabel="Purchase"
-                  amount={cart.total * 100}
-                  token={token => this.finalize(token)}
-                  stripeKey={process.env.REACT_APP_STRIPE_KEY}
-                  email={this.state.cart.email}
-                >
-                  <button>Pay With Credit Card</button>
-                </StripeCheckout>
-                <button onClick={() => this.finalize("offline")}>Pay Offline / 3rd party service</button>
+                <Elements stripe={stripePromise}>
+                  <Payment cart={cart} />
+                </Elements>
+                <OfflinePayment cart={cart} />
               </Modal>
             }
           </>

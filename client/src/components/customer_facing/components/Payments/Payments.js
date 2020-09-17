@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import StripeCheckout from 'react-stripe-checkout'
 import { connect } from 'react-redux'
 import { convertCart, updateUser, updateCart } from '../../../../actions'
 import { createOrder, createShipment, checkInventory, stripeIntent } from '../../../../utils/API'

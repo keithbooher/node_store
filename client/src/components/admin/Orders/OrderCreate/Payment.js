@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import StripeCheckout from 'react-stripe-checkout'
 import { updateCart, createOrder, createShipment, updateOrder, stripeIntent } from "../../../../utils/API"
 import AddressDisplayEdit from "../../shared/AddressDisplayEdit"
 import { reset } from "redux-form"
@@ -206,21 +205,7 @@ const Payment = ({
             />
           </div>
         </div>
-
-
       </div>
-
-      {/* <StripeCheckout
-        name="Node Store"
-        description='Complete your order with Node Store' 
-        panelLabel="Purchase"
-        amount={this.props.cart.total * 100}
-        token={token => this.finalize(token)}
-        stripeKey={process.env.REACT_APP_STRIPE_KEY}
-        email={this.props.customer.email}
-      >
-        <button className="btn margin-s-v">Pay With Credit Card</button>
-      </StripeCheckout> */}
 
       <form onSubmit={(e) => finalize(e, "online")}>
         <CardElement />
