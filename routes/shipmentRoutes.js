@@ -24,7 +24,11 @@ module.exports = app => {
   const updateQuantity = async (item) => {
     try {
       let quantity = -1 * parseInt(item.quantity)
-      await Product.findOneAndUpdate({ _id: item._product_id }, { $inc: { inventory_count: quantity } }, {new: true})  
+      let product = await Product.findOne({ _id: item._product_id }) 
+      if (!product.backorderable) {
+        product.inventory_count = product.inventory_count + quantity
+        product.save()
+      }
     } catch (err) {
       req.bugsnag.notify(err)
       res.status(422).send(err)
