@@ -80,9 +80,26 @@ const Payment = ({
   }
 
   return (
-    <form onSubmit={(e) => finalize(e)}>
-      <CardElement />
-      <div style={mobile ? { marginTop: "40px", width: "90%" } : { margin: "40px auto 0px auto", width: "80%" }}>
+    <form style={{ width: "80%", margin: "0px auto" }} onSubmit={(e) => finalize(e)}>
+      <div className="background-color-white border-radius-s" style={{ padding: "10px" }}>
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: '20px',
+                color: 'black',
+                '::placeholder': {
+                  color: 'darkgrey',
+                },
+              },
+              invalid: {
+                color: '#9e2146',
+              },
+            },
+          }}
+        />
+      </div>
+      <div style={mobile ? { marginTop: "40px", width: "90%" } : { margin: "0px auto", width: "100%" }}>
         <button style={mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Pay For Order</button>
       </div>
     </form>
