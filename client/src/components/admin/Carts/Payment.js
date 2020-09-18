@@ -23,11 +23,12 @@ const Payment = ({
 
   const finalize = async (e) => {
     e.preventDefault()
-    await stripe.createPaymentMethod({
+    let payment_method = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
     })
-    let charge = await stripeIntent((cart.total * 100) - 50)
+    
+    const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
     // TO DO
     // IF HANDLING ABOVE TOKEN FAILS ^
 
