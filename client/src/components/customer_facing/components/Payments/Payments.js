@@ -89,15 +89,14 @@ const Payments = ({
       return 
     }
 
-    await stripe.createPaymentMethod({
+    let payment_method = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
     })
     
     // this is actually creating intent
-    const charge = await stripeIntent((cart.total * 100) - 50)
-  
-    
+    const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
+      
     // let cart = cart
     let today = new Date()
     const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()

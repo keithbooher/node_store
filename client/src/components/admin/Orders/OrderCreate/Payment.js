@@ -45,11 +45,12 @@ const Payment = ({
     let _cart = {...cart}
     let charge = "offline"
     if (online_offline !== "offline") {
-      await stripe.createPaymentMethod({
+      let payment_method = await stripe.createPaymentMethod({
         type: 'card',
         card: elements.getElement(CardElement),
       })
-      charge = await stripeIntent((_cart.total * 100) - 50)
+      
+      const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
     }
     // TO DO
     // IF PROCESSING ABOVE FAILS
