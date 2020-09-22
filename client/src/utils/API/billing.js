@@ -12,19 +12,7 @@ export const stripeIntent = (amount, payment_method) => async dispatch => {
   if (req.status === 200) {
     return req
   } else {
-    return {data: {}}
-  }
-}
-export const handleToken = (amount) => async dispatch => {
-  let req = await axios.post('/api/stripe/intent', { amount }).catch(error => {
-    dispatch({ type: ERROR, payload: error.response })
-    Bugsnag.notify(error)
-    return error.response
-  })
-  if (req.status === 200) {
     return req
-  } else {
-    return {data: {}}
   }
 }
 

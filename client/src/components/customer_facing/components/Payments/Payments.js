@@ -93,9 +93,17 @@ const Payments = ({
       type: 'card',
       card: elements.getElement(CardElement),
     })
+
+    if (payment_method.status !== 200) {
+      return
+    }
     
     // this is actually creating intent
     const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
+
+    if (charge.status !== 200) {
+      return
+    }
       
     // let cart = cart
     let today = new Date()

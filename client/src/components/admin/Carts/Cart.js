@@ -12,7 +12,6 @@ import { addressFormFields, validate } from './formFields'
 import { validatePresenceOnAll } from "../../../utils/validations"
 import FormModal from "../../shared/Form/FormModal"
 import CartLineItems from '../shared/CartLineItems'
-import { handleToken } from '../../../utils/API'
 import Modal from "../../shared/Modal"
 import Payment from "./Payment"
 import {loadStripe} from '@stripe/stripe-js'
@@ -425,6 +424,6 @@ function mapStateToProps({ form, mobile }) {
   return { form, mobile }
 }
 
-const actions = { handleToken, getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout, dispatchObj }
+const actions = { getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout, dispatchObj }
 
 export default connect(mapStateToProps, actions)(Cart)
