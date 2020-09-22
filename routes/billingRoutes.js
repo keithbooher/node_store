@@ -9,11 +9,11 @@ module.exports = app => {
         amount: req.body.amount,
         currency: 'usd',
         payment_method_types: ['card'],
-        // application_fee_amount: 200,
-        // on_behalf_of: '{{CONNECTED_ACCOUNT_ID}}',
-        // transfer_data: {
-        //   destination: '{{CONNECTED_ACCOUNT_ID}}',
-        // },
+        application_fee_amount: 50,
+        on_behalf_of: 'acct_1HSZNyGIkiKDB7SH',
+        transfer_data: {
+          destination: 'acct_1HSZNyGIkiKDB7SH',
+        },
       })
 
       const charge = await stripe.paymentIntents.confirm(intent.id, { payment_method: "pm_card_" + req.body.payment_method.paymentMethod.card.brand })
