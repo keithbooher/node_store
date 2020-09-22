@@ -16,7 +16,7 @@ module.exports = app => {
         },
       })
 
-      const charge = await stripe.paymentIntents.confirm(intent.id, req.body.payment_method)
+      const charge = await stripe.paymentIntents.confirm(intent.id, { payment_method: req.body.payment_method.paymentMethod.id })
 
       res.send(charge)
     } catch (err) {
