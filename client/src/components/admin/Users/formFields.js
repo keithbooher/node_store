@@ -9,11 +9,13 @@ export const roleField = (role) => {
         typeOfComponent: 'dropdown', 
         options: [
           {
+            redux_field: "role_dropdown",
             name: "Admin",
             value: "admin",
             default: role === "admin" ? true : false
           },
           {
+            redux_field: "role_dropdown",
             name: "Customer",
             value: "customer",
             default: role === "customer" ? true : false

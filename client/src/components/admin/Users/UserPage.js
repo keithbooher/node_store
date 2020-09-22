@@ -27,7 +27,7 @@ class Users extends Component {
     let user = this.state.user
 
     if (property === "role") {
-      user[property] = form_value[property].value
+      user[property] = form_value.role_dropdown.value
     } else {
       user[property] = form_value[property]
     }
