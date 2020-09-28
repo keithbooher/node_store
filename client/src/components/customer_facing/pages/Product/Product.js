@@ -322,21 +322,25 @@ const Product = ({
                   )
                 })}
               </div>
-              <div className="flex flex_column">
-                <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
-                {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
-                {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
-              </div>
-              <div className="flex">
-                <div className="flex">
-                  <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+              {product.availability ?
+                <>
                   <div className="flex flex_column">
-                    <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                    <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                    <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
+                    {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
+                    {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
                   </div>
-                </div>
-                <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
-              </div>
+                  <div className="flex">
+                    <div className="flex">
+                      <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+                      <div className="flex flex_column">
+                        <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
+                        <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                      </div>
+                    </div>
+                    <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
+                  </div>
+                </>
+              : <h2>Product Unavailable</h2>}
               <hr/>
               <h3>Description</h3>
               <p>{product.description ? product.description : "No Product Description"}</p>
@@ -399,20 +403,26 @@ const Product = ({
                     <h3 className="margin-xs-v">Description</h3>
                     <div>{product.description ? product.description : "No Product Description"}</div>
                   </div>
-                  <div className="margin-s-v">
-                    {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
-                    {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
-                    <div className="flex">
-                      <div className="flex">
-                        <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
-                        <div className="flex flex_column">
-                          <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                          <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                  {product.availability ?
+                    <>
+                      <div className="margin-s-v">
+                        {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
+                        {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
+                        <div className="flex">
+                          <div className="flex">
+                            <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
+                            <div className="flex flex_column">
+                              <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("up")} icon={faChevronUp} />
+                              <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                            </div>
+                          </div>
+                          <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
                         </div>
                       </div>
-                      <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
-                    </div>
-                  </div>
+                    </>
+                  : 
+                    <h2>Product Unavailable</h2>
+                  }
 
                   <div className="flex align-items-center">
                     {product.dimensions && 

@@ -34,7 +34,7 @@ class Product extends Component  {
 
   render() {
 
-    const style_outer = {
+    let style_outer = {
       position: "fixed",
       top: 0,
       left: 0,
@@ -44,25 +44,35 @@ class Product extends Component  {
       zIndex: 25
     }
 
-    const style_inner = {
+    let style_inner = {
       position: "fixed",
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: this.props.width_auto ? "auto" : (isMobile ? "90%" : "30em"),
+      width: this.props.width_auto ? "auto" : "30em",
       height: "auto",
       zIndex: 30
+    }
+
+    if (this.props.mobile) {
+      style_inner = {
+        position: "fixed",
+        top: "10%",
+        left: "10px",
+        right: "10px",
+        width: this.props.width_auto ? "auto" : "90%",
+        height: "auto",
+        zIndex: 30
+      }
     }
 
     if (!this.props.mobile) {
       style_inner.fontSize = "25px"
     }
 
-    console.log(this.props)
-
     return (
       <div id="outer" ref={this.outerRef} style={ style_outer }>
-        <div id="inner" ref={this.ref} className="theme-background-3 border-radius-s color-white padding-m" style={ style_inner }>
+        <div id="inner" ref={this.ref} className={`theme-background-3 border-radius-s color-white ${this.props.mobile ? "padding-s" : "padding-m"}`} style={ style_inner }>
           {this.props.children}
         </div>
       </div>

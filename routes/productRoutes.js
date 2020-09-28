@@ -224,17 +224,17 @@ module.exports = app => {
     }
   })
 
-  // app.get('/api/products/update/all', async (req, res) => {    
-  //   try {
-  //     const products = await Product.updateMany({}, { images: { i1: null, i2: null, i3: null, i4: null, i5: null } }, {}, (e, doc) => {
-  //       console.log('made it')
-  //       console.log(doc)
-  //     })
-  //     res.send(products)
-  //   } catch (err) {
-  //     res.status(422).send(err)
-  //   }
-  // })
+  app.get('/api/products/update/all', async (req, res) => {    
+    try {
+      const products = await Product.updateMany({}, { availability: true }, {}, (e, doc) => {
+        console.log('made it')
+        console.log(doc)
+      })
+      res.send(products)
+    } catch (err) {
+      res.status(422).send(err)
+    }
+  })
 
 
 }
