@@ -34,6 +34,7 @@ class Sidebar extends Component {
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/shipping/methods">Shipping</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/carts">Carts</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/store-settings">Store Settings</NavLink>
+        <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/discount-codes">Discount Codes</NavLink>
       </div>
     )
   }

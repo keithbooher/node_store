@@ -23,7 +23,12 @@ const orderSchema = new Schema({
   admin_notes: String,
   customer_notes: String,
   payment: Object,
-  refund: Object
+  refund: Object,
+  discount_codes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'discountCodes'
+  }],
+  discount_total: Number
 })
 
 mongoose.model('orders', orderSchema)
