@@ -4,7 +4,7 @@ import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -124,6 +124,13 @@ class ProductForm extends Component {
     this.setState({ product: data })
   }
 
+  async removeImage(image_key) {
+    let product = this.state.product
+    product.images[image_key] = null
+    let { data } = await this.props.updateProduct(product)
+    this.setState({ product: data })
+  }
+
 
   render() {
     let fields = injectCategoryDataIntoFormFields(this.state.categories, this.state.product)
@@ -179,7 +186,8 @@ class ProductForm extends Component {
               </>
             : 
               <>
-                <div onClick={() => this.setState({ edit_image: "i1" })} className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
+                <div onClick={() => this.setState({ edit_image: "i1" })} className={`relative flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
+                  <FontAwesomeIcon onClick={() => this.removeImage("i1")} icon={faTrash} className="absolute hover hover-color-12 " style={{ top: "5px", right: "5px" }} />
                   {!this.state.product.images.i1 && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "30px" } : { fontSize: "35px" }} className="hover hover-color-12" icon={faEdit} />}
                   <img style={{ height: "500px", width: "auto", maxHeight: "500px", maxWidth: "500px" }} src={this.state.product.images.i1} />
                 </div>
@@ -189,7 +197,8 @@ class ProductForm extends Component {
                       return
                     } else {
                       return (
-                        <div onClick={() => this.setState({ edit_image: image_key })}  key={index} className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === image_key && "st-selection-border"}`} style={{ maxHeight: "300px", width: "23%", minHeight: "100px", margin: "10px 2px 0px 2px", flexBasis: "23%" }}>
+                        <div onClick={() => this.setState({ edit_image: image_key })}  key={index} className={`relative flex justify-center align-items-center background-color-black ${this.state.edit_image === image_key && "st-selection-border"}`} style={{ maxHeight: "300px", width: "23%", minHeight: "100px", margin: "10px 2px 0px 2px", flexBasis: "23%" }}>
+                          <FontAwesomeIcon onClick={() => this.removeImage(image_key)} icon={faTrash} className="absolute hover hover-color-12 " style={{ top: "5px", right: "5px" }} />
                           {!this.state.product.images[image_key] && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "20px" } : { fontSize: "25px" }} className="hover hover-color-12" icon={faEdit} />}
                           <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "100%" }} src={this.state.product.images[image_key]} />
                         </div>
