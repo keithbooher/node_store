@@ -13,6 +13,7 @@ import Reviews from '../../admin/Reviews'
 import Users from '../../admin/Users'
 import DiscountCodes from '../../admin/DiscountCodes'
 import DiscountCodesCreate from '../../admin/DiscountCodes/DiscountCodesCreate'
+import DiscountCodeUpdate from '../../admin/DiscountCodes/DiscountCodeUpdate'
 import UserPage from '../../admin/Users/UserPage'
 import Carts from "../../admin/Carts"
 import Cart from "../../admin/Carts/Cart"
@@ -118,6 +119,7 @@ class Admin extends Component {
               <Route path="/admin/carts" component={Carts} />
               <Route path="/admin/cart/:id" component={Cart} />
               <Route path="/admin/store-settings" component={StoreSettings} />
+              <Route exact path="/admin/discount/:id" component={DiscountCodeUpdate} />
               <Route exact path="/admin/discount-codes/create" component={DiscountCodesCreate} />
               <Route path="/admin/discount-codes" component={DiscountCodes} />
               <Route component={Four04Page} />

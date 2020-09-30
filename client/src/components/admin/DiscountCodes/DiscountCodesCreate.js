@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSyncAlt, faSearch, faCheck, faTimes, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faSyncAlt, faSearch, faArrowAltCircleLeft, faCheck, faTimes, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { reset } from "redux-form";
 import { getProductbyId, paginatedProducts, searchProduct, getAllCategories, updateProduct, lastProductByCategory, createDiscountCode } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
@@ -10,6 +10,7 @@ import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import Modal from "../../shared/Modal"
 import Key from "../../shared/Key"
+import { Link } from 'react-router-dom'
 
 class DiscountCodesCreate extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class DiscountCodesCreate extends Component {
     this.filterProductsByCategory = this.filterProductsByCategory.bind(this)
     this.changePage = this.changePage.bind(this)
     this.createDiscount = this.createDiscount.bind(this)
+    this.reset = this.reset.bind(this)
 
     let date = new Date()
     const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
@@ -55,7 +57,8 @@ class DiscountCodesCreate extends Component {
             }
           ]
         }
-      ]
+      ],
+      efffector_value: null
     }
   }
 
@@ -175,14 +178,15 @@ class DiscountCodesCreate extends Component {
     this.setState({ discount })
   }
 
-  createDiscount() {
-    console.log(this.props.form)
+  async createDiscount() {
     let discount = this.state.discount
 
     if (this.state.percent_or_flat === "Percent") {
-      discount.percent = new Number(this.props.form["percent_or_flat_form"].values.percentage)
+      let percent = this.state.efffector_value ? this.state.efffector_value.percentage : 0
+      discount.percent = new Number(percent)
     } else {
-      discount.flat_price = new Number(this.props.form["percent_or_flat_form"].values.flat_price)
+      let flat_price = this.state.efffector_value ? this.state.efffector_value.flat_price : 0
+      discount.flat_price = new Number(flat_price)
     }
     this.props.dispatchObj(reset("percent_or_flat_form"))
     if (this.state.order_or_products === "Products") {
@@ -190,7 +194,7 @@ class DiscountCodesCreate extends Component {
     } else {
       discount.affect_order_total = true
     }
-    discount.discount_code = this.props.form["discount_code_Form"].values.discount_code
+    discount.discount_code = this.props.form["discount_code_Form"].values ? this.props.form["discount_code_Form"].values.discount_code : ""
     this.props.dispatchObj(reset("discount_code_Form"))
 
     // set product id's
@@ -200,8 +204,34 @@ class DiscountCodesCreate extends Component {
 
     discount.active = this.state.active
 
-    this.props.createDiscountCode(discount)
+    await this.props.createDiscountCode(discount)
+    this.setState({ discount: null })
     this.props.history.push(`/admin/discount-codes`)
+  }
+
+  reset() {
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    this.setState({
+      discount: {
+        percentage: null,
+        flat_price: null,
+        affect_order_total: null,
+        products: [],
+        active: false,
+        created_at: today,
+        discount_code: null
+      },
+      percent_or_flat: null,
+      order_or_products: null,
+      queried_products: null,
+      page_number: 1,
+      categoryFilter: "All",
+      last_possible_product: null,
+      oopsModal: false,
+      active: false,
+    })
   }
 
   render() {
@@ -214,7 +244,12 @@ class DiscountCodesCreate extends Component {
 
     return (
       <div className="margin-m-v">
-        <div className="flex absolute" style={{ top: "5px", right: "5px" }}>
+        <h1 className="text-align-center">Create a Discount Code</h1>
+        <Link to="/admin/discount-codes" className="absolute flex" style={{ top: "5px", left: "30px" }}>
+          <FontAwesomeIcon icon={faArrowAltCircleLeft} />
+          <div className="margin-xs-h">Back to discounts</div>
+        </Link>
+        <div className="flex absolute hover hover-color-12" onClick={this.reset} style={{ top: "5px", right: "5px" }}>
           <div className="margin-s-h">Reset</div>
           <FontAwesomeIcon icon={faSyncAlt} />
         </div>
@@ -227,6 +262,7 @@ class DiscountCodesCreate extends Component {
         :
           <Form 
             submitButton={<div />}
+            onChange={(e) => this.setState({ efffector_value: e })}
             formFields={this.state.percent_or_flat === "Percent" ? 
               [
                 { label: 'Enter Percentage Off', name: 'percentage', noValueError: 'You must provide an address' },
@@ -252,7 +288,7 @@ class DiscountCodesCreate extends Component {
           <>
             <h2>Selected Discounted Products</h2>
 
-            {this.state.discount.products.length > 0 && this.renderQueriedProducts(this.state.discount.products, true)}
+            {this.state.discount && this.state.discount.products.length > 0 && this.renderQueriedProducts(this.state.discount.products, true)}
 
             <hr/>
 
@@ -281,7 +317,7 @@ class DiscountCodesCreate extends Component {
         }
 
         <Form 
-          onSubmit={(e) => this.handleSearchSubmit(e)}
+          onSubmit={(e) => console.log(e)}
           submitButton={<div />}
           formFields={[
             { label: 'Discount Code', name: 'discount_code', noValueError: 'You must provide an address' },
