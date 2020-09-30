@@ -179,7 +179,7 @@ class ProductForm extends Component {
               </>
             : 
               <>
-                <div className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
+                <div onClick={() => this.setState({ edit_image: "i1" })} className={`flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "500px", maxWidth: "500px", minHeight: "500px", minWidth: "500px", marginTop: "10px" }}>
                   {!this.state.product.images.i1 && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "30px" } : { fontSize: "35px" }} className="hover hover-color-12" icon={faEdit} />}
                   <img style={{ height: "500px", width: "auto", maxHeight: "500px", maxWidth: "500px" }} src={this.state.product.images.i1} />
                 </div>
