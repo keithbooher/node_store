@@ -51,7 +51,7 @@ class Home extends Component  {
   
   render() {
     return (
-      <div style={{ padding: "0em 0em 80px 0em" }}>
+      <div style={{ padding: "0em 0em 100px 0em" }}>
         <MetaTags>
           <title>Node Store</title>
           <meta name="description" content="Some description." />

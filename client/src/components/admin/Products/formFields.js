@@ -18,6 +18,7 @@ export const productFields = [
   { label: 'Display To Customer', name: 'display', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Home Page Promotion', name: 'home_promotion', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Make Backorderable', name: 'backorderable', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
+  { label: 'Availability', name: 'availability', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Gift Note', name: 'gift_note', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Categories', name: 'categories', typeOfComponent: 'tree', options: {}, noValueError: 'You must provide an address' },
   { label: 'Image', name: 'images', typeOfComponent: 'photo-upload', noValueError: 'You must provide an address' },

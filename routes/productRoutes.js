@@ -32,7 +32,7 @@ module.exports = app => {
 
   app.get('/api/products/home_promotion', async (req, res) => {    
     try {
-      const products = await Product.find({ inventory_count: {$gte: 1}, display: true, home_promotion: true, deleted_at: null }).populate({
+      const products = await Product.find({ $or: [{ inventory_count: {$gte: 1} }, { backorderable: true } ], display: true, home_promotion: true, deleted_at: null }).populate({
         path: 'categories'
       })
       res.send(products) 
@@ -224,17 +224,17 @@ module.exports = app => {
     }
   })
 
-  // app.get('/api/products/update/all', async (req, res) => {    
-  //   try {
-  //     const products = await Product.updateMany({}, { images: { i1: null, i2: null, i3: null, i4: null, i5: null } }, {}, (e, doc) => {
-  //       console.log('made it')
-  //       console.log(doc)
-  //     })
-  //     res.send(products)
-  //   } catch (err) {
-  //     res.status(422).send(err)
-  //   }
-  // })
+  app.get('/api/products/update/all', async (req, res) => {    
+    try {
+      const products = await Product.updateMany({}, { availability: true }, {}, (e, doc) => {
+        console.log('made it')
+        console.log(doc)
+      })
+      res.send(products)
+    } catch (err) {
+      res.status(422).send(err)
+    }
+  })
 
 
 }

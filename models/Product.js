@@ -56,6 +56,10 @@ const productSchema = new Schema({
     type: Boolean,
     default: false
   },
+  availability: {
+    type: Boolean,
+    default: false
+  },
   related_products: [{
     type: Schema.Types.ObjectId,
     ref: 'products'

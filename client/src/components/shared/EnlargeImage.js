@@ -19,7 +19,6 @@ class EnlargeImage extends Component {
 
 
   render() {
-    console.log(this.props)
 
     const image_style = {
       height: "auto",
