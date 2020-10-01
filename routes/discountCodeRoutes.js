@@ -31,6 +31,21 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/discount_code/code/:code', async (req, res) => {  
+    const discount_code = req.params.code
+    try {
+      const code = await DiscountCode.findOne({ discount_code })
+        .populate({
+          path: "products",
+          model: "products",
+        })
+      res.send(code)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(401).send({message: err})
+    }
+  })
+
   app.get('/api/discount_code/:_id', async (req, res) => {  
     const _id = req.params._id
     try {
@@ -45,6 +60,7 @@ module.exports = app => {
       res.status(401).send({message: err})
     }
   })
+
 
   app.get('/api/discount_codes', async (req, res) => {  
     try {

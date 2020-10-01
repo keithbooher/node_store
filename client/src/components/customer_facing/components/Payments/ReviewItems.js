@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from "../../../../utils/API"
+import { updateCart, getDiscountCode } from "../../../../utils/API"
 import { dispatchObj } from "../../../../actions"
 import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom"
 import { formatMoney } from '../../../../utils/helpFunctions'
 import Form from "../../../shared/Form"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 class ReviewItems extends Component {
   constructor(props) {
@@ -20,7 +22,8 @@ class ReviewItems extends Component {
     this.updateCartProperty = this.updateCartProperty.bind(this)
     this.state = {
       propertyToEdit: null,
-      editForm: null
+      editForm: null,
+      discountCodeCheck: null
     }
   }
 
@@ -77,7 +80,36 @@ class ReviewItems extends Component {
     this.setState({ propertyToEdit })
   }
 
+  async checkDiscountCode() {
+    const form_value = this.props.form['discount_code_form'].values.discount_code
+    let discount_code = await this.props.getDiscountCode(form_value)
+    let status = discount_code.status
+    discount_code = discount_code.then(res => res.data)
+    if (status !== 200) {
+      this.setState({ discountCodeCheck: false })
+      return
+    }
+    let cart = this.props.cart
+    if (discount_code.affect_order_total) {
+      if (discount_code.flat_price) {
+        cart.discount_total = cart.total - discount_code.flat_price
+      } else {
+        cart.discount_total = cart.total * (100/discount_code.percentage)
+      }
+    } else {
+      if (discount_code.flat_price) {
+
+      } else {
+
+      }
+    }
+    cart.discount_codes.push(discount_code)
+    const { data } = await this.props.updateCart(cart)
+    this.setState({ discountCodeCheck: true })
+  }
+
   render() {
+    console.log(this.props.cart)
     return (
       <div>
 
@@ -136,6 +168,28 @@ class ReviewItems extends Component {
             />
           </div>
 
+          <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } }>
+            <Form
+              onSubmit={this.checkDiscountCode}
+              submitButton= {
+                  <div className="flex">
+                    <button>Check For Discount</button>
+                    {this.state.discountCodeCheck !== null ? 
+                      (this.state.discountCodeCheck !== null ? 
+                          <FontAwesomeIcon icon={faCheck} />
+                        : 
+                          <FontAwesomeIcon icon={faTimes} />                      
+                        )
+                      : <div /> }
+                  </div>
+                }
+              formFields={[
+                { label: 'Dicount Code', name: 'discount_code', noValueError: 'You must provide an address', value: null },
+              ]} 
+              form={"discount_code_form"}
+            />
+          </div>
+
           <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
             <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
@@ -170,6 +224,6 @@ function mapStateToProps({ form, mobile }) {
   return { form, mobile }
 }
 
-const actions = { updateCart, dispatchObj }
+const actions = { updateCart, dispatchObj, getDiscountCode }
 
 export default connect(mapStateToProps, actions)(withRouter(ReviewItems))

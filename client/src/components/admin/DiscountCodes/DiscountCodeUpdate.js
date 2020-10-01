@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEdit, faTrash, faPlusCircle, faArrowAltCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { reset } from "redux-form";
-import { getDiscountCode, updateDiscountCode, paginatedProducts, searchProduct, getAllCategories, lastProductByCategory } from '../../../utils/API'
+import { getDiscountCodeById, updateDiscountCode, paginatedProducts, searchProduct, getAllCategories, lastProductByCategory } from '../../../utils/API'
 import { validatePresenceOnAll } from "../../../utils/validations"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
 import { dispatchObj } from '../../../actions'
@@ -52,7 +52,7 @@ class DiscountCodesUpdate extends Component {
 
 
   async componentDidMount() {
-    const { data } = await this.props.getDiscountCode(this.routeParamID)
+    const { data } = await this.props.getDiscountCodeById(this.routeParamID)
     let categories = await this.props.getAllCategories()
 
     let dropdown = this.state.dropDownField[0]
@@ -294,7 +294,7 @@ class DiscountCodesUpdate extends Component {
                 formFields={this.state.editForm.formFields}
                 form={this.state.editForm.form}
                 validation={this.state.editForm.validation}
-                title={"Updating Shipping Property"}
+                title={"Updating Discount Property"}
                 initialValues={this.state.editForm.initialValues}
               />
             </div>
@@ -315,6 +315,6 @@ function mapStateToProps({ mobile, form }) {
   return { mobile, form }
 }
 
-const actions = { dispatchObj, getDiscountCode, updateDiscountCode, paginatedProducts, searchProduct, getAllCategories, lastProductByCategory }
+const actions = { dispatchObj, getDiscountCodeById, updateDiscountCode, paginatedProducts, searchProduct, getAllCategories, lastProductByCategory }
 
 export default connect(mapStateToProps, actions)(withRouter(DiscountCodesUpdate))

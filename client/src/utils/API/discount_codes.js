@@ -2,8 +2,21 @@ import axios from "axios"
 import { ERROR } from '../../actions/types'
 import Bugsnag from '@bugsnag/js'
 
-export const getDiscountCode = (_id) => async dispatch => {
+export const getDiscountCodeById = (_id) => async dispatch => {
   let req = await axios.get(`/api/discount_code/${_id}`).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+    return req
+  } else {
+    return {data: {}}
+  }
+}
+
+export const getDiscountCode = (code) => async dispatch => {
+  let req = await axios.get(`/api/discount_code/code/${code}`).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
     return error.response
