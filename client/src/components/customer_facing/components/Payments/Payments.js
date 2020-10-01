@@ -91,6 +91,7 @@ const Payments = ({
     const inventoryCheck = await checkInventory(cart.line_items)
     if (inventoryCheck.data.filter((item) => item !== null).length > 0) {
       // setState for low inventory error and then remove from cart
+      setLoading(false)
       setOutOfStock(inventoryCheck.data)
       return 
     }
@@ -224,7 +225,7 @@ const Payments = ({
 
       {issueWithPayment && 
         <Modal cancel={() => setIssueWithPayment(false)}>
-          <h1>There was an issue with payment</h1>
+          <h2>There was an issue with your payment method</h2>
         </Modal>
       }
 

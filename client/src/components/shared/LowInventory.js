@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { updateCart } from "../../actions"
 import mobile from "is-mobile"
 import Modal from "./Modal"
-import { calculateSubtotal, formatMoney } from '../../utils/helpFunctions'
+import { calculateSubtotal, formatMoney, discountCodeAdjustments } from '../../utils/helpFunctions'
 
 let isMobile = mobile()
 class LowInventory extends Component {
@@ -18,7 +18,6 @@ class LowInventory extends Component {
   async componentDidMount() {
     let cart = this.props.cart
     let out_of_stock_items = this.props.out_of_stock_items
-    console.log(out_of_stock_items)
 
     if (this.props.adjust) {
       out_of_stock_items = out_of_stock_items.filter((item) => item !== null).map((item) => {
@@ -48,8 +47,20 @@ class LowInventory extends Component {
       
       cart.line_items = cart.line_items.filter((item) => item !== null)
 
-
       let sub_total = Number(calculateSubtotal(cart))
+
+      if (cart.discount_codes.length > 1) {
+        cart = discountCodeAdjustments(cart.discount_codes[0], cart)
+        if (cart.discount_codes.affect_order_total) {
+          sub_total = Number(parseFloat(sub_total - cart.discount_total)).toFixed(2)
+        } else {
+          sub_total = Number(calculateSubtotal(cart))
+        }
+      }
+      if (sub_total < 0) {
+        sub_total = 0
+      }
+      
       let tax = Number(sub_total * .08)
       let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
   

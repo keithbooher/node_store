@@ -64,6 +64,9 @@ class LineItems extends Component {
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
+    cart.discount_codes = []
+    cart.discount_total = null
+
     cart.sub_total = sub_total
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
@@ -84,6 +87,9 @@ class LineItems extends Component {
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.discount_codes = []
+    cart.discount_total = null
 
     cart.sub_total = sub_total
     cart.tax = tax
@@ -114,6 +120,9 @@ class LineItems extends Component {
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.discount_codes = []
+    cart.discount_total = null
 
     cart.sub_total = sub_total
     cart.tax = tax

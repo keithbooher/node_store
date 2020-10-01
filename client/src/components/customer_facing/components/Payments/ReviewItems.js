@@ -13,7 +13,7 @@ import { formatMoney } from '../../../../utils/helpFunctions'
 import Form from "../../../shared/Form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { calculateSubtotal } from "../../../../utils/helpFunctions"
+import { calculateSubtotal, discountCodeAdjustments } from "../../../../utils/helpFunctions"
 class ReviewItems extends Component {
   constructor(props) {
     super()
@@ -93,45 +93,8 @@ class ReviewItems extends Component {
       return
     }
 
-    if (discount_code.affect_order_total) {
-      if (discount_code.flat_price) {
-        cart.discount_total = discount_code.flat_price
-      } else {
-        cart.discount_total = cart.total * (100/discount_code.percentage)
-      }
-    } else {
-      if (discount_code.flat_price !== null) {
-        console.log('made it')
-        discount_code.products.map(product => {
-          cart.line_items = cart.line_items.map(item => {
-            if (item._product_id === product._id) {
-              item.product_price = new Number(item.product_price - discount_code.flat_price)
-            }
-            return item
-          })
-        })
-        cart.discount_total = discount_code.flat_price
-      } else {
-        discount_code.products.map(product => {
-          // find out what products qualify for discount
-          let affected_items = cart.line_items.select(item => {
-            if (item._product_id === product._id) {
-              return true
-            }
-          })
-          // Of those items, find the highest price item
-          let highest_price_item = Math.max.apply(Math, affected_items.map(function(o) { return o.product_price; }))
-          cart.line_items = cart.line_items.map(item => {
-            if (item._product_id === highest_price_item._product_id) {
-              // apply discount
-              item.product_price = item.product_price * (100/discount_code.percentage)
-            }
-            return item
-          })
-        })
-        cart.discount_total = discount_code.percentage
-      }
-    }
+    cart = discountCodeAdjustments(discount_code, cart)
+
     cart.discount_codes.push(discount_code)
 
     // calculate total
