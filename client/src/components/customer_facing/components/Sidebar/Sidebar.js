@@ -39,7 +39,7 @@ class Sidebar extends Component  {
     categories = categories.sort((a,b) => {
       return a.display_order - b.display_order
     })
-    return categories.map((category, index) => {
+    return categories.filter((cat) => !cat.deleted_at).map((category, index) => {
       return (
         <div key={index} className="margin-s-v" style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" } }>
           <div className="flex">

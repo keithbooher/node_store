@@ -74,7 +74,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
   const renderCategories = (parent_category) => {
     let category_set = parent_category !== null ? parent_category.sub_categories : categories
     return (
-      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).map((category, index) => {
+      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).filter((cat) => !cat.deleted_at).map((category, index) => {
         let up_disable = false
         let down_disable = false
         const sorted_cats = category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
