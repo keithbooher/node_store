@@ -196,6 +196,8 @@ class DiscountCodesUpdate extends Component {
 
     let queried_products = this.state.queried_products.filter((queried_product) => queried_product._id !== prod._id)
 
+    await this.props.updateDiscountCode(discount)
+
     this.setState({ discount, queried_products })
   }
 

@@ -255,9 +255,9 @@ class DiscountCodesCreate extends Component {
         </div>
         {!this.state.percent_or_flat ?
           <div className="flex">
-            <button onClick={ () => this.setState({ percent_or_flat: "Percent" }) }>Percentage</button>
+            <button onClick={ () => this.setState({ percent_or_flat: "Percent" }) }>Percentage Off</button>
             <div className="margin-s-h">or</div>
-            <button  onClick={ () => this.setState({ percent_or_flat: "Flat" }) }>Flat Price</button>
+            <button  onClick={ () => this.setState({ percent_or_flat: "Flat" }) }>Dollar Amount Off</button>
           </div>
         :
           <Form 

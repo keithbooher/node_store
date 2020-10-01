@@ -65,6 +65,8 @@ const Payment = ({
 
     let updated_cart = await updateCart(_cart)
 
+    let discount_codes = cart.discount_codes.map(code => code._id)
+
     // Create Order
     let order = {
       tax: _cart.tax,
@@ -73,7 +75,8 @@ const Payment = ({
       date_placed: date,
       _user_id: _cart._user_id,
       email: customer.email ? customer.email : _cart.email,
-      payment: charge.data
+      payment: charge.data,
+      discount_codes
     }
     const new_order = await createOrder(order)
 

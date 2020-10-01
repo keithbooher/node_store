@@ -59,6 +59,10 @@ module.exports = app => {
     const _id = req.params.id
     try {
       const cart = await Cart.findOne({ _id: _id })
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -71,6 +75,10 @@ module.exports = app => {
     const _user_id = req.params.user_id
     try {
       const cart = await Cart.findOne({ _user_id, deleted_at: null, checkout_state: {$ne: "complete"} })
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -83,6 +91,10 @@ module.exports = app => {
     try {
       const cart_id = req.params.id
       const cart = await Cart.findOneAndUpdate({ _id: cart_id  }, { _user_id: "000000000000000000000000" }, {new: true})
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(cart)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -131,6 +143,10 @@ module.exports = app => {
 
       // assign the new cart the customer is working with to them now
       let updated_cart = await Cart.findOneAndUpdate({ _id: guest_cart_id }, { _user_id, email }, {new: true})
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(updated_cart)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -171,6 +187,10 @@ module.exports = app => {
     let cart = req.body.cart
     try {
       let updated_cart = await Cart.findOneAndUpdate({ _id: cart._id }, cart, {new: true})
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(updated_cart)
     } catch (err) {
       req.bugsnag.notify(err)

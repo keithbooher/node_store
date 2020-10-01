@@ -13,13 +13,14 @@ import { formatMoney } from '../../../../utils/helpFunctions'
 import Form from "../../../shared/Form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-
+import { calculateSubtotal } from "../../../../utils/helpFunctions"
 class ReviewItems extends Component {
   constructor(props) {
     super()
     this.showEditIndicator = this.showEditIndicator.bind(this)
     this.showEditModal = this.showEditModal.bind(this)
     this.updateCartProperty = this.updateCartProperty.bind(this)
+    this.checkDiscountCode = this.checkDiscountCode.bind(this)
     this.state = {
       propertyToEdit: null,
       editForm: null,
@@ -84,27 +85,74 @@ class ReviewItems extends Component {
     const form_value = this.props.form['discount_code_form'].values.discount_code
     let discount_code = await this.props.getDiscountCode(form_value)
     let status = discount_code.status
-    discount_code = discount_code.then(res => res.data)
+    let cart = this.props.cart
+
+    discount_code = discount_code.data
     if (status !== 200) {
       this.setState({ discountCodeCheck: false })
       return
     }
-    let cart = this.props.cart
+
     if (discount_code.affect_order_total) {
       if (discount_code.flat_price) {
-        cart.discount_total = cart.total - discount_code.flat_price
+        cart.discount_total = discount_code.flat_price
       } else {
         cart.discount_total = cart.total * (100/discount_code.percentage)
       }
     } else {
-      if (discount_code.flat_price) {
-
+      if (discount_code.flat_price !== null) {
+        console.log('made it')
+        discount_code.products.map(product => {
+          cart.line_items = cart.line_items.map(item => {
+            if (item._product_id === product._id) {
+              item.product_price = new Number(item.product_price - discount_code.flat_price)
+            }
+            return item
+          })
+        })
+        cart.discount_total = discount_code.flat_price
       } else {
-
+        discount_code.products.map(product => {
+          // find out what products qualify for discount
+          let affected_items = cart.line_items.select(item => {
+            if (item._product_id === product._id) {
+              return true
+            }
+          })
+          // Of those items, find the highest price item
+          let highest_price_item = Math.max.apply(Math, affected_items.map(function(o) { return o.product_price; }))
+          cart.line_items = cart.line_items.map(item => {
+            if (item._product_id === highest_price_item._product_id) {
+              // apply discount
+              item.product_price = item.product_price * (100/discount_code.percentage)
+            }
+            return item
+          })
+        })
+        cart.discount_total = discount_code.percentage
       }
     }
     cart.discount_codes.push(discount_code)
-    const { data } = await this.props.updateCart(cart)
+
+    // calculate total
+    let sub_total = Number(calculateSubtotal(cart))
+    if (discount_code.affect_order_total) {
+      sub_total = Number(parseFloat(sub_total - cart.discount_total)).toFixed(2)
+    }
+    if (sub_total < 0) {
+      sub_total = 0
+    }
+
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+
+    cart.total = Number(sub_total + tax + shipping)
+
+    this.props.updateCart(cart)
+
     this.setState({ discountCodeCheck: true })
   }
 
@@ -168,32 +216,42 @@ class ReviewItems extends Component {
             />
           </div>
 
-          <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } }>
-            <Form
-              onSubmit={this.checkDiscountCode}
-              submitButton= {
-                  <div className="flex">
-                    <button>Check For Discount</button>
-                    {this.state.discountCodeCheck !== null ? 
-                      (this.state.discountCodeCheck !== null ? 
-                          <FontAwesomeIcon icon={faCheck} />
-                        : 
-                          <FontAwesomeIcon icon={faTimes} />                      
-                        )
-                      : <div /> }
-                  </div>
-                }
-              formFields={[
-                { label: 'Dicount Code', name: 'discount_code', noValueError: 'You must provide an address', value: null },
-              ]} 
-              form={"discount_code_form"}
-            />
-          </div>
+          {this.props.cart.discount_codes.length < 1 && 
+            <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } }>
+              <Form
+                onSubmit={this.checkDiscountCode}
+                submitButton= {
+                    <div className="flex">
+                      <button>Check For Discount</button>
+                      {this.state.discountCodeCheck !== null ? 
+                        (this.state.discountCodeCheck !== null ? 
+                            <FontAwesomeIcon icon={faCheck} />
+                          : 
+                            <FontAwesomeIcon icon={faTimes} />                      
+                          )
+                        : <div /> }
+                    </div>
+                  }
+                formFields={[
+                  { label: 'Dicount Code', name: 'discount_code', noValueError: 'You must provide an address', value: null },
+                ]} 
+                form={"discount_code_form"}
+              />
+            </div>
+          }
 
           <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
             <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
+            {this.props.cart.discount_codes.length > 0 && 
+              <div>Discount Code: {this.props.cart.discount_codes[0].affect_order_total ?
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off entire purchase</span>
+               :
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off select product</span>
+               }
+              </div>
+            }
             <div>Total: ${formatMoney(this.props.cart.total)}</div>
           </div>
 
