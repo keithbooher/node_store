@@ -38,6 +38,7 @@ class DiscountCodesCreate extends Component {
       percent_or_flat: null,
       order_or_products: null,
       queried_products: null,
+      all_products: false,
       page_number: 1,
       categoryFilter: "All",
       last_possible_product: null,
@@ -201,6 +202,8 @@ class DiscountCodesCreate extends Component {
     discount.products = discount.products.map(prod => {
       return prod._id
     })
+    
+    discount.all_products = this.state.all_products
 
     discount.active = this.state.active
 
@@ -286,6 +289,16 @@ class DiscountCodesCreate extends Component {
         }
         {this.state.order_or_products === "Products" && 
           <>
+            {!this.state.all_products ?        
+              <div className="flex">
+                <button onClick={ () => this.setState({ all_products: "all" }) }>Apply to all selected products?</button>
+                <div className="margin-s-h">or</div>
+                <button onClick={ () => this.setState({ all_products: "highest" }) }>Apply to the highest priced item in cart?</button>
+              </div>
+            :
+              this.state.all_products !== "Products" && <h3 className="bold">{this.state.all_products }</h3>     
+            }
+
             <h2>Selected Discounted Products</h2>
 
             {this.state.discount && this.state.discount.products.length > 0 && this.renderQueriedProducts(this.state.discount.products, true)}

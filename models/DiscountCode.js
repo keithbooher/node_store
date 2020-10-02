@@ -8,6 +8,10 @@ const discountCodeSchema = new Schema({
     type: Boolean,
     default: true
   },
+  apply_to_all_products: {
+    type: Boolean,
+    default: false,
+  },
   products: [{
     type: Schema.Types.ObjectId,
     ref: 'products'

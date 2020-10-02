@@ -51,9 +51,10 @@ class LineItems extends Component {
     let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
     cart.line_items = removed_zero_quantity_items
 
-    if (cart.discount_codes.length > 0 && !cart.discount.codes[0].affect_order_total) {
+    if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      cart.line_items = revertProductDiscount(cart, this.props.getProductbyId)
+      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
+      cart.line_items = reverted_items
     }
     
     cart.discount_codes = []
@@ -92,7 +93,7 @@ class LineItems extends Component {
     this.props.dispatchEnlargeImage({ image, path })
   }
 
-  removeProduct(incoming_line_item) {
+  async removeProduct(incoming_line_item) {
     const cart = this.props.cart
 
     const current_cart_line_items = cart.line_items
@@ -102,9 +103,10 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
-    if (cart.discount_codes.length > 0 && !cart.discount.codes[0].affect_order_total) {
+    if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      cart.line_items = revertProductDiscount(cart, this.props.getProductbyId)
+      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
+      cart.line_items = reverted_items
     }
 
     cart.discount_codes = []

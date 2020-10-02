@@ -23,6 +23,7 @@ class DiscountCodesUpdate extends Component {
 
     this.filterProductsByCategory = this.filterProductsByCategory.bind(this)
     this.changePage = this.changePage.bind(this)
+    this.allProductsBoolean = this.allProductsBoolean.bind(this)
 
     this.state = {
       discount: null,
@@ -196,9 +197,9 @@ class DiscountCodesUpdate extends Component {
 
     let queried_products = this.state.queried_products.filter((queried_product) => queried_product._id !== prod._id)
 
-    await this.props.updateDiscountCode(discount)
+    let { data } = await this.props.updateDiscountCode(discount)
 
-    this.setState({ discount, queried_products })
+    this.setState({ discount: data, queried_products })
   }
 
   async removeDiscountedProduct(prod) {
@@ -213,6 +214,13 @@ class DiscountCodesUpdate extends Component {
     this.setState({ discount })
   }
 
+  async allProductsBoolean() {
+    let discount = this.state.discount
+    discount.apply_to_all_products = !discount.apply_to_all_products
+    let { data } = await this.props.updateDiscountCode(discount)
+    this.setState({ discount: data })
+  }
+
   render() {
     let lastPossibleItem = false
     if (this.state.queried_products && this.state.queried_products.length > 0) {
@@ -220,7 +228,7 @@ class DiscountCodesUpdate extends Component {
         lastPossibleItem = true
       }
     }
-
+    console.log(this.state.discount)
     return (
       <div >
         <Link to="/admin/discount-codes" className="absolute flex" style={{ top: "5px", left: "30px" }}>
@@ -255,6 +263,9 @@ class DiscountCodesUpdate extends Component {
             }
             {!this.state.discount.affect_order_total && 
               <>
+
+                {this.state.discount.apply_to_all_products ? <button onClick={this.allProductsBoolean}>Apply to All Valid Products</button> : <button onClick={this.allProductsBoolean}>Apply Only To Highest Priced Valid Product</button>}
+
                 <h2>Selected Discounted Products</h2>
     
                 {this.state.discount.products.length > 0 && this.renderQueriedProducts(this.state.discount.products, true)}

@@ -59,75 +59,101 @@ export const formatMoney = (money) => {
 
 export const discountCodeAdjustments = (discount_code, cart) => {
   if (discount_code.affect_order_total) {
-    if (discount_code.flat_price) {
+
+    if (discount_code.flat_price !== null) {
       cart.discount_total = discount_code.flat_price
     } else {
       cart.discount_total = cart.total * (100/discount_code.percentage)
     }
+
   } else {
+
+    if (discount_code.apply_to_all_products) {
+      cart.line_items = applyToAll(discount_code, cart)
+    } else {
+      cart.line_items = applyToHighest(discount_code, cart)
+    }
+
     if (discount_code.flat_price !== null) {
-      discount_code.products.map(product => {
-        cart.line_items = cart.line_items.map(item => {
-          if (item._product_id === product._id) {
-            item.product_price = new Number(item.product_price - discount_code.flat_price)
-            if (item.product_price < 0) {
-              item.product_price = 0
-            }
-          }
-          return item
-        })
-      })
       cart.discount_total = discount_code.flat_price
     } else {
-      discount_code.products.map(product => {
-        // find out what products qualify for discount
-        let affected_items = cart.line_items.select(item => {
-          if (item._product_id === product._id) {
-            return true
-          }
-        })
-        // Of those items, find the highest price item
-        let highest_price_item = Math.max.apply(Math, affected_items.map(function(o) { return o.product_price; }))
-        cart.line_items = cart.line_items.map(item => {
-          if (item._product_id === highest_price_item._product_id) {
-            // apply discount
-            item.product_price = item.product_price * (100/discount_code.percentage)
-          }
-          return item
-        })
-      })
       cart.discount_total = discount_code.percentage
     }
+
   }
 
   return cart
 }
 
+const applyToAll = (discount_code, cart) => {
+  let update_cart = cart
+  discount_code.products.map(product => {
+    update_cart.line_items = update_cart.line_items.map(item => {
+      if (item._product_id === product._id) {
+
+        if (discount_code.flat_price !== null) {
+          item.product_price = new Number(item.product_price - discount_code.flat_price)
+        } else {
+          item.product_price = item.product_price * (100/discount_code.percentage)
+        }
+
+        if (item.product_price < 0) {
+          item.product_price = 0
+        }
+      }
+      return item
+    })
+  })
+  return update_cart.line_items
+}
+
+const applyToHighest = (discount_code, cart) => {
+  let update_cart = cart
+  let code = discount_code
+  code.products.map(product => {
+    // find out what products qualify for discount
+    let affected_items = update_cart.line_items.filter(item => item._product_id === product._id)
+    // Of those items, find the highest price item
+    let highest_price_item = affected_items.sort((a, b) => (a.product_price > b.product_price) ? 1 : -1)
+    update_cart.line_items = update_cart.line_items.map(item => {
+      if (highest_price_item.length > 0 && item._product_id === highest_price_item[0]._product_id) {
+
+        // apply discount
+        if (code.flat_price !== null) {
+          item.product_price = new Number(item.product_price - code.flat_price)
+        } else {
+          item.product_price = item.product_price * (100/code.percentage)
+        }
+
+        if (item.product_price < 0) {
+          item.product_price = 0
+        }
+
+      }
+      return item
+    })
+  })
+  return update_cart.line_items
+}
+
 export const revertProductDiscount = async (cart, getProductbyId) => {
-  console.log('hi')
   let discount_code = cart.discount_codes[0]
   await Promise.all(discount_code.products.map(async product => {
-    console.log('1st')
     cart.line_items = await Promise.all(cart.line_items.map(async item => {
-      console.log('2nd')
       if (item._product_id === product) {
-        let price = await Promise.all([getProduct(product, getProductbyId) ])
-        item.product_price = price[0]
-        console.log(item.product_price)
+        let price = await Promise.all([getProductPrice(product, getProductbyId) ]).then(value => value[0])
+        item.product_price = price
       }
       return item
     }))
   }))
-  console.log(cart.line_items)
   return cart.line_items
 }
 
-const getProduct = async (id, getProductbyId) => {
+const getProductPrice = async (id, getProductbyId) => {
   let price
   await Promise.all([getProductbyId(id)]).then(value => {
-    console.log(value)
    price = value[0].data.price
   })
-  console.log(price)
   return price
 }

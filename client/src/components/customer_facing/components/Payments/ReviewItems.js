@@ -95,6 +95,8 @@ class ReviewItems extends Component {
 
     cart = discountCodeAdjustments(discount_code, cart)
 
+    console.log(cart)
+
     cart.discount_codes.push(discount_code)
 
     // calculate total
