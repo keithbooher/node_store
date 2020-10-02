@@ -70,6 +70,9 @@ export const discountCodeAdjustments = (discount_code, cart) => {
         cart.line_items = cart.line_items.map(item => {
           if (item._product_id === product._id) {
             item.product_price = new Number(item.product_price - discount_code.flat_price)
+            if (item.product_price < 0) {
+              item.product_price = 0
+            }
           }
           return item
         })
@@ -98,4 +101,33 @@ export const discountCodeAdjustments = (discount_code, cart) => {
   }
 
   return cart
+}
+
+export const revertProductDiscount = async (cart, getProductbyId) => {
+  console.log('hi')
+  let discount_code = cart.discount_codes[0]
+  await Promise.all(discount_code.products.map(async product => {
+    console.log('1st')
+    cart.line_items = await Promise.all(cart.line_items.map(async item => {
+      console.log('2nd')
+      if (item._product_id === product) {
+        let price = await Promise.all([getProduct(product, getProductbyId) ])
+        item.product_price = price[0]
+        console.log(item.product_price)
+      }
+      return item
+    }))
+  }))
+  console.log(cart.line_items)
+  return cart.line_items
+}
+
+const getProduct = async (id, getProductbyId) => {
+  let price
+  await Promise.all([getProductbyId(id)]).then(value => {
+    console.log(value)
+   price = value[0].data.price
+  })
+  console.log(price)
+  return price
 }

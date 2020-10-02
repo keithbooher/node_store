@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart, getDiscountCode } from "../../../../utils/API"
-import { dispatchObj } from "../../../../actions"
+import { getDiscountCode } from "../../../../utils/API"
+import { dispatchObj, updateCart } from "../../../../actions"
 import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helpFunctions"

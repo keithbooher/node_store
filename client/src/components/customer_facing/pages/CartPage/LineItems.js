@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reset } from "redux-form"
 import { Link } from 'react-router-dom'
-import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
+import { calculateSubtotal, formatMoney, revertProductDiscount } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import Modal from "../../../shared/Modal"
 import Form from "../../../shared/Form"
 import { dispatchObj, updateCart, dispatchEnlargeImage } from "../../../../actions"
-import { checkInventory } from "../../../../utils/API"
+import { checkInventory, getProductbyId } from "../../../../utils/API"
 class LineItems extends Component {
   constructor(props) {
     super()
@@ -50,13 +50,18 @@ class LineItems extends Component {
 
     let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
     cart.line_items = removed_zero_quantity_items
+
+    if (cart.discount_codes.length > 0 && !cart.discount.codes[0].affect_order_total) {
+      // UNDO PRODUCT PRICE ALTERATIONS
+      cart.line_items = revertProductDiscount(cart, this.props.getProductbyId)
+    }
+    
+    cart.discount_codes = []
+    cart.discount_total = null
     
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
-
-    cart.discount_codes = []
-    cart.discount_total = null
 
     cart.sub_total = sub_total
     cart.tax = tax
@@ -97,12 +102,17 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
-    let sub_total = Number(calculateSubtotal(cart))
-    let tax = Number(sub_total * .08)
-    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+    if (cart.discount_codes.length > 0 && !cart.discount.codes[0].affect_order_total) {
+      // UNDO PRODUCT PRICE ALTERATIONS
+      cart.line_items = revertProductDiscount(cart, this.props.getProductbyId)
+    }
 
     cart.discount_codes = []
     cart.discount_total = null
+
+    let sub_total = Number(calculateSubtotal(cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
     
     cart.sub_total = sub_total
     cart.tax = tax
@@ -187,6 +197,6 @@ function mapStateToProps({ cart, form, enlargeImage, mobile }) {
   return { cart, form, enlargeImage, mobile }
 }
 
-const actions = { dispatchObj, updateCart, checkInventory, dispatchEnlargeImage }
+const actions = { dispatchObj, updateCart, checkInventory, dispatchEnlargeImage, getProductbyId }
 
 export default connect(mapStateToProps, actions)(LineItems)
