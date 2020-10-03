@@ -23,6 +23,7 @@ class ProductList extends Component {
       chosen_product: null,
       last_product: null,
       categoryFilter: "none",
+      areYouSure: false, 
       dropDownField:[
         { 
           label: "Filter", 
@@ -257,7 +258,6 @@ class ProductList extends Component {
               <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
             </div>
           </Modal>
-          
         }
         
       </div>

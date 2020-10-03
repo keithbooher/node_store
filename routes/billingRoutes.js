@@ -20,6 +20,7 @@ module.exports = app => {
 
       res.send(charge)
     } catch (err) {
+      console.log(err)
       req.bugsnag.notify(err)
       res.status(422).send(err)
     }

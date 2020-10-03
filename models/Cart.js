@@ -29,7 +29,12 @@ const cartSchema = new Schema({
     default: null
   },
   chosen_rate: rateSchema,
-  tax: Number
+  tax: Number,
+  discount_codes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'discountCodes'
+  }],
+  discount_total: Number
 })
 
 mongoose.model('carts', cartSchema)

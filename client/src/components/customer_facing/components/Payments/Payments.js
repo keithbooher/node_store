@@ -7,11 +7,14 @@ import { reset } from "redux-form"
 import { useCookies } from 'react-cookie'
 import LowInventory from "../../../shared/LowInventory"
 import ReviewItems from "./ReviewItems"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import {
   CardElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import Modal from '../../../shared/Modal';
 
 
 const checkPassedBillingUsed = (bill_addy, cart) => {
@@ -76,15 +79,19 @@ const Payments = ({
 }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null)
   const [outOfStockMessage, setOutOfStock] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [issueWithPayment, setIssueWithPayment] = useState(false)
   const stripe = useStripe();
   const elements = useElements();
 
   const someFunction = async (e) => {
+    setLoading(true)
     e.preventDefault();
     // First check if products are still available to buy
     const inventoryCheck = await checkInventory(cart.line_items)
     if (inventoryCheck.data.filter((item) => item !== null).length > 0) {
       // setState for low inventory error and then remove from cart
+      setLoading(false)
       setOutOfStock(inventoryCheck.data)
       return 
     }
@@ -94,14 +101,11 @@ const Payments = ({
       card: elements.getElement(CardElement),
     })
 
-    if (payment_method.status !== 200) {
-      return
-    }
-    
     // this is actually creating intent
     const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
-
     if (charge.status !== 200) {
+      setLoading(false)
+      setIssueWithPayment(true)
       return
     }
       
@@ -185,11 +189,12 @@ const Payments = ({
 
     //make available to the checkout page and ultimately Review panel.
     makeNewOrderAvailable(new_order.data, updated_cart.data, new_shipment.data)
+    setLoading(false)
     chooseTab('review')
-
   }
 
   const out_of_stock_title = "Sorry, these products are now low on stock and their quantities have been updated to reflect the most current available inventory count"
+
   return (
     <>
       {auth && <ReviewItems cart={cart} customer={auth} />}
@@ -214,9 +219,15 @@ const Payments = ({
           />
         </div>
         <div style={mobile ? { marginTop: "40px", width: "90%" } : { margin: "0px auto", width: "100%" }}>
-          <button style={mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Pay For Order</button>
+          {loading ? <FontAwesomeIcon className="loadingGif margin-m-v" icon={faSpinner} spin /> : <button style={mobile ? { fontSize: "20px", width: "100%" } : { width: "300px", fontSize: "25px" }} className={`bold margin-m-v`}>Pay For Order</button>}
         </div>
       </form>
+
+      {issueWithPayment && 
+        <Modal cancel={() => setIssueWithPayment(false)}>
+          <h2>There was an issue with your payment method</h2>
+        </Modal>
+      }
 
       {outOfStockMessage && 
         <LowInventory 

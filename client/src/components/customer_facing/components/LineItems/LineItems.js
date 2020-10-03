@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './line_item.css.scss'
-import { calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
+import { calculateSubtotal, formatMoney, revertProductDiscount } from '../../../../utils/helpFunctions'
 import { updateCart, dispatchEnlargeImage, dispatchObj } from "../../../../actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus, faMinus, faTrash, faSlash, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons"
-import { checkInventory } from "../../../../utils/API"
+import { checkInventory, getProductbyId } from "../../../../utils/API"
 import LowInventory from "../../../shared/LowInventory"
 import { Link } from "react-router-dom"
 import Form from "../../../shared/Form"
@@ -59,6 +59,15 @@ class LineItems extends Component {
 
     let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
     cart.line_items = removed_zero_quantity_items
+
+    if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
+      // UNDO PRODUCT PRICE ALTERATIONS
+      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
+      cart.line_items = reverted_items
+    }
+
+    cart.discount_codes = []
+    cart.discount_total = null
     
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -71,7 +80,7 @@ class LineItems extends Component {
     this.props.updateCart(cart)
   }
 
-  removeProduct(incoming_line_item) {
+  async removeProduct(incoming_line_item) {
     const cart = this.props.cart
 
     const current_cart_line_items = cart.line_items
@@ -81,6 +90,17 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
+    console.log(cart)
+
+    if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
+      // UNDO PRODUCT PRICE ALTERATIONS
+      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
+      cart.line_items = reverted_items
+    }
+
+    cart.discount_codes = []
+    cart.discount_total = null
+
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
@@ -88,6 +108,7 @@ class LineItems extends Component {
     cart.sub_total = sub_total
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
+
     cart.checkout_state = "shopping"
     if (cart.line_items.length < 1) {
       cart.chosen_rate = null
@@ -99,7 +120,7 @@ class LineItems extends Component {
     this.props.dispatchEnlargeImage({ image, path })
   }
 
-  submitQuantity() {
+  async submitQuantity() {
     const quantity_value = this.props.form['change_line_item_quantity_form'].values.quantity
     let cart = {...this.props.cart}
     cart.line_items.map((item) => {
@@ -110,6 +131,15 @@ class LineItems extends Component {
         return item
       }
     })
+
+    if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
+      // UNDO PRODUCT PRICE ALTERATIONS
+      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
+      cart.line_items = reverted_items
+    }
+
+    cart.discount_codes = []
+    cart.discount_total = null
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -218,6 +248,6 @@ function mapStateToProps({ enlargeImage, form, cart, mobile }) {
   return { enlargeImage, form, cart, mobile }
 }
 
-const actions = { updateCart, dispatchEnlargeImage, checkInventory, dispatchObj }
+const actions = { updateCart, dispatchEnlargeImage, checkInventory, dispatchObj, getProductbyId }
 
 export default connect(mapStateToProps, actions)(LineItems)

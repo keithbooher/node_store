@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateCart } from "../../../../utils/API"
-import { dispatchObj } from "../../../../actions"
+import { getDiscountCode } from "../../../../utils/API"
+import { dispatchObj, updateCart } from "../../../../actions"
 import AddressDisplayEdit from "../../../admin/shared/AddressDisplayEdit"
 import { reset } from "redux-form"
 import { capitalizeFirsts } from "../../../../utils/helpFunctions"
@@ -11,16 +11,20 @@ import { Link } from 'react-router-dom'
 import { withRouter } from "react-router-dom"
 import { formatMoney } from '../../../../utils/helpFunctions'
 import Form from "../../../shared/Form"
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { calculateSubtotal, discountCodeAdjustments } from "../../../../utils/helpFunctions"
 class ReviewItems extends Component {
   constructor(props) {
     super()
     this.showEditIndicator = this.showEditIndicator.bind(this)
     this.showEditModal = this.showEditModal.bind(this)
     this.updateCartProperty = this.updateCartProperty.bind(this)
+    this.checkDiscountCode = this.checkDiscountCode.bind(this)
     this.state = {
       propertyToEdit: null,
-      editForm: null
+      editForm: null,
+      discountCodeCheck: null
     }
   }
 
@@ -75,6 +79,46 @@ class ReviewItems extends Component {
       bill_or_ship
     }
     this.setState({ propertyToEdit })
+  }
+
+  async checkDiscountCode() {
+    const form_value = this.props.form['discount_code_form'].values.discount_code
+    let discount_code = await this.props.getDiscountCode(form_value)
+    let status = discount_code.status
+    let cart = this.props.cart
+
+    discount_code = discount_code.data
+    if (status !== 200 || !discount_code.data) {
+      this.setState({ discountCodeCheck: false })
+      return
+    }
+
+    let sub_total
+    if (discount_code.affect_order_total) {
+      cart = discountCodeAdjustments(discount_code, cart)
+      sub_total = cart.sub_total
+    } else {
+      cart = discountCodeAdjustments(discount_code, cart)
+      sub_total = Number(calculateSubtotal(cart))
+    }
+
+    cart.discount_codes.push(discount_code)
+
+    if (sub_total < 0) {
+      sub_total = 0
+    }
+
+    let tax = Number(sub_total * .08)
+    let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
+
+    cart.sub_total = sub_total
+    cart.tax = tax
+
+    cart.total = Number(sub_total + tax + shipping)
+
+    this.props.updateCart(cart)
+
+    this.setState({ discountCodeCheck: true })
   }
 
   render() {
@@ -136,10 +180,42 @@ class ReviewItems extends Component {
             />
           </div>
 
+          {this.props.cart.discount_codes.length < 1 && 
+            <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } }>
+              <Form
+                onSubmit={this.checkDiscountCode}
+                submitButton= {
+                    <div className="flex">
+                      <button>Check For Discount</button>
+                      {this.state.discountCodeCheck !== null ? 
+                        (this.state.discountCodeCheck ? 
+                            <FontAwesomeIcon className="margin-m-h" style={{ fontSize: '30px' }} icon={faCheck} />
+                          : 
+                            <FontAwesomeIcon className="margin-m-h" style={{ fontSize: '30px' }} icon={faTimes} />                      
+                          )
+                        : <div /> }
+                    </div>
+                  }
+                formFields={[
+                  { label: 'Dicount Code', name: 'discount_code', noValueError: 'You must provide an address', value: null },
+                ]} 
+                form={"discount_code_form"}
+              />
+            </div>
+          }
+
           <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
             <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
+            {this.props.cart.discount_codes.length > 0 && 
+              <div>Discount Code: {this.props.cart.discount_codes[0].affect_order_total ?
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off entire cart</span>
+               :
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off select product(s)</span>
+               }
+              </div>
+            }
             <div>Total: ${formatMoney(this.props.cart.total)}</div>
           </div>
 
@@ -170,6 +246,6 @@ function mapStateToProps({ form, mobile }) {
   return { form, mobile }
 }
 
-const actions = { updateCart, dispatchObj }
+const actions = { updateCart, dispatchObj, getDiscountCode }
 
 export default connect(mapStateToProps, actions)(withRouter(ReviewItems))
