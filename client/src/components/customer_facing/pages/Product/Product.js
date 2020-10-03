@@ -146,6 +146,9 @@ const Product = ({
       let tax = Number(sub_total * .08)
       let shipping = Number(_cart.chosen_rate ? _cart.chosen_rate.cost : 0)
   
+      cart.discount_codes = []
+      cart.discount_total = null
+      
       _cart.sub_total = sub_total
       _cart.tax = tax
       _cart.total = Number(sub_total + tax + shipping)
