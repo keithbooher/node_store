@@ -88,7 +88,7 @@ class ReviewItems extends Component {
     let cart = this.props.cart
 
     discount_code = discount_code.data
-    if (status !== 200 || !discount_code.data) {
+    if (status !== 200 || !discount_code) {
       this.setState({ discountCodeCheck: false })
       return
     }
