@@ -59,15 +59,16 @@ export const formatMoney = (money) => {
 
 export const discountCodeAdjustments = (discount_code, cart) => {
   if (discount_code.affect_order_total) {
-
     if (discount_code.flat_price !== null) {
       cart.discount_total = discount_code.flat_price
+      cart.sub_total = cart.sub_total - discount_code.flat_price
     } else {
-      cart.discount_total = cart.total * (100/discount_code.percentage)
+      cart.discount_total = discount_code.percentage
+      cart.sub_total = cart.sub_total * (discount_code.percentage/100)
     }
 
   } else {
-
+    console.log(discount_code.apply_to_all_products)
     if (discount_code.apply_to_all_products) {
       cart.line_items = applyToAll(discount_code, cart)
     } else {
@@ -94,7 +95,7 @@ const applyToAll = (discount_code, cart) => {
         if (discount_code.flat_price !== null) {
           item.product_price = new Number(item.product_price - discount_code.flat_price)
         } else {
-          item.product_price = item.product_price * (100/discount_code.percentage)
+          item.product_price = item.product_price * (discount_code.percentage/100)
         }
 
         if (item.product_price < 0) {
@@ -108,31 +109,40 @@ const applyToAll = (discount_code, cart) => {
 }
 
 const applyToHighest = (discount_code, cart) => {
-  let update_cart = cart
+  let line_items = new Array(cart.line_items)[0]
+  let update_cart = new Object(cart)
+  let affected_items = []
   let code = discount_code
+
   code.products.map(product => {
     // find out what products qualify for discount
-    let affected_items = update_cart.line_items.filter(item => item._product_id === product._id)
-    // Of those items, find the highest price item
-    let highest_price_item = affected_items.sort((a, b) => (a.product_price > b.product_price) ? 1 : -1)
-    update_cart.line_items = update_cart.line_items.map(item => {
-      if (highest_price_item.length > 0 && item._product_id === highest_price_item[0]._product_id) {
-
-        // apply discount
-        if (code.flat_price !== null) {
-          item.product_price = new Number(item.product_price - code.flat_price)
-        } else {
-          item.product_price = item.product_price * (100/code.percentage)
-        }
-
-        if (item.product_price < 0) {
-          item.product_price = 0
-        }
-
+    line_items.forEach(item => {
+      if (item._product_id === product._id) {
+        affected_items.push(item)
       }
-      return item
     })
   })
+  
+  // Of those items, find the highest price item
+  let highest_price_item = affected_items.sort((a, b) => (a.product_price > b.product_price) ? 1 : -1)
+
+  update_cart.line_items = update_cart.line_items.map(item => {
+    if (highest_price_item.length > 0 && item._product_id === highest_price_item[highest_price_item.length - 1]._product_id) {
+      // apply discount
+      if (code.flat_price !== null) {
+        item.product_price = new Number(item.product_price - code.flat_price)
+      } else {
+        item.product_price = item.product_price * (code.percentage/100)
+      }
+
+      if (item.product_price < 0) {
+        item.product_price = 0
+      }
+
+    }
+    return item
+  })
+
   return update_cart.line_items
 }
 

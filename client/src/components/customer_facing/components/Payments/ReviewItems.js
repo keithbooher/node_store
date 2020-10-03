@@ -88,22 +88,22 @@ class ReviewItems extends Component {
     let cart = this.props.cart
 
     discount_code = discount_code.data
-    if (status !== 200) {
+    if (status !== 200 || !discount_code.data) {
       this.setState({ discountCodeCheck: false })
       return
     }
 
-    cart = discountCodeAdjustments(discount_code, cart)
-
-    console.log(cart)
+    let sub_total
+    if (discount_code.affect_order_total) {
+      cart = discountCodeAdjustments(discount_code, cart)
+      sub_total = cart.sub_total
+    } else {
+      cart = discountCodeAdjustments(discount_code, cart)
+      sub_total = Number(calculateSubtotal(cart))
+    }
 
     cart.discount_codes.push(discount_code)
 
-    // calculate total
-    let sub_total = Number(calculateSubtotal(cart))
-    if (discount_code.affect_order_total) {
-      sub_total = Number(parseFloat(sub_total - cart.discount_total)).toFixed(2)
-    }
     if (sub_total < 0) {
       sub_total = 0
     }
@@ -122,7 +122,6 @@ class ReviewItems extends Component {
   }
 
   render() {
-    console.log(this.props.cart)
     return (
       <div>
 
@@ -189,10 +188,10 @@ class ReviewItems extends Component {
                     <div className="flex">
                       <button>Check For Discount</button>
                       {this.state.discountCodeCheck !== null ? 
-                        (this.state.discountCodeCheck !== null ? 
-                            <FontAwesomeIcon icon={faCheck} />
+                        (this.state.discountCodeCheck ? 
+                            <FontAwesomeIcon className="margin-m-h" style={{ fontSize: '30px' }} icon={faCheck} />
                           : 
-                            <FontAwesomeIcon icon={faTimes} />                      
+                            <FontAwesomeIcon className="margin-m-h" style={{ fontSize: '30px' }} icon={faTimes} />                      
                           )
                         : <div /> }
                     </div>
@@ -211,9 +210,9 @@ class ReviewItems extends Component {
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
             {this.props.cart.discount_codes.length > 0 && 
               <div>Discount Code: {this.props.cart.discount_codes[0].affect_order_total ?
-                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off entire purchase</span>
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off entire cart</span>
                :
-                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off select product</span>
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off select product(s)</span>
                }
               </div>
             }

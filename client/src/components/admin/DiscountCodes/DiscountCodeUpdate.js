@@ -221,6 +221,13 @@ class DiscountCodesUpdate extends Component {
     this.setState({ discount: data })
   }
 
+  async activeBoolean() {
+    let discount = this.state.discount
+    discount.active = !discount.active
+    let { data } = await this.props.updateDiscountCode(discount)
+    this.setState({ discount: data })
+  }
+
   render() {
     let lastPossibleItem = false
     if (this.state.queried_products && this.state.queried_products.length > 0) {
@@ -228,14 +235,24 @@ class DiscountCodesUpdate extends Component {
         lastPossibleItem = true
       }
     }
-    console.log(this.state.discount)
     return (
       <div >
         <Link to="/admin/discount-codes" className="absolute flex" style={{ top: "5px", left: "30px" }}>
           <FontAwesomeIcon icon={faArrowAltCircleLeft} />
           <div className="margin-xs-h">Back to discounts</div>
         </Link>
-        {this.state.discount && <h1>{this.state.discount.affect_order_total ? "Order Total Discount" : "Product(s) Discount"}</h1>}
+        {this.state.discount && <h1>{this.state.discount.affect_order_total ? "Total Cart Discount" : "Product(s) Discount"}</h1>}
+        {this.state.discount && <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
+          <span>Discount Code:</span> <a className="inline" onClick={() => this.showEditIndicator("discount_code")}>{this.state.discount.discount_code ? this.state.discount.discount_code  : "N/A"}</a>
+          {this.state.propertyToEdit && this.state.propertyToEdit === "discount_code" && 
+              <FontAwesomeIcon 
+                className="margin-s-h hover hover-color-2"
+                icon={faEdit} 
+                onClick={() => this.showEditModal("discount_code")} 
+              />
+            }
+        </div>}
+
         {this.state.discount && 
           <div>
             {this.state.discount.percentage ?            
@@ -251,7 +268,7 @@ class DiscountCodesUpdate extends Component {
               </div>
             :            
               <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
-                <span>Flat Price:</span> <a className="inline" onClick={() => this.showEditIndicator("flat_price")}>{this.state.discount.flat_price ? this.state.discount.flat_price : "N/A"}</a>
+                <span>Flat Price Reduction:</span> <a className="inline" onClick={() => this.showEditIndicator("flat_price")}>{this.state.discount.flat_price ? this.state.discount.flat_price : "N/A"}</a>
                 {this.state.propertyToEdit && this.state.propertyToEdit === "flat_price" && 
                     <FontAwesomeIcon 
                       className="margin-s-h hover hover-color-2"
@@ -261,6 +278,13 @@ class DiscountCodesUpdate extends Component {
                   }
               </div>
             }
+
+            {this.state.discount && this.state.discount.active ? 
+              <button onClick={this.activeBoolean}>Active</button> 
+            : 
+              <button onClick={this.activeBoolean}>Inactive</button>
+            }
+
             {!this.state.discount.affect_order_total && 
               <>
 

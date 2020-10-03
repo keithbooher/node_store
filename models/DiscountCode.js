@@ -22,6 +22,7 @@ const discountCodeSchema = new Schema({
   },
   discount_code: String,
   created_at: Date,
+  deleted_at: Date,
 })
 
 mongoose.model('discountCodes', discountCodeSchema)

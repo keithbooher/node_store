@@ -34,7 +34,7 @@ module.exports = app => {
   app.get('/api/discount_code/code/:code', async (req, res) => {  
     const discount_code = req.params.code
     try {
-      const code = await DiscountCode.findOne({ discount_code })
+      const code = await DiscountCode.findOne({ discount_code, deleted_at: null })
         .populate({
           path: "products",
           model: "products",

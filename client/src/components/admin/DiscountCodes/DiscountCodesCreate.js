@@ -184,32 +184,36 @@ class DiscountCodesCreate extends Component {
 
     if (this.state.percent_or_flat === "Percent") {
       let percent = this.state.efffector_value ? this.state.efffector_value.percentage : 0
-      discount.percent = new Number(percent)
+      discount.percentage = new Number(percent)
     } else {
       let flat_price = this.state.efffector_value ? this.state.efffector_value.flat_price : 0
       discount.flat_price = new Number(flat_price)
     }
-    this.props.dispatchObj(reset("percent_or_flat_form"))
+
     if (this.state.order_or_products === "Products") {
       discount.affect_order_total = false
     } else {
       discount.affect_order_total = true
     }
     discount.discount_code = this.props.form["discount_code_Form"].values ? this.props.form["discount_code_Form"].values.discount_code : ""
-    this.props.dispatchObj(reset("discount_code_Form"))
 
     // set product id's
     discount.products = discount.products.map(prod => {
       return prod._id
     })
     
-    discount.all_products = this.state.all_products
+    if (this.state.all_products === "all") {
+      discount.apply_to_all_products = true
+    } else {
+      discount.apply_to_all_products = false
+    }
 
     discount.active = this.state.active
 
     await this.props.createDiscountCode(discount)
-    this.setState({ discount: null })
     this.props.history.push(`/admin/discount-codes`)
+    this.props.dispatchObj(reset("percent_or_flat_form"))
+    this.props.dispatchObj(reset("discount_code_Form"))
   }
 
   reset() {
@@ -244,7 +248,7 @@ class DiscountCodesCreate extends Component {
         lastPossibleItem = true
       }
     }
-
+    console.log(this.state.efffector_value)
     return (
       <div className="margin-m-v">
         <h1 className="text-align-center">Create a Discount Code</h1>
@@ -268,11 +272,11 @@ class DiscountCodesCreate extends Component {
             onChange={(e) => this.setState({ efffector_value: e })}
             formFields={this.state.percent_or_flat === "Percent" ? 
               [
-                { label: 'Enter Percentage Off', name: 'percentage', noValueError: 'You must provide an address' },
+                { label: 'Enter Percentage Off', name: 'percentage', typeOfComponent: "number", noValueError: 'You must provide an address' },
               ]
             :
               [
-                { label: 'Enter Flat Sale Price', name: 'flat_price', noValueError: 'You must provide an address' },
+                { label: 'Enter Flat Price Reduction', name: 'flat_price', typeOfComponent: "number", noValueError: 'You must provide an address' },
               ]
             }
             form='percent_or_flat_form'
@@ -280,7 +284,7 @@ class DiscountCodesCreate extends Component {
         }
         {!this.state.order_or_products ?        
           <div className="flex">
-            <button onClick={ () => this.setState({ order_or_products: "Order Total" }) }>Order Total Price</button>
+            <button onClick={ () => this.setState({ order_or_products: "Order Total" }) }>Total Cart Price</button>
             <div className="margin-s-h">or</div>
             <button onClick={ () => this.setState({ order_or_products: "Products" }) }>Choose Products</button>
           </div>
