@@ -4,7 +4,7 @@ export const productFields = [
   { label: 'Name', name: 'name', noValueError: 'You must provide an address' },
   { label: 'Path Name', name: 'path_name', display: false, typeOfComponent: 'field-disable', noValueError: 'You must provide an address' },
   { label: 'Sku', name: 'sku', noValueError: 'You must provide an sku' },
-  { label: 'Description', name: 'description', noValueError: 'You must provide an address' },
+  { label: 'Description', name: 'description', typeOfComponent: "text-area", noValueError: 'You must provide an address' },
   { label: 'Short Description', name: 'short_description', noValueError: 'You must provide an address' },
   { label: 'Meta Title', name: 'meta_title', noValueError: 'You must provide an address' },
   { label: 'Meta Description', name: 'meta_description', noValueError: 'You must provide an address' },
