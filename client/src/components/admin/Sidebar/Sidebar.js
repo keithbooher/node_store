@@ -25,6 +25,7 @@ class Sidebar extends Component {
   render() {
     return (
       <div ref={node => this.node = node} className="flex flex_column">
+        <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/">Storefront</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin">Dashboard</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/products">Products</NavLink>
         <NavLink onClick={this.props.setSidebar} activeClassName="color-white" className="margin-s-v bold hover-color-7" style={{ fontSize: "19px" }} exact to="/admin/categories">Categories</NavLink>
