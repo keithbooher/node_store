@@ -71,7 +71,7 @@ class Sidebar extends Component  {
     return (
       <>
         <div ref={node => this.node = node} className={"flex flex_column space-between theme-background-2 color-white sidebar " + sidebar_class}>
-          <div className="padding-m font-size-20  h-100 overflow-scroll">
+          <div className="padding-m font-size-20 h-100">
             <h3 className="margin-top-none">Categories</h3>
             {this.renderCategories(null)}
           </div>
