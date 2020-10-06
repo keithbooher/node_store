@@ -176,7 +176,8 @@ const Payments = ({
       _user_id: cart._user_id,
       email: auth.email ? auth.email : cart.email,
       payment: charge.data,
-      customer_notes: form['customer_order_notes_form'].values ? form['customer_order_notes_form'].values.customer_notes : ""
+      customer_notes: form['customer_order_notes_form'].values ? form['customer_order_notes_form'].values.customer_notes : "",
+      discount_codes: cart.discount_codes
     }
     const new_order = await createOrder(order)
 

@@ -127,11 +127,28 @@ class ReviewItems extends Component {
       cart.total = 0
     }
 
-    console.log(cart)
-
     await this.props.updateCart(cart)
 
     this.setState({ discountCodeCheck: true })
+  }
+
+  displayDiscount(line_item) {
+    let discount_amount
+    if (this.props.cart.discount_codes.length > 0) {
+      if (this.props.cart.discount_codes[0].flat_price !== null) {
+        discount_amount = line_item.product_price - line_item.discount
+      } else {
+        discount_amount = line_item.product_price * (line_item.discount/100)
+      }
+    }
+    return discount_amount
+  }
+
+  discountDisplaySwitch(line_item) {
+    if (!line_item.discount || line_item.discount === null || line_item.discount === 0 || line_item.discount === NaN ) {
+      return false
+    }
+    return true
   }
 
   render() {
@@ -153,7 +170,11 @@ class ReviewItems extends Component {
                   </div>
                   <div>
                     <h3 className="margin-s-v" style={this.props.mobile ? {} : {fontSize: "25px"} }>{line_item.product_name}</h3>
+                    <div style={this.props.mobile ? {} : {fontSize: "20px"} }>Price: ${formatMoney(line_item.product_price)}</div>
                     <div style={this.props.mobile ? {} : {fontSize: "20px"} }>Quantity: {line_item.quantity}</div>
+                    {this.discountDisplaySwitch(line_item) &&
+                      <div className="color-black bold margin-s-v">Discount: ${formatMoney(this.displayDiscount(line_item))}</div>
+                    }
                   </div>
                 </div>
               )
@@ -223,9 +244,9 @@ class ReviewItems extends Component {
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
             {this.props.cart.discount_codes.length > 0 && 
               <div>Discount Code: {this.props.cart.discount_codes[0].affect_order_total ?
-                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off entire cart</span>
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : this.props.cart.discount_codes[0].percentage + "%"} off entire cart</span>
                :
-                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : "%" + this.props.cart.discount_codes[0].percentage} off select product(s)</span>
+                <span>{this.props.cart.discount_codes[0].discount_code} - {this.props.cart.discount_codes[0].flat_price !== null ? "$" + this.props.cart.discount_codes[0].flat_price : this.props.cart.discount_codes[0].percentage + "%"} off select product(s)</span>
                }
               </div>
             }

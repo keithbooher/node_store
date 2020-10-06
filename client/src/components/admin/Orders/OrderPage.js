@@ -25,6 +25,7 @@ class OrderPage extends Component {
     this.handlePartialRefund = this.handlePartialRefund.bind(this)
     this.updateShipmentStatus = this.updateShipmentStatus.bind(this)
     this.updateShipmentTracking = this.updateShipmentTracking.bind(this)
+    this.displayDiscount = this.displayDiscount.bind(this)
     this.state = {
       order: null,
       propertyToEdit: null,
@@ -179,6 +180,25 @@ class OrderPage extends Component {
     // make sure nothing can be changed at this point
   }
 
+  displayDiscount(line_item) {
+    let discount_amount = 0
+    if (this.state.order.discount_codes && this.state.order.discount_codes.length > 0) {
+      if (this.state.order.discount_codes[0].flat_price !== null) {
+        discount_amount = line_item.product_price - line_item.discount
+      } else {
+        discount_amount = line_item.product_price * (line_item.discount/100)
+      }
+    }
+    return discount_amount
+  }
+
+  discountDisplaySwitch(line_item) {
+    if (!line_item.discount || line_item.discount === null || line_item.discount === 0 || line_item.discount === NaN ) {
+      return false
+    }
+    return true
+  }
+
   render() {
     let order = this.state.order
     let fontSize = "1em"
@@ -239,9 +259,11 @@ class OrderPage extends Component {
                         </div>
                         <div style={{ marginTop: "30px" }}>
                           <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
-                          <div><span className="bold">product price:</span> ${formatMoney(item.product_price)}</div>
-                          <div><span className="bold">quantity:</span> {item.quantity}</div>
-                          <div><span className="bold">item total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
+                          <div><span className="bold">Product price:</span> ${formatMoney(item.product_price)}</div>
+                          {this.discountDisplaySwitch(item) &&
+                            <div className="color-black"><span className="bold">Discount:</span> ${formatMoney(this.displayDiscount(item))}</div>
+                          }                          
+                          <div><span className="bold">Quantity:</span> {item.quantity}</div>
                         </div>
                       </div>
                     )
@@ -256,8 +278,10 @@ class OrderPage extends Component {
                               <div style={{ marginTop: "30px" }}>
                                 <div><span className="bold">Product Name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
                                 <div><span className="bold">Product Price:</span> ${formatMoney(item.product_price)}</div>
+                                {this.discountDisplaySwitch(item) &&
+                                  <div className="color-black"><span className="bold">discount:</span> ${formatMoney(this.displayDiscount(item))}</div>
+                                }      
                                 <div><span className="bold">Quantity:</span> {item.quantity}</div>
-                                <div><span className="bold">Item Total:</span> ${formatMoney(item.quantity * item.product_price)}</div>
                                 {item.gift_note && <div><span className="bold">Gift Note:</span> {item.gift_note}</div>}
                               </div>
                             </div>)

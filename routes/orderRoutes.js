@@ -23,6 +23,10 @@ module.exports = app => {
         path: "shipment",
         model: "shipments",
       })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
       res.send(updated_order)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -37,6 +41,10 @@ module.exports = app => {
         path: "shipment",
         model: "shipments",
       })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
       res.send(order)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -48,6 +56,10 @@ module.exports = app => {
     try {
       let _user_id = req.params._user_id
       const order = await Order.findOne({ deleted_at: null, _user_id })
+        .populate({
+          path: "discount_codes",
+          model: "discountCodes",
+        })
       res.send(order)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -201,6 +213,10 @@ module.exports = app => {
         path: "shipment",
         model: "shipments",
       })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
     return orders
     } catch (err) {
       req.bugsnag.notify(err)
@@ -219,6 +235,10 @@ module.exports = app => {
             .populate({
               path: "shipment",
               model: "shipments",
+            })            
+            .populate({
+              path: "discount_codes",
+              model: "discountCodes",
             })
             .sort({_id:-1}).limit(10)
         } else {
@@ -226,6 +246,10 @@ module.exports = app => {
             .populate({
               path: "shipment",
               model: "shipments",
+            })
+            .populate({
+              path: "discount_codes",
+              model: "discountCodes",
             })
             .sort({_id:-1}).limit(10)
         }
