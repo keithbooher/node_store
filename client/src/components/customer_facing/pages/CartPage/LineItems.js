@@ -125,8 +125,26 @@ class LineItems extends Component {
     this.props.updateCart(cart)
   }
 
+  displayDiscount(line_item) {
+    let discount_amount
+    if (this.props.cart.discount_codes.length > 0) {
+      if (this.props.cart.discount_codes[0].flat_price !== null) {
+        discount_amount = line_item.product_price - line_item.discount
+      } else {
+        discount_amount = line_item.product_price * (line_item.discount/100)
+      }
+    }
+    return discount_amount
+  }
+
+  discountDisplaySwitch(line_item) {
+    if (!line_item.discount || line_item.discount === null || line_item.discount === 0 || line_item.discount === NaN ) {
+      return false
+    }
+    return true
+  }
+
   render() {
-    console.log(this.props)
     return (
       <div >
         {this.props.cart && this.props.cart.line_items.map((line_item, index) => {
@@ -146,6 +164,9 @@ class LineItems extends Component {
                 <div className="relative margin-s-h">
                   <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link> <FontAwesomeIcon style={{ fontSize: "18px" }} onClick={() => this.removeProduct(line_item)} className="hover-color-8 hover" icon={faTrash} /></h3>
                   <div className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
+                  {this.discountDisplaySwitch(line_item) &&
+                    <div className="color-black bold margin-s-v">discount: ${formatMoney(this.displayDiscount(line_item))}</div>
+                  }
                   <div className="flex align-items-center">
                     <FontAwesomeIcon className="hover hover-color-9 theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.incrementLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                     <input 

@@ -70,7 +70,7 @@ class ReviewPanel extends Component  {
         <div>
           {this.props.new_shipment.line_items.map((line_item, index) => {
             return (
-              <div className="flex align-items-center">
+              <div className="flex align-items-center margin-s-v">
                 <div className="margin-auto-v flex justify-center align-items-center background-color-black" style={{ maxHeight: "150px", maxWidth: "150px", minHeight: "150px", minWidth: "150px" }}>
                   <LazyLoadImage
                     style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}

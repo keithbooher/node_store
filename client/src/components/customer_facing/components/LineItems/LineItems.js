@@ -36,8 +36,6 @@ class LineItems extends Component {
   async alterLineItemQuantity(incoming_line_item, operator) {
     let cart = this.props.cart
     let items = cart.line_items
-    console.log(items)
-    console.log(items)
 
     await Promise.all(items.map(async (line_item) => {
       let item = {...line_item}
@@ -64,7 +62,6 @@ class LineItems extends Component {
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      console.log(cart)
       cart.line_items = revertProductDiscount(cart)
     }
 
@@ -156,6 +153,25 @@ class LineItems extends Component {
     this.setState({ showModal: false })
   }
 
+  displayDiscount(line_item) {
+    let discount_amount
+    if (this.props.cart.discount_codes.length > 0) {
+      if (this.props.cart.discount_codes[0].flat_price !== null) {
+        discount_amount = line_item.product_price - line_item.discount
+      } else {
+        discount_amount = line_item.product_price * (line_item.discount/100)
+      }
+    }
+    return discount_amount
+  }
+
+  discountDisplaySwitch(line_item) {
+    if (!line_item.discount || line_item.discount === null || line_item.discount === 0 || line_item.discount === NaN ) {
+      return false
+    }
+    return true
+  }
+
   render() {
     console.log(this.props.cart)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
@@ -186,7 +202,9 @@ class LineItems extends Component {
                       <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline a-invert" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
                       {line_item.gift_note && <a onClick={() => this.setState({ viewGiftNote: line_item.gift_note })} className="margin-top-none margin-bottom-none" style={ this.props.mobile ? {} : { fontSize: "23px" }}>Gift Note</a>}
                       <div className="color-black bold margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
-
+                      {this.discountDisplaySwitch(line_item) &&
+                        <div className="color-black bold ">discount: ${formatMoney(this.displayDiscount(line_item))}</div>
+                      }
                       <div style={{ fontSize: "14px" }}className="flex align-items-center color-black">
                         <FontAwesomeIcon className="hover hover-color-3 color-white theme-background-3 padding-s border-radius-s margin-xs-h" onClick={() => this.alterLineItemQuantity(line_item, 'subtraction')} icon={faMinus} />
                         <input 
