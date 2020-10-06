@@ -8,7 +8,8 @@ const lineItemSchema = new Schema({
   quantity: Number,
   product_price: Number,
   product_path: String,
-  gift_note: String
+  gift_note: String,
+  discount: Number
 })
 
 module.exports = lineItemSchema

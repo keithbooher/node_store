@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { updateCart } from "../../actions"
 import mobile from "is-mobile"
 import Modal from "./Modal"
-import { calculateSubtotal, formatMoney, discountCodeAdjustments } from '../../utils/helpFunctions'
+import { calculateSubtotal, formatMoney, discountCodeAssignments } from '../../utils/helpFunctions'
 
 let isMobile = mobile()
 class LowInventory extends Component {
@@ -44,19 +44,25 @@ class LowInventory extends Component {
           return item
         }
       })
+
+      let discount_code
+      if (cart.discount_codes.length > 0) {
+        discount_code = cart.discount_codes[0]
+      }
       
       cart.line_items = cart.line_items.filter((item) => item !== null)
 
       let sub_total = Number(calculateSubtotal(cart))
 
-      if (cart.discount_codes.length > 1) {
-        cart = discountCodeAdjustments(cart.discount_codes[0], cart)
-        if (cart.discount_codes.affect_order_total) {
-          sub_total = Number(parseFloat(sub_total - cart.discount_total)).toFixed(2)
+      if (cart.discount_codes.length > 0) {
+        if (discount_code.affect_order_total) {
+          cart.discount = discount_code.percentage !== null ? discount_code.percentage : discount_code.flat_price
         } else {
+          cart = discountCodeAssignments(discount_code, cart)
           sub_total = Number(calculateSubtotal(cart))
         }
       }
+
       if (sub_total < 0) {
         sub_total = 0
       }
@@ -66,11 +72,18 @@ class LowInventory extends Component {
   
       cart.sub_total = sub_total
       cart.tax = tax
-      cart.total = Number(sub_total + tax + shipping)
 
+      if (discount_code && discount_code.affect_order_total && discount_code.percentage !== null) {
+        cart.total = Number((sub_total + tax + shipping) * (cart.discount/100))
+      } else if (discount_code && discount_code.affect_order_total && discount_code.flat_price !== null) {
+        cart.total = Number(sub_total + tax + shipping - cart.discount)
+      } else {
+        cart.total = Number(sub_total + tax + shipping)
+      }
+      
       let update_cart = await this.props.updateCart(cart)
       if (this.props.update) {
-        this.props.update(update_cart)
+        this.props.update(update_cart.data)
       }
     }
 

@@ -53,12 +53,11 @@ class LineItems extends Component {
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
-      cart.line_items = reverted_items
+      cart.line_items = revertProductDiscount(cart)
     }
     
     cart.discount_codes = []
-    cart.discount_total = null
+    cart.discount = null
     
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -104,13 +103,11 @@ class LineItems extends Component {
     cart.line_items = updated_line_items
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
-      // UNDO PRODUCT PRICE ALTERATIONS
-      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
-      cart.line_items = reverted_items
+      cart.line_items = revertProductDiscount(cart)
     }
 
     cart.discount_codes = []
-    cart.discount_total = null
+    cart.discount = null
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -119,6 +116,7 @@ class LineItems extends Component {
     cart.sub_total = sub_total
     cart.tax = tax
     cart.total = Number(sub_total + tax + shipping)
+    
     if (cart.line_items.length < 1) {
       cart.chosen_rate = null
     }
