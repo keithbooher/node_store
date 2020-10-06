@@ -145,7 +145,6 @@ class LineItems extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div >
         {this.props.cart && this.props.cart.line_items.map((line_item, index) => {
