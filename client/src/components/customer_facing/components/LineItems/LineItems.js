@@ -34,8 +34,10 @@ class LineItems extends Component {
   }
 
   async alterLineItemQuantity(incoming_line_item, operator) {
-    let cart = {...this.props.cart}
+    let cart = this.props.cart
     let items = cart.line_items
+    console.log(items)
+    console.log(items)
 
     await Promise.all(items.map(async (line_item) => {
       let item = {...line_item}
@@ -44,8 +46,8 @@ class LineItems extends Component {
         let { data } = await this.props.checkInventory([item])
         let out_of_stock = data.filter((oos_item) => oos_item !== null)
         if (out_of_stock.length > 0) {
+          item.quantity += -1
           this.setState({ inventory_limit: [item] })
-          return
         }
       } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
         item.quantity += -1
@@ -62,14 +64,15 @@ class LineItems extends Component {
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
-      cart.line_items = reverted_items
+      console.log(cart)
+      cart.line_items = revertProductDiscount(cart)
     }
 
     cart.discount_codes = []
-    cart.discount_total = null
+    cart.discount = null
     
     let sub_total = Number(calculateSubtotal(cart))
+
     let tax = Number(sub_total * .08)
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
@@ -94,12 +97,11 @@ class LineItems extends Component {
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
-      cart.line_items = reverted_items
+      cart.line_items = revertProductDiscount(cart)
     }
 
     cart.discount_codes = []
-    cart.discount_total = null
+    cart.discount = null
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -134,12 +136,11 @@ class LineItems extends Component {
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
-      let reverted_items = await Promise.all([revertProductDiscount(cart, this.props.getProductbyId)]).then(value => value[0])
-      cart.line_items = reverted_items
+      cart.line_items = revertProductDiscount(cart)
     }
 
     cart.discount_codes = []
-    cart.discount_total = null
+    cart.discount = null
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
@@ -156,6 +157,7 @@ class LineItems extends Component {
   }
 
   render() {
+    console.log(this.props.cart)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     let lock = this.state.lock
     return (

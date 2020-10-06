@@ -34,7 +34,7 @@ const cartSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'discountCodes'
   }],
-  discount_total: Number
+  discount: Number
 })
 
 mongoose.model('carts', cartSchema)

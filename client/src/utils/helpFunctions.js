@@ -11,10 +11,94 @@ export const capitalizeFirsts = (string) => {
 }
 export const calculateSubtotal = (cart) => {
   let sub_total = 0
-  cart.line_items.forEach((line_item) => {
-    sub_total = sub_total + (line_item.product_price * line_item.quantity)
-  })
+  if (cart.discount_codes.length > 0 && !cart.discount_codes.affect_order_total) {
+    if (cart.discount_codes[0].apply_to_all_products) {
+      sub_total = applyToAll(cart.discount_codes[0], cart)
+    } else {
+      sub_total = applyToHighest(cart.discount_codes[0], cart)
+    }
+  } else {
+    cart.line_items.forEach((line_item) => {
+      sub_total = sub_total + (line_item.product_price * line_item.quantity)
+    })
+  }
   return formatMoney(sub_total)
+}
+
+const applyToAll = (discount_code, cart) => {
+  let update_cart = cart
+  let sub_total = 0
+  let code_products
+
+  // IF PRODUCTS HAVE BEEN POPULATED
+  if (typeof discount_code.products[0] === "string") {
+    code_products = discount_code.products
+  } else {
+    code_products = discount_code.products.map(prod => prod._id)
+  }
+  
+  update_cart.line_items.forEach(item => {
+    if (code_products.indexOf(item._product_id) !== -1) {
+      let price
+
+      if (discount_code.flat_price !== null) {
+        price = new Number((item.product_price - item.discount) * item.quantity)
+      } else {
+        price = (item.product_price * (item.discount/100)) * item.quantity
+      }
+      if (price < 0) {
+        price = 0
+      }
+
+      sub_total = sub_total + price
+    } else {
+      sub_total = sub_total + (item.product_price * item.quantity)
+    }
+  })
+
+  return sub_total
+}
+
+const applyToHighest = (discount_code, cart) => {
+  let line_items = new Array(cart.line_items)[0]
+  let update_cart = new Object(cart)
+  let affected_items = []
+  let code = discount_code
+  let sub_total = 0
+
+  code.products.forEach(product => {
+    // find out what products qualify for discount
+    line_items.forEach(item => {
+      if (item._product_id === product._id) {
+        affected_items.push(item)
+      }
+    })
+  })
+  
+  // Of those items, find the highest price item
+  let highest_price_item = affected_items.sort((a, b) => (a.product_price > b.product_price) ? 1 : -1)
+
+  update_cart.line_items.forEach(item => {
+    if (highest_price_item.length > 0 && item._product_id === highest_price_item[highest_price_item.length - 1]._product_id) {
+      let price     
+      // apply discount
+      if (discount_code.flat_price !== null) {
+        price = new Number((item.product_price - item.discount) * item.quantity)
+      } else {
+        price = (item.product_price * (item.discount/100)) * item.quantity
+      }
+
+      if (price < 0) {
+        price = 0
+      }
+
+      sub_total = sub_total + price
+    } else {
+      sub_total = sub_total + (item.product_price * item.quantity)
+    }
+  })
+
+  return sub_total
 }
 
 export const updatedFormFields = (fields, objectToPullDataFrom) => {
@@ -57,49 +141,25 @@ export const formatMoney = (money) => {
   return number.toFixed(2)
 }
 
-export const discountCodeAdjustments = (discount_code, cart) => {
-  if (discount_code.affect_order_total) {
-    if (discount_code.flat_price !== null) {
-      cart.discount_total = discount_code.flat_price
-      cart.sub_total = cart.sub_total - discount_code.flat_price
-    } else {
-      cart.discount_total = discount_code.percentage
-      cart.sub_total = cart.sub_total * (discount_code.percentage/100)
-    }
+export const discountCodeAssignments = (discount_code, cart) => {
 
+  if (discount_code.apply_to_all_products) {
+    cart.line_items = assignToAll(discount_code, cart)
   } else {
-    console.log(discount_code.apply_to_all_products)
-    if (discount_code.apply_to_all_products) {
-      cart.line_items = applyToAll(discount_code, cart)
-    } else {
-      cart.line_items = applyToHighest(discount_code, cart)
-    }
-
-    if (discount_code.flat_price !== null) {
-      cart.discount_total = discount_code.flat_price
-    } else {
-      cart.discount_total = discount_code.percentage
-    }
-
+    cart.line_items = assignToHighest(discount_code, cart)
   }
-
   return cart
 }
 
-const applyToAll = (discount_code, cart) => {
+const assignToAll = (discount_code, cart) => {
   let update_cart = cart
   discount_code.products.map(product => {
     update_cart.line_items = update_cart.line_items.map(item => {
       if (item._product_id === product._id) {
-
         if (discount_code.flat_price !== null) {
-          item.product_price = new Number(item.product_price - discount_code.flat_price)
+          item.discount = discount_code.flat_price
         } else {
-          item.product_price = item.product_price * (discount_code.percentage/100)
-        }
-
-        if (item.product_price < 0) {
-          item.product_price = 0
+          item.discount = discount_code.percentage
         }
       }
       return item
@@ -108,9 +168,9 @@ const applyToAll = (discount_code, cart) => {
   return update_cart.line_items
 }
 
-const applyToHighest = (discount_code, cart) => {
-  let line_items = new Array(cart.line_items)[0]
-  let update_cart = new Object(cart)
+const assignToHighest = (discount_code, cart) => {
+  let line_items = cart.line_items
+  let update_cart = cart
   let affected_items = []
   let code = discount_code
 
@@ -129,16 +189,11 @@ const applyToHighest = (discount_code, cart) => {
   update_cart.line_items = update_cart.line_items.map(item => {
     if (highest_price_item.length > 0 && item._product_id === highest_price_item[highest_price_item.length - 1]._product_id) {
       // apply discount
-      if (code.flat_price !== null) {
-        item.product_price = new Number(item.product_price - code.flat_price)
+      if (discount_code.flat_price !== null) {
+        item.discount = discount_code.flat_price
       } else {
-        item.product_price = item.product_price * (code.percentage/100)
+        item.discount = discount_code.percentage
       }
-
-      if (item.product_price < 0) {
-        item.product_price = 0
-      }
-
     }
     return item
   })
@@ -146,24 +201,23 @@ const applyToHighest = (discount_code, cart) => {
   return update_cart.line_items
 }
 
-export const revertProductDiscount = async (cart, getProductbyId) => {
+export const revertProductDiscount = (cart) => {
   let discount_code = cart.discount_codes[0]
-  await Promise.all(discount_code.products.map(async product => {
-    cart.line_items = await Promise.all(cart.line_items.map(async item => {
+  discount_code.products.map(product => {
+    cart.line_items = cart.line_items.map(item => {
       if (item._product_id === product) {
-        let price = await Promise.all([getProductPrice(product, getProductbyId) ]).then(value => value[0])
-        item.product_price = price
+        item.discount = null
       }
       return item
-    }))
-  }))
+    })
+  })
   return cart.line_items
 }
 
-const getProductPrice = async (id, getProductbyId) => {
-  let price
-  await Promise.all([getProductbyId(id)]).then(value => {
-   price = value[0].data.price
-  })
-  return price
-}
+// const getProductPrice = async (id, getProductbyId) => {
+//   let price
+//   await Promise.all([getProductbyId(id)]).then(value => {
+//    price = value[0].data.price
+//   })
+//   return price
+// }

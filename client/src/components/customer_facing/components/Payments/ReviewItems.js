@@ -13,7 +13,7 @@ import { formatMoney } from '../../../../utils/helpFunctions'
 import Form from "../../../shared/Form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { calculateSubtotal, discountCodeAdjustments } from "../../../../utils/helpFunctions"
+import { calculateSubtotal, discountCodeAssignments } from "../../../../utils/helpFunctions"
 class ReviewItems extends Component {
   constructor(props) {
     super()
@@ -92,17 +92,18 @@ class ReviewItems extends Component {
       this.setState({ discountCodeCheck: false })
       return
     }
+    
+    cart.discount_codes.push(discount_code)
 
     let sub_total
+    cart.discount = 0
     if (discount_code.affect_order_total) {
-      cart = discountCodeAdjustments(discount_code, cart)
       sub_total = cart.sub_total
+      cart.discount = discount_code.percentage !== null ? discount_code.percentage : discount_code.flat_price
     } else {
-      cart = discountCodeAdjustments(discount_code, cart)
+      cart = discountCodeAssignments(discount_code, cart)
       sub_total = Number(calculateSubtotal(cart))
     }
-
-    cart.discount_codes.push(discount_code)
 
     if (sub_total < 0) {
       sub_total = 0
@@ -114,9 +115,21 @@ class ReviewItems extends Component {
     cart.sub_total = sub_total
     cart.tax = tax
 
-    cart.total = Number(sub_total + tax + shipping)
+    if (discount_code.affect_order_total && discount_code.percentage !== null) {
+      cart.total = Number((sub_total + tax + shipping) * (cart.discount/100))
+    } else if (discount_code.affect_order_total && discount_code.flat_price !== null) {
+      cart.total = Number(sub_total + tax + shipping - cart.discount)
+    } else {
+      cart.total = Number(sub_total + tax + shipping)
+    }
 
-    this.props.updateCart(cart)
+    if (cart.total < 0) {
+      cart.total = 0
+    }
+
+    console.log(cart)
+
+    await this.props.updateCart(cart)
 
     this.setState({ discountCodeCheck: true })
   }
