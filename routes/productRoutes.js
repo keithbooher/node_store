@@ -29,6 +29,21 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+  
+  app.put('/api/product/update/many', requireLogin, adminRequired, async (req, res) => {  
+    try {
+      const products = req.body.products
+
+      products.forEach(async prod => {
+        await Product.findOneAndUpdate({ _id: prod._id }, prod, {new: false})
+      })
+
+      res.send("complete")    
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
 
   app.get('/api/products/home_promotion', async (req, res) => {    
     try {
@@ -226,10 +241,25 @@ module.exports = app => {
 
   app.get('/api/products/update/all', async (req, res) => {    
     try {
-      const products = await Product.updateMany({}, { availability: true }, {}, (e, doc) => {
+
+      await Product.updateMany({}, {$set : {category_display_order: {} }}, {}, (e, doc) => {
         console.log('made it')
         console.log(doc)
       })
+
+      const products = await Product.find({})
+
+      products.forEach(async (prod) => {
+        prod.categories.forEach((cat, index) => {
+          random = Math.floor(Math.random() * 10000)
+          prod.category_display_order = {
+            ...prod.category_display_order,
+            [cat]: random
+          }
+        })
+        await Product.findOneAndUpdate({ _id: prod._id }, prod, {new: true})
+      })
+      
       res.send(products)
     } catch (err) {
       res.status(422).send(err)
