@@ -112,6 +112,20 @@ export const updateProduct = (product) => async dispatch => {
   }
 }
 
+export const updateManyProducts = (products) => async dispatch => {
+  const data = { products }
+  let req = await axios.put(`/api/product/update/many`, data).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
+}
+
 export const lastProductByCategory = (category) => async dispatch => {
   let req = await axios.post(`/api/products/last_product/by_category`, { category }).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
