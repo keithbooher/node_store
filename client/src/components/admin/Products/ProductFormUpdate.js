@@ -75,7 +75,26 @@ class ProductForm extends Component {
   async handleCategoryUpdate() {
     const category_values = this.props.form['update_product_category_form'].values
     let update_product_info = this.state.product
-    update_product_info.categories = category_values.NaN.map((cat) => cat._id)
+    update_product_info.categories = await category_values.NaN.map((cat) => cat._id)
+
+    // case for cat removal (keeping cat display numbers up to date)
+    await Object.keys(update_product_info.category_display_order).forEach(key => {
+      // if the display-cat-key is not within the cat array, 
+      // then we remove the key value pair from the 
+      // category_display_order object
+      if (update_product_info.categories.indexOf(key) < 0) {
+        delete update_product_info.category_display_order[key]
+      }
+    })
+
+    // case for cat addition (keeping cat display numbers up to date)
+    await update_product_info.categories.forEach(cat => {
+      // if cat ID is not within the category_display_order object 
+      // keys then we need to assign it a display order value
+      if (Object.keys(update_product_info.category_display_order).indexOf(cat) < 0) {
+        update_product_info.category_display_order[cat] = 0
+      }
+    })
 
     let { data } = await this.props.updateProduct(update_product_info)
     this.props.dispatchObj(reset("update_product_category_form"))
@@ -133,6 +152,7 @@ class ProductForm extends Component {
 
 
   render() {
+    console.log(this.state.product)
     let fields = injectCategoryDataIntoFormFields(this.state.categories, this.state.product)
     let fontSize = "1em"
     if (!this.props.mobile) {
