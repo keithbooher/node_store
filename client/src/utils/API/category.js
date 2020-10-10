@@ -59,6 +59,19 @@ export const  getCategoryProducts = (path_name) => async dispatch => {
     }
 }
 
+export const  getCategoryProducts_displayOrder = (id) => async dispatch => {
+    let req = await axios.get('/api/category/products/display_order/' + id).catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        Bugsnag.notify(error)        
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: null}
+    }
+}
+
 ////////////////////////////////////////////////////////////
 
 export const findCategory = (id) => async dispatch => {

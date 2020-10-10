@@ -70,6 +70,10 @@ const productSchema = new Schema({
   gift_note: {
     type: Boolean,
     default: false
+  },
+  category_display_order: {
+    type: Object,
+    default: {}
   }
 })
 

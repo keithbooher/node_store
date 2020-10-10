@@ -78,10 +78,26 @@ module.exports = app => {
     } 
   })
 
+  app.get('/api/category/products/display_order/:id', async (req, res) => {
+    try {
+      let display_order_key = "category_display_order." + req.params.id
+      const products = await Product.find({ "categories": req.params.id, display: true, deleted_at: null }).sort({ [display_order_key]: -1 })
+  
+      res.send(products)
+    } catch (err) {
+      console.log(err)
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.get('/api/category/products/:category_path_name', async (req, res) => {
+    console.log('hi?')
     try {
       const category = await Category.findOne({ path_name: req.params.category_path_name })
-      const products = await Product.find({ "categories": category._id, display: true, deleted_at: null }).populate({path: "categories"})
+      let display_order_key = "category_display_order." + category._id
+
+      const products = await Product.find({ "categories": category._id, display: true, deleted_at: null }).sort({ [display_order_key]: -1 }).populate({path: "categories"})
       const data = {
         category,
         products
@@ -93,6 +109,7 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+
 
   app.get('/api/sitemap/categories', async (req, res) => {
     try {

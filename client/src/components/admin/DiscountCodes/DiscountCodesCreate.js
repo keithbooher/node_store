@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSyncAlt, faSearch, faArrowAltCircleLeft, faCheck, faTimes, faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faSyncAlt, faSearch, faArrowAltCircleLeft, faCheck, faTimes, faPlusCircle, faTrash, faDollarSign, faPercentage, faShoppingCart, faTasks } from "@fortawesome/free-solid-svg-icons"
 import { reset } from "redux-form";
 import { getProductbyId, paginatedProducts, searchProduct, getAllCategories, updateProduct, lastProductByCategory, createDiscountCode } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
@@ -11,6 +11,7 @@ import PageChanger from "../../shared/PageChanger"
 import Modal from "../../shared/Modal"
 import Key from "../../shared/Key"
 import { Link } from 'react-router-dom'
+import { capitalizeFirsts } from '../../../utils/helpFunctions'
 
 class DiscountCodesCreate extends Component {
   constructor(props) {
@@ -238,7 +239,11 @@ class DiscountCodesCreate extends Component {
       last_possible_product: null,
       oopsModal: false,
       active: false,
+      all_products: false
     })
+    this.props.dispatchObj(reset("percent_or_flat_form"))
+    this.props.dispatchObj(reset("discount_code_Form"))
+    this.props.dispatchObj(reset("product_search_form"))
   }
 
   render() {
@@ -248,9 +253,8 @@ class DiscountCodesCreate extends Component {
         lastPossibleItem = true
       }
     }
-    console.log(this.state.efffector_value)
     return (
-      <div className="margin-m-v">
+      <div className={`margin-m-v ${!this.props.mobile && "w-70 margin-auto-h"}`}>
         <h1 className="text-align-center">Create a Discount Code</h1>
         <Link to="/admin/discount-codes" className="absolute flex" style={{ top: "5px", left: "30px" }}>
           <FontAwesomeIcon icon={faArrowAltCircleLeft} />
@@ -261,10 +265,15 @@ class DiscountCodesCreate extends Component {
           <FontAwesomeIcon icon={faSyncAlt} />
         </div>
         {!this.state.percent_or_flat ?
-          <div className="flex">
-            <button onClick={ () => this.setState({ percent_or_flat: "Percent" }) }>Percentage Off</button>
-            <div className="margin-s-h">or</div>
-            <button  onClick={ () => this.setState({ percent_or_flat: "Flat" }) }>Dollar Amount Off</button>
+          <div className="flex margin-s-v">
+            <div onClick={ () => this.setState({ percent_or_flat: "Percent" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+              <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faPercentage} />
+              <h3 className="margin-xs-v">Percentage Off</h3>
+            </div>
+            <div onClick={ () => this.setState({ percent_or_flat: "Flat" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRadius: "0px 4px 4px 0px" }}>
+              <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faDollarSign} />
+              <h3 className="margin-xs-v">Dollar Amount Off</h3>
+            </div>
           </div>
         :
           <Form 
@@ -283,10 +292,15 @@ class DiscountCodesCreate extends Component {
           />
         }
         {!this.state.order_or_products ?        
-          <div className="flex">
-            <button onClick={ () => this.setState({ order_or_products: "Order Total" }) }>Total Cart Price</button>
-            <div className="margin-s-h">or</div>
-            <button onClick={ () => this.setState({ order_or_products: "Products" }) }>Choose Products</button>
+          <div className="flex margin-s-v">
+            <div onClick={ () => this.setState({ order_or_products: "Order Total" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+              <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faShoppingCart} />
+              <h3 className="margin-xs-v">Total Cart Price</h3>
+            </div>
+            <div onClick={ () => this.setState({ order_or_products: "Products" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRadius: "0px 4px 4px 0px" }}>
+              <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faTasks} />
+              <h3 className="margin-xs-v">Choose Products</h3>
+            </div>
           </div>
         :
           this.state.order_or_products !== "Products" && <h3 className="bold">{this.state.order_or_products }</h3>     
@@ -294,13 +308,18 @@ class DiscountCodesCreate extends Component {
         {this.state.order_or_products === "Products" && 
           <>
             {!this.state.all_products ?        
-              <div className="flex">
-                <button onClick={ () => this.setState({ all_products: "all" }) }>Apply to all selected products?</button>
-                <div className="margin-s-h">or</div>
-                <button onClick={ () => this.setState({ all_products: "highest" }) }>Apply to the highest priced item in cart?</button>
+              <div className="flex margin-s-v">
+                <div onClick={ () => this.setState({ all_products: "all" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+                  <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faShoppingCart} />
+                  <h3 className="margin-xs-v">Apply to all selected products?</h3>
+                </div>
+                <div onClick={ () => this.setState({ all_products: "highest" }) } className="hover w-50 text-align-center theme-background-3 padding-s hover-color-11" style={{ borderRadius: "0px 4px 4px 0px" }}>
+                  <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faTasks} />
+                  <h3 className="margin-xs-v">Apply to the highest priced item in cart?</h3>
+                </div>
               </div>
             :
-              this.state.all_products !== "Products" && <h3 className="bold">{this.state.all_products }</h3>     
+              this.state.all_products !== "highest" ? <h3 className="bold">Apply to the highest priced product available for discount</h3> : <h3 className="bold">Apply to all products marked for discount</h3>
             }
 
             <h2>Selected Discounted Products</h2>
@@ -342,11 +361,10 @@ class DiscountCodesCreate extends Component {
           form='discount_code_Form'
         />
 
-        <button onClick={() => this.setState({ active: !this.state.active })}  style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Availability {this.state.active ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} /> }</button>
+        <button onClick={() => this.setState({ active: !this.state.active })} style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Availability {this.state.active ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} /> }</button>
 
-
-        {this.state.order_or_products && this.state.percent_or_flat && this.props.form['discount_code_Form'].values &&
-          <button onClick={ this.createDiscount }>Create!</button>
+        {this.state.order_or_products && this.props.form["percent_or_flat_form"].values && this.state.percent_or_flat && this.props.form['discount_code_Form'].values &&
+          <button className="block margin-m-v" style={this.props.mobile ? { width: "100%", fontSize: "20px" } : { width: "300px", margin: "30px auto", fontSize: "25px" }} onClick={ this.createDiscount }>Create!</button>
         }
 
         {this.state.oopsModal &&

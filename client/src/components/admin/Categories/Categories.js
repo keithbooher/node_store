@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner, faList } from "@fortawesome/free-solid-svg-icons"
 import { catFields, createSubField } from "./formFields"
 import CategoryForm from "./CategoryForm"
 import { validatePresenceOnAll } from "../../../utils/validations"
@@ -11,7 +11,7 @@ import { reset } from "redux-form"
 import FormModal from "../../shared/Form/FormModal"
 import Modal from "../../shared/Modal"
 import { capitalizeFirsts } from "../../../utils/helpFunctions"
-
+import ProductDisplayOrder from "./ProductDisplayOrder"
 // import { useHistory } from 'react-router-dom'
 
 
@@ -44,12 +44,12 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
       parent_cats.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === -1 ) {
           sub_cat.display_order = sub_cat.display_order + 1
-          const updated_displaced_category = await updateCategory(sub_cat)
+          await updateCategory(sub_cat)
           // ^ ^ ^check if succesful ^ ^ ^ //
         }
       })
       category.display_order = category.display_order - 1
-      const updated_category = await updateCategory(category)
+      await updateCategory(category)
       // ^ ^ ^check if succesful ^ ^ ^ //
     } else {
       // Then cycle through the parent's sub categories 
@@ -57,12 +57,12 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
       parent_cats.map(async (sub_cat) => {
         if (sub_cat.display_order - category.display_order === 1 ) {
           sub_cat.display_order = sub_cat.display_order - 1
-          const updated_displaced_category = await updateCategory(sub_cat)
+          await updateCategory(sub_cat)
           // ^ ^ ^check if succesful ^ ^ ^ //
         }
       })
       category.display_order = category.display_order + 1
-      const updated_category = await updateCategory(category)   
+      await updateCategory(category)   
       // ^ ^ ^check if succesful ^ ^ ^ //
     }
     const { data } =  await getTopCategories()
@@ -74,7 +74,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
   const renderCategories = (parent_category) => {
     let category_set = parent_category !== null ? parent_category.sub_categories : categories
     return (
-      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).filter((cat) => !cat.deleted_at).map((category, index) => {
+      category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).filter((cat) => cat.deleted_at !== null).map((category, index) => {
         let up_disable = false
         let down_disable = false
         const sorted_cats = category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1)
@@ -110,6 +110,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
               <div className="flex">
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => productOrderModal(category)}><FontAwesomeIcon icon={faList} /></button>
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
                 <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setAreYouSure(category)}><FontAwesomeIcon icon={faTrash} /></button>
               </div>
@@ -192,10 +193,19 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
   const deleteCat = async (category) => {
     let cat = category
-    cat.deleted_at = Date.now()
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    cat.deleted_at = today
     const delete_cat = await deleteCategory(cat).then(res => res.data)
     setAreYouSure( false )
     setCategories( delete_cat )
+  }
+
+  const [displayOrderModal, setDisplayOrderModal] = useState(false)
+
+  const productOrderModal = (category) => {
+    setDisplayOrderModal(category)
   }
 
   
@@ -253,6 +263,12 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
             <button className="padding-s margin-s-h" onClick={() => deleteCat(areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
             <button className="padding-s margin-s-h" onClick={() => setAreYouSure(false)} ><h2 style={{ margin: "0px" }}>No</h2></button>
           </div>
+        </Modal>
+      }
+
+      {displayOrderModal &&
+        <Modal cancel={() => setDisplayOrderModal(false)}>
+          <ProductDisplayOrder data={displayOrderModal} />
         </Modal>
       }
     </div>
