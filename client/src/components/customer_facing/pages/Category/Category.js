@@ -24,7 +24,7 @@ class Category extends Component  {
     }
   }
   async componentDidMount() {
-    const category_products = await this.props.getCategoryProducts(this.routeParamCategory, "none", "none")
+    const category_products = await this.props.getCategoryProducts(this.routeParamCategory)
     if (category_products.status !== 200) {
       category_products.data = {
         category: null,
@@ -83,7 +83,7 @@ class Category extends Component  {
   }
 
   async getNewCatProducts() {
-    let category_products = await this.props.getCategoryProducts(this.props.match.params.category, "none", "none")
+    let category_products = await this.props.getCategoryProducts(this.props.match.params.category)
     if (category_products.status !== 200) {
       category_products.data = {
         category: null,

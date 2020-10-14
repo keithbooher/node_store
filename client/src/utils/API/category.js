@@ -46,8 +46,8 @@ export const deleteCategory = (category) => async dispatch => {
 
 ////////////////////////////////////////////////////////////
 
-export const  getCategoryProducts = (path_name, last_display_value, direction) => async dispatch => {
-    let req = await axios.get('/api/category/products/' + path_name + "/" + last_display_value + "/" + direction).catch(error => {
+export const  getCategoryProducts = (path_name) => async dispatch => {
+    let req = await axios.get('/api/category/products/' + path_name).catch(error => {
         dispatch({ type: ERROR, payload: error.response })
         Bugsnag.notify(error)        
         return error.response
@@ -140,18 +140,3 @@ export const getSitemapCategories = () => async dispatch => {
         return {data: []}
     }
 }
-
-
-
-// export const lastCategoryProduct = (path_name) => async dispatch => {
-//     let req = await axios.get('/api/category/last_product/' + path_name).catch(error => {
-//         dispatch({ type: ERROR, payload: error.response })
-//         Bugsnag.notify(error)        
-//         return error.response
-//     })
-//     if (req.status === 200) {
-//         return req
-//     } else {
-//         return {data: null}
-//     }
-//   }

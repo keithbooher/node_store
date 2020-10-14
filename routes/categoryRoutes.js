@@ -91,7 +91,7 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/category/products/:cat_identifier/:last_display_value/:direction', async (req, res) => {
+  app.get('/api/category/products/:cat_identifier', async (req, res) => {
     let data = {}
     let display_order_key
     try {
