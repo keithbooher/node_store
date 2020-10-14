@@ -91,18 +91,17 @@ module.exports = app => {
     }
   })
 
-  app.get('/api/category/products/:category_path_name', async (req, res) => {
-    console.log('hi?')
+  app.get('/api/category/products/:cat_identifier', async (req, res) => {
+    let data = {}
+    let display_order_key
     try {
-      const category = await Category.findOne({ path_name: req.params.category_path_name })
-      let display_order_key = "category_display_order." + category._id
-
-      const products = await Product.find({ "categories": category._id, display: true, deleted_at: null }).sort({ [display_order_key]: -1 }).populate({path: "categories"})
-      const data = {
+      const category = await Category.findOne({ path_name: req.params.cat_identifier })
+      display_order_key = "category_display_order." + category._id
+      const products = await Product.find({ "categories": category._id, display: true, deleted_at: null }).sort({ [display_order_key]: 1 }).populate({path: "categories"})
+      data = {
         category,
-        products
+        products,
       }
-  
       res.send(data)
     } catch (err) {
       req.bugsnag.notify(err)
@@ -120,6 +119,16 @@ module.exports = app => {
       res.status(422).send(err)
     }
   })
+
+  // app.get('/api/category/last_product/:path_name', async (req, res) => {
+  //   try {
+      
+  //     res.send(order)
+  //   } catch (err) {
+  //     req.bugsnag.notify(err)
+  //     res.status(422).send(err)
+  //   }
+  // })
 
   app.get('/api/categories', requireLogin, adminRequired, async (req, res) => {  
     try {

@@ -140,6 +140,3 @@ export const getSitemapCategories = () => async dispatch => {
         return {data: []}
     }
 }
-
-
-

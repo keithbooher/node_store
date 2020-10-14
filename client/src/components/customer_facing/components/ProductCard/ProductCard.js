@@ -220,7 +220,7 @@ class ProductCard extends Component {
                 <div style={{ marginBottom: "1em" }}>
                     <StarRatings
                       rating={this.state.averRating}
-                      starRatedColor="blue"
+                      starRatedColor="#6CB2EB"
                       numberOfStars={5}
                       name='rating'
                       starDimension="15px"

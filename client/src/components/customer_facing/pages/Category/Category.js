@@ -6,17 +6,21 @@ import { capitalizeFirsts } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { sidebarBoolean, updateCart, createCart } from "../../../../actions"
-import { Link } from "react-router-dom"
 import MetaTags from 'react-meta-tags'
 
 class Category extends Component  {
   constructor(props) {
     super()
+    this.changePage = this.changePage.bind(this)
     this.routeParamCategory = props.match.params.category
     this.state = { 
       products: null,
+      shown_products: [],
       category_data: null, 
-      current_cat: props.match.params.category 
+      current_cat: props.match.params.category,
+      last_product: null,
+      page_number: 1,
+      search_param: null
     }
   }
   async componentDidMount() {
@@ -24,23 +28,41 @@ class Category extends Component  {
     if (category_products.status !== 200) {
       category_products.data = {
         category: null,
-        products: []
+        products: [],
+        last_product: null
       }
     }
+
+    let products = category_products.data.products
+    let shown_products
+    let page_number = 1
+    if (this.props.location.search) {
+      page_number = this.props.location.search.split("=")
+      if (page_number[0] === "?page_number") {
+        page_number = parseInt(page_number[1])
+        let beginning_index = (page_number * 10) - 10
+        shown_products = category_products.data.products.slice(beginning_index, beginning_index + 10)
+      } else {
+        shown_products = category_products.data.products.slice(0, 10)  
+      }
+    } else {
+      shown_products = category_products.data.products.slice(0, 10)
+    }
+
     this.setState({ 
-      products: category_products.data.products.reverse(), 
-      category_data: category_products.data.category 
+      products: products, 
+      shown_products: shown_products,
+      category_data: category_products.data.category,
+      last_product: category_products.data.products[category_products.data.products.length - 1],
+      page_number,
+      search_param: this.props.location.search
     })
   }
   renderProductCards() {
     // filter products that have 0 inventory IF store zero-inventory rule is true
-    let products = this.state.products
+    let products = this.state.shown_products
     if (!this.props.zeroInventory) {
       products = products.filter((product) => product.inventory_count > 0)
-    }
-
-    if (products.length % 2 !== 0) {
-      products.push(null)
     }
 
     return products.map((product, index) => {
@@ -59,25 +81,86 @@ class Category extends Component  {
       }
     })
   }
-  async getProducts() {
-    const category_products = await this.props.getCategoryProducts(this.props.match.params.category)
+
+  async getNewCatProducts() {
+    let category_products = await this.props.getCategoryProducts(this.props.match.params.category)
     if (category_products.status !== 200) {
       category_products.data = {
         category: null,
         products: []
       }
     }
+
+    const products = category_products.data.products
+    let shown_products = category_products.data.products.slice(0, 10)
+
     this.setState({ 
-      products: category_products.data.products, 
+      products: products, 
+      shown_products: shown_products,
       category_data: category_products.data.category,
-      current_cat: this.props.match.params.category 
+      current_cat: this.props.match.params.category ,
+      page_number: 1
+    })
+  }
+
+  changePage(direction) {
+    let IDs = this.state.products.map(prod => prod._id)
+    let current_index
+    if (direction === "next") {
+      current_index = IDs.indexOf(this.state.shown_products[this.state.shown_products.length - 1]._id)
+    } else {
+      current_index = IDs.indexOf(this.state.shown_products[0]._id)
+    }
+
+    let show_products
+    let page_number
+    if (direction === "next") {
+      show_products = this.state.products.slice(current_index + 1, current_index + 11)
+      page_number = this.state.page_number + 1
+    } else {
+      let start_index = current_index - 11
+      if (start_index < 0) {
+        start_index = 0
+      }
+      show_products = this.state.products.slice(start_index, current_index)
+      page_number = this.state.page_number - 1
+    }
+
+    let search_param = `?page_number=${page_number}`
+    this.props.history.push({
+      search: search_param
+    })
+
+    this.setState({ shown_products: show_products, page_number: page_number, search_param })
+  }
+
+  getNewCatProductsWithParams() {
+    let page_number = this.props.location.search.split("=")
+    let products = this.state.products
+    let shown_products = this.state.shown_products
+    if (page_number[0] === "?page_number") {
+      page_number = parseInt(page_number[1])
+      let beginning_index = (page_number * 10) - 10
+      shown_products = products.slice(beginning_index, beginning_index + 10)
+    } else {
+      shown_products = products.slice(0, 10)  
+    }
+    this.setState({ 
+      shown_products: shown_products,
+      page_number,
+      search_param: this.props.location.search
     })
   }
   
   render() {
     if(this.props.match.params.category !== this.state.current_cat) {
-      this.getProducts()
+      this.getNewCatProducts()
+    } else if(this.props.location.search !== ""&& this.state.search_param !== null && this.props.location.search !== this.state.search_param) {
+      this.getNewCatProductsWithParams()
     }
+
+    let previous_disable = this.state.page_number === 1 ? true : false
+    let next_disable = this.state.shown_products.length < 10 ? true :false
     return (
       <div style={{ padding: ".4em .4em 80px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
@@ -98,6 +181,11 @@ class Category extends Component  {
             </h1>
             <div className="flex flex-wrap">
               {this.renderProductCards()}
+            </div>
+            <div className="flex">
+              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
+                <div className="font-size-1-3">{this.state.page_number}</div>
+              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
             </div>
           </>
        : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
