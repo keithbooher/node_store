@@ -193,4 +193,3 @@ export const checkInventory = (line_items) => async dispatch => {
       return {data: "error"}
   }
 }
-

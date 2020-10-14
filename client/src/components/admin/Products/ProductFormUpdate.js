@@ -77,8 +77,11 @@ class ProductForm extends Component {
     let update_product_info = this.state.product
     update_product_info.categories = await category_values.NaN.map((cat) => cat._id)
 
+    if (!update_product_info.category_display_order) {
+      update_product_info.category_display_order = {}
+    }
     // case for cat removal (keeping cat display numbers up to date)
-    await Object.keys(update_product_info.category_display_order).forEach(key => {
+    Object.keys(update_product_info.category_display_order).forEach(key => {
       // if the display-cat-key is not within the cat array, 
       // then we remove the key value pair from the 
       // category_display_order object
@@ -88,13 +91,14 @@ class ProductForm extends Component {
     })
 
     // case for cat addition (keeping cat display numbers up to date)
-    await update_product_info.categories.forEach(cat => {
+    update_product_info.categories.forEach(cat => {
       // if cat ID is not within the category_display_order object 
       // keys then we need to assign it a display order value
       if (Object.keys(update_product_info.category_display_order).indexOf(cat) < 0) {
         update_product_info.category_display_order[cat] = 0
       }
     })
+
 
     let { data } = await this.props.updateProduct(update_product_info)
     this.props.dispatchObj(reset("update_product_category_form"))
