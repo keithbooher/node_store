@@ -68,22 +68,22 @@ module.exports = app => {
 
 
 
-  // Create Store Setting
-  app.get('/api/store_setting/create', async (req, res) => {  
-    console.log("here")
-    let setting = {
-      name:"Show Gallery",
-      value: {boolean: false},
-      description:"Show gallery link in sidebar",
-      internal_name: "show_gallery"
-    }
-    const storeSetting = new StoreSetting(setting)
-    try {
-      await storeSetting.save()
-      res.send(storeSetting)
-    } catch (err) {
-      req.bugsnag.notify(err)
-      res.status(422).send(err)
-    }
-  })
-}
+//   // Create Store Setting
+//   app.get('/api/store_setting/create', async (req, res) => {  
+//     console.log("here")
+//     let setting = {
+//       name:"Show Gallery",
+//       value: {boolean: false},
+//       description:"Show gallery link in sidebar",
+//       internal_name: "show_gallery"
+//     }
+//     const storeSetting = new StoreSetting(setting)
+//     try {
+//       await storeSetting.save()
+//       res.send(storeSetting)
+//     } catch (err) {
+//       req.bugsnag.notify(err)
+//       res.status(422).send(err)
+//     }
+//   })
+// }
