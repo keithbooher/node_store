@@ -22,7 +22,14 @@ class Sidebar extends Component  {
     document.addEventListener('mousedown', this.handleClickOutside);
     // find all categories that have been selected to be shown to the customers
     let categories = await this.props.getSidebarCategories()
-    let { data } = await this.props.getGallerySetting()
+    let { data, status } = await this.props.getGallerySetting()
+    if (status !== 200 ) {
+      data = {
+        value: {
+          boolean: false
+        }
+      }
+    }
     this.setState({ categories: categories.data, gallery: data.value.boolean })
   }
 
@@ -74,7 +81,7 @@ class Sidebar extends Component  {
       <>
         <div ref={node => this.node = node} className={"flex flex_column space-between theme-background-2 color-white sidebar " + sidebar_class}>
           <div className="padding-m font-size-20 h-100">
-            {this.state.gallery && <Link to="/gallery"><h3 className="margin-top-none underline">Gallery</h3></Link>}
+            {this.state.gallery && <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/gallery"><h3 className="margin-top-none underline">Gallery</h3></Link>}
             <h3 className="margin-top-none">Categories</h3>
             {this.renderCategories(null)}
           </div>
