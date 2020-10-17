@@ -109,6 +109,7 @@ class StoreSettings extends Component {
 
   render() {
     let hide_zero_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "hide_zero")[0]
+    let gallery_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "show_gallery")[0]
     let desktop_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "desktop_banner_photo")[0]
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
 
@@ -187,6 +188,20 @@ class StoreSettings extends Component {
               <div className="flex">
                 <div>{hide_zero_setting.description}</div>
                 <div>{hide_zero_setting.value.boolean ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faTimes} /></a>  }</div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <hr />
+
+        {gallery_setting && 
+          <div>
+            <div>
+              <h3>{gallery_setting.name}</h3>
+              <div className="flex">
+                <div>{gallery_setting.description}</div>
+                <div>{gallery_setting.value.boolean ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(gallery_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(gallery_setting)} icon={faTimes} /></a>  }</div>
               </div>
             </div>
           </div>

@@ -1,0 +1,34 @@
+
+
+
+.gallery_card_image { 
+  flex-basis: 32%;
+  min-height: 400px; 
+  max-height: 400px;
+  background-color: black;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: auto;
+    height: auto;
+    min-height: 400px; 
+    max-height: 400px;
+  }
+}
+
+.gallery_card_image_mobile { 
+  flex-basis: 48%;
+  min-height: 150px; 
+  max-height: 150px;
+  background-color: black;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: auto;
+    height: auto;
+    min-height: 150px; 
+    max-height: 150px;
+  }
+}

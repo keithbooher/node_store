@@ -48,6 +48,10 @@ const productSchema = new Schema({
     type: Boolean,
     default: false
   },
+  gallery: {
+    type: Boolean,
+    default: false
+  },
   home_promotion:  {
     type: Boolean,
     default: false

@@ -385,6 +385,9 @@ class ProductForm extends Component {
               <button onClick={() => this.changeBoolean("display", !this.state.product.display)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}}>Display {this.state.product.display ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
             </div>
             <div className="margin-s-v">
+              <button onClick={() => this.changeBoolean("gallery", !this.state.product.gallery)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}}>Show in Gallery {this.state.product.gallery ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
+            </div>
+            <div className="margin-s-v">
               <button onClick={() => this.changeBoolean("home_promotion", !this.state.product.home_promotion)} style={this.props.mobile ? { width: "100%" } : { width: "200px"}} className="w-100">Home Page Promotion {this.state.product.home_promotion ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }</button>
             </div>
             <div className="margin-s-v">

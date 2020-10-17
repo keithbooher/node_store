@@ -9,6 +9,4 @@ const storeSettingSchema = new Schema({
   internal_name: String
 })
 
-
-
 mongoose.model('storeSettings', storeSettingSchema)

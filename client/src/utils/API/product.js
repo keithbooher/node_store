@@ -71,6 +71,19 @@ export const homeProducts = () => async dispatch => {
   }
 }
 
+export const galleryProducts = () => async dispatch => {
+  let req = await axios.get('/api/products/gallery').catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: []}
+  }
+}
+
 export const paginatedProducts = (last_product_id, direction, category) => async dispatch => {
   let req = await axios.get('/api/products/all/' + last_product_id + "/" + direction + "/" + category).catch(error => {
     dispatch({ type: ERROR, payload: error.response })

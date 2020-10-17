@@ -328,11 +328,11 @@ const Product = ({
               {product.availability ?
                 <>
                   <div className="flex flex_column">
-                    <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
-                    {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
-                    {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
+                    <h2 className="margin-s-v">${formatMoney(product.price)}</h2>
+                    {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.inventory_count}</div>}
+                    {product.inventory_count < 1 && <div>Out of stock</div>}
                   </div>
-                  <div className="flex">
+                  <div className="flex margin-s-v">
                     <div className="flex">
                       <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
                       <div className="flex flex_column">
