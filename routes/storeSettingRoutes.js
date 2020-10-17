@@ -56,22 +56,34 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/setting/gallery', async (req, res) => {
+    try {
+      let setting = await StoreSetting.findOne({ internal_name : "show_gallery" })
+      res.send(setting)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
 
 
-  // // Create Store Setting
-  // app.get('/api/store_setting/create', async (req, res) => {  
-  //   console.log("here")
-  //   let setting = {
-  //     name: "Hide Product If Zero Quantity And Not Backorderable",
-  //     boolean: false
-  //   }
-  //   const storeSetting = new StoreSetting(setting)
-  //   try {
-  //     await storeSetting.save()
-  //     res.send(storeSetting)
-  //   } catch (err) {
-  //     req.bugsnag.notify(err)
-  //     res.status(422).send(err)
-  //   }
-  // })
+
+  // Create Store Setting
+  app.get('/api/store_setting/create', async (req, res) => {  
+    console.log("here")
+    let setting = {
+      name:"Show Gallery",
+      value: {boolean: false},
+      description:"Show gallery link in sidebar",
+      internal_name: "show_gallery"
+    }
+    const storeSetting = new StoreSetting(setting)
+    try {
+      await storeSetting.save()
+      res.send(storeSetting)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
 }

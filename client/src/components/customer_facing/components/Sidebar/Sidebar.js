@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { sidebarBoolean } from "../../../../actions"
-import { getSidebarCategories } from "../../../../utils/API"
+import { getSidebarCategories, getGallerySetting } from "../../../../utils/API"
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
@@ -13,7 +13,8 @@ class Sidebar extends Component  {
     super()
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.state = {
-      categories: []
+      categories: [],
+      gallery: false
     }
   }
 
@@ -21,7 +22,8 @@ class Sidebar extends Component  {
     document.addEventListener('mousedown', this.handleClickOutside);
     // find all categories that have been selected to be shown to the customers
     let categories = await this.props.getSidebarCategories()
-    this.setState({ categories: categories.data })
+    let { data } = await this.props.getGallerySetting()
+    this.setState({ categories: categories.data, gallery: data.value.boolean })
   }
 
   componentWillUnmount() {
@@ -72,7 +74,7 @@ class Sidebar extends Component  {
       <>
         <div ref={node => this.node = node} className={"flex flex_column space-between theme-background-2 color-white sidebar " + sidebar_class}>
           <div className="padding-m font-size-20 h-100">
-            <Link to="/gallery"><h3 className="margin-top-none underline">Gallery</h3></Link>        
+            {this.state.gallery && <Link to="/gallery"><h3 className="margin-top-none underline">Gallery</h3></Link>}
             <h3 className="margin-top-none">Categories</h3>
             {this.renderCategories(null)}
           </div>
@@ -92,6 +94,6 @@ function mapStateToProps({ sidebar }) {
   return { sidebar }
 }
 
-const actions = { sidebarBoolean, getSidebarCategories }
+const actions = { sidebarBoolean, getSidebarCategories, getGallerySetting }
 
 export default connect(mapStateToProps, actions)(Sidebar)
