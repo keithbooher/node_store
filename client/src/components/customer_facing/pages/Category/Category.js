@@ -143,6 +143,7 @@ class Category extends Component  {
       let beginning_index = (page_number * 10) - 10
       shown_products = products.slice(beginning_index, beginning_index + 10)
     } else {
+      page_number = 1
       shown_products = products.slice(0, 10)  
     }
     this.setState({ 
@@ -155,7 +156,7 @@ class Category extends Component  {
   render() {
     if(this.props.match.params.category !== this.state.current_cat) {
       this.getNewCatProducts()
-    } else if(this.props.location.search !== ""&& this.state.search_param !== null && this.props.location.search !== this.state.search_param) {
+    } else if(this.state.search_param !== null && this.props.location.search !== this.state.search_param) {
       this.getNewCatProductsWithParams()
     }
 

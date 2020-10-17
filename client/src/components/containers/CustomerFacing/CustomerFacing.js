@@ -12,6 +12,7 @@ import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
 import CartPage from "../../customer_facing/pages/CartPage"
 import ContactPage from "../../customer_facing/pages/ContactPage"
+import Gallery from "../../customer_facing/pages/Gallery"
 import EnlargeImage from "../../shared/EnlargeImage"
 import Four04Page from "../../shared/Four04Page"
 import { zeroInventorySettingCheck, usersCart, createGuestCart, getGuestCart, convertGuestCart } from "../../../actions"
@@ -163,6 +164,7 @@ const CustomerFacing = ({
             <Route path="/faq" component={FAQ} />
             <Route path="/cart" component={CartPage} />
             <Route path="/contact" component={ContactPage} />
+            <Route path="/gallery" component={Gallery} />
             <Route component={Four04Page} />
           </Switch>
         </div>

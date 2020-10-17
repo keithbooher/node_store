@@ -70,7 +70,7 @@ module.exports = app => {
   app.post('/api/product/search', requireLogin, adminRequired, async (req, res) => {    
     try {
       let search_term = req.body.term
-      const products_by_name = await Product.find({ name: search_term }).populate({path: "categories"})
+      const products_by_name = await Product.find({ name: search_term })
       const products_by_sku = await Product.find({ sku: search_term }).populate({path: "categories"})
   
       let products = [...products_by_name, ...products_by_sku]
@@ -127,6 +127,16 @@ module.exports = app => {
       }
   
       res.status(200).send(average_rating)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
+  app.get('/api/products/gallery', async (req, res) => {    
+    try {
+      const product = await Product.find({ gallery: true }).populate({path: "categories"})
+      res.send(product)
     } catch (err) {
       req.bugsnag.notify(err)
       res.status(422).send(err)

@@ -16,6 +16,7 @@ export const productFields = [
   { label: 'Depth', name: 'depth', typeOfComponent: "number", noValueError: 'You must provide an address' },
   { label: 'Weight', name: 'weight', typeOfComponent: "number", noValueError: 'You must provide an address' },
   { label: 'Display To Customer', name: 'display', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
+  { label: 'Display In Gallery', name: 'gallery', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Home Page Promotion', name: 'home_promotion', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Make Backorderable', name: 'backorderable', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
   { label: 'Availability', name: 'availability', typeOfComponent: 'check-box', noValueError: 'You must provide a value' },
