@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getCategoryProducts_displayOrder, updateManyProducts } from "../../../utils/API"
-
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { dispatchEnlargeImage } from "../../../actions"
+import "./displayOrder.scss"
 // fake data generator
 const getItems = count =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
@@ -69,7 +71,7 @@ class ProductDisplayOrder extends Component {
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
 
-    result = result.map((prod, index) => {
+    result = result.filter(item => item.category_display_order).map((prod, index) => {
       prod.category_display_order[this.props.data._id] = index
       return prod
     })
@@ -81,9 +83,8 @@ class ProductDisplayOrder extends Component {
   };
 
   render() {
-    console.log(this.props)
     return (
-      <div style={{ marginTop: "30px" }}>
+      <div style={{ marginTop: "30px", maxHeight: "100vh", overflow: "scroll" }}>
         {this.state.items && 
           <DragDropContext onDragEnd={this.onDragEnd}>
             <Droppable droppableId="droppable">
@@ -91,25 +92,36 @@ class ProductDisplayOrder extends Component {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
+                  style={{...getListStyle(snapshot.isDraggingOver), ...{overflowY: "scroll", width: "100%"}}}
                 >
-                  {this.state.items.map((item, index) => (
-                    <Draggable key={item.category_display_order[this.props.data._id]} draggableId={`${item.category_display_order[this.props.data._id]}`} index={index}>
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {item.name} - {item.category_display_order[this.props.data._id]}
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                  {this.state.items.filter(item => item.category_display_order).map((item, index) => {
+                    return (
+                      <Draggable key={item.category_display_order[this.props.data._id]} draggableId={`${item.category_display_order[this.props.data._id]}`} index={index}>
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            <div className="flex">
+                              <LazyLoadImage
+                                src={item.images.i1}
+                                wrapperClassName={`${this.props.mobile ? "display_order_image_mobile" : "display_order_image"} margin-s-v border-radius-s`}
+                                onClick={() => this.props.dispatchEnlargeImage({image: item.images.i1, path: "/shop/" + item.categories[0].path_name + "/" + item.path_name })}
+                              />
+                              <div>
+                                {item.name} - {item.category_display_order[this.props.data._id]}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    )
+                  })}
                   {provided.placeholder}
                 </div>
               )}
@@ -121,11 +133,11 @@ class ProductDisplayOrder extends Component {
   }
 }
 
-function mapStateToProps({ mobile }) {
-  return { mobile }
+function mapStateToProps({ mobile, enlargeImage }) {
+  return { mobile, enlargeImage }
 }
 
-const actions = { getCategoryProducts_displayOrder, updateManyProducts }
+const actions = { getCategoryProducts_displayOrder, updateManyProducts, dispatchEnlargeImage }
 
 
 export default connect(mapStateToProps, actions)(ProductDisplayOrder)
