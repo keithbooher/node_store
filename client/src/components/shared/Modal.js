@@ -51,7 +51,7 @@ class Product extends Component  {
       transform: "translate(-50%, -50%)",
       width: this.props.width_auto ? "auto" : "30em",
       height: "auto",
-      zIndex: 30
+      zIndex: 30,
     }
 
     if (this.props.mobile) {

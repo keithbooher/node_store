@@ -81,7 +81,7 @@ module.exports = app => {
   app.get('/api/category/products/display_order/:id', async (req, res) => {
     try {
       let display_order_key = "category_display_order." + req.params.id
-      const products = await Product.find({ "categories": req.params.id, display: true, deleted_at: null }).sort({ [display_order_key]: -1 })
+      const products = await Product.find({ "categories": req.params.id, display: true, deleted_at: null }).sort({ [display_order_key]: 1 })
   
       res.send(products)
     } catch (err) {
