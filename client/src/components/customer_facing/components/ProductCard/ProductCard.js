@@ -203,7 +203,7 @@ class ProductCard extends Component {
           <div 
             style={this.props.related_product ? { margin: "0px 10px", minWidth: "280px" } : {} } 
             key={product._id} 
-            className={`border-radius st-product-card-shadow st-product-card-background 
+            className={`flex flex_column space-between border-radius st-product-card-shadow st-product-card-background 
                         ${this.props.related_product ? "" : "w-90"} 
                         ${this.props.related_product && "related_product"} margin-s-v 
                         ${product._id === "" && "hidden"}
@@ -243,8 +243,8 @@ class ProductCard extends Component {
               <div className="flex">
                 <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
                 <div className="flex flex_column">
-                  <FontAwesomeIcon onClick={() => this.setQuantity("up")} icon={faChevronUp} />
-                  <FontAwesomeIcon onClick={() => this.setQuantity("down")} icon={faChevronDown} />
+                  <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("up")} icon={faChevronUp} />
+                  <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down")} icon={faChevronDown} />
                 </div>
               </div>
               <button className="margin-s-h inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
