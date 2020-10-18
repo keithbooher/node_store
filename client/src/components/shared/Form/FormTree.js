@@ -55,7 +55,7 @@ class FormTree extends Component {
     })
     return (
       <div>
-        <div className={`hover hover-color-10 ${defaulted ? "store_text_color" : ""}`} onClick={() => this.selectCat(category)}>{category.name}</div>
+        <div className={`hover hover-color-10 ${defaulted ? "store_text_color" : "color-black"}`} onClick={() => this.selectCat(category)}>{category.name}</div>
         {category.sub_categories.filter((cat) => cat.deleted_at !== null).map((sub_cat, index) => {
           return <div key={index} style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
         })}
@@ -72,7 +72,7 @@ class FormTree extends Component {
     })
     return (
       <div>
-        <div className={`hover hover-color-10 ${defaulted ? "store_text_color" : ""}`} onClick={() => this.selectCat(category)}>{category.name}</div>
+        <div className={`hover hover-color-10 ${defaulted ? "store_text_color" : "color-black"}`} onClick={() => this.selectCat(category)}>{category.name}</div>
         {category.sub_categories.filter((cat) => cat.deleted_at !== null).map((sub_cat, index) => {
           return <div key={index} style={{ marginLeft: '20px' }}>{this.subCat(sub_cat)}</div>
         })}
