@@ -14,7 +14,7 @@ module.exports = app => {
 
     const msg = {
           to: recipient,
-          from: 'keibooher@gmail.com', // Use the email address or domain you verified above
+          from: 'keibooher@gmail.com', // Use the email address or domain you verified in sendgrid
           subject: 'Note Store Order Confirmation',
           text: "Just letting you know we've received your order",
           html: confirmationTemplate(orderNumber)
@@ -36,7 +36,7 @@ module.exports = app => {
 
     const msg = {
           to: recipient,
-          from: 'keibooher@gmail.com', // Use the email address or domain you verified above
+          from: 'keibooher@gmail.com', // Use the email address or domain you verified in sendgrid
           subject: 'Purchase Shipped | Keep Your Eye Open',
           text: 'check out your tracking number',
           html: trackingTemplate(order)
@@ -58,7 +58,7 @@ module.exports = app => {
 
     const msg = {
           to: recipient,
-          from: 'keibooher@gmail.com', // Use the email address or domain you verified above
+          from: 'keibooher@gmail.com', // Use the email address or domain you verified in sendgrid
           subject: 'Your order is being processed!',
           text: 'Keep Your Eye Open | Your purchase is being processed',
           html: processingTemplate(order)
