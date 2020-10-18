@@ -25,7 +25,7 @@ class Checkout extends Component  {
     return (
       <div style={{ padding: ".4em .4em 100px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
-          <title>Node Store Checkout</title>
+          <title>Checkout | Keep Your Eye Open</title>
           <meta name="description" content="Finalize your purchase here" />
           <meta name="keywords" content="" />
         </MetaTags>

@@ -92,7 +92,7 @@ class Admin extends Component {
     return (
       <div id="admin_container" className={`${container_class} ${!this.props.mobile && "w-90 margin-auto-h"}`} style={{ maxWidth: "1200px" }}>
         <MetaTags>
-          <title>Node Store Admin</title>
+          <title>Admin | Keep Your Eye Open</title>
           <meta name="description" content="Take control of your store" />
           <meta name="keywords" content="" />
         </MetaTags>

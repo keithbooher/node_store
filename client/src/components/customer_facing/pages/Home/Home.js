@@ -53,7 +53,7 @@ class Home extends Component  {
     return (
       <div style={{ padding: "0em 0em 100px 0em" }}>
         <MetaTags>
-          <title>Node Store</title>
+          <title>Keep Your Eye Open</title>
           <meta name="description" content="Some description." />
           <meta property="og:title" content="MyApp" />
           <meta property="og:image" content="path/to/image.jpg" />

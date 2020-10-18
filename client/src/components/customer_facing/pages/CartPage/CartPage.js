@@ -41,7 +41,7 @@ class CartPage extends Component {
     return (
       <div style={ containerStyle } className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
-          <title>Node Store Cart</title>
+          <title>Cart | Keep Your Eye Open</title>
           <meta name="description" content="Review your cart" />
           <meta name="keywords" content="" />
         </MetaTags>

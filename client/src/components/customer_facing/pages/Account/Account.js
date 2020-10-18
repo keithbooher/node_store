@@ -30,7 +30,7 @@ class Account extends Component  {
     return (
       <div style={{ padding: ".4em .4em 80px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
-          <title>Node Store Account Info</title>
+          <title>Account Info | Keep Your Eye Open</title>
           <meta name="description" content="Adjust and review your user information and purchase history" />
           <meta name="keywords" content="" />
         </MetaTags>

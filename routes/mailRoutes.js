@@ -37,7 +37,7 @@ module.exports = app => {
     const msg = {
           to: recipient,
           from: 'keibooher@gmail.com', // Use the email address or domain you verified above
-          subject: 'Node Store Purchase Shipped',
+          subject: 'Purchase Shipped | Keep Your Eye Open',
           text: 'check out your tracking number',
           html: trackingTemplate(order)
         }
@@ -60,7 +60,7 @@ module.exports = app => {
           to: recipient,
           from: 'keibooher@gmail.com', // Use the email address or domain you verified above
           subject: 'Your order is being processed!',
-          text: 'Your Node Store purchase is being processed',
+          text: 'Keep Your Eye Open | Your purchase is being processed',
           html: processingTemplate(order)
         }
 
