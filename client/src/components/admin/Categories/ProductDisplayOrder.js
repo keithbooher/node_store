@@ -108,13 +108,20 @@ class ProductDisplayOrder extends Component {
                             )}
                           >
                             <div className="flex">
+                              <div className="flex justify-center align-items-center">
+                                <div className="margin-s-h">
+                                  {item.category_display_order[this.props.data._id]}
+                                </div>
+                              </div>
                               <LazyLoadImage
                                 src={item.images.i1}
                                 wrapperClassName={`${this.props.mobile ? "display_order_image_mobile" : "display_order_image"} margin-s-v border-radius-s`}
                                 onClick={() => this.props.dispatchEnlargeImage({image: item.images.i1, path: "/shop/" + item.categories[0].path_name + "/" + item.path_name })}
                               />
-                              <div>
-                                {item.name} - {item.category_display_order[this.props.data._id]}
+                              <div className="flex justify-center align-items-center">
+                                <div className="margin-s-h">
+                                  {item.name}
+                                </div>
                               </div>
                             </div>
                           </div>
