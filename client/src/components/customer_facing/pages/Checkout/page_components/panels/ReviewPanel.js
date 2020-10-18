@@ -64,6 +64,8 @@ class ReviewPanel extends Component  {
 
         <h1>Thank you for your order!</h1>
 
+        <h2>An order confirmation email has been sent to your inbox. If you dont immediately see the email please check your spam!</h2>
+
         <div>Order #: <Link to={`/order/${this.props.new_order._id}`}>{this.props.new_order._id}</Link></div>
 
         <h2>Products Purchased</h2>
