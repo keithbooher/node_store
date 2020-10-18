@@ -4,9 +4,27 @@ html {
   scroll-behavior: smooth;
 }
 
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../../fonts/Montserrat/Montserrat-SemiBold.ttf'); /* IE9 Compat Modes */
+  src: local('Montserrat'), local('Montserrat'),
+       url('../../fonts/Montserrat/Montserrat-SemiBold.ttf?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../../fonts/Montserrat/Montserrat-SemiBold.ttf') format('woff2'), /* Super Modern Browsers */
+       url('../../fonts/Montserrat/Montserrat-SemiBold.ttf') format('woff'), /* Modern Browsers */
+       url('../../fonts/Montserrat/Montserrat-SemiBold.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../../fonts/Montserrat/Montserrat-SemiBold.ttf#Montserrat') format('svg'); /* Legacy iOS */
+}
+* {
+  font-family: 'Montserrat' !important;
+}
+
 body {
+  font-family: 'Montserrat';
   margin: 0px;
 }
+
 
 a {
   text-decoration: none;
