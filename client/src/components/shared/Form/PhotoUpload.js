@@ -39,7 +39,7 @@ class PhotoUpload extends Component {
         />
 
         {/* Show uploaded image here */}
-        {this.state.src && <img src={this.state.src} />}
+        {this.state.src && <img style={{ maxHeight: "300px", maxWidth: "300px" }} src={this.state.src} />}
       </div>
     )
   }
