@@ -92,7 +92,7 @@ class ProductDisplayOrder extends Component {
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
-                  style={{...getListStyle(snapshot.isDraggingOver), ...{overflowY: "scroll", width: "100%"}}}
+                  style={{...getListStyle(snapshot.isDraggingOver), ...{width: "100%"}}}
                 >
                   {this.state.items.filter(item => item.category_display_order).map((item, index) => {
                     return (
