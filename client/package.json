@@ -21,6 +21,7 @@
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
+    "react-color": "^2.18.1",
     "react-cookie": "^4.0.3",
     "react-country-region-selector": "^3.0.1",
     "react-dom": "^16.12.0",

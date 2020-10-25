@@ -77,8 +77,8 @@ export const getVarietalOptionID = (_id) => async dispatch => {
 }
 
 
-export const createVarietalOption = (varietal) => async dispatch => {
-  const data = { varietal }
+export const createVarietalOption = (option) => async dispatch => {
+  const data = { option }
   let req = await axios.post('/api/varietal/option/create', data).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
@@ -87,12 +87,12 @@ export const createVarietalOption = (varietal) => async dispatch => {
   if (req.status === 200) {
     return req
   } else {
-    return varietal
+    return option
   }
 }
 
-export const updateVarietalOption = (varietal) => async dispatch => {
-  const data = { varietal }
+export const updateVarietalOption = (option) => async dispatch => {
+  const data = { option }
   let req = await axios.put('/api/varietal/option/update', data).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
@@ -101,7 +101,7 @@ export const updateVarietalOption = (varietal) => async dispatch => {
   if (req.status === 200) {
     return req
   } else {
-    return { data: varietal }
+    return { data: option }
   }
 }
 

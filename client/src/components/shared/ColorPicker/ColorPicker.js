@@ -1,37 +1,16 @@
-import React, { useRef } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import { SwatchesPicker } from 'react-color';
 
-const colors = [
-  "#000000",
-  "#63563B",
-  "#92949B",
-  "#BABBBD",
-  "#F4E4C1",
-  "#FFFFFF",
-  "#A2242F",
-  "#DC793E",
-  "#FFD300",
-  "#74AA50",
-  "#006B54",
-  "#263056",
-  "#7781A4",
-  "#7BAFD4",
-  "#6C244C",
-  "#E6AF91"
-]
+class ColorPicker extends Component {
 
-const ColorPicker = (onChange) => {
+  handleChange(color, e) {
+    console.log(color)
+    // this.props.handleChange()
+  }
 
-
-
-  return (
-    <div />
-  )
-
+  render() {
+    return <SwatchesPicker height={"150px"} onChange={ (color, e) => this.props.onChange(color) } />;
+  }
 }
 
-function mapStateToProps({ mobile }) {
-  return { mobile }
-}
-
-export default connect(mapStateToProps, null)(ColorPicker)
+export default ColorPicker
