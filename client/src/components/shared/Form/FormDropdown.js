@@ -7,7 +7,6 @@ import 'react-widgets/dist/css/react-widgets.css'
 class FormDropdown extends Component {
   constructor(props) {
     super()
-    console.log(this.default_option)
     this.state = {
       chosen: null
     }
@@ -25,19 +24,17 @@ class FormDropdown extends Component {
   }
 
   onChange(option) {
-    console.log("option", option)
     this.setState({ chosen: option.value })
     this.props.change(option.redux_field, option)
   }
 
   onSubmit(option) {
-    console.log(option)
+
     this.setState({ chosen: option.value })
     this.props.onSubmit(option.redux_field, option)
   }
 
   render() {
-    console.log(this.props)
     let default_option = this.props.options.find(option => option.default === true)
 
     let dropdown = document.getElementsByClassName("rw-dropdown-list")[0]
