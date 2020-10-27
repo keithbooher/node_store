@@ -4,7 +4,7 @@ import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -27,7 +27,8 @@ class ProductForm extends Component {
       categories: [],
       product: null,
       propertyToEdit: null,
-      edit_image: null
+      edit_image: null,
+      showVarietalModal: false,
     }
   }
 
@@ -174,7 +175,12 @@ class ProductForm extends Component {
               <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-50 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRadius: "0px 4px 4px 0px" }}>
                 <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleRight} /> 
                 <h3 className="margin-xs-v">Related Products</h3>
-                </Link>
+              </Link>
+            </div>
+            <div>
+              <Link to={`/admin/product/varietals/${this.state.product._id}`} className="w-95 text-align-center theme-background-3 padding-s hover-color-5 border-radius-s">
+                <h3 className="margin-xs-v">Varietals</h3>
+              </Link>
             </div>
             <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "22px" }}>
               <span>Name:</span> <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>

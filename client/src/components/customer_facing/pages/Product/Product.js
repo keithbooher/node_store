@@ -464,7 +464,7 @@ const Product = ({
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
-                <div id="reviews_container" style={mobile ? { maxHeight: "450px" } : { maxHeight: "600px" } } className={`relative border-radius-s overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                <div id="reviews_container" style={mobile ? { maxHeight: "450px" } : { maxHeight: "600px" } } className={`relative border-radius-s ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
                   {reviews.map((review, index) => {
                     return (
                       <div style={mobile ? {} : { fontSize: "20px" }} className="theme-background-6 padding-s margin-xs-v border-radius-s" key={index}>

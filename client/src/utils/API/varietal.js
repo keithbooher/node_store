@@ -105,8 +105,8 @@ export const updateVarietalOption = (option) => async dispatch => {
   }
 }
 
-export const getAllVarietalOptions = () => async dispatch => {
-  let req = await axios.get(`/api/varietals/options`).catch(error => {
+export const getAllVarietalOptions = (product_id) => async dispatch => {
+  let req = await axios.get(`/api/varietals/options/${product_id}`).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
     return error.response

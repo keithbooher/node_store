@@ -57,7 +57,7 @@ class Product extends Component  {
     if (this.props.mobile) {
       style_inner = {
         position: "fixed",
-        top: "10%",
+        top: this.props.mobile ? "5%" : "10%",
         left: "10px",
         right: "10px",
         width: this.props.width_auto ? "auto" : "90%",

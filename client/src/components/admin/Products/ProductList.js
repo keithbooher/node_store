@@ -11,7 +11,6 @@ import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import Key from "../../shared/Key"
 import Modal from "../../shared/Modal"
-import VarietalOptions from "./VarietalOptions"
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -25,7 +24,6 @@ class ProductList extends Component {
       last_product: null,
       categoryFilter: "none",
       areYouSure: false,
-      showVarietalModal: false,
       dropDownField:[
         { 
           label: "Filter", 
@@ -219,7 +217,6 @@ class ProductList extends Component {
     return (
       <div style={{ fontSize }}>
         <Link to="/admin/products/form/add" className="absolute" style={{ top: "5px", right: "5px" }}>Add Product <FontAwesomeIcon icon={faPlusCircle} /></Link>
-        <a onClick={() => this.setState({ showVarietalModal: true })} className="absolute" style={{ top: "25px", right: "5px" }}>Varietal Options <FontAwesomeIcon icon={faPlusCircle} /></a>
         <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
 
         <Form
@@ -263,12 +260,6 @@ class ProductList extends Component {
           </Modal>
         }
 
-        {this.state.showVarietalModal &&
-          <Modal cancel={() => this.setState({ showVarietalModal: false })}>
-            <VarietalOptions />
-          </Modal>
-        }
-        
       </div>
     )
   }

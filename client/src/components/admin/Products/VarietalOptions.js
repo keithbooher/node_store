@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpinner, faPlusCircle, faTimesCircle, faSearch, faCircle } from '@fortawesome/free-solid-svg-icons'
-import { getAllVarietalOptions, createVarietalOption } from "../../../utils/API"
+import { faSpinner, faPlusCircle, faTimesCircle, faSearch, faCircle, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { createVarietalOption } from "../../../utils/API"
 import { dispatchObj } from "../../../actions"
 import Form from "../../shared/Form"
 import ColorPicker from "../../shared/ColorPicker/ColorPicker"
 import { reset } from "redux-form"
-
 class VarietalOptions extends Component {
   constructor(props) {
     super()
@@ -26,13 +25,11 @@ class VarietalOptions extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await this.props.getAllVarietalOptions()
-
-    const organize_varietals = varietalSort(data)
-    let colors = organize_varietals.colors
-    let sizes = organize_varietals.sizes
-
-    this.setState({ colors, sizes })
+    this.setState({ 
+      colors: this.props.colors, 
+      sizes: this.props.sizes, 
+      varietalOptions: this.props.options 
+    })
   }
 
   showVarietalValueForm() {
@@ -75,7 +72,8 @@ class VarietalOptions extends Component {
     let option = {
       type: "color",
       value: this.state.chosenColor,
-      name: this.props.form.varietal_color_name_form.values.name
+      name: this.props.form.varietal_color_name_form.values.name,
+      _product_id: this.props.product._id
     }
     let { data } = await this.props.createVarietalOption(option)
     this.setState({ 
@@ -90,7 +88,8 @@ class VarietalOptions extends Component {
     let option = {
       type: "size",
       value: this.props.form.varietal_size_form.values.size,
-      name: this.props.form.varietal_size_form.values.size
+      name: this.props.form.varietal_size_form.values.size,
+      _product_id: this.props.product._id
     }
     let { data } = await this.props.createVarietalOption(option)
     this.props.dispatchObj(reset("varietal_size_form"))
@@ -115,7 +114,10 @@ class VarietalOptions extends Component {
       <div>
 
         {/* Toggle show form  */}
-        <a className="hover-color-11" onClick={this.createFormToggle}>{this.state.showCreateForm ? <div>Cancel <FontAwesomeIcon icon={faTimesCircle} /></div> : <div>Add <FontAwesomeIcon icon={faPlusCircle} /></div>}</a>
+        <div className="flex space-between">
+          <a className="hover-color-11" onClick={this.props.cancel}>Done <FontAwesomeIcon icon={faCheck} /></a>
+          <a className="hover-color-11" onClick={this.createFormToggle}>{this.state.showCreateForm ? <div>Cancel <FontAwesomeIcon icon={faTimesCircle} /></div> : <div>Add <FontAwesomeIcon icon={faPlusCircle} /></div>}</a>
+        </div>
         {this.state.showCreateForm &&
           <Form 
             submitButton={<div />}
@@ -149,7 +151,7 @@ class VarietalOptions extends Component {
         {this.state.createType &&
           <div>
             {this.showVarietalValueForm()}
-            <button onClick={this.state.createType === "color" ? this.makeColorVarietal : this.makeSizeVarietal }>Create</button>
+            <button className="margin-s-v" onClick={this.state.createType === "color" ? this.makeColorVarietal : this.makeSizeVarietal }>Create</button>
           </div>
         }
 
@@ -196,31 +198,10 @@ class VarietalOptions extends Component {
   }
 }
 
-const varietalSort = (data) => {
-  let sorted = {
-    colors: [],
-    sizes: []
-  }
-
-  if (data.length === 0) {
-    return sorted
-  }
-
-  data.forEach(varietal => {
-    if (varietal.type === "color") {
-      sorted.colors.push(varietal)
-    } else {
-      sorted.sizes.push(varietal)
-    }
-  });
-
-  return sorted
-}
-
 function mapStateToProps({ mobile, form }) {
   return { mobile, form }
 }
 
-const actions = { getAllVarietalOptions, createVarietalOption, dispatchObj }
+const actions = { createVarietalOption, dispatchObj }
 
 export default connect(mapStateToProps, actions)(VarietalOptions)

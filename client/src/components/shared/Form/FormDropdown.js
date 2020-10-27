@@ -42,6 +42,8 @@ class FormDropdown extends Component {
       dropdown.style.width = "400px"
     }
 
+    console.log(this.props)
+
     return (
       <div className={`${this.props.mobile ? "" : "w-70"}`}>
         <label style={this.props.mobile ? {} : { fontSize: "20px" }}>{this.props.label}</label>
@@ -54,6 +56,7 @@ class FormDropdown extends Component {
             onSubmit={e => this.onSubmit(e)}
             defaultValue={default_option}
             value={this.state.chosen}
+            itemComponent={this.props.dropDownCustomItemComponent}
           />
         </div>
         {/* <input value={this.state.chosen} {...this.props.input} style={{ display: "none" }} /> */}
