@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
+const varietal = require('./Varietal')
 
 const productSchema = new Schema({
   name: String,
@@ -78,7 +79,10 @@ const productSchema = new Schema({
   category_display_order: {
     type: Object,
     default: {}
-  }
+  },
+  varietals: [varietal]
 })
+
+
 
 mongoose.model('products', productSchema)
