@@ -50,6 +50,7 @@ class CreateVarietal extends Component {
     }
 
     let images = {
+      useMasterPhotos: false,
       i1: image,
       i2: null,
       i3: null,

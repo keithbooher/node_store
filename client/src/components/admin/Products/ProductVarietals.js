@@ -4,7 +4,7 @@ import VarietalOptions from "./VarietalOptions"
 import CreateVarietal from "./CreateVarietal"
 import Modal from "../../shared/Modal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faSpinner, faArrowLeft, faEdit } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faSpinner, faArrowLeft, faEdit, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { getProductbyId, updateVarietal, updateProduct, getAllVarietalOptions } from '../../../utils/API'
 import { Link } from 'react-router-dom'
 import ReactFilestack from "filestack-react"
@@ -153,7 +153,37 @@ class ProductVarietals extends Component {
     this.setState({ product: data, sizeModal: false })
   }
 
+  async deleteVarietal(v) {
+    let product = this.state.product
+    let today = new Date()
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+
+    product.varietals = product.varietals.filter(varietal => varietal._id !== v._id)
+
+    v.deleted_at = date
+
+    await this.props.updateVarietal(v)
+
+    let { data } = await this.props.updateProduct(product)
+    this.setState({ product: data, areYouSure: false })
+  }
+
+  async varietalOrMasterImages(v) {
+    let product = this.state.product
+
+    product.varietals = product.varietals.map(varietal => {
+      if (varietal._id === v._id) {
+        varietal.images.useMasterPhotos = !varietal.images.useMasterPhotos
+      }
+      return varietal
+    })
+
+    let { data } = await this.props.updateProduct(product)
+    this.setState({ product: data })
+  }
+
   render() {
+    console.log(this.state)
 
     return (
       <div style={{ height: "100vh" }}>
@@ -164,25 +194,25 @@ class ProductVarietals extends Component {
 
 
             <div className="margin-xl-v">
-              <a onClick={() => this.setState({ showCreateModal: true })} className="w-95 text-align-center theme-background-3 padding-s hover-color-5 border-radius-s">
+              <a onClick={() => this.setState({ showCreateModal: true })} className="w-95 text-align-center theme-background-3 padding-s hover-color-5 border-radius-s" style={{ maxWidth: "400px", marginRight: "auto" }}>
                 <h3 className="margin-xs-v">Create Varietal</h3>
               </a>
             </div>
 
 
-            <div>
+            <div className={`${this.props.mobile ? "flex flex_column" : "flex flex-wrap" }`}>
               {this.state.product.varietals && this.state.product.varietals.map((v, i) => {
                 return (
-                  <>
+                  <div className="flex-basis-33">
                     {/* images */}
-                    <>               
+                    <div>               
                       <div onClick={() => this.setState({ edit_image: { image_key: "i1", varietal_id: v._id } })} className={`margin-auto-h flex justify-center align-items-center background-color-black ${this.state.edit_image === "i1" && "st-selection-border"}`} style={{ maxHeight: "250px", maxWidth: "250px", minHeight: "250px", minWidth: "250px", marginTop: "10px" }}>
                         {!v.images.i1 && <FontAwesomeIcon style={this.props.mobile ? { fontSize: "30px" } : { fontSize: "35px" }} className="hover hover-color-12" icon={faEdit} />}
                         <img style={{ height: "250px", width: "auto", maxHeight: "250px", maxWidth: "250px" }} src={v.images.i1} />
                       </div>
                       <div className="flex flex-wrap justify-center">
                         {Object.keys(v.images).map((image_key, index) => {
-                          if (image_key === "i1") {
+                          if (image_key === "i1" || image_key === "useMasterPhotos") {
                             return
                           } else {
                             return (
@@ -207,32 +237,32 @@ class ProductVarietals extends Component {
                           />
                         </div>
                       }
-                    </>
+                    </div>
+                    
+                    {/* color */}
+                    {v.color &&                    
+                      <div className="flex align-items-center margin-s-v">
+                        <div className="hover hover-color-12" onClick={() => this.showEditIndicator({ att: "color", v })} style={{ height: "35px", width: "35px", backgroundColor: v.color.value }}></div>
+                        <div className="hover hover-color-12 margin-s-h" onClick={() => this.showEditIndicator({ att: "color", v})}>{v.color.name}</div>
+                        {this.state.propertyToEdit && this.state.propertyToEdit.v._id === v._id && this.state.propertyToEdit.att === "color" && 
+                          <FontAwesomeIcon 
+                            className="margin-s-h hover hover-color-11"
+                            icon={faEdit} 
+                            onClick={() => this.setState({ colorModal: { v } })} 
+                          />
+                        }
+                      </div>
+                    }
 
                     {/* size */}
                     {v.size && 
-                      <div className="flex align-items-center margin-s-v">
+                      <div className="flex align-items-center" style={{ margin: ".9em 0px .4em 0px" }}>
                         <div className="hover hover-color-12" onClick={() => this.showEditIndicator({ att: "size", v})}>{v.size.value}</div>
                         {this.state.propertyToEdit && this.state.propertyToEdit.v._id === v._id && this.state.propertyToEdit.att === "size" && 
                           <FontAwesomeIcon 
                             className="margin-s-h hover hover-color-11"
                             icon={faEdit} 
                             onClick={() => this.setState({ sizeModal: { v } })} 
-                          />
-                        }
-                      </div>
-                    }
-                    
-                    {/* color */}
-                    {v.color &&                    
-                      <div className="flex align-items-center margin-s-v">
-                        <div className="hover hover-color-12" onClick={() => this.showEditIndicator({ att: "color", v})}>{v.color.name}</div>
-                        <div className="hover hover-color-12" onClick={() => this.showEditIndicator({ att: "color", v })} style={{ height: "35px", width: "35px", backgroundColor: v.color.value }}></div>
-                        {this.state.propertyToEdit && this.state.propertyToEdit.v._id === v._id && this.state.propertyToEdit.att === "color" && 
-                          <FontAwesomeIcon 
-                            className="margin-s-h hover hover-color-11"
-                            icon={faEdit} 
-                            onClick={() => this.setState({ colorModal: { v } })} 
                           />
                         }
                       </div>
@@ -249,15 +279,29 @@ class ProductVarietals extends Component {
                         />
                       }
                     </div>
-                    
+
+                    <button className="margin-m-v block" onClick={() => this.setState({ areYouSure: v })}>Delete This Varietal</button>
+
+                    <button className="margin-s-v block" onClick={() => this.varietalOrMasterImages(v)}>Use master images {v.images.useMasterPhotos ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} /> }</button>
+
                     <br />
                     <hr />
                     <br />
-                  </>
+                  </div>
                 )
               })}
+
             </div>
 
+            {this.state.areYouSure &&
+              <Modal cancel={() => this.setState({ areYouSure: false })}>
+                <h2>Are you sure you want to delete this varietal?</h2>
+                <div>
+                  <button className="padding-s margin-s-h" onClick={() => this.deleteVarietal(this.state.areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
+                  <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
+                </div>
+              </Modal>
+            }
 
             {this.state.showVarietalModal &&
               <Modal cancel={() => this.setState({ showVarietalModal: false })}>

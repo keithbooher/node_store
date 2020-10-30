@@ -7,7 +7,8 @@ const VarietalOptionSchema = new Schema({
   type: String,
   value: String,
   name: String,
-  _product_id: String
+  _product_id: String,
+  deleted_at: Date
 })
 
 mongoose.model('varietalOption', VarietalOptionSchema)

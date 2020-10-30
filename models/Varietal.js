@@ -11,6 +11,7 @@ const VarietalSchema = new Schema({
   images: {
     type: Object,
     default: {
+      useMasterPhotos: false,
       i1: null,
       i2: null,
       i3: null,
@@ -18,6 +19,7 @@ const VarietalSchema = new Schema({
       i5: null,
     }
   },
+  deleted_at: Date,
 })
 
 mongoose.model('varietal', VarietalSchema)
