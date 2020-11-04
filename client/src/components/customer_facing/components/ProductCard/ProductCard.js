@@ -10,7 +10,7 @@ import './productCard.css.scss'
 import { dispatchEnlargeImage, showCartAction, showHeaderAction } from "../../../../actions"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import StarRatings from 'react-star-ratings'
-
+import VarietalDropdown from "../../../shared/Varietal/VarietalDropdown"
 class ProductCard extends Component {
   constructor(props) {
     super()
@@ -20,13 +20,20 @@ class ProductCard extends Component {
       quantity: 1,
       exceededInventory: null,
       enlargeImage: null,
-      averRating: null
+      averRating: null,
+      chosenVarietal: null,
+      pickVarietal: false
     }
   }
 
   async componentDidMount() {
     const { data } = await this.props.getProductAverageRating(this.props.product._id)
-    this.setState({ averRating: data.average })
+    let varietal = null
+    if (this.props.product.varietals && this.props.product.varietals.length > 0) {
+      varietal = this.props.product.varietals[0]
+    }
+
+    this.setState({ averRating: data.average, chosenVarietal: varietal })
   }
 
   addToCart() {
@@ -40,10 +47,6 @@ class ProductCard extends Component {
 
     let sub_total, create_boolean
 
-    if (!cart.line_items) {
-      cart.line_items = []
-    }
-
     if (this.props.cart == null) {
       create_boolean = true
       cart = {
@@ -54,7 +57,8 @@ class ProductCard extends Component {
             _product_id: product._id,
             quantity: quantity,
             product_price: product.price,
-            product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general" }/${product_path_name}`
+            product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general" }/${product_path_name}`,
+            varietal: this.state.chosenVarietal
           }
         ],
         _user_id: user_id,
@@ -68,8 +72,10 @@ class ProductCard extends Component {
       let found = false;
       for(var i = 0; i < cart.line_items.length; i++) {
         if (cart.line_items[i]._product_id == product._id) {
-            found = true;
-            break;
+          found = findIt(product, cart, i, this.state.chosenVarietal, quantity)
+          if (found) {
+            break
+          }
         }
       }
 
@@ -78,20 +84,7 @@ class ProductCard extends Component {
       // OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
       if(found === true) {
         cart.line_items = cart.line_items.map((line_item) => {
-          if(product._id === line_item._product_id) {
-            const sum = line_item.quantity + quantity
-            if (!this.props.product.backorderable && sum > this.props.product.inventory_count) {
-              exceededInventory = {
-                inventory_count: this.props.product.inventory_count,
-                quantity_added: quantity,
-                current_line_item_quantity: line_item.quantity,
-                difference: this.props.product.inventory_count - line_item.quantity
-              }
-              line_item.quantity = this.props.product.inventory_count
-            } else {
-              line_item.quantity += quantity
-            }
-          }
+          exceededInventory = checkInventoryCount(product, line_item, this.state.chosenVarietal, quantity)
           return line_item
         })
       } else {
@@ -101,7 +94,8 @@ class ProductCard extends Component {
           _product_id: product._id,
           quantity: quantity,
           product_price: product.price,
-          product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general"}/${product_path_name}`
+          product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general"}/${product_path_name}`,
+          varietal: this.state.chosenVarietal
         }
         cart.line_items.push(line_item)
       }
@@ -128,9 +122,8 @@ class ProductCard extends Component {
     } else {
       this.props.updateCart(cart)
     }
-    if (exceededInventory) {
-      this.setState({ exceededInventory })
-    }
+
+    this.setState({ exceededInventory, pickVarietal: false })
 
     this.props.showCartAction(true)
     this.props.showHeaderAction("scrolling_up_nav")
@@ -247,7 +240,16 @@ class ProductCard extends Component {
                   <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down")} icon={faChevronDown} />
                 </div>
               </div>
-              <button className="margin-s-h inline" onClick={this.addToCart.bind(this)}>Add To Cart</button>
+              <button 
+                className="margin-s-h inline" 
+                onClick={this.props.product.varietals && this.props.product.varietals.length > 0 ? 
+                    () => this.setState({ pickVarietal: true })
+                  :
+                    this.addToCart.bind(this)
+                }
+              >
+                Add To Cart
+              </button>
             </div>
           </div>
         : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
@@ -263,10 +265,80 @@ class ProductCard extends Component {
             <button onClick={() => this.setState({ exceededInventory: false })}>Okay</button>
           </Modal>
         }
+
+        {this.state.pickVarietal && 
+          <Modal cancel={() => this.setState({ pickVarietal: false })}>
+            <div className="flex flex_column align-items-center">
+              <div className={`text-align-center flex justify-center align-items-center background-color-black`} style={{ width: "100%", height: "100%", maxHeight: "350px", maxWidth: "350px" }}>
+                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "350px" }} src={this.state.chosenVarietal.images.i1} />
+              </div>
+
+              <VarietalDropdown 
+                varietals={this.props.product.varietals} 
+                setVarietal={(v) => this.setState({ chosenVarietal: v })} 
+                chosenVarietal={this.state.chosenVarietal} 
+              />
+
+              <div className="flex margin-s-v">
+                <button 
+                  className="margin-s-h inline" 
+                  onClick={this.addToCart.bind(this)}
+                >
+                  Add To Cart
+                </button>
+                <Link className="margin-s-h" to={`/shop/${category_path_name}/${product.path_name}`}><button>Go To Product Page</button></Link>
+              </div>
+            </div>
+          </Modal>
+        }
     </>
     )
   }
 }
+
+const checkInventoryCount = (product, line_item, chosenVarietal, quantity) => {
+  let insufficient = false
+  if (product.varietals.length > 0 && line_item._product_id == product._id && line_item.varietal && line_item.varietal._id === chosenVarietal._id) {
+    let total = line_item.quantity + quantity
+    if (total > chosenVarietal.inventory_count && !product.backorderable) {
+      insufficient = {
+        inventory_count: product.inventory_count,
+        quantity_added: quantity,
+        current_line_item_quantity: line_item.quantity,
+        difference: product.inventory_count - line_item.quantity
+      }
+      line_item.quantity = product.inventory_count
+    } else {
+      line_item.quantity += quantity
+    }
+  } else if(!product.varietals && product._id === line_item._product_id) {
+    const sum = line_item.quantity + quantity
+    if (!product.backorderable && sum > product.inventory_count) {
+      insufficient = {
+        inventory_count: product.inventory_count,
+        quantity_added: quantity,
+        current_line_item_quantity: line_item.quantity,
+        difference: product.inventory_count - line_item.quantity
+      }
+      line_item.quantity = product.inventory_count
+    } else {
+      line_item.quantity += quantity
+    }
+  }
+
+  return insufficient
+}
+
+const findIt = (product, _cart, i, chosenVarietal) => {
+  let found = false
+  if (product.varietals.length > 0 && _cart.line_items[i]._product_id == product._id && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
+    found = true;
+  } else if (!product.varietals && _cart.line_items[i]._product_id == product._id) {   
+    found = true;
+  }
+  return found
+}
+
 
 function mapStateToProps({ zeroInventory, mobile }) {
   return { zeroInventory, mobile }

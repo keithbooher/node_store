@@ -76,6 +76,7 @@ class Form extends Component {
                 autofocus={autofocus}
                 mobile={this.props.mobile}
                 dropDownCustomItemComponent={this.props.dropDownCustomItemComponent}
+                dropDownCustomValueComponent={this.props.dropDownCustomValueComponent}
               />
     })
   }

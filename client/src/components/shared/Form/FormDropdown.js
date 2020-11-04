@@ -57,6 +57,7 @@ class FormDropdown extends Component {
             defaultValue={default_option}
             value={this.state.chosen}
             itemComponent={this.props.dropDownCustomItemComponent}
+            valueComponent={this.props.dropDownCustomValueComponent}
           />
         </div>
         {/* <input value={this.state.chosen} {...this.props.input} style={{ display: "none" }} /> */}
