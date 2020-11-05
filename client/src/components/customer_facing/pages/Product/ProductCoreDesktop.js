@@ -36,8 +36,8 @@ const ProductCoreDesktop = ({
             <div className="flex">
               {Object.keys(product.images).map((image_key, index) => {
                 return (
-                  <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "25%" }}>
-                    <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
+                  <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(chosenVarietal ? chosenVarietal.images[image_key] : product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "25%" }}>
+                    <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={chosenVarietal ? chosenVarietal.images[image_key] : product.images[image_key]} />
                   </div>
                 )
               })}
@@ -67,7 +67,14 @@ const ProductCoreDesktop = ({
             {product.availability ?
               <>
                 <div className="margin-s-v">
-                  {varietal_boolean && <VarietalDropdown varietals={product.varietals} setVarietal={setVarietal} chosenVarietal={chosenVarietal} />}
+                  {varietal_boolean && 
+                    <VarietalDropdown varietals={product.varietals} setVarietal={(v) => {
+                        setVarietal(v)
+                        setSelectedImage(v.images.i1)
+                      }} 
+                      chosenVarietal={chosenVarietal} 
+                    />
+                  }
                   {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
                   {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
                   <div className="flex">

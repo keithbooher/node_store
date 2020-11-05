@@ -56,7 +56,14 @@ const ProductCoreMobile = ({
         <>
           <div className="flex flex_column">
             <h2 className="margin-s-v">${formatMoney(product.price)}</h2>
-            {varietal_boolean && <VarietalDropdown varietals={product.varietals} setVarietal={setVarietal} chosenVarietal={chosenVarietal} />}
+            {varietal_boolean && 
+              <VarietalDropdown varietals={product.varietals} setVarietal={(v) => {
+                  setVarietal(v)
+                  setSelectedImage(v.images.i1)
+                }} 
+                chosenVarietal={chosenVarietal} 
+              />
+            }
             {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.inventory_count}</div>}
             {product.inventory_count < 1 && <div>Out of stock</div>}
           </div>

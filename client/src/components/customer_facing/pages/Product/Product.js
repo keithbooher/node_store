@@ -71,7 +71,11 @@ const Product = ({
     setAverageRating(average_rating.average)
     setReviews(get_reviews)
     setLastReview(get_last_review)
-    setSelectedImage(data.images.i1)
+    if (data.varietals && data.varietals.length > 0) {
+      setSelectedImage(varietal.images.i1)
+    } else {
+      setSelectedImage(data.images.i1)
+    }
   }
 
   const addToCart = () => {
@@ -286,8 +290,6 @@ const Product = ({
 
   const [selectedImage, setSelectedImage] = useState(null)
 
-  console.log(product)
-  console.log("chosenVarietal", chosenVarietal)
   return (
     <div style={ containerStyle } className={`${!mobile && "max-customer-container-width margin-auto-h"}`}>
       <MetaTags>
