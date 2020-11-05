@@ -93,13 +93,13 @@ class Form extends Component {
           {this.renderFields()}
          
           {!this.props.submitButton ?
-            <button type="submit" style={{ padding: "6px", maxHeight: "50px", marginTop: "10px" }} className={`${this.props.searchButton ? "search_button" : ""}`}>
+            <button type="submit"  className={`${this.props.searchButton ? "search_button" : ""}`}>
               <i className="material-icons right">{this.props.submitButtonText}</i>
             </button> 
           : this.props.submitButton}
 
           {this.props.cancel ?
-            <button onClick={this.props.cancel} style={{ padding: "6px", maxHeight: "50px", marginTop: "10px" }} className="">
+            <button onClick={this.props.cancel}  className="">
               <i className="material-icons right">Cancel</i>
             </button> 
           : ""}

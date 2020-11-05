@@ -195,7 +195,7 @@ class LineItems extends Component {
                         onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} 
                         className="h-w-auto margin-auto-h" 
                         style={ this.props.mobile ? { maxHeight: "125px", maxWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px" } } 
-                        src={line_item.image} 
+                        src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image} 
                       />
                     </div>
 

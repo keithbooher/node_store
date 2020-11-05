@@ -157,7 +157,7 @@ class LineItems extends Component {
                 >
                   <LazyLoadImage
                     style={this.props.mobile ? { height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" } : { height: "auto", width: "auto", maxHeight: "250px", maxWidth: "250px" }}
-                    src={line_item.image}
+                    src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image}
                     onClick={() => this.enlargeImage(line_item.image, line_item.product_path)}
                   />
                 </div>

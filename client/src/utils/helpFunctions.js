@@ -11,7 +11,7 @@ export const capitalizeFirsts = (string) => {
 }
 export const calculateSubtotal = (cart) => {
   let sub_total = 0
-  if (cart.discount_codes.length > 0 && !cart.discount_codes.affect_order_total) {
+  if (cart.discount_codes && cart.discount_codes.length > 0 && !cart.discount_codes.affect_order_total) {
     if (cart.discount_codes[0].apply_to_all_products) {
       sub_total = applyToAll(cart.discount_codes[0], cart)
     } else {
