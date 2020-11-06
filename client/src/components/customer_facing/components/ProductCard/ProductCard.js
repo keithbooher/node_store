@@ -206,7 +206,6 @@ class ProductCard extends Component {
           >
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
-                <div className="inline" style={{ fontSize: "22px" }}>${formatMoney(product.price)}</div>
                 <h2 className="inline card-title margin-s-h"><Link className="inline hover-color-11" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
               {this.state.averRating &&
@@ -229,27 +228,30 @@ class ProductCard extends Component {
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />
               </div>
-              {!this.props.related_product && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "18px" } : { fontSize: "20px" }}>{product.short_description}</div>}
-              {!product.backorderable && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "14px" } : { fontSize: "16px"}}>In Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
+              {!product.backorderable && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "14px" } : { fontSize: "16px"}}>Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
+              {!this.props.related_product && <div className="margin-s-v" style={{ fontSize: "16px" }}>{product.short_description}</div>}
             </div>
-            <div className={`flex ${this.props.related_product ? "margin-m-v" : "margin-s-v"}`}>
-              <div className="flex">
-                <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
-                <div className="flex flex_column">
-                  <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("up")} icon={faChevronUp} />
-                  <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down")} icon={faChevronDown} />
+            <div>
+              <div className="inline" style={{ fontSize: "22px" }}>${formatMoney(product.price)}</div>
+              <div className={`flex ${this.props.related_product ? "margin-m-v" : "margin-s-v"}`}>
+                <div className="flex">
+                  <input onKeyDown={(e) => this.preventAlpha(e)} onChange={(e) => this.onChangeInput(e)} onBlur={e => this.checkInventoryCount(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={this.state.quantity} defaultValue={1}/>
+                  <div className="flex flex_column">
+                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("up")} icon={faChevronUp} />
+                    <FontAwesomeIcon className="hover hover-color-2" onClick={() => this.setQuantity("down")} icon={faChevronDown} />
+                  </div>
                 </div>
+                <button 
+                  className="margin-s-h inline" 
+                  onClick={this.props.product.varietals && this.props.product.varietals.length > 0 ? 
+                      () => this.setState({ pickVarietal: true })
+                    :
+                      this.addToCart.bind(this)
+                  }
+                >
+                  Add To Cart
+                </button>
               </div>
-              <button 
-                className="margin-s-h inline" 
-                onClick={this.props.product.varietals && this.props.product.varietals.length > 0 ? 
-                    () => this.setState({ pickVarietal: true })
-                  :
-                    this.addToCart.bind(this)
-                }
-              >
-                Add To Cart
-              </button>
             </div>
           </div>
         : <FontAwesomeIcon className="loadingGif" icon={faSpinner} spin /> }
