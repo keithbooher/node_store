@@ -117,6 +117,13 @@ class ProductVarietals extends Component {
       return v
     })
 
+    let sum = 0
+    product.varietals.forEach(v => {
+      sum += v.inventory_count
+    }) 
+
+    product.inventory_count = sum
+
     let { data } = await this.props.updateProduct(product)
     this.setState({ product: data, editForm: null })
   }

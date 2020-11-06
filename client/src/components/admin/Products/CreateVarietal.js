@@ -76,6 +76,13 @@ class CreateVarietal extends Component {
     
     product.varietals = product.varietals.concat(varietal.data)
 
+    let sum = 0
+    product.varietals.forEach(v => {
+      sum += v.inventory_count
+    }) 
+
+    product.inventory_count = sum
+
     await this.props.updateProduct(product)
 
     this.props.cancel()

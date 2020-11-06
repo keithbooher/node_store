@@ -183,6 +183,25 @@ class ProductCard extends Component {
     this.props.dispatchEnlargeImage({ image: product.images.i1, path: `/shop/${category_path_name}/${product.path_name}`})
   }
 
+  price() {
+    if (this.props.product.varietals) {
+      let sum = 0
+      this.props.product.varietals.forEach(v => {
+        sum += v.inventory_count
+      })
+      
+      if (sum < 1) {
+        return "out of stock"
+      }
+      return sum
+    } else {
+      if (this.props.product.inventory_count) {
+        return "out of stock"
+      }
+      return this.props.product.inventory_count
+    }
+  }
+
   render() {
     let product = this.props.product
     let category_path_name = this.props.category_path_name
@@ -228,7 +247,7 @@ class ProductCard extends Component {
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />
               </div>
-              {!product.backorderable && <div className="margin-s-v" style={this.props.mobile ? { fontSize: "14px" } : { fontSize: "16px"}}>Stock: {product.inventory_count > 0 ? product.inventory_count : "Out Of Stock"}</div>}
+              {!product.backorderable && <div className="margin-s-v" style={{ fontSize: "14px" }}>Stock: {this.price()}</div>}
               {!this.props.related_product && <div className="margin-s-v" style={{ fontSize: "16px" }}>{product.short_description}</div>}
             </div>
             <div>

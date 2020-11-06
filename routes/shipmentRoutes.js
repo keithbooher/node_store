@@ -24,8 +24,21 @@ module.exports = app => {
   const updateQuantity = async (item) => {
     try {
       let quantity = -1 * parseInt(item.quantity)
-      let product = await Product.findOne({ _id: item._product_id }) 
-      if (!product.backorderable) {
+      let product = await Product.findOne({ _id: item._product_id })
+
+      if (item.varietal && !product.backorderable) {
+        let sum = 0
+        product.varietals = product.varietals.map(v => {
+          if (v._id === item.varietal._id) {
+            sum += v.inventory_count + quantity
+            v.inventory_count = v.inventory_count + quantity
+          }
+          return v
+        })
+
+        product.inventory_count = sum + quantity
+        product.save()
+      } else if (!product.backorderable) {
         product.inventory_count = product.inventory_count + quantity
         product.save()
       }

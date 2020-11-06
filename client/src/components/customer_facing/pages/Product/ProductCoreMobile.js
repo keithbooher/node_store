@@ -64,7 +64,7 @@ const ProductCoreMobile = ({
                 chosenVarietal={chosenVarietal} 
               />
             }
-            {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.inventory_count}</div>}
+            {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.varietals ? chosenVarietal.inventory_count : product.inventory_count}</div>}
             {product.inventory_count < 1 && <div>Out of stock</div>}
           </div>
           <div className="flex margin-s-v">
