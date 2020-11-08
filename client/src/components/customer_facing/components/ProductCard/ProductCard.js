@@ -184,7 +184,7 @@ class ProductCard extends Component {
   }
 
   price() {
-    if (this.props.product.varietals) {
+    if (this.props.product.varietals.length > 0) {
       let sum = 0
       this.props.product.varietals.forEach(v => {
         sum += v.inventory_count
@@ -195,7 +195,7 @@ class ProductCard extends Component {
       }
       return sum
     } else {
-      if (this.props.product.inventory_count) {
+      if (this.props.product.inventory_count < 1) {
         return "out of stock"
       }
       return this.props.product.inventory_count
@@ -332,7 +332,7 @@ const checkInventoryCount = (product, line_item, chosenVarietal, quantity) => {
     } else {
       line_item.quantity += quantity
     }
-  } else if(!product.varietals && product._id === line_item._product_id) {
+  } else if(product.varietals.length === 0 && product._id === line_item._product_id) {
     const sum = line_item.quantity + quantity
     if (!product.backorderable && sum > product.inventory_count) {
       insufficient = {
@@ -352,9 +352,9 @@ const checkInventoryCount = (product, line_item, chosenVarietal, quantity) => {
 
 const findIt = (product, _cart, i, chosenVarietal) => {
   let found = false
-  if (product.varietals.length > 0 && _cart.line_items[i]._product_id == product._id && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
+  if (product.varietals.length > 0 && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
     found = true;
-  } else if (!product.varietals && _cart.line_items[i]._product_id == product._id) {   
+  } else if (product.varietals.length === 0 && _cart.line_items[i]._product_id == product._id) {   
     found = true;
   }
   return found

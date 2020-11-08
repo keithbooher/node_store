@@ -156,7 +156,7 @@ class ProductForm extends Component {
   }
 
   price() {
-    if (this.state.product.varietals) {
+    if (this.state.product.varietals.lenth > 0) {
       let sum = 0
       this.state.product.varietals.forEach(v => {
         sum += v.inventory_count
@@ -338,7 +338,7 @@ class ProductForm extends Component {
               <span>Inventory Count:</span> <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>
                 {this.price()}
               </a>
-              {this.state.propertyToEdit && this.state.propertyToEdit && !this.state.product.varietals === "inventory_count" && 
+              {this.state.propertyToEdit && this.state.propertyToEdit && this.state.product.varietals.length === 0 && 
                   <FontAwesomeIcon 
                     className="margin-s-h hover hover-color-2"
                     icon={faEdit} 
