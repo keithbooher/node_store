@@ -225,7 +225,7 @@ class ProductCard extends Component {
           >
             <div className="card-content">
               <div style={this.state.averRating ? { marginBottom: "10px" } : { marginBottom: "1em" }}>
-                <h2 className="inline card-title margin-s-h"><Link className="inline hover-color-11" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
+                <h2 className="inline card-title"><Link className="inline hover-color-11" to={`/shop/${category_path_name}/${product.path_name}`}>{capitalizeFirsts(product.name)}</Link></h2>
               </div>
               {this.state.averRating &&
                 <div style={{ marginBottom: "1em" }}>
