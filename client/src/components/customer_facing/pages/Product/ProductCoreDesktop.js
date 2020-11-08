@@ -75,7 +75,7 @@ const ProductCoreDesktop = ({
                       chosenVarietal={chosenVarietal} 
                     />
                   }
-                  {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.varietals ? chosenVarietal.inventory_count : product.inventory_count}</div>}
+                  {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.varietals.length > 0 ? chosenVarietal.inventory_count : product.inventory_count}</div>}
                   {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
                   <div className="flex">
                     <div className="flex">

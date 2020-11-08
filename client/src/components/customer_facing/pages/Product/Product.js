@@ -441,7 +441,7 @@ const checkInventoryCount = (_product, line_item, setInsufficient, chosenVarieta
     } else {
       line_item.quantity += _quantity
     }
-  } else if(!_product.varietals && _product._id === line_item._product_id) {
+  } else if(_product.varietals.length === 0 && _product._id === line_item._product_id) {
     let total = line_item.quantity + _quantity
     if (total > _product.inventory_count && !_product.backorderable) {
       setInsufficient(true)
@@ -456,9 +456,9 @@ const checkInventoryCount = (_product, line_item, setInsufficient, chosenVarieta
 
 const findIt = (_product, _cart, i, chosenVarietal) => {
   let found = false
-  if (_product.varietals.length > 0 && _cart.line_items[i]._product_id == _product._id && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
+  if (_product.varietals.length > 0 && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
     found = true;
-  } else if (!_product.varietals && _cart.line_items[i]._product_id == _product._id) {          
+  } else if (_product.varietals.length === 0 && _cart.line_items[i]._product_id == _product._id) {          
     found = true;
   }
   return found
