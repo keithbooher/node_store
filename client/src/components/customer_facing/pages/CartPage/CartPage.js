@@ -35,7 +35,7 @@ class CartPage extends Component {
 
     if (!this.props.mobile) {
       containerStyle.width = "80%"
-      containerStyle.margin = "0px auto"
+      containerStyle.margin = "50px auto"
     }
 
     return (

@@ -14,6 +14,7 @@ class FillCart extends Component {
     this.proceedToNextStep = this.proceedToNextStep.bind(this)
     this.adjustLineItemQuantity = this.adjustLineItemQuantity.bind(this)
     this.adjustLineItemCost = this.adjustLineItemCost.bind(this)
+    this.removeLineItem = this.removeLineItem.bind(this)
     this.state = {
       line_items: [],
       result: null,
@@ -47,7 +48,6 @@ class FillCart extends Component {
   }
 
   renderSubTotal() {
-    console.log(this.props.cart)
     if (!this.props.cart) {
       return 0
     }

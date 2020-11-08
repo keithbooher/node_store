@@ -5,7 +5,7 @@ import { updateCart, createCart, dispatchObj } from "../../../../actions"
 import { Link } from 'react-router-dom'
 import { capitalizeFirsts, productPathNameToName, calculateSubtotal, formatMoney } from '../../../../utils/helpFunctions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faChevronDown, faChevronUp, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faChevronDown, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Form from "../../../shared/Form"
 import { validatePresenceOnAll } from "../../../../utils/validations"
 import { reset } from "redux-form"
@@ -16,6 +16,8 @@ import { withRouter } from "react-router"
 import Carousel from "../../../shared/Carousel"
 import StarRatings from 'react-star-ratings'
 import MetaTags from 'react-meta-tags'
+import ProductCoreMobile from "./ProductCoreMobile"
+import ProductCoreDesktop from "./ProductCoreDesktop"
 import "./product.scss"
 
 const Product = ({ 
@@ -43,8 +45,8 @@ const Product = ({
   const [last_review, setLastReview] = useState(null)
   const [showMoreReviews, setShowMoreReviews] = useState(false)
   const [insufficientStock, setInsufficient] = useState(false)
+  const [chosenVarietal, setVarietal] = useState(null)
 
-  
   useEffect(() => {
     fetchData()
   }, [])
@@ -59,12 +61,21 @@ const Product = ({
     const get_reviews = await getProductsReviews(data._id, "none", "none").then(req => req.data)
     const get_last_review = await lastReview(data._id).then(res => res.data)
     const average_rating = await getProductAverageRating(data._id).then(res => res.data)
-    
+    let varietal = null
+    if (data.varietals && data.varietals.length > 0) {
+      varietal = data.varietals[0]
+    }
+
+    setVarietal(varietal)
     setProduct(data)
     setAverageRating(average_rating.average)
     setReviews(get_reviews)
     setLastReview(get_last_review)
-    setSelectedImage(data.images.i1)
+    if (data.varietals && data.varietals.length > 0) {
+      setSelectedImage(varietal.images.i1)
+    } else {
+      setSelectedImage(data.images.i1)
+    }
   }
 
   const addToCart = () => {
@@ -75,10 +86,10 @@ const Product = ({
     let insufficient = false
 
     let sub_total, create_boolean
-    
-    if (_quantity > product.inventory_count && !product.backorderable) {
-      setInsufficient(true)
-      insufficient = true
+
+    insufficient = surfaceInventoryCheck(product, _quantity, setInsufficient, chosenVarietal)
+
+    if (insufficient) {
       return
     }
 
@@ -94,7 +105,8 @@ const Product = ({
             quantity: _quantity,
             product_price: _product.price,
             product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
-            gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null
+            gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null,
+            varietal: this.state.chosenVarietal
           }
         ],
         _user_id: user_id,
@@ -108,9 +120,9 @@ const Product = ({
       // CHECK TO SEE IF PRODUCT IS CONTAINED WITHIN CART ALREADY
       let found = false
       for(var i = 0; i < _cart.line_items.length; i++) {
-        if (_cart.line_items[i]._product_id == _product._id) {
-            found = true;
-            break;
+        found = findIt(_product, _cart, i, chosenVarietal, _quantity)
+        if (found) {
+          break
         }
       }
 
@@ -118,15 +130,7 @@ const Product = ({
       // OTHERWISE CREATE A NEW LINE_ITEM AND PUSH TO THE CART
       if(found === true && !product.gift_note) {
         _cart.line_items = _cart.line_items.map((line_item) => {
-          if(product._id === line_item._product_id) {
-            let total = line_item.quantity + _quantity
-            if (total > product.inventory_count && !product.backorderable) {
-              setInsufficient(true)
-              insufficient = true
-            } else {
-              line_item.quantity += _quantity
-            }
-          }
+          insufficient = checkInventoryCount(_product, line_item, setInsufficient, chosenVarietal, _quantity)
           return line_item
         })
       } else {
@@ -137,23 +141,25 @@ const Product = ({
           quantity: _quantity,
           product_price: _product.price,
           product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
-          gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null
+          gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null,
+          varietal: chosenVarietal
         }
         _cart.line_items.push(line_item)
       }
-
-      sub_total = Number(calculateSubtotal(_cart))
-      let tax = Number(sub_total * .08)
-      let shipping = Number(_cart.chosen_rate ? _cart.chosen_rate.cost : 0)
-  
-      cart.discount_codes = []
-      cart.discount = null
-      
-      _cart.sub_total = sub_total
-      _cart.tax = tax
-      _cart.total = Number(sub_total + tax + shipping)
-
     }
+
+    sub_total = Number(calculateSubtotal(_cart))
+    let tax = Number(sub_total * .08)
+    let shipping = Number(_cart.chosen_rate ? _cart.chosen_rate.cost : 0)
+
+    _cart.discount_codes = []
+    _cart.discount = null
+    
+    _cart.sub_total = sub_total
+    _cart.tax = tax
+    _cart.total = Number(sub_total + tax + shipping)
+
+
     _cart.checkout_state = "shopping"
 
     if (insufficient) return
@@ -283,6 +289,7 @@ const Product = ({
   }
 
   const [selectedImage, setSelectedImage] = useState(null)
+
   return (
     <div style={ containerStyle } className={`${!mobile && "max-customer-container-width margin-auto-h"}`}>
       <MetaTags>
@@ -299,161 +306,37 @@ const Product = ({
       {product ? 
         <div>
           {mobile ?
-            <div>
-              <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
-              <div style={{ marginBottom: "20px" }}>
-                {reviews.length > 0 && averageRating &&
-                  <StarRatings
-                    rating={new Number(averageRating)}
-                    starRatedColor="#6CB2EB"
-                    numberOfStars={5}
-                    name='rating'
-                    starDimension="15px"
-                    starSpacing="1px"
-                  />
-                }
-              </div>
-              <div className="text-align-center">
-                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={selectedImage} />
-              </div>
-              <div className="flex" style={{ margin: "10px 10px 0px 10px" }}>
-                {Object.keys(product.images).map((image_key, index) => {
-                  return (
-                    <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "20%" }}>
-                      <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
-                    </div>
-                  )
-                })}
-              </div>
-              {product.availability ?
-                <>
-                  <div className="flex flex_column">
-                    <h2 className="margin-s-v">${formatMoney(product.price)}</h2>
-                    {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.inventory_count}</div>}
-                    {product.inventory_count < 1 && <div>Out of stock</div>}
-                  </div>
-                  <div className="flex margin-s-v">
-                    <div className="flex">
-                      <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
-                      <div className="flex flex_column">
-                        <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                        <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
-                      </div>
-                    </div>
-                    <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
-                  </div>
-                </>
-              : <h2>Product Unavailable</h2>}
-              <hr/>
-              <h3>Description</h3>
-              <p>{product.description ? product.description : "No Product Description"}</p>
-              {product.dimensions && 
-                <div>
-                  <h3 className="margin-bottom-none">Specs</h3>
-                  <div className="padding-s">
-                    <div>Height: {product.dimensions.height}</div>
-                    <div>Width: {product.dimensions.width}</div>
-                    <div>Depth: {product.dimensions.depth}</div>
-                    <div>Weight: {product.weight}</div>
-                  </div>
-                </div>
-              }
-              {product.gift_note &&
-                <Form 
-                  submitButton= {<div />}
-                  formFields={[
-                    { label: 'Gift Note', name: 'gift_note', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
-                  ]} 
-                  form={"gift_note_form"}
-                />
-              }
-            </div>
+            <ProductCoreMobile 
+              setSelectedImage={setSelectedImage} 
+              product={product}
+              preventAlpha={preventAlpha} 
+              addToCart={addToCart}
+              _setQuantity={_setQuantity}
+              checkInventoryCountInput={checkInventoryCountInput}
+              onChangeInput={onChangeInput}
+              reviews={reviews}
+              averageRating={averageRating}
+              selectedImage={selectedImage}
+              quantity={quantity}
+              chosenVarietal={chosenVarietal}
+              setVarietal={setVarietal}
+            />
           :
-            <div className="margin-m-v">
-              <div className="flex align-items-center">
-                <div className="w-40">
-                  <div>
-                    <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={selectedImage} />
-                  </div>
-                  <div className="flex">
-                    {Object.keys(product.images).map((image_key, index) => {
-                      return (
-                        <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "25%" }}>
-                          <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-                <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
-                  <div>
-                    <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
-                    <div className="flex align-items-center" style={{ margin: "10px 0px 10px 0px" }}>
-                      <h1 style={{ margin: "0px" }}>{product.name}</h1>
-                      <div className="margin-s-h">
-                        {reviews.length > 0 && averageRating &&
-                          <StarRatings
-                            rating={new Number(averageRating)}
-                            starRatedColor="#6CB2EB"
-                            numberOfStars={5}
-                            name='rating'
-                            starDimension="25px"
-                            starSpacing="1px"
-                          />
-                        }
-                      </div>
-                    </div>
-                    <h3 className="margin-xs-v">Description</h3>
-                    <div>{product.description ? product.description : "No Product Description"}</div>
-                  </div>
-                  {product.availability ?
-                    <>
-                      <div className="margin-s-v">
-                        {!product.backorderable && product.inventory_count > 0 && <div className="margin-s-v">In Stock: {product.inventory_count}</div>}
-                        {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
-                        <div className="flex">
-                          <div className="flex">
-                            <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
-                            <div className="flex flex_column">
-                              <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                              <FontAwesomeIcon className="hover hover-color-8" onClick={() => _setQuantity("down")} icon={faChevronDown} />
-                            </div>
-                          </div>
-                          <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>
-                        </div>
-                      </div>
-                    </>
-                  : 
-                    <h2>Product Unavailable</h2>
-                  }
-
-                  <div className="flex align-items-center">
-                    {product.dimensions && 
-                      <div style={{ flexBasis: "25%" }}>
-                        <h3 className="margin-bottom-none">Details</h3>
-                        <div className="padding-s">
-                          <div>Height: {product.dimensions.height}</div>
-                          <div>Width: {product.dimensions.width}</div>
-                          <div>Depth: {product.dimensions.depth}</div>
-                          <div>Weight: {product.weight}</div>
-                        </div>
-                      </div>
-                    }
-                    {product.gift_note &&
-                      <div style={{ flexBasis: "75%" }}>
-                        <Form 
-                          submitButton= {<div />}
-                          formFields={[
-                            { label: 'Gift Note', name: 'gift_note', typeOfComponent: "text-area", noValueError: 'You must provide an address', value: null },
-                          ]} 
-                          form={"gift_note_form"}
-                        />
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProductCoreDesktop 
+              setSelectedImage={setSelectedImage} 
+              product={product}
+              preventAlpha={preventAlpha} 
+              addToCart={addToCart}
+              _setQuantity={_setQuantity}
+              checkInventoryCountInput={checkInventoryCountInput}
+              onChangeInput={onChangeInput}
+              reviews={reviews}
+              averageRating={averageRating}
+              selectedImage={selectedImage}
+              quantity={quantity}
+              chosenVarietal={chosenVarietal}
+              setVarietal={setVarietal}
+            />
           }
           
           <br />
@@ -464,7 +347,7 @@ const Product = ({
             <div>
               <h2>Reviews</h2>
               {reviews.length !== 0 ? 
-                <div id="reviews_container" style={mobile ? { maxHeight: "450px" } : { maxHeight: "600px" } } className={`relative border-radius-s overflow-scroll ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
+                <div id="reviews_container" style={mobile ? { maxHeight: "450px" } : { maxHeight: "600px" } } className={`relative border-radius-s ${showMoreReviews ? `show_reviews` : `hide_reviews`}`}>
                   {reviews.map((review, index) => {
                     return (
                       <div style={mobile ? {} : { fontSize: "20px" }} className="theme-background-6 padding-s margin-xs-v border-radius-s" key={index}>
@@ -546,6 +429,53 @@ const Product = ({
       : <FontAwesomeIcon className="loadingGif loadingGifCenterScreen" icon={faSpinner} spin />}
     </div>
   )
+}
+
+const checkInventoryCount = (_product, line_item, setInsufficient, chosenVarietal, _quantity) => {
+  let insufficient = false
+  if (_product.varietals.length > 0 && line_item._product_id == _product._id && line_item.varietal && line_item.varietal._id === chosenVarietal._id) {
+    let total = line_item.quantity + _quantity
+    if (total > chosenVarietal.inventory_count && !_product.backorderable) {
+      setInsufficient(true)
+      insufficient = true
+    } else {
+      line_item.quantity += _quantity
+    }
+  } else if(_product.varietals.length === 0 && _product._id === line_item._product_id) {
+    let total = line_item.quantity + _quantity
+    if (total > _product.inventory_count && !_product.backorderable) {
+      setInsufficient(true)
+      insufficient = true
+    } else {
+      line_item.quantity += _quantity
+    }
+  }
+
+  return insufficient
+}
+
+const findIt = (_product, _cart, i, chosenVarietal) => {
+  let found = false
+  if (_product.varietals.length > 0 && _cart.line_items[i].varietal && _cart.line_items[i].varietal._id === chosenVarietal._id) {
+    found = true;
+  } else if (_product.varietals.length === 0 && _cart.line_items[i]._product_id == _product._id) {          
+    found = true;
+  }
+  return found
+}
+
+const surfaceInventoryCheck = (product, _quantity, setInsufficient, chosenVarietal) => {
+  let insufficient = false
+
+  if (_quantity > product.inventory_count && !product.backorderable && product.varietals.length === 0) {
+    setInsufficient(true)
+    insufficient = true
+  } else if (product.varietals.length > 0 && _quantity > chosenVarietal.inventory_count && !product.backorderable) {
+    setInsufficient(true)
+    insufficient = true
+  }
+
+  return insufficient
 }
 
 

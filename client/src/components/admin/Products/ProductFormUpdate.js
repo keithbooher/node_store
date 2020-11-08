@@ -4,7 +4,7 @@ import { dispatchObj } from '../../../actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faTimes, faEdit, faEye, faEyeSlash, faArrowAltCircleLeft, faCheck, faArrowAltCircleRight, faTrash, faCube } from "@fortawesome/free-solid-svg-icons"
 import { injectCategoryDataIntoFormFields, validate } from "./formFields"
 import Form from "../../shared/Form"
 import { reset } from "redux-form"
@@ -27,7 +27,8 @@ class ProductForm extends Component {
       categories: [],
       product: null,
       propertyToEdit: null,
-      edit_image: null
+      edit_image: null,
+      showVarietalModal: false,
     }
   }
 
@@ -154,6 +155,21 @@ class ProductForm extends Component {
     this.setState({ product: data })
   }
 
+  price() {
+    if (this.state.product.varietals.lenth > 0) {
+      let sum = 0
+      this.state.product.varietals.forEach(v => {
+        sum += v.inventory_count
+      })
+      return sum
+    } else {
+      if (this.state.product.inventory_count) {
+        return this.state.product.inventory_count
+      } else {
+        return 0
+      }
+    }
+  }
 
   render() {
     console.log(this.state.product)
@@ -166,15 +182,22 @@ class ProductForm extends Component {
       <div style={{ fontSize }}>
        {this.state.categories.length > 0 ?
           <>
-            <div className="flex">
-              <Link to="/admin/products" className="w-50 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRight: "solid 1px lightgrey", borderRadius: "4px 0px 0px 4px" }}>
+            <div className="flex space-evenly">
+              <Link to="/admin/products" className="w-32 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRadius: "4px 0px 0px 4px" }}>
                 <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleLeft} />
                 <h3 className="margin-xs-v">Back to products</h3>
               </Link>
-              <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-50 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRadius: "0px 4px 4px 0px" }}>
+              <Link to={`/admin/product/varietals/${this.state.product._id}`} className="w-32 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRight: "solid 1px lightgrey", borderLeft: "solid 1px lightgrey" }}>
+                <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faCube} />
+                <h3 className="margin-xs-v">Varietals</h3>
+              </Link>
+              <Link to={`/admin/product/related_products/${this.state.product._id}`} className="w-32 text-align-center theme-background-3 padding-s hover-color-5" style={{ borderRadius: "0px 4px 4px 0px" }}>
                 <FontAwesomeIcon style={{ fontSize: "30px", marginTop: "5px" }} icon={faArrowAltCircleRight} /> 
                 <h3 className="margin-xs-v">Related Products</h3>
-                </Link>
+              </Link>
+            </div>
+            <div>
+
             </div>
             <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "22px" }}>
               <span>Name:</span> <a className="inline" onClick={() => this.showEditIndicator("name")}>{this.state.product.name}</a>
@@ -312,8 +335,10 @@ class ProductForm extends Component {
                 }
             </div>
             <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
-              <span>Inventory Count:</span> <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>{this.state.product.inventory_count ? this.state.product.inventory_count : 0}</a>
-              {this.state.propertyToEdit && this.state.propertyToEdit === "inventory_count" && 
+              <span>Inventory Count:</span> <a className="inline" onClick={() => this.showEditIndicator("inventory_count")}>
+                {this.price()}
+              </a>
+              {this.state.propertyToEdit && this.state.propertyToEdit && this.state.product.varietals.length === 0 && 
                   <FontAwesomeIcon 
                     className="margin-s-h hover hover-color-2"
                     icon={faEdit} 

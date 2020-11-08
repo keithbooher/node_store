@@ -16,7 +16,6 @@ export default ({ mobile, input, field_class, label, searchButton, autofocus, me
     return true
   }
 
-  console.log(autofocus)
 
   return (
     <div className={`formField numberField ${searchButton ? "w-90" : "" }`}>

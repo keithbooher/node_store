@@ -170,11 +170,11 @@ const Payment = ({
               <div className={`${mobile && "flex"}`} key={index} style={{ marginTop: "5px" }}>
                 {mobile ?
                   <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "150px", width: "150px", maxHeight: "150px", maxWidth: "150px" }}>
-                    <img src={line_item.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
+                    <img src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
                   </div>
                 : 
                   <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
-                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={line_item.image}/>
+                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image}/>
                   </div>
                 }
 

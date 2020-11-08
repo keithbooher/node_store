@@ -200,7 +200,7 @@ const Payments = ({
     <>
       {auth && <ReviewItems cart={cart} customer={auth} />}
       
-      <form style={{ width: "80%", margin: "0px auto" }} onSubmit={someFunction}>
+      <form style={mobile ? { width: "100%", margin: "0px auto" } : { width: "80%", margin: "0px auto" }} onSubmit={someFunction}>
         <div className="background-color-white border-radius-s" style={{ padding: "10px" }}>
           <CardElement
             options={{

@@ -37,25 +37,21 @@ class LineItems extends Component {
     let cart = this.props.cart
     let items = cart.line_items
 
+    let inventory_limit
+
     await Promise.all(items.map(async (line_item) => {
       let item = {...line_item}
-      if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
-        item.quantity += 1
-        let { data } = await this.props.checkInventory([item])
-        let out_of_stock = data.filter((oos_item) => oos_item !== null)
-        if (out_of_stock.length > 0) {
-          item.quantity += -1
-          this.setState({ inventory_limit: [item] })
-        }
-      } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
-        item.quantity += -1
+      if (line_item.varietal !== null) {
+        inventory_limit = await checkVarietalInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
+      } else {
+        inventory_limit = await checkProductInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
       }
-      return item
+      return line_item
     })).then((values) => {
       cart.line_items = values
     })
 
-    if (this.state.inventory_limit !== false) return
+    if (inventory_limit) return
 
     let removed_zero_quantity_items = cart.line_items.filter((line_item) => line_item.quantity > 0 )
     cart.line_items = removed_zero_quantity_items
@@ -90,8 +86,6 @@ class LineItems extends Component {
     })
     cart.line_items = updated_line_items
 
-    console.log(cart)
-
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
       cart.line_items = revertProductDiscount(cart)
@@ -122,14 +116,22 @@ class LineItems extends Component {
   async submitQuantity() {
     const quantity_value = this.props.form['change_line_item_quantity_form'].values.quantity
     let cart = {...this.props.cart}
-    cart.line_items.map((item) => {
-      if (item._id === this.state.showModal._id) {
-        item.quantity = quantity_value
-        return item
-      } else {
-        return item
+    let items = cart.line_items
+
+    let inventory_limit
+
+    await Promise.all(items.map(async (line_item) => {
+      if (line_item.varietal !== null && this.state.showModal) {
+        inventory_limit = await checkVarietalInv_quantity((state) => this.setState(state), this.props.checkInventory, line_item, this.state.showModal, quantity_value)
+      } else if (this.state.showModal) {
+        inventory_limit = await checkProductInv_quantity((state) => this.setState(state), this.props.checkInventory, line_item, this.state.showModal, quantity_value)
       }
+      return line_item
+    })).then((values) => {
+      cart.line_items = values
     })
+
+    if (inventory_limit) return
 
     if (cart.discount_codes.length > 0 && !cart.discount_codes[0].affect_order_total) {
       // UNDO PRODUCT PRICE ALTERATIONS
@@ -173,7 +175,6 @@ class LineItems extends Component {
   }
 
   render() {
-    console.log(this.props.cart)
     let low_inventory_message = this.state.inventory_limit && `Oops, thats all that's in stock for`
     let lock = this.state.lock
     return (
@@ -194,7 +195,7 @@ class LineItems extends Component {
                         onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} 
                         className="h-w-auto margin-auto-h" 
                         style={ this.props.mobile ? { maxHeight: "125px", maxWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px" } } 
-                        src={line_item.image} 
+                        src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image} 
                       />
                     </div>
 
@@ -233,7 +234,7 @@ class LineItems extends Component {
                 }
 
                 {this.state.showModal &&
-                  <Modal cancel={() => this.setState({ showModal: false })}>
+                  <Modal cancel={() => console.log('nothing')}>
                     <LazyLoadImage
                       style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}
                       src={this.state.showModal.image}
@@ -263,6 +264,79 @@ class LineItems extends Component {
     )
   }
 }
+
+const checkVarietalInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
+  if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'addition') {
+    item.quantity += 1
+    let { data } = await checkInventory([item])
+    let out_of_stock = data.filter((oos_item) => oos_item !== null)
+    if (out_of_stock.length > 0) {
+      item.quantity += -1
+      setState({ inventory_limit: [item] })
+    }
+  } else if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'subtraction') {
+    item.quantity += -1
+  }
+}
+
+const checkProductInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
+  if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
+    item.quantity += 1
+    let { data } = await checkInventory([item])
+    let out_of_stock = data.filter((oos_item) => oos_item !== null)
+    if (out_of_stock.length > 0) {
+      item.quantity += -1
+      setState({ inventory_limit: [item] })
+    }
+  } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
+    item.quantity += -1
+  }
+}
+
+
+
+
+
+
+
+
+const checkVarietalInv_quantity = async (setState, checkInventory, line_item, incoming_line_item, quantity) => {
+  let inventory_limit = false
+  if (line_item && incoming_line_item && line_item.varietal.id === incoming_line_item.varietal.id) {
+    let og_quantity = line_item.quantity     
+    line_item.quantity = quantity 
+    let { data } = await checkInventory([line_item])
+    let out_of_stock = data.filter((oos_item) => oos_item !== null)
+    if (out_of_stock.length > 0) {
+      line_item.quantity = og_quantity
+      setState({ inventory_limit: [line_item], showModal: false })
+      inventory_limit = true
+    }
+  }
+  return inventory_limit
+}
+
+const checkProductInv_quantity = async (setState, checkInventory, line_item, incoming_line_item, quantity) => {
+  let inventory_limit = false
+  if(line_item && incoming_line_item && incoming_line_item._product_id === line_item._product_id) {
+    let og_quantity = line_item.quantity 
+    line_item.quantity = quantity 
+    let { data } = await checkInventory([line_item])
+    let out_of_stock = data.filter((oos_item) => oos_item !== null)
+    if (out_of_stock.length > 0) {
+      line_item.quantity = og_quantity
+      setState({ inventory_limit: [line_item], showModal: false })
+      inventory_limit = true
+    }
+  }
+  return inventory_limit
+}
+
+
+
+
+
+
 
 function mapStateToProps({ enlargeImage, form, cart, mobile }) {
   return { enlargeImage, form, cart, mobile }

@@ -21,6 +21,7 @@ import StoreSettings from "../../admin/StoreSettings "
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import UpdateRelatedProducts from '../../admin/Products/UpdateRelatedProducts';
+import ProductVarietals from '../../admin/Products/ProductVarietals';
 import Four04Page from "../../shared/Four04Page"
 import MetaTags from 'react-meta-tags'
 import "./admin.scss"
@@ -108,6 +109,7 @@ class Admin extends Component {
               <Route exact path="/admin/orders" component={Orders} />
               <Route exact path="/admin/orders/:id" component={OrderPage} />
               <Route exact path="/admin/order/create" component={() => <OrderCreate refProp={this.myRef} />} />
+              <Route exact path="/admin/product/varietals/:product_id" component={ProductVarietals} />
               <Route exact path="/admin/product/related_products/:product_id" component={UpdateRelatedProducts} />
               <Route path="/admin/products" component={Products} />
               <Route exact path="/admin/categories" component={Categories} />

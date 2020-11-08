@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose // EQUIVALENT TO ----->  const Schema = mongoose.Schema
+const varietal = require('./Varietal')
 
 const lineItemSchema = new Schema({
   product_name: String,
@@ -9,7 +10,8 @@ const lineItemSchema = new Schema({
   product_price: Number,
   product_path: String,
   gift_note: String,
-  discount: Number
+  discount: Number,
+  varietal: varietal
 })
 
 module.exports = lineItemSchema

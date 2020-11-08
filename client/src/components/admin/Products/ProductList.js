@@ -23,7 +23,7 @@ class ProductList extends Component {
       chosen_product: null,
       last_product: null,
       categoryFilter: "none",
-      areYouSure: false, 
+      areYouSure: false,
       dropDownField:[
         { 
           label: "Filter", 
@@ -259,7 +259,7 @@ class ProductList extends Component {
             </div>
           </Modal>
         }
-        
+
       </div>
     )
   }
