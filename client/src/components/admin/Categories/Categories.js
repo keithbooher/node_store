@@ -73,6 +73,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
   const renderCategories = (parent_category) => {
     let category_set = parent_category !== null ? parent_category.sub_categories : categories
+    console.log(category_set)
     return (
       category_set.sort((a, b) => (a.display_order > b.display_order) ? 1 : -1).filter((cat) => cat.deleted_at !== null).map((category, index) => {
         let up_disable = false
@@ -198,6 +199,7 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
     cat.deleted_at = today
     const delete_cat = await deleteCategory(cat).then(res => res.data)
+    console.log(delete_cat)
     setAreYouSure( false )
     setCategories( delete_cat )
   }
