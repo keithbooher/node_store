@@ -43,12 +43,14 @@ module.exports = app => {
         model: "categorys"
       })
   
-      parent_category.sub_categories.forEach(async (sub_category) => {
-        if (sub_category.display_order > category.display_order) {
-            let display_order = sub_category.display_order - 1
-            await Category.findOneAndUpdate({ _id: sub_category._id }, { display_order: display_order }, {new: true})
-        }
-      })
+      if (parent_category) {
+        parent_category.sub_categories.forEach(async (sub_category) => {
+          if (sub_category.display_order > category.display_order) {
+              let display_order = sub_category.display_order - 1
+              await Category.findOneAndUpdate({ _id: sub_category._id }, { display_order: display_order }, {new: true})
+          }
+        })
+      }
   
       const categories = await Category.find({ nest_level: 0, deleted_at: null }).populate({
         path: "sub_categories",
@@ -73,6 +75,7 @@ module.exports = app => {
   
       res.send(categories)   
     } catch (err) {
+      console.log(err)
       req.bugsnag.notify(err)
       res.status(422).send(err)
     } 

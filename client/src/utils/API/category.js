@@ -40,7 +40,7 @@ export const deleteCategory = (category) => async dispatch => {
     if (req.status === 200) {
         return req
     } else {
-        return {data: category}
+        return {data: [category]}
     }
 }
 
