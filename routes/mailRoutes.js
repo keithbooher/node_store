@@ -14,7 +14,7 @@ module.exports = app => {
 
     const msg = {
           to: recipient,
-          from: 'keibooher@gmail.com', // Use the email address or domain you verified in sendgrid
+          from: 'keepyoureyeopn@gmail.com', // Use the email address or domain you verified above
           subject: 'Note Store Order Confirmation',
           text: "Just letting you know we've received your order",
           html: confirmationTemplate(orderNumber)
