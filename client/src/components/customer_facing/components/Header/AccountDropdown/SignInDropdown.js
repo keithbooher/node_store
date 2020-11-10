@@ -51,7 +51,7 @@ class SignInDropdown extends Component {
           className="header_list_item flex hover-color-7" 
           style={this.props.mobile ? {} : { fontSize: "25px" }}
         >
-          <div style={{ marginRight: "5px" }} ref={this.userIconRef}>Sign In</div>
+          <div style={{ marginRight: "5px" }} ref={this.userIconRef}><FontAwesomeIcon icon={faUser} /></div>
           <div ref={this.caratDownRef}><FontAwesomeIcon icon={faCaretDown} /></div>
         </a>
         {this.state.open === true && 
