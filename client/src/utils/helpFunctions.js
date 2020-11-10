@@ -137,6 +137,9 @@ export const productPathNameToName = (string) => {
 }
 
 export const formatMoney = (money) => {
+  if (!money) {
+    money = 0
+  }
   const number = Number(parseFloat(money))
   return number.toFixed(2)
 }
