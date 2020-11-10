@@ -23,8 +23,8 @@ class ContactPage extends Component {
     return (
       <div style={ containerStyle } className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <h1>Contact</h1>
-        <div className='margin-s-v'>If you have any questions or concerns about please feel free to email <a className="inline" href="mailto:keith.booher@yaoho.com">_______@_____.com</a></div>
-        <div className='margin-s-v'>If you notice something is wrong or broken with the site reach out to <a className="inline" href="mailto:keith.booher@yaoho.com">_______@_____.com</a> </div>
+        <div className='margin-s-v'>If you have any questions or concerns about please feel free to email <a className="inline" href="mailto:keepyoureyeopn@gmail.com">keepyoureyeopn@gmail.com</a></div>
+        <div className='margin-s-v'>If you notice something is wrong or broken with the site reach out to <a className="inline" href="mailto:keibooher@gmail.com">keibooher@gmail.com</a> </div>
       </div>
     )
   }

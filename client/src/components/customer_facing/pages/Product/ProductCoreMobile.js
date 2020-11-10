@@ -71,8 +71,8 @@ const ProductCoreMobile = ({
             <div className="flex">
               <input onKeyDown={(e) => preventAlpha(e)} onChange={(e) => onChangeInput(e)} onBlur={e => checkInventoryCountInput(e)} style={{ marginRight: "5px", width: "60px" }} className="inline quantity_input" value={quantity} defaultValue={1}/>
               <div className="flex flex_column">
-                <FontAwesomeIcon onClick={() => _setQuantity("up")} icon={faChevronUp} />
-                <FontAwesomeIcon onClick={() => _setQuantity("down")} icon={faChevronDown} />
+                <FontAwesomeIcon className="hover-color-11" onClick={() => _setQuantity("up")} icon={faChevronUp} />
+                <FontAwesomeIcon className="hover-color-11" onClick={() => _setQuantity("down")} icon={faChevronDown} />
               </div>
             </div>
             <button className="margin-s-h inline" onClick={addToCart.bind(this)}>Add To Cart</button>

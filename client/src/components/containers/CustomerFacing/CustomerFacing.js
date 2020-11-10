@@ -149,7 +149,7 @@ const CustomerFacing = ({
   }
 
   return (
-    <div className="customer_container" style={scrollClass !== "top_of_page_nav" ? { marginTop: "50px" } : { marginTop: "0px" }}>
+    <div className="customer_container theme-background-cust color-white" style={scrollClass !== "top_of_page_nav" ? { marginTop: "50px" } : { marginTop: "0px" }}>
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />

@@ -162,7 +162,7 @@ class LineItems extends Component {
                   />
                 </div>
                 <div className="relative margin-s-h">
-                  <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link> <FontAwesomeIcon style={{ fontSize: "18px" }} onClick={() => this.removeProduct(line_item)} className="hover-color-8 hover" icon={faTrash} /></h3>
+                  <h3 className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline" to={line_item.product_path}>{line_item.product_name}</Link> <FontAwesomeIcon style={{ fontSize: "18px" }} onClick={() => this.removeProduct(line_item)} className="hover-color-11 hover" icon={faTrash} /></h3>
                   <div className="margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
                   {this.discountDisplaySwitch(line_item) &&
                     <div className="color-black bold margin-s-v">discount: ${formatMoney(this.displayDiscount(line_item))}</div>
