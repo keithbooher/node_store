@@ -9,7 +9,7 @@ module.exports = app => {
         amount: req.body.amount,
         currency: 'usd',
         payment_method_types: ['card'],
-        application_fee_amount: 50,
+        application_fee_amount: 150,
         on_behalf_of: 'acct_1HSZNyGIkiKDB7SH',
         transfer_data: {
           destination: 'acct_1HSZNyGIkiKDB7SH',
