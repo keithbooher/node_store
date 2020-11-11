@@ -29,7 +29,10 @@ const cartSchema = new Schema({
     default: null
   },
   chosen_rate: rateSchema,
-  tax: Number,
+  tax: {
+    type: Number,
+    default: 0
+  },
   discount_codes: [{
     type: Schema.Types.ObjectId,
     ref: 'discountCodes'

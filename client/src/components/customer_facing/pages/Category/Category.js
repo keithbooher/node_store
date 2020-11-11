@@ -40,13 +40,13 @@ class Category extends Component  {
       page_number = this.props.location.search.split("=")
       if (page_number[0] === "?page_number") {
         page_number = parseInt(page_number[1])
-        let beginning_index = (page_number * 10) - 10
-        shown_products = category_products.data.products.slice(beginning_index, beginning_index + 10)
+        let beginning_index = (page_number * 12) - 12
+        shown_products = category_products.data.products.slice(beginning_index, beginning_index + 12)
       } else {
-        shown_products = category_products.data.products.slice(0, 10)  
+        shown_products = category_products.data.products.slice(0, 12)  
       }
     } else {
-      shown_products = category_products.data.products.slice(0, 10)
+      shown_products = category_products.data.products.slice(0, 12)
     }
 
     this.setState({ 
@@ -92,7 +92,7 @@ class Category extends Component  {
     }
 
     const products = category_products.data.products
-    let shown_products = category_products.data.products.slice(0, 10)
+    let shown_products = category_products.data.products.slice(0, 12)
 
     this.setState({ 
       products: products, 
@@ -115,10 +115,10 @@ class Category extends Component  {
     let show_products
     let page_number
     if (direction === "next") {
-      show_products = this.state.products.slice(current_index + 1, current_index + 11)
+      show_products = this.state.products.slice(current_index + 1, current_index + 13)
       page_number = this.state.page_number + 1
     } else {
-      let start_index = current_index - 11
+      let start_index = current_index - 13
       if (start_index < 0) {
         start_index = 0
       }
@@ -140,11 +140,11 @@ class Category extends Component  {
     let shown_products = this.state.shown_products
     if (page_number[0] === "?page_number") {
       page_number = parseInt(page_number[1])
-      let beginning_index = (page_number * 10) - 10
-      shown_products = products.slice(beginning_index, beginning_index + 10)
+      let beginning_index = (page_number * 12) - 12
+      shown_products = products.slice(beginning_index, beginning_index + 13)
     } else {
       page_number = 1
-      shown_products = products.slice(0, 10)  
+      shown_products = products.slice(0, 12)  
     }
     this.setState({ 
       shown_products: shown_products,
@@ -154,6 +154,7 @@ class Category extends Component  {
   }
   
   render() {
+    console.log(this.state.products)
     if(this.props.match.params.category !== this.state.current_cat) {
       this.getNewCatProducts()
     } else if(this.state.search_param !== null && this.props.location.search !== this.state.search_param) {
@@ -161,7 +162,7 @@ class Category extends Component  {
     }
 
     let previous_disable = this.state.page_number === 1 ? true : false
-    let next_disable = this.state.shown_products.length < 10 ? true :false
+    let next_disable = this.state.shown_products.length < 12 ? true :false
     return (
       <div style={{ padding: ".4em .4em 80px .4em" }} className={`${!this.props.mobile && "max-customer-container-width margin-auto-h"}`}>
         <MetaTags>
@@ -177,16 +178,21 @@ class Category extends Component  {
         { this.state.products !== null ?
           <>
             <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
-            <h1 style={{ marginTop: "0px" }}>
+            <h1 style={{ margin: "0px" }}>
               {capitalizeFirsts(this.state.category_data.name)}
             </h1>
-            <div className="flex flex-wrap">
+            <div className="flex">
+              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
+                <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
+              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
+            </div>
+            <div className="flex flex-wrap space-evenly">
               {this.renderProductCards()}
             </div>
             <div className="flex">
-              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
-                <div className="font-size-1-3">{this.state.page_number}</div>
-              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
+              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Previous</button>
+                <div style={{ fontSize: "35px", margin: "0px 5px" }}>{this.state.page_number}</div>
+              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Next</button>
             </div>
           </>
        : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }

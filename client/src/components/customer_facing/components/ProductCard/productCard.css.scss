@@ -5,8 +5,14 @@
 }
 .card_desktop {
   padding: 20px;
-  flex-basis: 25%;
-  margin: 20px;
+  flex-basis: 27.5%;
+  margin: 20px 10px;
+  @media screen and (max-width: 1041px) {
+    flex-basis: 40%;
+  }
+  @media screen and (max-width: 650px) {
+    flex-basis: 70%;
+  }
 }
 
 .related_product {
@@ -22,6 +28,7 @@
   @media screen and (min-width: 550px) {
     height: 15em;
   }
+  min-width: 240px;
 }
 
 .card_image img {
