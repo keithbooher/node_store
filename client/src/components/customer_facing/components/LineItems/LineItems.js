@@ -42,9 +42,9 @@ class LineItems extends Component {
     await Promise.all(items.map(async (line_item) => {
       let item = {...line_item}
       if (line_item.varietal !== null) {
-        inventory_limit = await checkVarietalInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
+        inventory_limit = await checkVarietalInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, operator)
       } else {
-        inventory_limit = await checkProductInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
+        inventory_limit = await checkProductInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, operator)
       }
       return line_item
     })).then((values) => {
@@ -265,31 +265,33 @@ class LineItems extends Component {
   }
 }
 
-const checkVarietalInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
+const checkVarietalInv_increment = async (setState, checkInventory, line_item, incoming_line_item, operator) => {
   if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'addition') {
-    item.quantity += 1
-    let { data } = await checkInventory([item])
+    line_item.quantity += 1
+    let { data } = await checkInventory([line_item])
     let out_of_stock = data.filter((oos_item) => oos_item !== null)
     if (out_of_stock.length > 0) {
-      item.quantity += -1
-      setState({ inventory_limit: [item] })
+      line_item.quantity += -1
+      setState({ inventory_limit: [line_item] })
     }
   } else if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'subtraction') {
-    item.quantity += -1
+    line_item.quantity += -1
   }
 }
 
-const checkProductInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
+const checkProductInv_increment = async (setState, checkInventory, line_item, incoming_line_item, operator) => {
+  console.log(incoming_line_item)
+  console.log(line_item)
   if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
-    item.quantity += 1
-    let { data } = await checkInventory([item])
+    line_item.quantity += 1
+    let { data } = await checkInventory([line_item])
     let out_of_stock = data.filter((oos_item) => oos_item !== null)
     if (out_of_stock.length > 0) {
-      item.quantity += -1
-      setState({ inventory_limit: [item] })
+      line_item.quantity += -1
+      setState({ inventory_limit: [line_item] })
     }
   } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
-    item.quantity += -1
+    line_item.quantity += -1
   }
 }
 
