@@ -279,8 +279,8 @@ class ReviewItems extends Component {
   }
 }
 
-function mapStateToProps({ form, mobile }) {
-  return { form, mobile }
+function mapStateToProps({ form, mobile, noTaxSetting }) {
+  return { form, mobile, noTaxSetting }
 }
 
 const actions = { updateCart, dispatchObj, getDiscountCode }
