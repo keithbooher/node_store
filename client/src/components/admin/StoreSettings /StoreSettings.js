@@ -112,6 +112,7 @@ class StoreSettings extends Component {
     let gallery_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "show_gallery")[0]
     let desktop_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "desktop_banner_photo")[0]
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
+    let no_tax_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "no_tax")[0]
 
     let containerStyle = {
       marginTop: "30px"
@@ -188,6 +189,21 @@ class StoreSettings extends Component {
               <div className="flex">
                 <div>{hide_zero_setting.description}</div>
                 <div>{hide_zero_setting.value.boolean ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(hide_zero_setting)} icon={faTimes} /></a>  }</div>
+              </div>
+            </div>
+          </div>
+        }
+
+
+        <hr />
+
+        {no_tax_setting && 
+          <div>
+            <div>
+              <h3>{no_tax_setting.name}</h3>
+              <div className="flex">
+                <div>{no_tax_setting.description}</div>
+                <div>{no_tax_setting.value.boolean ? <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(no_tax_setting)} icon={faCheck} /></a> : <a><FontAwesomeIcon onClick={() => this.updateSettingBoolean(no_tax_setting)} icon={faTimes} /></a>  }</div>
               </div>
             </div>
           </div>

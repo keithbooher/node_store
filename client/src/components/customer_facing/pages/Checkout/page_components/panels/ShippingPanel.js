@@ -64,6 +64,9 @@ class AddressPanel extends Component  {
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate.cost)
 
     cart.sub_total = sub_total
@@ -103,8 +106,8 @@ class AddressPanel extends Component  {
   }
 }
 
-function mapStateToProps({ form, mobile }) {
-  return { form, mobile }
+function mapStateToProps({ form, mobile, noTaxSetting }) {
+  return { form, mobile, noTaxSetting }
 }
 
 const actions = { convertCart, getShippingMethodForCheckout }

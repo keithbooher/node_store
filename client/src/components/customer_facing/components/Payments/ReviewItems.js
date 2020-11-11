@@ -110,6 +110,9 @@ class ReviewItems extends Component {
     }
 
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
@@ -240,7 +243,7 @@ class ReviewItems extends Component {
 
           <div style={this.props.mobile ? {} : { fontSize: "20px", width: "80%", margin: "30px auto" } } className="flex flex_column margin-m-v">
             <div>Sub Total: ${formatMoney(this.props.cart.sub_total)}</div>
-            <div>Tax: ${formatMoney(this.props.cart.tax)}</div>
+            {!this.props.noTaxSetting && <div>Tax: ${formatMoney(this.props.cart.tax)}</div>}
             <div>Shipping: ${formatMoney(this.props.cart.chosen_rate.cost)}</div>
             {this.props.cart.discount_codes.length > 0 && 
               <div>Discount Code: {this.props.cart.discount_codes[0].affect_order_total ?

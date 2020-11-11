@@ -61,6 +61,9 @@ class LineItems extends Component {
     
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
@@ -111,6 +114,9 @@ class LineItems extends Component {
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
     
     cart.sub_total = sub_total
@@ -214,8 +220,8 @@ class LineItems extends Component {
 }
 
 
-function mapStateToProps({ cart, form, enlargeImage, mobile }) {
-  return { cart, form, enlargeImage, mobile }
+function mapStateToProps({ cart, form, enlargeImage, mobile, noTaxSetting }) {
+  return { cart, form, enlargeImage, mobile, noTaxSetting }
 }
 
 const actions = { dispatchObj, updateCart, checkInventory, dispatchEnlargeImage, getProductbyId }

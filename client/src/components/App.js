@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchUser, setDevice } from '../actions'
+import { fetchUser, setDevice, taxSettingCheck } from '../actions'
 import '../stylesheets/all.css.scss'
 
 import Admin from './containers/Admin'
@@ -40,13 +40,14 @@ const checkAdmin = (user) => {
 
 
 
-const App = ({ fetchUser, auth, setDevice }) => {
+const App = ({ fetchUser, auth, setDevice, taxSettingCheck }) => {
   const [admin, setAdmin] = useState(null)
   useEffect(() => {
     async function mount() {
       // Check to see if user is logged in
       let user = await fetchUser()
       let checkedAdmin = checkAdmin(user)
+      taxSettingCheck()
       setAdmin(checkedAdmin)
       setDevice(isMobile)
     }
@@ -87,6 +88,6 @@ function mapStateToProps({ auth }) {
   return { auth}
 }
 
-const actions = { fetchUser, setDevice }
+const actions = { fetchUser, taxSettingCheck, setDevice }
 
 export default connect(mapStateToProps, actions)(App)
