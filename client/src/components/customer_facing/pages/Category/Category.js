@@ -186,7 +186,7 @@ class Category extends Component  {
                 <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
               <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
             </div>
-            <div className="flex flex-wrap space-evenly">
+            <div className="flex flex-wrap category_card_container">
               {this.renderProductCards()}
             </div>
             <div className="flex">
