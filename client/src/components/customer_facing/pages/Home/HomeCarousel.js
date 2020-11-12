@@ -27,7 +27,7 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
     setImages(slides)
   }
   return (
-    <div className="">
+    <div className="" style={mobile ? { paddingTop: "10px" } : { paddingTop: "30px" }}>
       {galleryImages &&
         <Carousel
           slides={galleryImages} 
