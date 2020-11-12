@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import {Carousel} from '3d-react-carousal';
 import { galleryProducts } from "../../../../utils/API"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-
+import { Link } from "react-router-dom"
 
 const HomeCarousel = ({ galleryProducts, mobile }) => {
   const [galleryImages, setImages] = useState(false)
@@ -15,12 +15,15 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
   const getData = async ()  => {
     const { data } = await galleryProducts()
     let slides = data.map((item, i) => {
+      let category_path_name = item.categories.length > 0 ? item.categories[0].path_name : "general"
       return (
         <div className="flex flex_column justify-center" style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "600px", maxHeight: "600px" }} key={i}>
-          <LazyLoadImage
-            style={mobile ? { maxHeight: "400px" } : { maxHeight: "600px" }}
-            src={item.images.i1}
-          />
+          <Link to={`/shop/${category_path_name}/${item.path_name}`}>
+            <LazyLoadImage
+              style={mobile ? { maxHeight: "400px" } : { maxHeight: "600px" }}
+              src={item.images.i1}
+            />
+          </Link>
         </div>
       )
     })
