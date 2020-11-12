@@ -15,6 +15,17 @@
   }
 }
 
+.category_card_container{
+  justify-content: space-between;
+  @media screen and (max-width: 1041px) {
+    justify-content: space-evenly;
+  }
+}
+
+.category_card_container_few {
+  // justify-content: space-around;
+}
+
 .related_product {
   min-height: 450px;
 }
