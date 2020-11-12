@@ -15,7 +15,7 @@ import ContactPage from "../../customer_facing/pages/ContactPage"
 import Gallery from "../../customer_facing/pages/Gallery"
 import EnlargeImage from "../../shared/EnlargeImage"
 import Four04Page from "../../shared/Four04Page"
-import { zeroInventorySettingCheck, usersCart, createGuestCart, getGuestCart, convertGuestCart } from "../../../actions"
+import { zeroInventorySettingCheck, bannerCarouselCheck, usersCart, createGuestCart, getGuestCart, convertGuestCart } from "../../../actions"
 import { withCookies, useCookies } from 'react-cookie'
 
 import "./customer.scss"
@@ -31,7 +31,8 @@ const CustomerFacing = ({
   sidebar,
   enlarge,
   cart,
-  mobile
+  mobile,
+  bannerCarouselCheck
 }) => {
 
   const [cookies, setCookie, removeCookie] = useCookies(['guest_cart']);
@@ -86,6 +87,7 @@ const CustomerFacing = ({
   }
 
   const settingCheck = async () => {
+    await bannerCarouselCheck()
     return await zeroInventorySettingCheck()
   }
 
@@ -182,6 +184,6 @@ function mapStateToProps({ sidebar, enlarge, cart, mobile  }) {
   return { sidebar, enlarge, cart, mobile }
 }
 
-const actions = { usersCart, createGuestCart, getGuestCart, convertGuestCart, zeroInventorySettingCheck }
+const actions = { usersCart, bannerCarouselCheck, createGuestCart, getGuestCart, convertGuestCart, zeroInventorySettingCheck }
 
 export default connect(mapStateToProps, actions)(withCookies(CustomerFacing))

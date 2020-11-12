@@ -7,6 +7,7 @@ import './home.css.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import MetaTags from 'react-meta-tags'
+import HomeCarousel from "./HomeCarousel"
 
 // pull from actions. create action to make request for adding product-data to the cart
 
@@ -50,6 +51,7 @@ class Home extends Component  {
 
   
   render() {
+    console.log(this.props.carouselSetting)
     return (
       <div style={{ padding: "0em 0em 100px 0em" }}>
         <MetaTags>
@@ -61,7 +63,20 @@ class Home extends Component  {
 
         <div className={`text-align-center`}>
           {this.state.banner ?
-            <img className="w-auto h-auto border-radius-s" style={this.props.mobile ? { maxHeight: "600px", maxWidth: "100%" } : { maxHeight: "600px", maxWidth: "1600px", marginBottom: "30px" }} src={this.state.banner.value.image} />
+            this.props.carouselSetting ?
+              <div style={this.props.mobile ? { minHeight: "400px", marginBottom: "40px" } : { minHeight: "600px", marginBottom: "100px" }}>
+                <HomeCarousel />
+              </div>
+            :
+              <img 
+                className="w-auto h-auto border-radius-s" 
+                style={this.props.mobile ? 
+                        { maxHeight: "600px", maxWidth: "100%" } 
+                      : 
+                        { maxHeight: "600px", maxWidth: "1600px", marginBottom: "30px" }
+                      } 
+                src={this.state.banner.value.image} 
+              />
           :
             <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin />
           }
@@ -76,8 +91,8 @@ class Home extends Component  {
 }
 
 
-function mapStateToProps({ auth, cart, mobile }) {
-  return { auth, cart, mobile }
+function mapStateToProps({ auth, cart, mobile, carouselSetting }) {
+  return { auth, cart, mobile, carouselSetting }
 }
 
 const actions = { updateCart, createCart, homeProducts, homeBanner }
