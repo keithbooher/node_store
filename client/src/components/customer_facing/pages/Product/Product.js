@@ -33,7 +33,8 @@ const Product = ({
   lastReview, 
   getProductsReviews,
   submitReview,
-  mobile
+  mobile,
+  noTaxSetting
 }) =>  {
 
   const [product, setProduct] = useState(null)
@@ -150,6 +151,9 @@ const Product = ({
 
     sub_total = Number(calculateSubtotal(_cart))
     let tax = Number(sub_total * .08)
+    if (noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(_cart.chosen_rate ? _cart.chosen_rate.cost : 0)
 
     _cart.discount_codes = []
@@ -479,8 +483,8 @@ const surfaceInventoryCheck = (product, _quantity, setInsufficient, chosenVariet
 }
 
 
-function mapStateToProps({ cart, auth, form, mobile }) {
-  return { cart, auth, form, mobile }
+function mapStateToProps({ cart, auth, form, mobile, noTaxSetting }) {
+  return { cart, auth, form, mobile, noTaxSetting }
 }
 
 const actions = { updateCart, createCart, dispatchObj, getProductByPathName, getProductAverageRating, submitReview, getProductsReviews, lastReview }

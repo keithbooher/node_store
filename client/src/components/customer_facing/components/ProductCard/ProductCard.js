@@ -104,6 +104,9 @@ class ProductCard extends Component {
     
     sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.discount_codes = []
@@ -360,8 +363,8 @@ const findIt = (product, _cart, i, chosenVarietal) => {
 }
 
 
-function mapStateToProps({ zeroInventory, mobile }) {
-  return { zeroInventory, mobile }
+function mapStateToProps({ mobile, noTaxSetting }) {
+  return { mobile, noTaxSetting }
 }
 
 const actions = { dispatchEnlargeImage, showCartAction, getProductAverageRating, showHeaderAction }

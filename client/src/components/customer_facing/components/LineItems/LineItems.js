@@ -40,11 +40,10 @@ class LineItems extends Component {
     let inventory_limit
 
     await Promise.all(items.map(async (line_item) => {
-      let item = {...line_item}
       if (line_item.varietal !== null) {
-        inventory_limit = await checkVarietalInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
+        inventory_limit = await checkVarietalInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, operator)
       } else {
-        inventory_limit = await checkProductInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, item, operator)
+        inventory_limit = await checkProductInv_increment((state) => this.setState(state), this.props.checkInventory, line_item, incoming_line_item, operator)
       }
       return line_item
     })).then((values) => {
@@ -67,6 +66,9 @@ class LineItems extends Component {
     let sub_total = Number(calculateSubtotal(cart))
 
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
@@ -96,6 +98,9 @@ class LineItems extends Component {
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
@@ -143,6 +148,9 @@ class LineItems extends Component {
 
     let sub_total = Number(calculateSubtotal(cart))
     let tax = Number(sub_total * .08)
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
 
     cart.sub_total = sub_total
@@ -265,31 +273,31 @@ class LineItems extends Component {
   }
 }
 
-const checkVarietalInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
-  if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'addition') {
-    item.quantity += 1
-    let { data } = await checkInventory([item])
+const checkVarietalInv_increment = async (setState, checkInventory, line_item, incoming_line_item, operator) => {
+  if (incoming_line_item.varietal && line_item.varietal._id === incoming_line_item.varietal._id && operator === 'addition') {
+    line_item.quantity += 1
+    let { data } = await checkInventory([line_item])
     let out_of_stock = data.filter((oos_item) => oos_item !== null)
     if (out_of_stock.length > 0) {
-      item.quantity += -1
-      setState({ inventory_limit: [item] })
+      line_item.quantity += -1
+      setState({ inventory_limit: [line_item] })
     }
-  } else if (line_item.varietal.id === incoming_line_item.varietal.id && operator === 'subtraction') {
-    item.quantity += -1
+  } else if (incoming_line_item.varietal && line_item.varietal._id === incoming_line_item.varietal._id && operator === 'subtraction') {
+    line_item.quantity += -1
   }
 }
 
-const checkProductInv_increment = async (setState, checkInventory, line_item, incoming_line_item, item, operator) => {
+const checkProductInv_increment = async (setState, checkInventory, line_item, incoming_line_item, operator) => {
   if(incoming_line_item._product_id === line_item._product_id && operator === 'addition') {
-    item.quantity += 1
-    let { data } = await checkInventory([item])
+    line_item.quantity += 1
+    let { data } = await checkInventory([line_item])
     let out_of_stock = data.filter((oos_item) => oos_item !== null)
     if (out_of_stock.length > 0) {
-      item.quantity += -1
-      setState({ inventory_limit: [item] })
+      line_item.quantity += -1
+      setState({ inventory_limit: [line_item] })
     }
   } else if (incoming_line_item._product_id === line_item._product_id && operator === 'subtraction') {
-    item.quantity += -1
+    line_item.quantity += -1
   }
 }
 
@@ -338,8 +346,8 @@ const checkProductInv_quantity = async (setState, checkInventory, line_item, inc
 
 
 
-function mapStateToProps({ enlargeImage, form, cart, mobile }) {
-  return { enlargeImage, form, cart, mobile }
+function mapStateToProps({ enlargeImage, form, cart, mobile, noTaxSetting }) {
+  return { enlargeImage, form, cart, mobile, noTaxSetting }
 }
 
 const actions = { updateCart, dispatchEnlargeImage, checkInventory, dispatchObj, getProductbyId }

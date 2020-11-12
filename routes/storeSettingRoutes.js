@@ -36,6 +36,16 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/tax/setting', async (req, res) => {  
+    try {
+      let setting = await StoreSetting.findOne({ internal_name : "no_tax" })
+      res.send(setting)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.get('/api/setting/home_banner/desktop', async (req, res) => {
     try {
       let setting = await StoreSetting.findOne({ internal_name : "desktop_banner_photo" })
@@ -66,25 +76,36 @@ module.exports = app => {
     }
   })
 
-
-
-  // Create Store Setting
-  app.get('/api/store_setting/create', async (req, res) => {  
-    console.log("here")
-    let setting = {
-      name:"Gallery Carousel",
-      value: {boolean: false},
-      description:"Use A carousel composed of gallery images instead of the banner",
-      internal_name: "gallery_carousel"
-    }
-    const storeSetting = new StoreSetting(setting)
+  app.get('/api/setting/carousel', async (req, res) => {
     try {
-      await storeSetting.save()
-      res.send(storeSetting)
+      let setting = await StoreSetting.findOne({ internal_name : "gallery_carousel" })
+      res.send(setting)
     } catch (err) {
       req.bugsnag.notify(err)
       res.status(422).send(err)
     }
   })
+
+
+
+  // // Create Store Setting
+  // app.get('/api/store_setting/create', async (req, res) => {  
+  //   console.log("here")
+  //   let setting = {
+  //     name:"Gallery Carousel",
+  //     value: {boolean: false},
+  //     description:"Use A carousel composed of gallery images instead of the banner",
+  //     internal_name: "gallery_carousel"
+  //   }
+  //   const storeSetting = new StoreSetting(setting)
+  //   try {
+  //     await storeSetting.save()
+  //     res.send(storeSetting)
+  //   } catch (err) {
+  //     req.bugsnag.notify(err)
+  //     res.status(422).send(err)
+  //   }
+  // })
+
 
 }

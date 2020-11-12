@@ -78,7 +78,7 @@ class Cart extends Component {
             <div className="flex space-between theme-background-3 padding-s">
               <div className="flex flex_column" style={{ fontSize: totalsFontSize }}>
                 <div className="color-white"><span className="bold store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
-                <div className="color-white"><span className="bold store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
+                {!this.props.noTaxSetting && <div className="color-white"><span className="bold store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>}
                 {this.props.cart.chosen_rate && <div className="color-white"><span className="bold store_text_color">Shipping:</span> ${formatMoney(shipping)}</div>}
                 {this.props.cart.discount_codes.length > 0 && 
                   <div className="color-white"><span className="bold store_text_color">Discount Code:</span> {this.props.cart.discount_codes[0].discount_code}</div>
@@ -95,8 +95,8 @@ class Cart extends Component {
   }
 }
 
-function mapStateToProps({ cart, showCart, mobile }) {
-  return { cart, showCart, mobile }
+function mapStateToProps({ cart, showCart, mobile, noTaxSetting }) {
+  return { cart, showCart, mobile, noTaxSetting }
 }
 
 const actions = { dispatchEnlargeImage, showCartAction }

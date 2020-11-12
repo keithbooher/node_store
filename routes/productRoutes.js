@@ -84,7 +84,7 @@ module.exports = app => {
 
   app.get('/api/product/by_path_name/:path_name', async (req, res) => {    
     try {
-      const product = await Product.findOne({ path_name: req.params.path_name }).populate({path: "categories"}).populate({path: "related_products"})
+      const product = await Product.findOne({ path_name: req.params.path_name, deleted_at: null }).populate({path: "categories"}).populate({path: "related_products"})
       res.send(product)
     } catch (err) {
       res.status(422).send(err)

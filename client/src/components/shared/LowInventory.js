@@ -68,6 +68,9 @@ class LowInventory extends Component {
       }
       
       let tax = Number(sub_total * .08)
+      if (this.props.noTaxSetting) {
+        tax = 0
+      }
       let shipping = Number(cart.chosen_rate ? cart.chosen_rate.cost : 0)
   
       cart.sub_total = sub_total
@@ -107,6 +110,10 @@ class LowInventory extends Component {
   }
 }
 
+function mapStateToProps({ noTaxSetting }) {
+  return { noTaxSetting }
+}
+
 const actions = { updateCart }
 
-export default connect(null, actions)(LowInventory)
+export default connect(mapStateToProps, actions)(LowInventory)

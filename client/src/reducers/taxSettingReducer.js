@@ -1,8 +1,8 @@
-import { ZERO_INVETORY, TAX } from '../actions/types'
+import { TAX } from '../actions/types'
 
 export default function(state = null, action) {
   switch (action.type) {
-    case ZERO_INVETORY:
+    case TAX:
       return action.payload
     default: 
       return state

@@ -4,3 +4,19 @@
     flex-direction: row;
   }
 }
+
+.react-3d-carousel .slider-container .slider-content .slider-single .slider-single-content {
+  box-shadow: none !important;
+}
+
+.react-3d-carousel .slider-container .slider-content {
+  width: 100% !important;
+}
+
+.slider-left {
+  display: none !important;
+}
+
+.slider-right {
+  display: none !important;
+}

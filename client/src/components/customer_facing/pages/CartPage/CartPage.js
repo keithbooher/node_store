@@ -51,7 +51,7 @@ class CartPage extends Component {
             <h2 style={ this.props.mobile ? {} : { fontSize: "25px" }}>Products In Your Cart</h2>
             {this.renderLineItems()}
             <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Sub Total:</span> ${formatMoney(this.props.cart.sub_total)}</div>
-            <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>
+            {!this.props.noTaxSetting && <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Tax:</span> ${formatMoney(this.props.cart.tax)}</div>}
             {this.props.cart.chosen_rate && <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Shipping:</span> ${formatMoney(this.props.cart.chosen_rate.cost)}</div>}
             <div style={ this.props.mobile ? {} : { fontSize: "25px" }}><span className="store_text_color">Total:</span> ${formatMoney(this.props.cart.total)}</div>
             <Link to="/checkout"><button className="margin-s-v">Go to Checkout</button></Link>
@@ -65,8 +65,8 @@ class CartPage extends Component {
 }
 
 
-function mapStateToProps({ cart, mobile }) {
-  return { cart, mobile }
+function mapStateToProps({ cart, mobile, noTaxSetting }) {
+  return { cart, mobile, noTaxSetting }
 }
 
 // const actions = { sidebarBoolean }

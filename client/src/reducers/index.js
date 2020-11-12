@@ -4,6 +4,8 @@ import cartReducer from './cartReducer'
 import sidebarReducer from './sidebarReducer'
 import enlargeReducer from './enlargeReducer'
 import zeroInventoryReducer from './zeroInventorySettingReducer'
+import taxSettingReducer from './taxSettingReducer'
+import carouselReducer from './carouselReducer'
 import showCartReducer from './showCartReducer'
 import showHeaderReducer from './showHeaderReducer'
 import errorReducer from './errorReducer'
@@ -18,6 +20,8 @@ export default combineReducers({
   sidebar: sidebarReducer,
   enlarge: enlargeReducer,
   zeroInventory: zeroInventoryReducer,
+  noTaxSetting: taxSettingReducer,
+  carouselSetting: carouselReducer,
   showCart: showCartReducer,
   showHeader: showHeaderReducer,
   error: errorReducer,

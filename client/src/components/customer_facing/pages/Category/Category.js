@@ -164,7 +164,7 @@ class Category extends Component  {
     let previous_disable = this.state.page_number === 1 ? true : false
     let next_disable = this.state.shown_products.length < 12 ? true :false
     return (
-      <div style={{ padding: ".4em .4em 80px .4em", margin: "50px auto" }} className={`${!this.props.mobile && "max-customer-container-width"}`}>
+      <div style={{ padding: ".4em .4em 80px .4em", margin: "0px auto", padding: "20px 0px 220px 0px" }} className={`${!this.props.mobile && "max-customer-container-width"}`}>
         <MetaTags>
           {this.state.category_data &&
             <>

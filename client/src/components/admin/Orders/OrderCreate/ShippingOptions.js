@@ -32,7 +32,9 @@ class ShippingOptions extends Component {
     let sub_total = cart.sub_total
     let shipping = cart.chosen_rate.cost
     let tax = (sub_total + shipping) * .08
-
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
 
     cart.tax = tax
     cart.sub_total = sub_total
@@ -88,8 +90,8 @@ class ShippingOptions extends Component {
   }
 }
 
-function mapStateToProps({ mobile }) {
-  return { mobile }
+function mapStateToProps({ mobile, noTaxSetting }) {
+  return { mobile, noTaxSetting }
 }
 
 const actions = { updateCart, getShippingMethodForCheckout }
