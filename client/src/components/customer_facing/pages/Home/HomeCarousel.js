@@ -16,7 +16,7 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
     const { data } = await galleryProducts()
     let slides = data.map((item, i) => {
       return (
-        <div style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "600px", maxHeight: "600px" }} key={i}>
+        <div className="flex flex_column justify-center" style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "600px", maxHeight: "600px" }} key={i}>
           <LazyLoadImage
             style={mobile ? { maxHeight: "400px" } : { maxHeight: "600px" }}
             src={item.images.i1}
