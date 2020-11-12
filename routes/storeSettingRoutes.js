@@ -72,10 +72,10 @@ module.exports = app => {
   app.get('/api/store_setting/create', async (req, res) => {  
     console.log("here")
     let setting = {
-      name:"Dont charge tax",
+      name:"Gallery Carousel",
       value: {boolean: false},
-      description:"Do not charge tax, only sell products at base price.",
-      internal_name: "no_tax"
+      description:"Use A carousel composed of gallery images instead of the banner",
+      internal_name: "gallery_carousel"
     }
     const storeSetting = new StoreSetting(setting)
     try {
