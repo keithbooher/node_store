@@ -97,7 +97,7 @@ module.exports = app => {
     let data = {}
     let display_order_key
     try {
-      const category = await Category.findOne({ path_name: req.params.cat_identifier })
+      const category = await Category.findOne({ path_name: req.params.cat_identifier, deleted_at: null })
       display_order_key = "category_display_order." + category._id
       const products = await Product.find({ "categories": category._id, display: true, deleted_at: null }).sort({ [display_order_key]: 1 }).populate({path: "categories"})
       data = {
