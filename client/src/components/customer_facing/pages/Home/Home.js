@@ -69,7 +69,7 @@ class Home extends Component  {
             <div className="flex w-100 space-evenly">
               {this.state.mastheadCats.map((cat, i) => {
                 return (
-                  <Link to={`/shop/${cat.path_name}`} className="hover hover-color-11"><h2 style={{ fontSize: "2em", textShadow: "2px 2px 8px black" }} key={i}>{cat.name}</h2></Link>
+                  <Link to={`/shop/${cat.path_name}`} className="hover hover-color-11"><h2 style={{ fontSize: "1.5em", textShadow: "2px 2px 8px black" }} key={i}>{cat.name}</h2></Link>
                 )
               })}
             </div>
