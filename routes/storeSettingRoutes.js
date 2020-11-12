@@ -78,24 +78,24 @@ module.exports = app => {
 
 
 
-  // Create Store Setting
-  app.get('/api/store_setting/create', async (req, res) => {  
-    console.log("here")
-    let setting = {
-      name:"Dont charge tax",
-      value: {boolean: false},
-      description:"Do not charge tax, only sell products at base price.",
-      internal_name: "no_tax"
-    }
-    const storeSetting = new StoreSetting(setting)
-    try {
-      await storeSetting.save()
-      res.send(storeSetting)
-    } catch (err) {
-      req.bugsnag.notify(err)
-      res.status(422).send(err)
-    }
-  })
+  // // Create Store Setting
+  // app.get('/api/store_setting/create', async (req, res) => {  
+  //   console.log("here")
+  //   let setting = {
+  //     name:"Dont charge tax",
+  //     value: {boolean: false},
+  //     description:"Do not charge tax, only sell products at base price.",
+  //     internal_name: "no_tax"
+  //   }
+  //   const storeSetting = new StoreSetting(setting)
+  //   try {
+  //     await storeSetting.save()
+  //     res.send(storeSetting)
+  //   } catch (err) {
+  //     req.bugsnag.notify(err)
+  //     res.status(422).send(err)
+  //   }
+  // })
 
 
 }
