@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ProductCard from '../../components/ProductCard'
 import { updateCart, createCart } from '../../../../actions'
-import { homeProducts, homeBanner } from '../../../../utils/API'
+import { homeProducts, homeBanner, mastheadCats } from '../../../../utils/API'
 import './home.css.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import MetaTags from 'react-meta-tags'
 import HomeCarousel from "./HomeCarousel"
+import { Link } from "react-router-dom"
 
 // pull from actions. create action to make request for adding product-data to the cart
 
@@ -16,14 +17,16 @@ class Home extends Component  {
     super()
     this.state = {
       products: [],
-      banner: ""
+      banner: "",
+      mastheadCats: []
     }
   }
 
   async componentDidMount() {
     let { data } = await this.props.homeProducts()
     let banner_image = await this.props.homeBanner(this.props.mobile ? "mobile" : "desktop")
-    this.setState({ products: data, banner: banner_image.data })
+    let mastheadCats = await this.props.mastheadCats()
+    this.setState({ products: data, banner: banner_image.data, mastheadCats: mastheadCats.data })
   }
 
   renderProducts() {
@@ -62,6 +65,15 @@ class Home extends Component  {
         </MetaTags>
 
         <div className={`text-align-center`}>
+          {this.state.mastheadCats.length > 0 && !this.props.mobile &&
+            <div className="flex w-100 space-evenly">
+              {this.state.mastheadCats.map((cat, i) => {
+                return (
+                  <Link to={`/shop/${cat.path_name}`}><h2 style={{ fontSize: "2em" }} key={i}>{cat.name}</h2></Link>
+                )
+              })}
+            </div>
+          }
           {this.state.banner ?
             this.props.carouselSetting ?
               <div style={this.props.mobile ? { minHeight: "400px", marginBottom: "40px" } : { minHeight: "600px", marginBottom: "100px" }}>
@@ -95,6 +107,6 @@ function mapStateToProps({ auth, cart, mobile, carouselSetting }) {
   return { auth, cart, mobile, carouselSetting }
 }
 
-const actions = { updateCart, createCart, homeProducts, homeBanner }
+const actions = { updateCart, createCart, homeProducts, homeBanner, mastheadCats }
 
 export default connect(mapStateToProps, actions)(Home)

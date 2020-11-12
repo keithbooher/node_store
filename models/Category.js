@@ -19,7 +19,11 @@ const categorySchema = new Schema({
   },
   meta_title: String,
   meta_description: String,
-  meta_keywords: String
+  meta_keywords: String,
+  masthead: {
+    type: Boolean,
+    default: false
+  }
 })
 
 mongoose.model('categorys', categorySchema)

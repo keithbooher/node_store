@@ -46,7 +46,7 @@ class AccountDropdown extends Component {
   render() {
     console.log(this.props.auth)
     return (
-      <div className="relative">
+      <div className="relative" style={{ zIndex: "20" }}>
         <a 
           ref={this.dropRef} 
           onClick={this.showAccountMenu} 

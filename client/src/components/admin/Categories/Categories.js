@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getTopCategories, updateCategory, deleteCategory } from '../../../utils/API'
 import { dispatchObj } from '../../../actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner, faList } from "@fortawesome/free-solid-svg-icons"
+import { faPlusCircle, faCaretUp, faCaretDown, faTrash, faEdit, faEye, faEyeSlash, faSpinner, faList, faCheck, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { catFields, createSubField } from "./formFields"
 import CategoryForm from "./CategoryForm"
 import { validatePresenceOnAll } from "../../../utils/validations"
@@ -109,11 +109,12 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
                 </div>
               </div>
               <div className="flex">
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => productOrderModal(category)}><FontAwesomeIcon icon={faList} /></button>
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
-                <button className="margin-s-h" style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setAreYouSure(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => productOrderModal(category)}><FontAwesomeIcon icon={faList} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
+                <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setAreYouSure(category)}><FontAwesomeIcon icon={faTrash} /></button>
+                <button style={{ fontSize, maxHeight: "28px", padding: "2px", marginLeft: "10px" }} onClick={() => changeMasthead(category)}>Masthead <FontAwesomeIcon icon={category.masthead ? faCheck : faTimes} /></button>
               </div>
             </div>
                       
@@ -180,6 +181,13 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
 
   const changeDisplay = async (category) => {
     category.display = !category.display
+    await updateCategory(category)
+    const { data } =  await getTopCategories()
+    setCategories(data)
+  }
+
+  const changeMasthead = async (category) => {
+    category.masthead = !category.masthead
     await updateCategory(category)
     const { data } =  await getTopCategories()
     setCategories(data)
