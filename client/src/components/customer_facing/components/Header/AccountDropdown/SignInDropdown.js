@@ -44,7 +44,7 @@ class SignInDropdown extends Component {
 
   render() {
     return (
-      <div className="relative">
+      <div className="relative" style={{ zIndex: "20" }}>
         <a 
           ref={this.dropRef} 
           onClick={this.showAccountMenu} 

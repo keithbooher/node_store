@@ -122,6 +122,16 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/categories/masthead', async (req, res) => {
+    try {
+      const categories = await Category.find({ masthead: true, deleted_at: null })
+      res.send(categories)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   // app.get('/api/category/last_product/:path_name', async (req, res) => {
   //   try {
       
