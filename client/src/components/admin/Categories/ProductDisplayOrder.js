@@ -45,6 +45,14 @@ class ProductDisplayOrder extends Component {
   async componentDidMount() {
     let { data } = await this.props.getCategoryProducts_displayOrder(this.props.data._id)
     console.log(data)
+    data = data.map(prod => {
+      if (!prod.category_display_order) {
+        prod.category_display_order = {
+          [this.props.data._id]: 0
+        }
+      }
+      return prod
+    })
     this.setState({ items: data })
   }
 
@@ -115,7 +123,7 @@ class ProductDisplayOrder extends Component {
                               </div>
                               <LazyLoadImage
                                 src={item.images.i1}
-                                wrapperClassName={`${this.props.mobile ? "display_order_image_mobile" : "display_order_image"} margin-s-v border-radius-s`}
+                                wrapperClassName={`${this.props.mobile ? "display_order_image_mobile" : "display_order_image"} border-radius-s`}
                                 onClick={() => this.props.dispatchEnlargeImage({image: item.images.i1, path: "/shop/" + item.categories[0].path_name + "/" + item.path_name })}
                               />
                               <div className="flex justify-center align-items-center">
