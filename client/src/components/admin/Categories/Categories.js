@@ -100,21 +100,23 @@ const Categories = ({ form, dispatchObj, getTopCategories, deleteCategory, updat
               style={{ backgroundColor: 'rgb(45, 45, 45)', padding: '10px 5px' }} 
             >
               <div className="flex">
-                <div className="flex margin-s-h">
-                  <a className="hover-color-11" style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
-                  <a className="hover-color-11" style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
+                <div className="flex flex_column justify-center">
+                  <div className={`flex margin-s-h ${mobile && "flex_column"}`}>
+                    <a className="hover-color-11" style={up_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={up_disable === false ? () => moveDislayRank("up", category, parent_category === null ? null : parent_category) : null} icon={faCaretUp} /></a>
+                    <a className="hover-color-11" style={down_disable === true ? {color: 'lightgrey', cursor: "default"} : {}}><FontAwesomeIcon onClick={down_disable === false ? () => moveDislayRank("down", category, parent_category === null ? null : parent_category) : null} icon={faCaretDown} /></a>
+                  </div>
                 </div>
-                <div>
+                <div className="flex flex_column justify-center">
                   {category.name}
                 </div>
               </div>
-              <div className="flex">
+              <div className={`flex flex-wrap ${mobile && "margin-s-h"}`}>
                 <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setShowCreateInput(category._id)}><FontAwesomeIcon icon={faPlusCircle} /></button>
                 <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => showEditForm(category)}><FontAwesomeIcon icon={faEdit} /></button>
                 <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => productOrderModal(category)}><FontAwesomeIcon icon={faList} /></button>
                 <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => changeDisplay(category)}><FontAwesomeIcon icon={category.display ? faEye : faEyeSlash} /></button>
                 <button style={{ fontSize, maxHeight: "28px", margin: "0px 2px", padding: "2px" }} onClick={() => setAreYouSure(category)}><FontAwesomeIcon icon={faTrash} /></button>
-                <button style={{ fontSize, maxHeight: "28px", padding: "2px", marginLeft: "10px" }} onClick={() => changeMasthead(category)}>Masthead <FontAwesomeIcon icon={category.masthead ? faCheck : faTimes} /></button>
+                <button className={`${mobile && "margin-s-v"}`} style={{ fontSize, maxHeight: "28px", padding: "2px", marginLeft: "10px" }} onClick={() => changeMasthead(category)}>Masthead <FontAwesomeIcon icon={category.masthead ? faCheck : faTimes} /></button>
               </div>
             </div>
                       
