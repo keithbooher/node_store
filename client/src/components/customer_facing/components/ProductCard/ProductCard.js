@@ -245,7 +245,7 @@ class ProductCard extends Component {
               <div className="border-radius-s flex flex_column justify-center background-color-black card_image_container">
                 <LazyLoadImage
                   src={product.images.i1}
-                  wrapperClassName="margin-auto-h card_image flex align-items-center justify-center"
+                  wrapperClassName="hover margin-auto-h card_image flex align-items-center justify-center"
                   onClick={() => this.enlargeImage(this.props.product, category_path_name)}
                 />
               </div>

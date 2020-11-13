@@ -22,7 +22,7 @@ module.exports = app => {
   app.put('/api/product/update', requireLogin, adminRequired, async (req, res) => {  
     try {
       const product = req.body.product
-      let updated_product = await Product.findOneAndUpdate({ _id: product._id }, product, {new: true}).populate({path: "related_products"})
+      let updated_product = await Product.findOneAndUpdate({ _id: product._id, deleted_at: null }, product, {new: true}).populate({path: "related_products"})
       res.send(updated_product)    
     } catch (err) {
       req.bugsnag.notify(err)

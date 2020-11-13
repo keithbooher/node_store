@@ -55,6 +55,22 @@ const seed = async () => {
     }
     await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: gallery_setting})
 
+    let gallery_setting = { 
+      name:"Don't Charge Tax",
+      value: {boolean: false},
+      description:"Do not charge tax, only sell products at base price.",
+      internal_name: "no_tax"
+    }
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: gallery_setting})
+
+    let gallery_setting = { 
+      name:"Gallery Carousel",
+      value: {boolean: false},
+      description:"Use a carousel composed of gallery images instead of the banner",
+      internal_name: "gallery_carousel"
+    }
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: gallery_setting})
+
     // make a request to make One Mock Category
     let mock_category = {
       name: "Test",
