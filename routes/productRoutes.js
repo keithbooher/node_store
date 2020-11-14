@@ -135,7 +135,7 @@ module.exports = app => {
 
   app.get('/api/products/gallery', async (req, res) => {    
     try {
-      const product = await Product.find({ gallery: true }).populate({path: "categories"})
+      const product = await Product.find({ gallery: true }).sort({ gallery_order: 1 }).populate({path: "categories"})
       res.send(product)
     } catch (err) {
       req.bugsnag.notify(err)
