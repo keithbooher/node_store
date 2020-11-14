@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import {Carousel} from '3d-react-carousal';
+import ThreeDimCarousel from "../../../shared/ThreeDimCarousel"
 import { galleryProducts } from "../../../../utils/API"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Link } from "react-router-dom"
@@ -35,10 +35,10 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
   return (
     <div className="" style={mobile ? { paddingTop: "10px" } : { paddingTop: "30px" }}>
       {galleryImages &&
-        <Carousel
+        <ThreeDimCarousel
           slides={galleryImages} 
           autoplay={true} 
-          interval={2000}
+          interval={4000}
         />
       }
     </div>
