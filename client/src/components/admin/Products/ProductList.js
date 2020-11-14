@@ -5,12 +5,13 @@ import { paginatedProducts, getProductbyId, searchProduct, updateProduct, lastPr
 import { dispatchObj } from '../../../actions'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faList, faPlusCircle, faEdit, faSyncAlt, faTrash, faCaretDown, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { productSearchField } from "./formFields"
 import Form from "../../shared/Form"
 import PageChanger from "../../shared/PageChanger"
 import Key from "../../shared/Key"
 import Modal from "../../shared/Modal"
+import GalleryDisplayOrder from "./GalleryDisplayOrder"
 class ProductList extends Component {
   constructor(props) {
     super()
@@ -217,6 +218,7 @@ class ProductList extends Component {
     return (
       <div style={{ fontSize }}>
         <Link to="/admin/products/form/add" className="absolute" style={{ top: "5px", right: "5px" }}>Add Product <FontAwesomeIcon icon={faPlusCircle} /></Link>
+        <div onClick={() => this.setState({ displayOrderModal: true })} className="hover hover-color-11 absolute" style={{ top: "35px", right: "5px" }}>Gallery Order <FontAwesomeIcon icon={faList} /></div>
         <Link to="/admin/products" onClick={this.getAllProducts} ><button className="padding-s"><FontAwesomeIcon style={{ marginRight: "5px" }} icon={faSyncAlt} />All</button></Link>
 
         <Form
@@ -257,6 +259,12 @@ class ProductList extends Component {
               <button className="padding-s margin-s-h" onClick={() => this.deleteProduct(this.state.areYouSure)}><h2 style={{ margin: "0px" }}>Yes</h2></button>
               <button className="padding-s margin-s-h" onClick={() => this.setState({ areYouSure: false })} ><h2 style={{ margin: "0px" }}>No</h2></button>
             </div>
+          </Modal>
+        }
+
+        {this.state.displayOrderModal &&
+          <Modal cancel={() => this.setState({ displayOrderModal: false })}>
+            <GalleryDisplayOrder />
           </Modal>
         }
 

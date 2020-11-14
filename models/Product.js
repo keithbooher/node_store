@@ -53,6 +53,10 @@ const productSchema = new Schema({
     type: Boolean,
     default: false
   },
+  gallery_order: {
+    type: Number,
+    default: 0
+  },
   home_promotion:  {
     type: Boolean,
     default: false

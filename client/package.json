@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3d-react-carousal": "^3.1.0",
     "@bugsnag/js": "^7.4.0",
     "@bugsnag/plugin-react": "^7.3.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -26,6 +25,7 @@
     "react-cookie": "^4.0.3",
     "react-country-region-selector": "^3.0.1",
     "react-dom": "^16.12.0",
+    "react-fast-compare": "^3.2.0",
     "react-form": "^4.0.1",
     "react-lazy-load-image-component": "^1.5.0",
     "react-meta-tags": "^0.7.4",

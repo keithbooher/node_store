@@ -10,13 +10,8 @@
 }
 
 .react-3d-carousel .slider-container .slider-content {
-  width: 80% !important;
-}
-
-.slider-left {
-  display: none !important;
-}
-
-.slider-right {
-  display: none !important;
+  width: 100% !important;
+  @media screen and (max-width: 768px) {
+    width: 80% !important;
+  }
 }
