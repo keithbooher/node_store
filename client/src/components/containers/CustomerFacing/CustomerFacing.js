@@ -17,6 +17,7 @@ import EnlargeImage from "../../shared/EnlargeImage"
 import Four04Page from "../../shared/Four04Page"
 import { zeroInventorySettingCheck, bannerCarouselCheck, usersCart, createGuestCart, getGuestCart, convertGuestCart } from "../../../actions"
 import { withCookies, useCookies } from 'react-cookie'
+import MessengerCustomerChat from 'react-messenger-customer-chat';
 
 import "./customer.scss"
 
@@ -170,6 +171,14 @@ const CustomerFacing = ({
             <Route component={Four04Page} />
           </Switch>
         </div>
+        <MessengerCustomerChat
+          pageId={process.env.REACT_APP_FB_PAGE_ID}
+          appId={process.env.REACT_APP_FB_APP_ID}
+          greetingDialogDisplay={"show"}
+          shouldShowDialog={true}
+          loggedInGreeting={"Hi! How can I help you?"}
+          loggedOutGreeting={"Hi! How can I help you?"}
+        />
       </div>
 
       {enlarge && <EnlargeImage cancel={() => this.setState({ enlargeImage: null })} image={enlarge.image} path={enlarge.path} />}  
