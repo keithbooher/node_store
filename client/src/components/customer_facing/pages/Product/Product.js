@@ -286,7 +286,7 @@ const Product = ({
 
   let containerStyle = {
     fontSize: "1em", 
-    padding: ".4em .4em 80px .4em"
+    padding: ".4em .4em 120px .4em"
   }
   if (!mobile) {
     containerStyle.fontSize = "20px"
