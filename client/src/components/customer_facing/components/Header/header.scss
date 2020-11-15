@@ -7,12 +7,16 @@
   height: 50px;
   width: 100%;
   z-index: 25;
+  position: fixed;
+  top: 0px;
 }
 
 .desktop_nav {
   height: 70px;
   width: 100%;
   z-index: 25;
+  position: fixed;
+  top: 0px;
 }
 
 .scrolling_down_nav {
@@ -26,7 +30,7 @@
 }
 
 .top_of_page_nav {
-  position: relative;
+  // position: relative;
 }
 
 .scrolling_down_nav_desktop {
@@ -40,5 +44,5 @@
 }
 
 .top_of_page_nav_desktop {
-  position: relative;
+  // position: relative;
 }

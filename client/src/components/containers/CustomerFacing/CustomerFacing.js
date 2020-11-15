@@ -152,7 +152,7 @@ const CustomerFacing = ({
   }
 
   return (
-    <div className="customer_container" style={scrollClass !== "top_of_page_nav" ? { marginTop: "50px" } : { marginTop: "0px" }}>
+    <div className="customer_container" style={mobile ? { marginTop: "50px" } : { marginTop: "70px" }}>
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />
