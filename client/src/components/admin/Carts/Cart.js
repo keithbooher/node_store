@@ -115,6 +115,9 @@ class Cart extends Component {
     let sub_total = this.renderSubTotal()
     let shipping = this.state.cart.chosen_rate ? this.state.cart.chosen_rate.cost : 0
     let tax = (sub_total + shipping) * .08
+    if (this.props.noTaxSetting) {
+      tax = 0
+    }
     return parseFloat(formatMoney(tax))
   }
 
@@ -420,8 +423,8 @@ const buildAddress = (addy, user_id, bill_or_ship) => {
   return address
 }
 
-function mapStateToProps({ form, mobile }) {
-  return { form, mobile }
+function mapStateToProps({ form, mobile, noTaxSetting }) {
+  return { form, mobile, noTaxSetting }
 }
 
 const actions = { getCartByID, updateCart, createOrder, updateOrder, createShipment, getShippingMethodForCheckout, dispatchObj }
