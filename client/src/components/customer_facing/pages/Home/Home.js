@@ -74,9 +74,12 @@ class Home extends Component  {
               })}
             </div>
           }
+
+          <h1 className="margin-xs-v">Art Work Of Janet McKellar</h1>
+
           {this.state.banner ?
             this.props.carouselSetting ?
-              <div style={this.props.mobile ? { minHeight: "400px", marginBottom: "40px" } : { minHeight: "600px", marginBottom: "100px" }}>
+              <div style={this.props.mobile ? { minHeight: "400px", marginBottom: "40px" } : { minHeight: "500px", marginBottom: "100px" }}>
                 <HomeCarousel />
               </div>
             :

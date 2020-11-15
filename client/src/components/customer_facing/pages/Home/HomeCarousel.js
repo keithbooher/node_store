@@ -17,10 +17,10 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
     let slides = data.map((item, i) => {
       let category_path_name = item.categories.length > 0 ? item.categories[0].path_name : "general"
       return (
-        <div className="flex flex_column justify-center" style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "600px", maxHeight: "600px" }} key={i}>
+        <div className="flex flex_column justify-center" style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "500px", maxHeight: "500px" }} key={i}>
           <Link to={`/shop/${category_path_name}/${item.path_name}`}>
             <LazyLoadImage
-              style={mobile ? { maxHeight: "400px" } : { maxHeight: "600px" }}
+              style={mobile ? { maxHeight: "400px" } : { maxHeight: "500px" }}
               src={item.images.i1}
             />
           </Link>
