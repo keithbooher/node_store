@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons"
@@ -207,12 +208,12 @@ export class ThreeDimCarousel extends React.Component {
                                     <div className={slider.class} key={index}>
                                         <div className="slider-left" onClick={this.slideLeft.bind(this)}>
                                             <div>
-                                                <FontAwesomeIcon icon={faArrowLeft} />
+                                                <FontAwesomeIcon style={!this.props.mobile ? { fontSize: "2em" } : { fontSize: "1em" }} icon={faArrowLeft} />
                                             </div>
                                         </div>
                                         <div className="slider-right" onClick={this.slideRight.bind(this)}>
                                             <div >
-                                                <FontAwesomeIcon icon={faArrowRight} />
+                                                <FontAwesomeIcon style={!this.props.mobile ? { fontSize: "2em" } : { fontSize: "1em" }} icon={faArrowRight} />
                                             </div>
                                         </div>
 
@@ -242,4 +243,9 @@ ThreeDimCarousel.defaultProps = {
 };
 
 
-export default ThreeDimCarousel
+function mapStateToProps({ mobile }) {
+    return { mobile }
+}
+
+  
+  export default connect(mapStateToProps, null)(ThreeDimCarousel)
