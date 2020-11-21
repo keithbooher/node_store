@@ -10,8 +10,5 @@
 }
 
 .react-3d-carousel .slider-container .slider-content {
-  width: 100% !important;
-  @media screen and (max-width: 768px) {
-    width: 80% !important;
-  }
+  width: 80% !important;
 }
