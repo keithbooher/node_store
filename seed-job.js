@@ -71,6 +71,14 @@ const seed = async () => {
     }
     await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: gallery_setting})
 
+    let about_setting = { 
+      name:"About",
+      value: {string: ""},
+      description:"Write your about me",
+      internal_name: "about"
+    }
+    await axios.post(`${keys.url}/api/store-create/store_setting/create`, {store_setting: about_setting})
+
     // make a request to make One Mock Category
     let mock_category = {
       name: "Test",
