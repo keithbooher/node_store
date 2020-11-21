@@ -33,7 +33,7 @@ class About extends Component {
           <meta name="keywords" content="" />
         </MetaTags>
 
-        <h1 className="text-align-center">Your Name Here</h1>
+        <h1 className="text-align-center">Janet McKellar</h1>
         {this.state.about ? 
           <div style={{ whiteSpace: "pre-line", width: this.props.mobile ? "90%" : "70%", margin: "0px auto", paddingTop: "40px" }}>{this.state.about.value.string}</div>
         :
