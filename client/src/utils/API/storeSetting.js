@@ -42,8 +42,21 @@ export const homeBanner = (device) => async dispatch => {
   }
 }
 
-export const getGallerySetting = (device) => async dispatch => {
+export const getGallerySetting = () => async dispatch => {
   let req = await axios.get(`/api/setting/gallery`).catch(error => {
+    dispatch({ type: ERROR, payload: error.response })
+    Bugsnag.notify(error)
+    return error.response
+  })
+  if (req.status === 200) {
+      return req
+  } else {
+      return {data: "error"}
+  }
+}
+
+export const getAboutSetting = () => async dispatch => {
+  let req = await axios.get(`/api/setting/about`).catch(error => {
     dispatch({ type: ERROR, payload: error.response })
     Bugsnag.notify(error)
     return error.response

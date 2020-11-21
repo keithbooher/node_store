@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { getAllFAQs, updateFAQ, createFAQ, updateStoreSetting, getAllStoreSettings } from "../../../utils/API"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTimes, faPlusCircle, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faPlusCircle, faEdit, faTrash, faSave } from '@fortawesome/free-solid-svg-icons'
 import ReactFilestack from "filestack-react"
 import { validatePresenceOnAll } from '../../../utils/validations'
 import Modal from "../../shared/Modal"
 import FormModal from "../../shared/Form/FormModal"
+import Form from "../../shared/Form"
+import { Editor } from "react-draft-wysiwyg";
 // import Sitemap from 'react-router-sitemap';
 // import routes from "../../../sitemap/sitemap-routes"
 class StoreSettings extends Component {
@@ -24,7 +26,8 @@ class StoreSettings extends Component {
       createFAQ: null,
       editFAQ: null,
       areYouSure: false,
-      sitemapGenerated: false
+      sitemapGenerated: false,
+      editorState: false
     }
   }
 
@@ -106,6 +109,19 @@ class StoreSettings extends Component {
   // }
 
 
+  async updateAboutSetting(about_setting) {
+    let about_content = this.state.editorState
+
+    about_setting.value.string = about_content
+
+    await this.props.updateStoreSetting(about_setting)
+    const { data } = await this.props.getAllStoreSettings()
+    this.setState({ settings: data })
+  }
+
+  onEditorStateChange(e) {
+    console.log(e)
+  }
 
   render() {
     let hide_zero_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "hide_zero")[0]
@@ -114,6 +130,7 @@ class StoreSettings extends Component {
     let mobile_banner_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "mobile_banner_photo")[0]
     let no_tax_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "no_tax")[0]
     let gallery_carousel = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "gallery_carousel")[0]
+    let about_setting = this.state.settings && this.state.settings.filter((setting) => setting.internal_name === "about")[0]
 
     let containerStyle = {
       marginTop: "30px"
@@ -236,6 +253,22 @@ class StoreSettings extends Component {
               </div>
             </div>
           </div>
+        }
+
+        <hr />
+
+        {about_setting && 
+          <Form 
+            onSubmit={() => this.updateAboutSetting(about_setting)}
+            submitButtonText={<span>Save <FontAwesomeIcon icon={faSave} /></span>}
+            formFields={[
+              { label: about_setting.description, name: 'about', typeOfComponent: "text-area", noValueError: 'You must provide a value' },
+            ]}
+            form='about_form'
+            initialValues={{
+              about: about_setting.value.string
+            }}
+          />
         }
 
         <hr />
