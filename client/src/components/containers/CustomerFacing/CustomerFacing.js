@@ -10,6 +10,7 @@ import Header from '../../customer_facing/components/Header'
 import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
 import OrderPage from "../../customer_facing/pages/Order"
+import About from "../../customer_facing/pages/About"
 import CartPage from "../../customer_facing/pages/CartPage"
 import ContactPage from "../../customer_facing/pages/ContactPage"
 import Gallery from "../../customer_facing/pages/Gallery"
@@ -168,6 +169,7 @@ const CustomerFacing = ({
             <Route path="/cart" component={CartPage} />
             <Route path="/contact" component={ContactPage} />
             <Route path="/gallery" component={Gallery} />
+            <Route path="/about" component={About} />
             <Route component={Four04Page} />
           </Switch>
         </div>
