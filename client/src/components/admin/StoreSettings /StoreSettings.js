@@ -8,7 +8,6 @@ import { validatePresenceOnAll } from '../../../utils/validations'
 import Modal from "../../shared/Modal"
 import FormModal from "../../shared/Form/FormModal"
 import Form from "../../shared/Form"
-import { Editor } from "react-draft-wysiwyg";
 // import Sitemap from 'react-router-sitemap';
 // import routes from "../../../sitemap/sitemap-routes"
 class StoreSettings extends Component {
