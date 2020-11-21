@@ -25,8 +25,7 @@ class StoreSettings extends Component {
       createFAQ: null,
       editFAQ: null,
       areYouSure: false,
-      sitemapGenerated: false,
-      editorState: false
+      sitemapGenerated: false
     }
   }
 
@@ -107,19 +106,14 @@ class StoreSettings extends Component {
   //   this.setState({ sitemapGenerated: true })
   // }
 
-
   async updateAboutSetting(about_setting) {
-    let about_content = this.state.editorState
+    let about_content = this.props.form['about_form'].values.about
 
     about_setting.value.string = about_content
 
     await this.props.updateStoreSetting(about_setting)
     const { data } = await this.props.getAllStoreSettings()
     this.setState({ settings: data })
-  }
-
-  onEditorStateChange(e) {
-    console.log(e)
   }
 
   render() {
