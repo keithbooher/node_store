@@ -45,6 +45,10 @@ const productSchema = new Schema({
       i5: null,
     }
   },
+  use_master_images: {
+    type: Boolean,
+    default: false
+  },
   display: {
     type: Boolean,
     default: false

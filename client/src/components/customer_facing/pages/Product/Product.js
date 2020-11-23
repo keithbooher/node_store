@@ -107,7 +107,8 @@ const Product = ({
             product_price: _product.price,
             product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
             gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null,
-            varietal: this.state.chosenVarietal
+            varietal: this.state.chosenVarietal,
+            use_master_images: _product.use_master_images
           }
         ],
         _user_id: user_id,
@@ -143,7 +144,8 @@ const Product = ({
           product_price: _product.price,
           product_path: `/shop/${_product.categories.length > 0 ? _product.categories[0].path_name : "general" }/${_product.path_name}`,
           gift_note: form['gift_note_form'] ? form['gift_note_form'].values ? form['gift_note_form'].values.gift_note : null : null,
-          varietal: chosenVarietal
+          varietal: chosenVarietal,
+          use_master_images: _product.use_master_images
         }
         _cart.line_items.push(line_item)
       }
