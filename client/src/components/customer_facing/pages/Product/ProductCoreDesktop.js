@@ -46,7 +46,7 @@ const ProductCoreDesktop = ({
           <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
             <div>
               <div className="flex align-items-center" style={{ margin: "10px 0px 10px 0px" }}>
-                <h1 style={{ margin: "0px" }}>{product.name}</h1>
+                <h2 style={{ margin: "0px" }}>{product.name}</h2>
                 <div className="margin-s-h">
                   {reviews.length > 0 && averageRating &&
                     <StarRatings
@@ -61,7 +61,7 @@ const ProductCoreDesktop = ({
                 </div>
               </div>
 
-              <div>{product.description ? product.description : "No Product Description"}</div>
+              <div className="margin-m-v" style={{ fontSize: '18px' }}>{product.description ? product.description : "No Product Description"}</div>
             </div>
 
             
