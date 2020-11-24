@@ -72,7 +72,7 @@ const Product = ({
     setAverageRating(average_rating.average)
     setReviews(get_reviews)
     setLastReview(get_last_review)
-    if (data.varietals && data.varietals.length > 0) {
+    if (data.varietals && data.varietals.length > 0 && !data.use_master_images) {
       setSelectedImage(varietal.images.i1)
     } else {
       setSelectedImage(data.images.i1)
