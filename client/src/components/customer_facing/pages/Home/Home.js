@@ -40,7 +40,8 @@ class Home extends Component  {
       } else{
         let category_path_name
         if (product.categories.length > 0) {
-          category_path_name = product.categories.find(cat => cat.deleted_at === null )
+          category_path_name = product.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null).path_name
+          console.log(category_path_name)
         } else {
           category_path_name = ""
         }
