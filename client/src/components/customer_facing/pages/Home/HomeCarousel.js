@@ -28,7 +28,7 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
       )
     })
     if (slides.length > 10 ) {
-      slides = slides.slice(slides.length - 11, slides.length - 1)
+      slides = slides.slice(0, 10)
     }
     setImages(slides)
   }
