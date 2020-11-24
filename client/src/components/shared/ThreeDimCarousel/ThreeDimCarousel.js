@@ -129,10 +129,12 @@ export class ThreeDimCarousel extends React.Component {
             });
             if (document.getElementsByClassName("slider-single active").length > 0) {
                 setTimeout(() => {
-                    let height = document.getElementsByClassName("slider-single active")[0].clientHeight;
-                    this.setState((prevState, props) => {
-                        return { height: height + "px" }
-                    })
+                    if (document.getElementsByClassName("slider-single active").length > 0) {
+                        let height = document.getElementsByClassName("slider-single active")[0].clientHeight;
+                        this.setState((prevState, props) => {
+                            return { height: height + "px" }
+                        })
+                    }
                 }, 500);
             }
             if (this.props.autoplay) {

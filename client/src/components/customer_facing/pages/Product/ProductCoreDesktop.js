@@ -61,7 +61,7 @@ const ProductCoreDesktop = ({
                 </div>
               </div>
 
-              <div className="margin-m-v" style={{ fontSize: '18px' }}>{product.description ? product.description : "No Product Description"}</div>
+              <div className="margin-m-v" style={{ whiteSpace: "pre-line", fontSize: '18px' }}>{product.description ? product.description : "No Product Description"}</div>
             </div>
 
             

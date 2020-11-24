@@ -61,7 +61,7 @@ class ProductForm extends Component {
     let update_product_info = this.state.product
     for (let [key, value] of Object.entries(create_product_values)) {
       if (key === "depth" || key === "width" || key === "height") {
-        update_product_info.dimensions[key] = parseInt(value)
+        update_product_info.dimensions[key] = Number(value)
       } else {
         update_product_info[key] = value
       }
@@ -126,9 +126,19 @@ class ProductForm extends Component {
       ],
       form: "update_product_form",
       validation: validatePresenceOnAll,
-      initialValues: {
-          [property]: product[property]
-        }
+      initialValues: property === "depth" || property === "width" || property === "height" ?
+          {
+            [property]: product.dimensions[property]
+          }
+        :
+          {
+            [property]: product[property]
+          }
+    }
+    if (property === "description") {
+      form_object.formFields[0].typeOfComponent = "text-area"
+    } else if(property === "width" || property === "height" || property === "depth") {
+      form_object.formFields[0].typeOfComponent = "number"
     }
     this.setState({ editForm: form_object })
   }
@@ -285,7 +295,7 @@ class ProductForm extends Component {
                 }
             </div>
             <div className="relative margin-s-v theme-background-3 color-white padding-s border-radius-s" style={{ fontSize: "18px" }}>
-              <span>Description:</span> <a className="inline" onClick={() => this.showEditIndicator("description")}>{this.state.product.description ? this.state.product.description : "N/A"}</a>
+              <span>Description:</span> <a className="inline" onClick={() => this.showEditIndicator("description")}><div style={{ whiteSpace: "pre-line" }}>{this.state.product.description ? this.state.product.description : "N/A"}</div></a>
               {this.state.propertyToEdit && this.state.propertyToEdit === "description" && 
                   <FontAwesomeIcon 
                     className="margin-s-h hover hover-color-2"
