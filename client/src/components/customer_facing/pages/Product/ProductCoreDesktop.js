@@ -45,7 +45,6 @@ const ProductCoreDesktop = ({
           </div>
           <div className="margin-s-h theme-background-6 border-radius padding-m h-100 w-60">
             <div>
-              <h2 className="margin-v-none">${formatMoney(product.price)}</h2>
               <div className="flex align-items-center" style={{ margin: "10px 0px 10px 0px" }}>
                 <h1 style={{ margin: "0px" }}>{product.name}</h1>
                 <div className="margin-s-h">
@@ -61,12 +60,14 @@ const ProductCoreDesktop = ({
                   }
                 </div>
               </div>
-              <h3 className="margin-xs-v">Description</h3>
+
               <div>{product.description ? product.description : "No Product Description"}</div>
             </div>
+
+            
             {product.availability ?
               <>
-                <div className="margin-s-v">
+                <div className="margin-m-v">
                   {varietal_boolean && 
                     <div className="margin-s-v">
                       <VarietalDropdown varietals={product.varietals} setVarietal={(v) => {
@@ -77,7 +78,10 @@ const ProductCoreDesktop = ({
                       />
                     </div>
                   }
-                  {!product.backorderable && product.inventory_count > 0 && <div className="font-size-0-8">In Stock: {product.varietals.length > 0 ? chosenVarietal.inventory_count : product.inventory_count}</div>}
+
+                  <h2 className="">${formatMoney(product.price)}</h2>
+
+                  {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.varietals.length > 0 ? chosenVarietal.inventory_count : product.inventory_count}</div>}
                   {product.inventory_count < 1 && <div className="margin-s-v">Out of stock</div>}
                   <div className="flex">
                     <div className="flex">
@@ -96,17 +100,6 @@ const ProductCoreDesktop = ({
             }
 
             <div className="flex align-items-center">
-              {product.dimensions && 
-                <div style={{ flexBasis: "25%" }}>
-                  <h3 className="margin-bottom-none">Details</h3>
-                  <div className="padding-s">
-                    <div>Height: {product.dimensions.height + " in"}</div>
-                    <div>Width: {product.dimensions.width + " in"}</div>
-                    <div>Depth: {product.dimensions.depth + " in"}</div>
-                    <div>Weight: {product.weight + " lbs"}</div>
-                  </div>
-                </div>
-              }
               {product.gift_note &&
                 <div style={{ flexBasis: "75%" }}>
                   <Form 

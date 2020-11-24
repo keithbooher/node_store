@@ -177,11 +177,11 @@ class Category extends Component  {
 
         { this.state.products !== null ?
           <>
-            <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s-v" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
-            <h1 style={{ margin: "0px" }}>
+            <h1 className="text-align-center" style={{ margin: "0px" }}>
               {capitalizeFirsts(this.state.category_data.name)}
             </h1>
-            <div className="flex">
+            <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s text-align-center" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
+            <div className="flex justify-center">
               <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
                 <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
               <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>

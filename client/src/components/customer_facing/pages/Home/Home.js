@@ -79,6 +79,7 @@ class Home extends Component  {
                   <Link to={`/shop/${cat.path_name}`} className="hover hover-color-11"><h2 style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} key={i}>{cat.name}</h2></Link>
                 )
               })}
+              <Link to="/gallery" className="hover hover-color-11"><h2 style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} >Gallery</h2></Link>
             </div>
           }
 

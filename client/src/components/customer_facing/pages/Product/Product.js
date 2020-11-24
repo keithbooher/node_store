@@ -348,6 +348,22 @@ const Product = ({
           <br />
           <hr />
           <br />
+          
+          {product.dimensions && 
+            <div style={{ flexBasis: "25%" }}>
+              <h3 className="margin-bottom-none">Details</h3>
+              <div className="padding-s">
+                {product.dimensions.height && <div>Height: {product.dimensions.height + " in"}</div>}
+                {product.dimensions.width && <div>Width: {product.dimensions.width + " in"}</div>}
+                {product.dimensions.depth && <div>Depth: {product.dimensions.depth + " in"}</div>}
+                {product.weight && <div>Weight: {product.weight + " lbs"}</div>}
+              </div>
+            </div>
+          }
+
+          <br />
+          <hr />
+          <br />
 
           <div >
             <div>

@@ -54,8 +54,7 @@ const ProductCoreMobile = ({
       </div>
       {product.availability ?
         <>
-          <div className="flex flex_column">
-            <h2 className="margin-s-v">${formatMoney(product.price)}</h2>
+          <div className="flex flex_column margin-l-v">
             {varietal_boolean && 
               <VarietalDropdown varietals={product.varietals} setVarietal={(v) => {
                   setVarietal(v)
@@ -64,6 +63,9 @@ const ProductCoreMobile = ({
                 chosenVarietal={chosenVarietal} 
               />
             }
+
+            <h2 className="margin-s-v">${formatMoney(product.price)}</h2>
+
             {!product.backorderable && product.inventory_count > 0 && <div>In Stock: {product.varietals.length > 0 ? chosenVarietal.inventory_count : product.inventory_count}</div>}
             {product.inventory_count < 1 && <div>Out of stock</div>}
           </div>
@@ -80,19 +82,8 @@ const ProductCoreMobile = ({
         </>
       : <h2>Product Unavailable</h2>}
       <hr/>
-      <h3>Description</h3>
+
       <p>{product.description ? product.description : "No Product Description"}</p>
-      {product.dimensions && 
-        <div>
-          <h3 className="margin-bottom-none">Specs</h3>
-          <div className="padding-s">
-            <div>Height: {product.dimensions.height}</div>
-            <div>Width: {product.dimensions.width}</div>
-            <div>Depth: {product.dimensions.depth}</div>
-            <div>Weight: {product.weight}</div>
-          </div>
-        </div>
-      }
       {product.gift_note &&
         <Form 
           submitButton= {<div />}
