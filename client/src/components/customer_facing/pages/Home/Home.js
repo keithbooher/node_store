@@ -38,6 +38,12 @@ class Home extends Component  {
       if (product === null) {
         return (<div className="card_desktop"></div>)
       } else{
+        let category_path_name
+        if (product.categories.length > 0) {
+          category_path_name = product.categories.find(cat => cat.deleted_at === null )
+        } else {
+          category_path_name = ""
+        }
         return <>
                 <ProductCard 
                   createCart={this.props.createCart}
@@ -45,7 +51,7 @@ class Home extends Component  {
                   user={this.props.auth} 
                   product={product} 
                   cart={this.props.cart} 
-                  category_path_name={product.categories.length > 0 ? product.categories[0].path_name : ""} 
+                  category_path_name={category_path_name} 
                 />
               </>
       }

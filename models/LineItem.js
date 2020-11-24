@@ -11,7 +11,11 @@ const lineItemSchema = new Schema({
   product_path: String,
   gift_note: String,
   discount: Number,
-  varietal: varietal
+  varietal: varietal,
+  use_master_images: {
+    type: Boolean,
+    default: false
+  },
 })
 
 module.exports = lineItemSchema

@@ -46,8 +46,8 @@ const ProductCoreMobile = ({
       <div className="flex" style={{ margin: "10px 10px 0px 10px" }}>
         {Object.keys(product.images).map((image_key, index) => {
           return (
-            <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "20%" }}>
-              <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={product.images[image_key]} />
+            <div key={index} onClick={product.images[image_key] === null ? () => console.log("do nothing") : () => setSelectedImage(chosenVarietal && !product.use_master_images ? chosenVarietal.images[image_key] : product.images[image_key])} className={`text-align-center flex justify-center align-items-center background-color-black ${selectedImage === image_key && "opacity-3-4"}`} style={{ margin: "10px 10px 0px 10px", flexBasis: "20%" }}>
+              <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100px" }} src={chosenVarietal && !product.use_master_images ? chosenVarietal.images[image_key] : product.images[image_key]} />
             </div>
           )
         })}

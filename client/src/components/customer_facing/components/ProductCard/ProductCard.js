@@ -58,7 +58,8 @@ class ProductCard extends Component {
             quantity: quantity,
             product_price: product.price,
             product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general" }/${product_path_name}`,
-            varietal: this.state.chosenVarietal
+            varietal: this.state.chosenVarietal,
+            use_master_images: product.use_master_images
           }
         ],
         _user_id: user_id,
@@ -95,7 +96,8 @@ class ProductCard extends Component {
           quantity: quantity,
           product_price: product.price,
           product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general"}/${product_path_name}`,
-          varietal: this.state.chosenVarietal
+          varietal: this.state.chosenVarietal,
+          use_master_images: product.use_master_images
         }
         cart.line_items.push(line_item)
       }
@@ -293,7 +295,7 @@ class ProductCard extends Component {
           <Modal cancel={() => this.setState({ pickVarietal: false })}>
             <div className="flex flex_column align-items-center">
               <div className={`text-align-center flex justify-center align-items-center background-color-black`} style={{ width: "100%", height: "100%", maxHeight: "350px", maxWidth: "350px" }}>
-                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "350px" }} src={this.state.chosenVarietal.images.i1} />
+                <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "350px" }} src={this.props.product.use_master_images ? this.props.product.images.i1 : this.state.chosenVarietal.images.i1} />
               </div>
 
               <VarietalDropdown 

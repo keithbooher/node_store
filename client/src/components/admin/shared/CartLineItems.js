@@ -68,7 +68,8 @@ class CartLineItems extends Component {
         quantity: this.state.quantity,
         product_price: product.price,
         product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general"}/${product.path_name}`,
-        varietal: this.state.chosenVarietal
+        varietal: this.state.chosenVarietal,
+        use_master_images: product.use_master_images
       }
       line_items.push(line_item)
     } 
@@ -347,11 +348,11 @@ class CartLineItems extends Component {
                 <h3>{this.state.result.name}</h3>
                 {this.props.mobile ?
                   <div>
-                    <img src={this.state.result.varietals.length > 0 ? this.state.result.varietals.find(v => v._id === this.state.chosenVarietal._id).images.i1 : this.state.result.images.i1} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
+                    <img src={this.state.result.varietals.length > 0 && !this.state.result.use_master_images ? this.state.result.varietals.find(v => v._id === this.state.chosenVarietal._id).images.i1 : this.state.result.images.i1} style={{ height: "auto", width: "auto", maxWidth: "150px", maxHeight: "150px" }} />
                   </div>
                 : 
                   <div className="background-color-black margin-auto-v flex justify-center align-items-center" style={{ height: "300px", width: "300px", maxHeight: "300px", maxWidth: "300px" }}>
-                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.result.varietals.length > 0 ? this.state.result.varietals.find(v => v._id === this.state.chosenVarietal._id).images.i1 : this.state.result.images.i1}/>
+                    <img style={{ height: "auto", width: "auto", maxHeight: "300px", maxWidth: "300px" }} src={this.state.result.varietals.length > 0 && !this.state.result.use_master_images ? this.state.result.varietals.find(v => v._id === this.state.chosenVarietal._id).images.i1 : this.state.result.images.i1}/>
                   </div>
                 }
 

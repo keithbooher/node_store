@@ -42,6 +42,10 @@ module.exports = app => {
         path: "sub_categories",
         model: "categorys"
       })
+
+      await Product.updateMany({ "categories": category._id },
+        { $pull: { "categories": category._id } }
+      )
   
       if (parent_category) {
         parent_category.sub_categories.forEach(async (sub_category) => {
