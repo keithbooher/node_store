@@ -1,6 +1,7 @@
 
 import React from "react"
 const varietalDropdownItem = ({ item }) => {
+  console.log(item)
   if (!item) {
     return <div></div>
   } else {
