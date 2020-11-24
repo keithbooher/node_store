@@ -200,10 +200,10 @@ class LineItems extends Component {
                       style={this.props.mobile ? { maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px", minHeight: "175px", minWidth: "175px" } }
                     >
                       <img 
-                        onClick={() => this.enlargeImage(line_item.image, line_item.product_path)} 
+                        onClick={() => this.enlargeImage(line_item.varietal && line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image, line_item.product_path)} 
                         className="h-w-auto margin-auto-h" 
                         style={ this.props.mobile ? { maxHeight: "125px", maxWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px" } } 
-                        src={line_item.varietal ? line_item.varietal.images.i1 : line_item.image} 
+                        src={line_item.varietal && line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image} 
                       />
                     </div>
 
@@ -245,7 +245,7 @@ class LineItems extends Component {
                   <Modal cancel={() => console.log('nothing')}>
                     <LazyLoadImage
                       style={{ height: "auto", width: "auto", maxHeight: "150px", maxWidth: "150px" }}
-                      src={this.state.showModal.image}
+                      src={this.state.showModal.varietal && this.state.showModal.use_master_images ? this.state.showModal.varietal.images.i1 : this.state.showModal.image}
                     />
                     <Form
                       onSubmit={this.submitQuantity}
