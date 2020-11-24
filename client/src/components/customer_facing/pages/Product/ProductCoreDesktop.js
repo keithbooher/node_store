@@ -100,10 +100,10 @@ const ProductCoreDesktop = ({
                 <div style={{ flexBasis: "25%" }}>
                   <h3 className="margin-bottom-none">Details</h3>
                   <div className="padding-s">
-                    <div>Height: {product.dimensions.height}</div>
-                    <div>Width: {product.dimensions.width}</div>
-                    <div>Depth: {product.dimensions.depth}</div>
-                    <div>Weight: {product.weight}</div>
+                    <div>Height: {product.dimensions.height + " in"}</div>
+                    <div>Width: {product.dimensions.width + " in"}</div>
+                    <div>Depth: {product.dimensions.depth + " in"}</div>
+                    <div>Weight: {product.weight + " lbs"}</div>
                   </div>
                 </div>
               }
