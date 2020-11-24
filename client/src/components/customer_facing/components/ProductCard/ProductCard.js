@@ -178,7 +178,7 @@ class ProductCard extends Component {
 
   isNumber(e) {
     var charCode = e.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    if (charCode > 31 && charCode !== 190 && (charCode < 48 || charCode > 57)) {
         return false;
     }
     return true;

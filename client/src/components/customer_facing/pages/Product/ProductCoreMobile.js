@@ -83,7 +83,7 @@ const ProductCoreMobile = ({
       : <h2>Product Unavailable</h2>}
       <hr/>
 
-      <p>{product.description ? product.description : "No Product Description"}</p>
+      <p style={{ whiteSpace: "pre-line" }}>{product.description ? product.description : "No Product Description"}</p>
       {product.gift_note &&
         <Form 
           submitButton= {<div />}
