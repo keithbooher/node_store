@@ -23,8 +23,8 @@ async componentDidMount() {
   render() {
     return (
       <div className="text-align-center" style={{ fontSize: "20px" }}>
-        <h1>Gallery</h1>
-        <div className="flex space-evenly flex-wrap" style={{ margin: "40px 0px" }}>
+        <h1 style={{ paddingTop: "30px" }}>Gallery</h1>
+        <div className="flex space-evenly flex-wrap" style={{ padding: "50px 0px" }}>
           {this.state.products ? 
             this.state.products.map((product, index) => {
               return (
