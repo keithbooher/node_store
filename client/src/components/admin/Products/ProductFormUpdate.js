@@ -166,7 +166,7 @@ class ProductForm extends Component {
   }
 
   price() {
-    if (this.state.product.varietals.lenth > 0) {
+    if (this.state.product.varietals.length > 0) {
       let sum = 0
       this.state.product.varietals.forEach(v => {
         sum += v.inventory_count
