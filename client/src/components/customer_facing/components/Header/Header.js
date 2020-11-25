@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBars } from "@fortawesome/free-solid-svg-icons"
 import './header.scss'
 import { sidebarBoolean, showHeaderAction, showCartAction } from "../../../../actions"
-
+import logo from "../../../../images/janet_logo.png"
 
 class Header extends Component {
   constructor(props) {
@@ -70,7 +70,12 @@ class Header extends Component {
       <div className="header_container flex space-between align-items-center theme-background-3 h-100" style={{ minHeight: "50px" }}>
         <div className="header_container flex justify-center align-items-center">
           <FontAwesomeIcon style={ this.props.mobile ? {} : { fontSize: "27px" } } id="sidebar_bars" onClick={this.sidebar} className="margin-s-h hover hover-color-2" icon={faBars} />
-          <Link to='/' className="margin-s-h hover-color-7"><h2 style={ this.props.mobile ? { fontSize: "20px" } : { fontSize: "35px" } } className="margin-none">{this.props.mobile ? "K.Y.E.O." : "Keep Your Eye Open"}</h2></Link>
+          <Link to='/' className="margin-s-h hover-color-7">
+            <h2 style={ this.props.mobile ? { fontSize: "20px" } : { fontSize: "35px" } } className="margin-none">
+              {this.props.mobile ? <div className="flex align-items-center"><img src={logo} style={{ height: "45px", width: "auto" }} /> <span className="margin-xs-h">K.Y.E.O</span></div> 
+              : <div className="flex align-items-center"><img src={logo} style={{ height: "60px", width: "auto" }} /> <span className="margin-xs-h">Keep Your Eye Open</span></div>}
+            </h2>
+          </Link>
         </div>
         <ul className="flex" style={{ margin: '0px' }}>
           <NavAccount />
