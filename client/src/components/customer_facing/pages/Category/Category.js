@@ -201,7 +201,8 @@ class Category extends Component  {
               <h1 className="text-align-center" style={{ margin: "0px" }}>
                 {capitalizeFirsts(this.state.category_data.name)}
               </h1>
-              <h2 className="text-align-center" >No products listed. More Coming Soon!</h2>
+              <h2 className="text-align-center" >No products listed.</h2>
+              <h2 className="text-align-center" >More Coming Soon!</h2>
             </div>
        : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
       </div>

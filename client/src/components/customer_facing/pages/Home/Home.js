@@ -77,15 +77,16 @@ class Home extends Component  {
                 <>
                 {this.state.mastheadCats.map((cat, i) => {
                   return (
-                    <Link to={`/shop/${cat.path_name}`} className="hover hover-color-11"><h2 style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} key={i}>{cat.name}</h2></Link>
+                    <Link to={`/shop/${cat.path_name}`} className="hover hover-color-11"><h2 className="margin-s-v" style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} key={i}>{cat.name}</h2></Link>
                   )
                 })}
                 </>
             }
-            <Link to="/gallery" className="hover hover-color-11"><h2 style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} >Gallery</h2></Link>
+            <Link to="/gallery" className="hover hover-color-11"><h2 className="margin-s-v" style={{ fontSize: "1.5em", textShadow: "3px 3px 10px #4c4c4c" }} >Gallery</h2></Link>
           </div>
 
-          <h1 style={{ fontSize: "2em", paddingTop: this.props.mobile ? "30px" : "0px" }} className={`${!this.props.mobile && "margin-xs-v"}`}>Art Work Of Janet McKellar</h1>
+          <h1 style={{ fontSize: "2em" }} className={`${!this.props.mobile ? "margin-xs-v" : "margin-v-none"}`}>Art Work Of Janet McKellar</h1>
+          <div className="margin-s-v">(Free shipping on all orders)</div>
 
           {this.state.banner ?
             this.props.carouselSetting ?
