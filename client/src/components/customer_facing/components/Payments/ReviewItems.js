@@ -117,9 +117,9 @@ class ReviewItems extends Component {
 
     cart.sub_total = sub_total
     cart.tax = tax
-
+    
     if (discount_code.affect_order_total && discount_code.percentage !== null) {
-      cart.total = Number((sub_total + tax + shipping) * (cart.discount/100))
+      cart.total = Number((sub_total + tax + shipping)) - Number((sub_total + tax + shipping) * (cart.discount/100))
     } else if (discount_code.affect_order_total && discount_code.flat_price !== null) {
       cart.total = Number(sub_total + tax + shipping - cart.discount)
     } else {
