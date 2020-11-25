@@ -83,7 +83,7 @@ class Home extends Component  {
             </div>
           }
 
-          <h1 style={{ fontSize: "2em" }} className="margin-xs-v">Art Work Of Janet McKellar</h1>
+          <h1 style={{ fontSize: "2em", paddingTop: this.props.mobile ? "30px" : "0px" }} className={`${!this.props.mobile && "margin-xs-v"}`}>Art Work Of Janet McKellar</h1>
 
           {this.state.banner ?
             this.props.carouselSetting ?
