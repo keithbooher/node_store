@@ -10,7 +10,7 @@ module.exports = app => {
         currency: 'usd',
         payment_method_types: ['card'],
         application_fee_amount: 150,
-        on_behalf_of: 'acct_1HS87uAfBU5IL4LG',
+        on_behalf_of: 'acct_1HTynxEBKanBaKNJ',
         transfer_data: {
           destination: 'acct_1HTynxEBKanBaKNJ',
         },
