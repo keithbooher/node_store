@@ -308,7 +308,7 @@ const Product = ({
         }
       </MetaTags>
 
-      <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>
+      {match.params.category !== "n_o_n_e" && <div><Link to={`/shop/${match.params.category}`}><FontAwesomeIcon icon={faArrowLeft} /> Back To {capitalizeFirsts(productPathNameToName(match.params.category))}</Link></div>}
       {product ? 
         <div>
           {mobile ?

@@ -40,10 +40,15 @@ class Home extends Component  {
       } else{
         let category_path_name
         if (product.categories.length > 0) {
-          category_path_name = product.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null).path_name
-          console.log(category_path_name)
+          let cat = product.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null)
+          if (cat) {
+            console.log(cat)
+            category_path_name = cat.path_name
+          } else {
+            category_path_name = "n_o_n_e"
+          }
         } else {
-          category_path_name = ""
+          category_path_name = "n_o_n_e"
         }
         return <>
                 <ProductCard 
