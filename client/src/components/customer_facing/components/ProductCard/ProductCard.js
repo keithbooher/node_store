@@ -57,7 +57,7 @@ class ProductCard extends Component {
             _product_id: product._id,
             quantity: quantity,
             product_price: product.price,
-            product_path: `/shop/${product.categories.length > 0 ? product.categories[0].path_name : "general" }/${product_path_name}`,
+            product_path: `/shop/${this.props.category_path_name}/${product_path_name}`,
             varietal: this.state.chosenVarietal,
             use_master_images: product.use_master_images
           }
