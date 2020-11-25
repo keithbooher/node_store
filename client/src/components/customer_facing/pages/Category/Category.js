@@ -176,25 +176,33 @@ class Category extends Component  {
         </MetaTags>
 
         { this.state.products !== null ?
-          <>
-            <h1 className="text-align-center" style={{ margin: "0px" }}>
-              {capitalizeFirsts(this.state.category_data.name)}
-            </h1>
-            <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s text-align-center" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
-            <div className="flex justify-center">
-              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
-                <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
-              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
+          this.state.products.length !== 0 ?
+            <>
+              <h1 className="text-align-center" style={{ margin: "0px" }}>
+                {capitalizeFirsts(this.state.category_data.name)}
+              </h1>
+              <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s text-align-center" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
+              <div className="flex justify-center">
+                <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
+                  <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
+                <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Next</button>
+              </div>
+              <div className={`flex flex-wrap ${this.state.shown_products.length < 3 ? "category_card_container_few" : "category_card_container"}`}>
+                {this.renderProductCards()}
+              </div>
+              <div className="flex">
+                <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Previous</button>
+                  <div style={{ fontSize: "35px", margin: "0px 5px" }}>{this.state.page_number}</div>
+                <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Next</button>
+              </div>
+            </>
+          :
+            <div>
+              <h1 className="text-align-center" style={{ margin: "0px" }}>
+                {capitalizeFirsts(this.state.category_data.name)}
+              </h1>
+              <h2 className="text-align-center" >No products listed. More Coming Soon!</h2>
             </div>
-            <div className={`flex flex-wrap ${this.state.shown_products.length < 3 ? "category_card_container_few" : "category_card_container"}`}>
-              {this.renderProductCards()}
-            </div>
-            <div className="flex">
-              <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Previous</button>
-                <div style={{ fontSize: "35px", margin: "0px 5px" }}>{this.state.page_number}</div>
-              <button onClick={next_disable === true ? "" : () => this.changePage('next')} style={ next_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button font-size-25">Next</button>
-            </div>
-          </>
        : <FontAwesomeIcon icon={faSpinner} className="loadingGif loadingGifCenterScreen" spin /> }
       </div>
     )
