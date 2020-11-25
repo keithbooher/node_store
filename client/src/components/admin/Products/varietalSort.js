@@ -9,6 +9,7 @@ const varietalSort = (data) => {
     return sorted
   }
 
+
   data.forEach(varietal => {
     if (varietal.type === "color") {
       sorted.colors.push(varietal)
@@ -16,6 +17,10 @@ const varietalSort = (data) => {
       sorted.sizes.push(varietal)
     }
   });
+
+  console.log(data)
+  console.log(sorted)
+
 
   return sorted
 }
