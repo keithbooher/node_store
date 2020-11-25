@@ -15,7 +15,12 @@ const HomeCarousel = ({ galleryProducts, mobile }) => {
   const getData = async ()  => {
     const { data } = await galleryProducts()
     let slides = data.map((item, i) => {
-      let category_path_name = item.categories.length > 0 ? item.categories[0].path_name : "general"
+      let category_path_name
+      if (item.categories.length > 0) {
+        category_path_name = item.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null).path_name
+      } else {
+        category_path_name = ""
+      }
       return (
         <div className="flex flex_column justify-center" style={mobile ? { minHeight: "400px", maxHeight: "400px" } : { minHeight: "500px", maxHeight: "500px" }} key={i}>
           <Link to={`/shop/${category_path_name}/${item.path_name}`}>
