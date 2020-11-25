@@ -189,6 +189,7 @@ class LineItems extends Component {
       <>
         {this.props.cart && 
           this.props.cart.line_items.map((line_item, index) => {
+            console.log(line_item)
             return (
               <li key={index} className="divider line_item flex align-items-center relative padding-s-v" style={{ minHeight: "150px" }}>
 
@@ -200,10 +201,10 @@ class LineItems extends Component {
                       style={this.props.mobile ? { maxHeight: "125px", maxWidth: "125px", minHeight: "125px", minWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px", minHeight: "175px", minWidth: "175px" } }
                     >
                       <img 
-                        onClick={() => this.enlargeImage(line_item.varietal && line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image, line_item.product_path)} 
+                        onClick={() => this.enlargeImage(line_item.varietal && !line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image, line_item.product_path)} 
                         className="h-w-auto margin-auto-h" 
                         style={ this.props.mobile ? { maxHeight: "125px", maxWidth: "125px" } : { maxHeight: "175px", maxWidth: "175px" } } 
-                        src={line_item.varietal && line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image} 
+                        src={line_item.varietal && !line_item.use_master_images ? line_item.varietal.images.i1 : line_item.image} 
                       />
                     </div>
 

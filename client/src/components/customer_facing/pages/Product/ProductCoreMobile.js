@@ -6,6 +6,7 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import StarRatings from 'react-star-ratings'
 import Form from "../../../shared/Form"
 import VarietalDropdown from "../../../shared/Varietal/VarietalDropdown"
+import { dispatchEnlargeImage } from "../../../../actions"
 
 const ProductCoreMobile = ({
   setSelectedImage,
@@ -20,11 +21,21 @@ const ProductCoreMobile = ({
   selectedImage,
   quantity,
   chosenVarietal,
-  setVarietal
+  setVarietal,
+  dispatchEnlargeImage
 }) => {
 
   let varietal_boolean = product.varietals.length > 0 ? true : false
+  const enlargeImage = (product, category_path_name) => {
+    dispatchEnlargeImage({ image: product.images.i1, path: `/shop/${category_path_name}/${product.path_name}`})
+  }
 
+  let category_path_name
+  if (product.categories.length > 0) {
+    category_path_name = product.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null).path_name
+  } else {
+    category_path_name = ""
+  }
   return (
     <div>
       <h1 style={{ marginTop: "10px", marginBottom: "0px" }}>{product.name}</h1>
@@ -41,7 +52,7 @@ const ProductCoreMobile = ({
         }
       </div>
       <div className="text-align-center">
-        <img style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={selectedImage} />
+        <img onClick={() => enlargeImage(product, category_path_name)} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "25em" }} src={selectedImage} />
       </div>
       <div className="flex" style={{ margin: "10px 10px 0px 10px" }}>
         {Object.keys(product.images).map((image_key, index) => {
@@ -102,6 +113,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = {  }
+const actions = { dispatchEnlargeImage }
 
 export default connect(mapStateToProps, actions)(ProductCoreMobile)

@@ -6,6 +6,7 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import StarRatings from 'react-star-ratings'
 import Form from "../../../shared/Form"
 import VarietalDropdown from "../../../shared/Varietal/VarietalDropdown"
+import { dispatchEnlargeImage } from "../../../../actions"
 
 const ProductCoreDesktop = ({
   setSelectedImage,
@@ -20,10 +21,22 @@ const ProductCoreDesktop = ({
   selectedImage,
   quantity,
   chosenVarietal,
-  setVarietal
+  setVarietal,
+  dispatchEnlargeImage
 }) => {
 
   let varietal_boolean = product.varietals.length > 0 ? true : false
+
+  const enlargeImage = (product, category_path_name) => {
+    dispatchEnlargeImage({ image: product.images.i1, path: `/shop/${category_path_name}/${product.path_name}`})
+  }
+
+  let category_path_name
+  if (product.categories.length > 0) {
+    category_path_name = product.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null).path_name
+  } else {
+    category_path_name = ""
+  }
 
   return (
     <div>
@@ -31,7 +44,7 @@ const ProductCoreDesktop = ({
         <div className="flex align-items-center">
           <div className="w-40">
             <div>
-              <img className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={selectedImage} />
+              <img onClick={() => enlargeImage(product, category_path_name)} className="border-radius-s" style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "30em" }} src={selectedImage} />
             </div>
             <div className="flex">
               {Object.keys(product.images).map((image_key, index) => {
@@ -123,6 +136,6 @@ function mapStateToProps({ form }) {
   return { form }
 }
 
-const actions = {  }
+const actions = { dispatchEnlargeImage }
 
 export default connect(mapStateToProps, actions)(ProductCoreDesktop)
