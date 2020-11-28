@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { sidebarBoolean } from "../../../../actions"
+import { sidebarBoolean, showHeaderAction } from "../../../../actions"
 import { getSidebarCategories, getGallerySetting } from "../../../../utils/API"
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -40,6 +40,7 @@ class Sidebar extends Component  {
   handleClickOutside(e) {
     if (this.props.sidebar === true && !this.node.contains(e.target) && e.target.id !== "sidebar_bars" && !e.target.classList.contains("header_container") && e.target.tagName !== "svg" && e.target.tagName !== "path") {
       this.props.sidebarBoolean(!this.props.sidebar)
+      this.props.showHeaderAction("scrolling_up_nav_desktop_from_header")
     }
   }
 
@@ -102,6 +103,6 @@ function mapStateToProps({ sidebar }) {
   return { sidebar }
 }
 
-const actions = { sidebarBoolean, getSidebarCategories, getGallerySetting }
+const actions = { sidebarBoolean, showHeaderAction, getSidebarCategories, getGallerySetting }
 
 export default connect(mapStateToProps, actions)(Sidebar)

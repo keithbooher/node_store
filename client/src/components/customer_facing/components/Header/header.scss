@@ -41,8 +41,41 @@
 .scrolling_up_nav_desktop {
   position: fixed;
   top: 0px;
+  left: 0px;
 }
 
 .top_of_page_nav_desktop {
   // position: relative;
+}
+
+
+/* Standard syntax */
+@keyframes header_width_close {
+  from {
+    left: 250px;
+  }
+  to {
+    left: 0px;
+  }
+}
+
+/* Standard syntax */
+@keyframes header_width_open {
+  from {
+    left: 0px;
+  }
+  to {
+    left: 250px;
+  }
+}
+
+.scrolling_up_nav_desktop_from_header {
+  position: fixed;
+  top: 0px;
+  animation: header_width_close .41s;
+  animation-fill-mode: forwards;
+}
+
+.scrolling_up_nav_mobile_from_header {
+
 }

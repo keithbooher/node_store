@@ -102,7 +102,7 @@ const Payments = ({
     })
 
     // this is actually creating intent
-    const charge = await stripeIntent((cart.total * 100) - 50, payment_method)
+    const charge = await stripeIntent((cart.total * 100), payment_method)
     if (charge.status !== 200) {
       setLoading(false)
       setIssueWithPayment(true)
