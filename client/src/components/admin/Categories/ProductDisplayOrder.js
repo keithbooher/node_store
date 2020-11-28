@@ -52,6 +52,9 @@ class ProductDisplayOrder extends Component {
         }
       }
       return prod
+    }).sort((a, b) => (a.category_display_order[this.props.data._id] > b.category_display_order[this.props.data._id]) ? 1 : -1).map((prod, i) => {
+      prod.category_display_order[this.props.data._id] = i
+      return prod
     })
     this.setState({ items: data })
   }
