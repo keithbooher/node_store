@@ -181,7 +181,7 @@ class Category extends Component  {
               <h1 className="text-align-center" style={{ margin: "0px" }}>
                 {capitalizeFirsts(this.state.category_data.name)}
               </h1>
-              <a style={this.props.mobile ? {} : { fontSize: "20px" }} className="margin-s text-align-center" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
+              <a style={this.props.mobile ? { width: "50%", margin: "15px auto" } : { fontSize: "20px", width: "50%", margin: "15px auto" }} className="margin-s text-align-center" onClick={() => this.props.sidebarBoolean(!this.props.sidebar)}><FontAwesomeIcon icon={faArrowLeft} /> Other Categories</a>
               <div className="flex justify-center">
                 <button onClick={previous_disable === true ? "" : () => this.changePage('previous')} style={ previous_disable === true ? { color: "lightgrey", cursor: "default" } : { color: "#6CB2EB" }} className="bare_button">Previous</button>
                   <div style={{ margin: "10px 5px" }}>{this.state.page_number}</div>
