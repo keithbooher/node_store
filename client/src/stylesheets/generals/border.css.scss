@@ -4,6 +4,20 @@
   border: 1px solid $blue-3
 }
 
+.border-v {
+  border-top: 1px solid $blue-3;
+  border-bottom: 1px solid $blue-3;
+}
+
+.border-v-grey {
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+}
+
+.border-bottom-grey {
+  border-bottom: 1px solid lightgrey;
+}
+
 .divider {
   border-bottom: solid 1px darkgrey;
 }
