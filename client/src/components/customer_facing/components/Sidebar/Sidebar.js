@@ -4,9 +4,10 @@ import { sidebarBoolean, showHeaderAction } from "../../../../actions"
 import { getSidebarCategories, getGallerySetting } from "../../../../utils/API"
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight } from "@fortawesome/free-solid-svg-icons"
-
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+import Menu, {SubMenu, MenuItem} from 'rc-menu'
 import "./sidebar.scss"
+
 
 class Sidebar extends Component  {
   constructor(props) {
@@ -14,7 +15,8 @@ class Sidebar extends Component  {
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.state = {
       categories: [],
-      gallery: false
+      gallery: false,
+      showSub: null
     }
   }
 
@@ -44,25 +46,63 @@ class Sidebar extends Component  {
     }
   }
 
-  renderCategories(parent_cat) {
-    let categories = parent_cat === null ? this.state.categories : parent_cat.sub_categories
+  renderCategories() {
+    let categories = this.state.categories
     categories = categories.sort((a,b) => {
       return a.display_order - b.display_order
     })
     return categories.filter((cat) => !cat.deleted_at).map((category, index) => {
       return (
-        <div key={index} className="margin-s-v" style={ parent_cat === null ? null : { wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" } }>
-          <div className="flex">
-            <FontAwesomeIcon className="inline color-white" style={{ marginRight: "5px", marginTop: "3px" }} icon={faCaretRight} />
+        <div key={index} className="padding-s-v border-bottom-grey">
+          <div className="flex" onHover={() => this.setState({ showSub: [category._id] })} onClick={() => this.setState({ showSub: [category._id] })}>
+            <FontAwesomeIcon onHover={() => this.setState({ showSub: [category._id] })} onClick={() => this.setState({ showSub: [category._id] })} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
             <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
           </div>
-          <div>{this.renderCategories(category)}</div>
+          <div>{category.sub_categories.length > 0 && this.subMenu(category, true)}</div>
         </div>
       )
     })
   }
+
+  subMenu(cat, from_top) {
+    if (from_top) {
+      return cat.sub_categories.map((category, index) => {
+        if (this.state.showSub && this.state.showSub.indexOf(cat._id) >= 0) {
+          return (
+            <div key={index} className="margin-s-v" style={{ wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" }}>
+              <div className="flex" onHover={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})}>
+                <FontAwesomeIcon onHover={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
+                <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
+              </div>
+              <div>{category.sub_categories.length > 0 && this.subMenu(category, false)}</div>
+            </div>
+          )
+        } else {
+          return null
+        }
+      })
+    } else {      
+      return cat.sub_categories.map((category, index) => {
+        if (this.state.showSub && this.state.showSub.indexOf(cat._id) >= 0) {
+          return (
+            <div key={index} className="margin-s-v" style={{ wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" }}>
+              <div className="flex" onHover={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})}>
+                <FontAwesomeIcon onHover={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
+                <Link onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
+              </div>
+              <div>{category.sub_categories.length > 0 && this.subMenu(category, false)}</div>
+            </div>
+          )
+        } else {
+          return null
+        }
+      })
+    }
+  }
   
   render() {
+    console.log(this.state)
+
     let sidebar_class
     switch (this.props.sidebar) {
       case true:
@@ -96,7 +136,6 @@ class Sidebar extends Component  {
     )
   }
 }
-
 
 
 function mapStateToProps({ sidebar }) {
