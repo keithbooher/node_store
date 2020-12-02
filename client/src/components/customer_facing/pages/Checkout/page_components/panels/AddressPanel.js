@@ -175,7 +175,7 @@ class AddressPanel extends Component  {
                         formFields={billingAddressFormFields} 
                         form={"billing_checkout_form"}
                         initialValues={this.billing_initial_values()}
-                        validation={validate}
+                        // validation={validate}
                       />
                     </>
                 }
@@ -200,7 +200,7 @@ class AddressPanel extends Component  {
                           formFields={shippingAddressFormFields}
                           form={"shipping_checkout_form"}
                           initialValues={this.shipping_initial_values()}
-                          validation={validate}
+                          // validation={validate}
                         />
                       </>
                   }
