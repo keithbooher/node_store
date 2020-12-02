@@ -55,7 +55,7 @@ class Sidebar extends Component  {
       return (
         <div key={index} className="padding-m-v border-bottom-grey">
           <div className="flex">
-            <FontAwesomeIcon onClick={() => this.setState({ showSub: [category._id] })} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
+            <FontAwesomeIcon onClick={() => this.setState({ showSub: [category._id] })} className="inline hover color-white" style={{ fontSize: "17px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
             <Link onClick={() => {
                 this.setState({ showSub: [] })
                 this.props.sidebarBoolean(!this.props.sidebar)
@@ -74,7 +74,7 @@ class Sidebar extends Component  {
           return (
             <div key={index} className="margin-s-v" style={{ wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" }}>
               <div className="flex">
-                <FontAwesomeIcon onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
+                <FontAwesomeIcon onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline hover color-white" style={{ fontSize: "17px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
                 <Link onClick={() => {
                     this.setState({ showSub: [] })
                     this.props.sidebarBoolean(!this.props.sidebar)
@@ -93,7 +93,7 @@ class Sidebar extends Component  {
           return (
             <div key={index} className="margin-s-v" style={{ wordWrap: "break-word", marginLeft: "15px", maxWidth: "8em" }}>
               <div className="flex">
-                <FontAwesomeIcon onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline color-white" style={{ fontSize: "15px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
+                <FontAwesomeIcon onClick={() => this.setState({ showSub: this.state.showSub.concat(category._id)})} className="inline hover color-white" style={{ fontSize: "17px", marginRight: "5px", marginTop: "6px", visibility: category.sub_categories.length > 0 ? "visible" : "hidden" }} icon={faChevronDown} />
                 <Link onClick={() => {
                     this.setState({ showSub: [] })
                     this.props.sidebarBoolean(!this.props.sidebar) 
