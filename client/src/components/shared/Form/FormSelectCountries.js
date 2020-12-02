@@ -12,6 +12,15 @@ class FormSelectStates extends Component {
     this.state = { country: 'United States' };
   }
 
+  componentDidMount() {
+    if (!this.props.options) {
+      this.props.change("country", "United States")
+    }else if (this.props.options.bill_or_ship === "shipping") {
+      this.props.change("country_shipping", "United States")
+    } else if (this.props.options.bill_or_ship === "billing") {
+      this.props.change("country_billing", "United States")
+    }
+  }
 
   selectCountry (val) {
     if (!this.props.options) {

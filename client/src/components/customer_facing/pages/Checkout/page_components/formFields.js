@@ -43,7 +43,7 @@ export const validate = (values, props) => {
       errors[name] = noValueError
     }
   })
-
+  
   // if no errors i.e. an empty object, then we know all the values are valid.
   return errors;
 }

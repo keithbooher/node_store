@@ -22,7 +22,8 @@ class AddressPanel extends Component  {
       shipping_card_chosen: false,
       billing_form_submit: false,
       shipping_form_submit: false,
-      shipping_same_as_billing: false
+      shipping_same_as_billing: false,
+      guestEmailWarning: false
     }
   }
 
@@ -31,19 +32,26 @@ class AddressPanel extends Component  {
     cart_instance.checkout_state = 'address'
 
     if (this.props.cart._user_id === "000000000000000000000000") {
-      const guest_email = this.props.form.guest_email_checkout_form.values.email
-      cart_instance.email = guest_email
+      if (!this.props.form.guest_email_checkout_form.values || this.props.form.guest_email_checkout_form.values.email === null) {
+        document.getElementById('root').scrollTo(0, 0);
+        this.setState({ guestEmailWarning: true })
+        return 
+      }
+      if (cart_instance.email === null || !cart_instance.email) {
+        const guest_email = this.props.form.guest_email_checkout_form.values.email
+        cart_instance.email = guest_email
+      } 
     }
 
     if (bill_or_ship === "shipping") {
       const ship_addy = this.props.form.shipping_checkout_form.values
       cart_instance.shipping_address = buildAddress(ship_addy, cart_instance._user_id, "shipping")
-      this.setState({ shipping_form_submit: true })
+      this.setState({ shipping_form_submit: true, guestEmailWarning: false })
       // this.props.setPreExistingAddress({ bill_or_ship: "shipping" })
     } else  {
       const bill_addy = this.props.form.billing_checkout_form.values
       cart_instance.billing_address = buildAddress(bill_addy, cart_instance._user_id, "billing")
-      this.setState({ billing_form_submit: true })
+      this.setState({ billing_form_submit: true, guestEmailWarning: false })
       // this.props.setPreExistingAddress({ bill_or_ship: "billing" })
     }
     this.props.updateCart(cart_instance)
@@ -135,7 +143,7 @@ class AddressPanel extends Component  {
             { this.renderAddressCards() }
 
             {this.props.cart._user_id === "000000000000000000000000" &&
-              <div>
+              <div className="w-90 margin-auto-h">
                 <Form 
                   submitButton={<div></div>}
                   formFields={[
@@ -143,7 +151,11 @@ class AddressPanel extends Component  {
                   ]} 
                   form={"guest_email_checkout_form"}
                   validation={validatePresenceOnAll}
+                  initialValues={this.props.cart.email !== null && {
+                    email: this.props.cart.email
+                  }}
                 />
+                {this.state.guestEmailWarning && <span className="color-red-5">Please Submit Email</span>}
               </div>
             }
 
@@ -175,7 +187,7 @@ class AddressPanel extends Component  {
                         formFields={billingAddressFormFields} 
                         form={"billing_checkout_form"}
                         initialValues={this.billing_initial_values()}
-                        // validation={validate}
+                        validation={validate}
                       />
                     </>
                 }
@@ -200,7 +212,7 @@ class AddressPanel extends Component  {
                           formFields={shippingAddressFormFields}
                           form={"shipping_checkout_form"}
                           initialValues={this.shipping_initial_values()}
-                          // validation={validate}
+                          validation={validate}
                         />
                       </>
                   }
@@ -229,7 +241,6 @@ export default connect(mapStateToProps, null)(AddressPanel)
 
 
 const buildAddress = (addy, user_id, bill_or_ship) => {
-  console.log(addy)
   let address
 
   if (bill_or_ship === "shipping") {
