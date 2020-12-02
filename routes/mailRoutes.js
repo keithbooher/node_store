@@ -4,6 +4,7 @@ const keys = require('../config/keys')
 const confirmationTemplate = require('../services/emailTemplates/orderConfirmation')
 const trackingTemplate = require('../services/emailTemplates/trackingTemplate')
 const processingTemplate = require('../services/emailTemplates/processingTemplate')
+const ownerTemplate = require('../services/emailTemplates/ownerNotificationTemplate')
 
 module.exports = app => {
   
@@ -27,6 +28,27 @@ module.exports = app => {
       req.bugsnag.notify(err)
       res.status(422).send(err)
     }
+
+
+
+    const owner_msg = {
+          to: recipient,
+          from: 'keepyoureyeopn@gmail.com', // Use the email address or domain you verified above
+          subject: 'New Order! KYEO',
+          text: "Congrats someone just placed an order with your store!",
+          html: ownerTemplate(orderNumber)
+        }
+
+    try {
+      sgMail.send(owner_msg)
+      res.send(200)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+
+
+
   })
   
   app.post('/api/email/tracking', async (req, res) => {
