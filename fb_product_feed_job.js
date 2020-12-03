@@ -66,7 +66,7 @@ const fb_product_feed_job = async () => {
     }
     const brand = "Damnit Janet"
     const inventory = p.inventory_count
-    const fb_product_category = "arts & crafts"
+    const fb_product_category = 169
     const google_product_category = "arts & crafts"
 
     return {
