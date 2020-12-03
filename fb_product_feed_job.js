@@ -23,15 +23,11 @@ const fb_product_feed_job = async () => {
   await doc.loadInfo(); // loads document properties and worksheets
   // console.log(doc.title);
   // await doc.updateProperties({ title: 'KYEO FB Product Sheet' });
-  // await doc.addSheet({ headerValues: ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'inventory', 'fb_product_category', 'google_product_category'] });
-
+  
   const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
 
-  const rows = await sheet.getRows()
-
-  rows.forEach((r, i) => {
-    r[i].delete()
-  })
+  await sheet.clear()
+  await sheet.setHeaderRow(['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'inventory', 'fb_product_category', 'google_product_category']);
 
   const { data } = await axios.get(`${keys.url}/api/products/fb_feed`)
 
@@ -80,10 +76,6 @@ const fb_product_feed_job = async () => {
   })
 
   await sheet.addRows(new_rows);
-   
-  console.log(sheet.title);
-  console.log(sheet.rowCount);
-   
   await sheet.saveUpdatedCells();
   // adding / removing sheets
   // const newSheet = await doc.addSheet({ title: 'hot new sheet!' });
