@@ -158,7 +158,7 @@ const CustomerFacing = ({
       <Sidebar />
       <div className={`content_subcontainer ${sidebar_class}`}>
         <Header />
-        <div id="body_content_container">
+        <div id="body_content_container" className="color-white">
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/shop/:category" component={Category} />
