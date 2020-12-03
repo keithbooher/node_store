@@ -259,6 +259,17 @@ module.exports = app => {
     }
   })
 
+
+  app.get('/api/products/fb_feed', async (req, res) => {    
+    try {
+      const products = await Product.find({ deleted_at: null }).populate({path: "categories"})
+      res.send(products)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   // app.get('/api/products/update/all', async (req, res) => {    
   //   try {
 

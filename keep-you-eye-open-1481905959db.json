@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "keep-you-eye-open",
+  "private_key_id": "1481905959db2f1e4c05b0b2b720a54712a6c2c6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWTL0EPnrawL3U\nx/DnctR6lKq8TNbJAUpiH8gJl2h3gQUZwnzvo+B48coqd46wHTKGQoTAqXg8gQce\nB6lh2R76mXqEjQnQcd12eTaBQ90dLaEuNDswUfC4fiU2HDSQ/QXeb0FG8G28zzld\n5UabhstTlwCZ5eEIz/OE7cvBYyLLWmKPSLhGAVYr4xo/+D+U1WMw2tjTTuby8gvT\ncm7PAFvBKb8W5i3wBN5Lhmp8JOkDKMU+aRWmJBeFquMvYwDcYOiIFqqDVsQfE10E\nf93fRmH+zUzn3VUHTlUVSB+G8/KWdKdd8WOxljBiGuRJ7ufzHedRTla4jJ7xR4qK\nMdraOvfHAgMBAAECggEANVcfeyV0Hev4tDRaLbni0mobv0fe9GQ6WAcyGtURfyFh\nnCJRR7LCJkiEuiJNJV/3Gf0Hnw7vqxuwolRk4EKTV+wI12JlrXkSFzGfk/hI2sDn\nTCFbFDFpGfroFzpZCTe5lL6bgGVK40KvNERj2UVpabJ9x1C1PSTJp+4ql8WtvPCb\nKGAob4PKPkSFV1YnN+1mGLXlqQOIUQv27hLb12yTl6Zepsqx+OoVPH0vwSTBPKUw\nFTTbmj/Si1TMp5GKIq1eO/N9QiEMBy5zhpr9RlBcVGfyiJOTjVZqGt75Q/VbSyuz\nzCmTS+J4z0kyssaJUtGQ1V8D6fMDVMXuJ++qVOZqmQKBgQD4QJvj8ltYK7hCljZB\nzmmN27SUhTLFXrXHFVHIO+hsD1aJ8p5oCNLCllKxR33/TqUwrQzUsTEy79BCR9mP\n5DC8/mjBkDNq/rtK9os5tuaVt/BseC6xW+tYVjkaVnUtCK+RN2BCbptyxmZayO5n\nbs9ja/kGeH9WY7Sjl4bfV/amqQKBgQDc/N4sNSMAoN9S2/YZxWAyPIDB6sxpMe1Q\noUE9Ul/2GBGVn2v1Ra1w5BRnPcMNnwnjtDFn2fkOS9aQa6ZCWTyTwNShXrJKML55\noXFZ9kVIFBsQJuThwRdefx9GzhJTZB6SP7/FiKmEFmmX1x/HD7KvMfWGGFk4RDvs\nDulAAIZg7wKBgGYQKgdNXMCjON4nY6cqdbsc2OE24ejDR3jSCw2Hk8bZh3qvhPDA\nr+XQZ6769ZJBgyi//MZ1EwUeE0EsyQWfi2ooLmlmH72dfOMU+aiAycxEE1SFFK1W\nXSu0R0XMxd/98jCB09F8J+zIJMyuT1W2+QynF3rRj4i09U9MvOaWA5IBAoGBAMO6\nfBVvoublladQBzNgLAmSqQAYNKBfhi/KA3yKv0+6laiOIRKGek3o1WFzxJUF7b5u\nVOwElaDh7tLPZdySKSM8wZeDxioL7kjQgxMJGufyVt4BdOu3GDmsIkmWL4kIvkMO\nj44nsuy45SGFejHXZ43gk/QHEM7TMLetpU34qQylAoGAGd0VtFMSWa/Tk9yrp+ut\nLDdNzYNheIZp57+fsaaPaF/AIfuwsXatQXHQNvSgV7c6koBA/ZQkhTFhPGdjzlHV\nXebO63TL/xHmHzUVoKcuKNdalHBLMkG3z/dnSciaJj28xLwHXlTaWI9/MNbaNDOp\nJdiGaK3Gng8fGqHTC9mQU94=\n-----END PRIVATE KEY-----\n",
+  "client_email": "product-sheet@keep-you-eye-open.iam.gserviceaccount.com",
+  "client_id": "115292346405830270652",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/product-sheet%40keep-you-eye-open.iam.gserviceaccount.com"
+}
