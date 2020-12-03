@@ -54,6 +54,7 @@ class AddressPanel extends Component  {
       this.setState({ billing_form_submit: true, guestEmailWarning: false })
       // this.props.setPreExistingAddress({ bill_or_ship: "billing" })
     }
+
     this.props.updateCart(cart_instance)
   }
 
@@ -180,7 +181,7 @@ class AddressPanel extends Component  {
                     </div>
                   :
                     <>
-                      <h5 className="address_form_title">Billing</h5>
+                      <h5 className="address_form_title font-size-20">Billing</h5>
                       <Form 
                         onSubmit={() => this.handleFormSubmit("billing")} 
                         submitButtonText={"Submit"}
@@ -205,7 +206,7 @@ class AddressPanel extends Component  {
                       </>
                     :
                       <>
-                        <h5 className="address_form_title">Shipping</h5>
+                        <h5 className="address_form_title font-size-20">Shipping</h5>
                         <Form 
                           onSubmit={() => this.handleFormSubmit("shipping")}
                           submitButtonText={"Submit"}

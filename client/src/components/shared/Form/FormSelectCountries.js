@@ -44,7 +44,7 @@ class FormSelectStates extends Component {
             value={country}
             onChange={(val) => this.selectCountry(val)} 
             className={`${this.props.mobile ? "w-100" : "inline w-40"} padding-s`} 
-            style={{ minHeight: "35px" }}
+            style={{ minHeight: "35px", fontSize: "20px", width: "90%" }}
           />
         </div>
         <br />

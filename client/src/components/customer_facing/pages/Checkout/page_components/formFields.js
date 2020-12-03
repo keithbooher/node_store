@@ -3,9 +3,9 @@ import _ from 'lodash'
 export const shippingAddressFormFields = [
   { label: 'Address', name: 'street_address_1_shipping', noValueError: 'You must provide an address' },
   { label: 'Address Cont', name: 'street_address_2_shipping', noValueError: 'You must provide a subject' },
-  { label: 'Phone Number', name: 'phone_number_shipping', typeOfComponent: "number", noValueError: 'You must provide a phone number' },
+  { label: 'Phone Number', name: 'phone_number_shipping', typeOfComponent: "number-pad", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_shipping', noValueError: 'You must provide a city' },
-  { label: 'Zip Code', name: 'zip_code_shipping', noValueError: 'You must provide a city' },
+  { label: 'Zip Code', name: 'zip_code_shipping', typeOfComponent: "number-pad", noValueError: 'You must provide a city' },
   { label: 'Company', name: 'company_shipping', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_shipping', noValueError: 'You must provide a first name' },
   { label: 'Last Name', name: 'last_name_shipping', noValueError: 'You must provide a first name' },
@@ -16,9 +16,9 @@ export const shippingAddressFormFields = [
 export const billingAddressFormFields = [
   { label: 'Address', name: 'street_address_1_billing', noValueError: 'You must provide an address' },
   { label: 'Address Cont', name: 'street_address_2_billing', noValueError: 'You must provide a subject' },
-  { label: 'Phone Number', name: 'phone_number_billing', typeOfComponent: "number", noValueError: 'You must provide a phone number' },
+  { label: 'Phone Number', name: 'phone_number_billing', typeOfComponent: "number-pad", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_billing', noValueError: 'You must provide a city' },
-  { label: 'Zip Code', name: 'zip_code_billing', noValueError: 'You must provide a city' },
+  { label: 'Zip Code', name: 'zip_code_billing', typeOfComponent: "number-pad", noValueError: 'You must provide a city' },
   { label: 'Company', name: 'company_billing', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_billing', noValueError: 'You must provide a first name' },
   { label: 'Last Name', name: 'last_name_billing', noValueError: 'You must provide a first name' },
