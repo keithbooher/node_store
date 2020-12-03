@@ -9,6 +9,7 @@ import Account from '../../customer_facing/pages/Account'
 import Header from '../../customer_facing/components/Header'
 import FAQ from '../../customer_facing/components/FAQ'
 import Sidebar from '../../customer_facing/components/Sidebar'
+import Footer from '../../customer_facing/components/Footer'
 import OrderPage from "../../customer_facing/pages/Order"
 import About from "../../customer_facing/pages/About"
 import CartPage from "../../customer_facing/pages/CartPage"
@@ -173,6 +174,7 @@ const CustomerFacing = ({
             <Route component={Four04Page} />
           </Switch>
         </div>
+        <Footer />
         <MessengerCustomerChat
           pageId={process.env.REACT_APP_FB_PAGE_ID}
           appId={process.env.REACT_APP_FB_APP_ID}

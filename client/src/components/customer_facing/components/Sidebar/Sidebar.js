@@ -134,11 +134,6 @@ class Sidebar extends Component  {
             <h3 className="margin-top-none">Shop</h3>
             {this.renderCategories(null)}
           </div>
-          <div className="padding-m flex">
-            <Link className='hover-color-5' onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/about" className="">About</Link>
-            <Link className='hover-color-5' onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/faq" className="margin-m-h">FAQ</Link>
-            <Link className='hover-color-5' onClick={() => this.props.sidebarBoolean(!this.props.sidebar)} to="/contact" className="">Contact</Link>
-          </div>
         </div>
       </>
     )

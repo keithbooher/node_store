@@ -6,6 +6,7 @@
     "@bugsnag/js": "^7.4.0",
     "@bugsnag/plugin-react": "^7.3.5",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-brands-svg-icons": "^5.15.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.9",
     "@stripe/react-stripe-js": "^1.1.2",
