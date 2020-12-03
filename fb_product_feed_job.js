@@ -36,7 +36,12 @@ const fb_product_feed_job = async () => {
     const id = p._id
     const title = p.name
     const description = p.description
-    const availability = p.availability
+    let availability
+    if (p.availability) {
+      availability = "available for order"     
+    } else {
+      availability = "discontinued"
+    }
     const condition = "New"
     const price = p.price
 
@@ -53,7 +58,12 @@ const fb_product_feed_job = async () => {
     }
 
     const link = keys.url + "/shop/" + category_path_name + "/" + p.path_name
-    const image_link = p.images.i1
+    let image_link
+    if (p.images.i1 !== null) {
+      image_link = p.images.i1
+    } else {
+      image_link = keys.url
+    }
     const brand = "Damnit Janet"
     const inventory = p.inventory_count
     const fb_product_category = "arts & crafts"
