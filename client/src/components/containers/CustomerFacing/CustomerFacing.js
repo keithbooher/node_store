@@ -174,7 +174,6 @@ const CustomerFacing = ({
             <Route component={Four04Page} />
           </Switch>
         </div>
-        <Footer />
         <MessengerCustomerChat
           pageId={process.env.REACT_APP_FB_PAGE_ID}
           appId={process.env.REACT_APP_FB_APP_ID}
@@ -184,6 +183,7 @@ const CustomerFacing = ({
           loggedOutGreeting={"Hi! How can I help you?"}
         />
       </div>
+      <Footer />
 
       {enlarge && <EnlargeImage cancel={() => this.setState({ enlargeImage: null })} image={enlarge.image} path={enlarge.path} />}  
 
