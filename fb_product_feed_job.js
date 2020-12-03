@@ -85,6 +85,10 @@ const fb_product_feed_job = async () => {
     }
   })
 
+
+
+  
+
   await sheet.addRows(new_rows);
   await sheet.saveUpdatedCells();
   // adding / removing sheets
