@@ -28,11 +28,16 @@ module.exports = app => {
       req.bugsnag.notify(err)
       res.status(422).send(err)
     }
+  })
+  
+  
+  app.post('/api/email/owner', async (req, res) => {
+    const { orderNumber } = req.body
 
-
+    sgMail.setApiKey(keys.sendgridKey)
 
     const owner_msg = {
-          to: recipient,
+          to: 'keepyoureyeopn@gmail.com',
           from: 'keepyoureyeopn@gmail.com', // Use the email address or domain you verified above
           subject: 'New Order! KYEO',
           text: "Congrats someone just placed an order with your store!",
