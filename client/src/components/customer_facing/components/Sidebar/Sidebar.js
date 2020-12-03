@@ -58,6 +58,7 @@ class Sidebar extends Component  {
             <Link onClick={() => {
                 this.setState({ showSub: [] })
                 this.props.sidebarBoolean(!this.props.sidebar)
+                this.props.showHeaderAction("scrolling_up_nav_desktop_from_header")
               }} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
           </div>
           <div>{category.sub_categories.length > 0 && this.subMenu(category, true)}</div>
@@ -77,6 +78,7 @@ class Sidebar extends Component  {
                 <Link onClick={() => {
                     this.setState({ showSub: [] })
                     this.props.sidebarBoolean(!this.props.sidebar)
+                    this.props.showHeaderAction("scrolling_up_nav_desktop_from_header")
                   }} className="inline hover-color-5" to={`/shop/${category.path_name}`}>{category.name}</Link>
               </div>
               <div>{category.sub_categories.length > 0 && this.subMenu(category, false)}</div>
