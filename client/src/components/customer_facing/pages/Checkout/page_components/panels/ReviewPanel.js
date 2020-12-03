@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { convertCart, createCart } from '../../../../../../actions'
-import { orderConfirmation, getCurrentCart } from "../../../../../../utils/API"
+import { orderConfirmation, getCurrentCart, ownerEmail } from "../../../../../../utils/API"
 import { Link } from "react-router-dom"
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
@@ -37,6 +37,7 @@ class ReviewPanel extends Component  {
 
   async componentDidMount() {
     this.props.orderConfirmation(this.props.new_order.email, this.props.new_order._id)
+    this.props.ownerEmail(this.props.new_order._id)
     this.props.convertCart(null)
     // create new cart for customer or guest to replace cart (to avoid errors)
     if (this.props.auth === "000000000000000000000000") {
@@ -98,6 +99,6 @@ function mapStateToProps({ cart, auth }) {
   return { cart, auth }
 }
 
-const actions = { convertCart, orderConfirmation, createCart, getCurrentCart }
+const actions = { ownerEmail, convertCart, orderConfirmation, createCart, getCurrentCart }
 
 export default connect(mapStateToProps, actions)(ReviewPanel)
