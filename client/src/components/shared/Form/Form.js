@@ -11,6 +11,7 @@ import FormFieldDisabled from './FormFieldDisabled'
 import FormTree from "./FormTree"
 import PhotoUpload from "./PhotoUpload"
 import NumberField from "./NumberField"
+import NumberPadField from "./NumberPadField"
 import FormStarChoice from './FormStarChoice';
 import FormSelectStates from './FormSelectStates';
 import FormSelectCountries from './FormSelectCountries';
@@ -51,6 +52,9 @@ class Form extends Component {
           break;
         case 'number':
           component = NumberField
+          break;
+        case 'number-pad':
+          component = NumberPadField
           break;
         case 'states':
           component = FormSelectStates

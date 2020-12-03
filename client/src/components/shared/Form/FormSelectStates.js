@@ -27,7 +27,7 @@ class FormModal extends Component {
         <label>{this.props.label}</label>
         <SelectUSState 
           style={this.props.mobile ? {} : { marginRight: "20px" }} 
-          className={`${this.props.mobile ? "w-100" : "inline w-40"} padding-s`} 
+          className={`${this.props.mobile ? "" : "inline"} padding-s font-size-20 w-90`} 
           onChange={this.setNewValue}
         />
       </div>
