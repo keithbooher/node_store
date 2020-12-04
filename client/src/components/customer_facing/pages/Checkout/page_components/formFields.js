@@ -5,11 +5,11 @@ export const shippingAddressFormFields = [
   { label: 'Address Cont', name: 'street_address_2_shipping', noValueError: 'You must provide a subject' },
   { label: 'Phone Number', name: 'phone_number_shipping', typeOfComponent: "number-pad", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_shipping', noValueError: 'You must provide a city' },
-  { label: 'Zip Code', name: 'zip_code_shipping', typeOfComponent: "number-pad", noValueError: 'You must provide a city' },
+  { label: 'Zip Code', name: 'zip_code_shipping', typeOfComponent: "number-pad", noValueError: 'You must provide a zip' },
   { label: 'Company', name: 'company_shipping', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_shipping', noValueError: 'You must provide a first name' },
-  { label: 'Last Name', name: 'last_name_shipping', noValueError: 'You must provide a first name' },
-  { label: 'State', name: 'state_shipping', typeOfComponent: "states", options: { bill_or_ship: "shipping" }, noValueError: 'You must provide a last name' },
+  { label: 'Last Name', name: 'last_name_shipping', noValueError: 'You must provide a last name' },
+  { label: 'State', name: 'state_shipping', typeOfComponent: "states", options: { bill_or_ship: "shipping" }, noValueError: 'You must select a state' },
   { label: 'Country', name: 'country_shipping', typeOfComponent: "countries", options: { bill_or_ship: "shipping" }, noValueError: 'You must provide a country' }
 ]
 
@@ -18,11 +18,11 @@ export const billingAddressFormFields = [
   { label: 'Address Cont', name: 'street_address_2_billing', noValueError: 'You must provide a subject' },
   { label: 'Phone Number', name: 'phone_number_billing', typeOfComponent: "number-pad", noValueError: 'You must provide a phone number' },
   { label: 'City', name: 'city_billing', noValueError: 'You must provide a city' },
-  { label: 'Zip Code', name: 'zip_code_billing', typeOfComponent: "number-pad", noValueError: 'You must provide a city' },
+  { label: 'Zip Code', name: 'zip_code_billing', typeOfComponent: "number-pad", noValueError: 'You must provide a zip' },
   { label: 'Company', name: 'company_billing', noValueError: 'You must provide a company' },
   { label: 'First Name', name: 'first_name_billing', noValueError: 'You must provide a first name' },
-  { label: 'Last Name', name: 'last_name_billing', noValueError: 'You must provide a first name' },
-  { label: 'State', name: 'state_billing', typeOfComponent: "states", options: { bill_or_ship: "billing" }, noValueError: 'You must provide a last name' },
+  { label: 'Last Name', name: 'last_name_billing', noValueError: 'You must provide a last name' },
+  { label: 'State', name: 'state_billing', typeOfComponent: "states", options: { bill_or_ship: "billing" }, noValueError: 'You must select a state' },
   { label: 'Country', name: 'country_billing', typeOfComponent: "countries", options: { bill_or_ship: "billing" }, noValueError: 'You must provide a country' }
 ]
 

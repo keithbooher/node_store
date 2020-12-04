@@ -21,7 +21,6 @@ class FormModal extends Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div className="inline">
         <label>{this.props.label}</label>
@@ -30,6 +29,9 @@ class FormModal extends Component {
           className={`${this.props.mobile ? "" : "inline"} padding-s font-size-20 w-90`} 
           onChange={this.setNewValue}
         />
+        <div className="color-red-5" style={{marginBottom: '5px'}}>
+          {this.props.meta.touched && this.props.meta.error}
+        </div>
       </div>
 
     )
