@@ -31,71 +31,71 @@ const fb_product_feed_job = async () => {
 
   console.log(sheet)
 
-  // await sheet.clear()
-  // await sheet.setHeaderRow(['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'inventory', 'fb_product_category', 'google_product_category']);
+  await sheet.clear()
+  await sheet.setHeaderRow(['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'brand', 'inventory', 'fb_product_category', 'google_product_category']);
 
-  // const { data } = await axios.get(`${keys.url}/api/products/fb_feed`)
+  const { data } = await axios.get(`${keys.url}/api/products/fb_feed`)
 
 
-  // const new_rows = data.map((p, i) => {
-  //   const id = p._id
-  //   const title = p.name
-  //   const description = p.description
-  //   let availability
-  //   if (p.availability) {
-  //     availability = "available for order"     
-  //   } else {
-  //     availability = "discontinued"
-  //   }
-  //   const condition = "New"
-  //   const price = p.price
+  const new_rows = data.map((p, i) => {
+    const id = p._id
+    const title = p.name
+    const description = p.description
+    let availability
+    if (p.availability) {
+      availability = "available for order"     
+    } else {
+      availability = "discontinued"
+    }
+    const condition = "New"
+    const price = p.price
 
-  //   let category_path_name
-  //   if (p.categories.length > 0) {
-  //     let cat = p.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null)
-  //     if (cat) {
-  //       category_path_name = cat.path_name
-  //     } else {
-  //       category_path_name = "n_o_n_e"
-  //     }
-  //   } else {
-  //     category_path_name = "n_o_n_e"
-  //   }
+    let category_path_name
+    if (p.categories.length > 0) {
+      let cat = p.categories.find(cat => cat.deleted_at === undefined || cat.deleted_at === null)
+      if (cat) {
+        category_path_name = cat.path_name
+      } else {
+        category_path_name = "n_o_n_e"
+      }
+    } else {
+      category_path_name = "n_o_n_e"
+    }
 
-  //   const link = keys.url + "/shop/" + category_path_name + "/" + p.path_name
-  //   let image_link
-  //   if (p.images.i1 !== null) {
-  //     image_link = p.images.i1
-  //   } else {
-  //     image_link = keys.url
-  //   }
-  //   const brand = "Damnit Janet"
-  //   const inventory = p.inventory_count
-  //   const fb_product_category = 169
-  //   const google_product_category = "arts & crafts"
+    const link = keys.url + "/shop/" + category_path_name + "/" + p.path_name
+    let image_link
+    if (p.images.i1 !== null) {
+      image_link = p.images.i1
+    } else {
+      image_link = keys.url
+    }
+    const brand = "Damnit Janet"
+    const inventory = p.inventory_count
+    const fb_product_category = 169
+    const google_product_category = "arts & crafts"
 
-  //   return {
-  //     id,
-  //     title,
-  //     description,
-  //     availability,
-  //     condition,
-  //     price,
-  //     link,
-  //     image_link,
-  //     brand,
-  //     inventory,
-  //     fb_product_category,
-  //     google_product_category
-  //   }
-  // })
+    return {
+      id,
+      title,
+      description,
+      availability,
+      condition,
+      price,
+      link,
+      image_link,
+      brand,
+      inventory,
+      fb_product_category,
+      google_product_category
+    }
+  })
 
 
 
   
 
-  // await sheet.addRows(new_rows);
-  // await sheet.saveUpdatedCells();
+  await sheet.addRows(new_rows);
+  await sheet.saveUpdatedCells();
 
 
 
