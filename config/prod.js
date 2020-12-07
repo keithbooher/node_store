@@ -11,5 +11,7 @@ module.exports = {
   sendgridKey: process.env.SENDGRID_KEY,
   url: process.env.url,
   EXPRESS_KEY_BUG_SNAG: process.env.EXPRESS_KEY_BUG_SNAG,
-  fb_redirect_uri: process.env.FACEBOOK_REDIRECT_URI
+  fb_redirect_uri: process.env.FACEBOOK_REDIRECT_URI,
+  SERVICE_ACCOUNT_KEY: process.env.SERVICE_ACCOUNT_KEY
+
 }
