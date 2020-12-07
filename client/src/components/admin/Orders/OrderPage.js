@@ -38,7 +38,7 @@ class OrderPage extends Component {
   async componentDidMount() {
     let order = await this.props.getOrder(this.order_id).then(res => res.data)
     let trackingBoolean = false
-    if (order.tracking !== null) {
+    if (order.shipment.tracking !== null) {
       trackingBoolean = true
     }
     this.setState({ order, trackingBoolean })

@@ -34,6 +34,27 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/order/todays_orders', requireLogin, async (req, res) => {  
+    let date = new Date()
+    const today = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate()
+
+    try {
+      const order_id = req.params.order_id
+      const order = await Order.find({ "date_placed": today }).populate({
+        path: "shipment",
+        model: "shipments",
+      })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
+      res.send(order)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.get('/api/order/:order_id', requireLogin, async (req, res) => {  
     try {
       const order_id = req.params.order_id
