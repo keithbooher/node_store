@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "keep-you-eye-open",
+  "private_key_id": "9e9936b243ca5add49f176e3baf139b80fd1b921",
+  "private_key": "",
+  "client_email": "product-sheet@keep-you-eye-open.iam.gserviceaccount.com",
+  "client_id": "115292346405830270652",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/product-sheet%40keep-you-eye-open.iam.gserviceaccount.com"
+}

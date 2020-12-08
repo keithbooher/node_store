@@ -1,6 +1,6 @@
 const axios = require('axios')
 const keys = require('./config/keys')
-const service_account_json = require('./keep-you-eye-open-1601568315854-44b2c45949a2.json')
+const service_account_json = require('./keep-you-eye-open-9e9936b243ca.json')
 
 const fb_product_feed_job = async () => {
   const { GoogleSpreadsheet } = require('google-spreadsheet');
