@@ -55,6 +55,38 @@ module.exports = app => {
     }
   })
 
+  app.get('/api/order/open_orders', requireLogin, async (req, res) => {  
+    try {
+      const order_id = req.params.order_id
+      const pending = await Order.find({ "status": "pending" }).populate({
+        path: "shipment",
+        model: "shipments",
+      })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
+      const processing = await Order.find({ "status": "processing" }).populate({
+        path: "shipment",
+        model: "shipments",
+      })
+      .populate({
+        path: "discount_codes",
+        model: "discountCodes",
+      })
+
+      let orders = {
+        pending,
+        processing
+      }
+
+      res.send(orders)
+    } catch (err) {
+      req.bugsnag.notify(err)
+      res.status(422).send(err)
+    }
+  })
+
   app.get('/api/order/:order_id', requireLogin, async (req, res) => {  
     try {
       const order_id = req.params.order_id

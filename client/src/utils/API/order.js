@@ -56,6 +56,19 @@ export const todaysOrders = () => async dispatch => {
     }
 }
 
+export const openOrders = () => async dispatch => {
+    let req = await axios.get('/api/order/open_orders').catch(error => {
+        dispatch({ type: ERROR, payload: error.response })
+        Bugsnag.notify(error)        
+        return error.response
+    })
+    if (req.status === 200) {
+        return req
+    } else {
+        return {data: []}
+    }
+}
+
 export const getOrder = (order_id) => async dispatch => {
     let req = await axios.get(`/api/order/${order_id}`).catch(error => {
         dispatch({ type: ERROR, payload: error.response })
