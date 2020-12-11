@@ -259,6 +259,8 @@ class OrderPage extends Component {
                         </div>
                         <div style={{ marginTop: "30px" }}>
                           <div><span className="bold">Product name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                          {item.varietal && item.varietal.size !== null && <div><span className="bold">Size:</span> {item.varietal.size.value}</div>}
+                          {item.varietal && item.varietal.color !== null && <div><span className="bold">Color:</span> {item.varietal.color.name}</div>}
                           <div><span className="bold">Product price:</span> ${formatMoney(item.product_price)}</div>
                           {this.discountDisplaySwitch(item) &&
                             <div className="color-black"><span className="bold">Discount:</span> ${formatMoney(this.displayDiscount(item))}</div>
@@ -277,6 +279,8 @@ class OrderPage extends Component {
                               </div>
                               <div style={{ marginTop: "30px" }}>
                                 <div><span className="bold">Product Name:</span> {path === "undefined" ? item.product_name : <Link className="inline" to={`/admin/products/form/update/${path}`}>{item.product_name}</Link>}</div>
+                                {item.varietal && item.varietal.size !== null && <div><span className="bold">Size:</span> {item.varietal.size.value}</div>}
+                                {item.varietal && item.varietal.color !== null && <div><span className="bold">Color:</span> {item.varietal.color.name}</div>}
                                 <div><span className="bold">Product Price:</span> ${formatMoney(item.product_price)}</div>
                                 {this.discountDisplaySwitch(item) &&
                                   <div className="color-black"><span className="bold">discount:</span> ${formatMoney(this.displayDiscount(item))}</div>
