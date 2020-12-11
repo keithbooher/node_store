@@ -135,6 +135,8 @@ const MobileLineItems = ({ line_items, order, discountDisplaySwitch, displayDisc
             <div className="flex space-between" style={{ margin: ".9em auto" }}>
               <div>
                 <div className="bold"><Link to={item.product_path}>{item.product_name}</Link></div>
+                {item.varietal && item.varietal.size !== null && <div><span className="bold">Size:</span> {item.varietal.size.value}</div>}
+                {item.varietal && item.varietal.color !== null && <div><span className="bold">Color:</span> {item.varietal.color.name}</div>}
                 <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
                 <div><span className="store_text_color bold">Price:</span> ${item.product_price}</div>
                 {discountDisplaySwitch(item) &&
@@ -164,6 +166,8 @@ const DesktopLineItems = ({ line_items, order, discountDisplaySwitch, displayDis
             <div className="w-90" style={{ margin: ".9em auto" }}>
               <div>
                 <div className="bold margin-s-v"><Link to={item.product_path}>{item.product_name}</Link></div>
+                {item.varietal && item.varietal.size !== null && <div><span className="bold">Size:</span> {item.varietal.size.value}</div>}
+                {item.varietal && item.varietal.color !== null && <div><span className="bold">Color:</span> {item.varietal.color.name}</div>}
                 <div><span className="store_text_color bold">Quantity:</span> {item.quantity}</div>
                 <div><span className="store_text_color bold">Price:</span> ${item.product_price}</div>
                 {discountDisplaySwitch(item) &&
