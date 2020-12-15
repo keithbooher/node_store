@@ -210,8 +210,8 @@ class LineItems extends Component {
 
                     <div className="padding-s flex flex_column space-evenly">
                       <h3 className="margin-top-none margin-bottom-none line_item_name" style={ this.props.mobile ? {} : { fontSize: "30px" }}><Link className="inline a-invert" onClick={this.props.expandCart} to={line_item.product_path}>{line_item.product_name}</Link></h3>
-                      {line_item.varietal && 'size' in line_item.varietal && line_item.varietal.size !== null && <div><span className="color-black" >Size:</span> {line_item.varietal.size.value}</div>}
-                      {line_item.varietal && 'color' in line_item.varietal && line_item.varietal.color !== null && <div><span className="color-black" >Color:</span> {line_item.varietal.color.name}</div>}
+                      {line_item.varietal && 'size' in line_item.varietal && line_item.varietal.size !== null && <div className="color-black"><span >Size:</span> {line_item.varietal.size.value}</div>}
+                      {line_item.varietal && 'color' in line_item.varietal && line_item.varietal.color !== null && <div className="color-black"><span  >Color:</span> {line_item.varietal.color.name}</div>}
                       {line_item.gift_note && <a onClick={() => this.setState({ viewGiftNote: line_item.gift_note })} className="margin-top-none margin-bottom-none" style={ this.props.mobile ? {} : { fontSize: "23px" }}>Gift Note</a>}
                       <div className="color-black bold margin-s-v" style={ this.props.mobile ? {} : { fontSize: "23px" }}>${formatMoney(line_item.product_price)}</div>
                       {this.discountDisplaySwitch(line_item) &&
