@@ -19,7 +19,7 @@
     "http-proxy-middleware": "^0.20.0",
     "is-mobile": "^2.2.2",
     "node-fetch": "^2.6.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-color": "^2.18.1",
